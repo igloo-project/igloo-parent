@@ -2,7 +2,9 @@ package test.jpa.more.business;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.google.common.collect.Maps;
@@ -14,11 +16,13 @@ import java.util.List;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
+import org.iglooproject.commons.util.report.BatchReport;
 import org.iglooproject.functional.Supplier2;
 import org.iglooproject.jpa.business.generic.service.IEntityService;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.more.business.task.model.AbstractTask;
+import org.iglooproject.jpa.more.business.task.model.BatchReportBean;
 import org.iglooproject.jpa.more.business.task.model.QueuedTaskHolder;
 import org.iglooproject.jpa.more.business.task.model.TaskExecutionResult;
 import org.iglooproject.jpa.more.business.task.service.IQueuedTaskHolderManager;
@@ -30,6 +34,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
+import org.springframework.transaction.interceptor.TransactionAttribute;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 import test.jpa.more.business.task.config.TestTaskManagementConfig;
@@ -401,5 +407,140 @@ class TestTaskManagement extends AbstractJpaMoreTestCase {
     assertEquals(TaskStatus.INTERRUPTED, taskHolder.getStatus());
     assertEquals(TaskResult.FATAL, taskHolder.getResult());
     assertNull(result.get());
+  }
+
+  /**
+   * Check that {@link org.springframework.transaction.UnexpectedRollbackException} caused by an
+   * hidden rolling back exception is correctly detected.
+   *
+   * <p>Use-case
+   *
+   * <ul>
+   *   <li>Task throws an exception
+   *   <li>Transaction interceptor inside task execution catch and hide exception
+   *   <li>{@link org.iglooproject.jpa.more.business.task.service.QueuedTaskHolderManagerImpl}
+   *       transaction fails with {@link
+   *       org.springframework.transaction.UnexpectedRollbackException} as transaction is marked
+   *       rollbackOnly
+   *   <li>We expect : FATAL status, FAILED result and updated {@link
+   *       org.iglooproject.commons.util.report.BatchReport}
+   * </ul>
+   */
+  @Test
+  void unexpectedRollbackException() {
+    final StaticValueAccessor<String> result = new StaticValueAccessor<>();
+    final StaticValueAccessor<Long> taskHolderId = new StaticValueAccessor<>();
+
+    transactionTemplate.execute(
+        new TransactionCallbackWithoutResult() {
+          @Override
+          protected void doInTransactionWithoutResult(TransactionStatus status) {
+            try {
+              QueuedTaskHolder taskHolder =
+                  manager.submit(
+                      new RuntimeExceptionTestTask<>(
+                          result, "success", TaskExecutionResult.completed()));
+              taskHolderId.set(taskHolder.getId());
+            } catch (ServiceException e) {
+              throw new IllegalStateException(e);
+            }
+          }
+        });
+
+    entityService.flush();
+    entityService.clear();
+
+    waitTaskConsumption();
+
+    QueuedTaskHolder taskHolder = taskHolderService.getById(taskHolderId.get());
+    assertEquals(TaskStatus.FAILED, taskHolder.getStatus());
+    assertEquals(TaskResult.FATAL, taskHolder.getResult());
+    assertNotNull(taskHolder.getReport());
+    assertTrue(taskHolder.getReport().matches(".*RuntimeException.*"));
+    assertEquals("success", result.get());
+  }
+
+  public static class RuntimeExceptionTestTask<T> extends AbstractTestTask {
+    private static final long serialVersionUID = 1L;
+
+    private StaticValueAccessor<T> valueAccessor;
+
+    private T expectedValue;
+
+    @Autowired private PlatformTransactionManager transactionManager;
+
+    @JsonIgnoreProperties("stackTrace")
+    private TaskExecutionResult expectedResult;
+
+    private int timeToWaitMs = 0;
+
+    protected RuntimeExceptionTestTask() {}
+
+    public RuntimeExceptionTestTask(
+        StaticValueAccessor<T> valueAccessor, T expectedValue, TaskExecutionResult expectedResult) {
+      super();
+      this.valueAccessor = valueAccessor;
+      this.expectedValue = expectedValue;
+      this.expectedResult = expectedResult;
+    }
+
+    @Override
+    protected TaskExecutionResult doTask() throws Exception {
+      DefaultTransactionAttribute writeTransactionAttribute =
+          new DefaultTransactionAttribute(TransactionAttribute.PROPAGATION_REQUIRED);
+      writeTransactionAttribute.setReadOnly(false);
+      TransactionTemplate taskTransactionTemplate =
+          new TransactionTemplate(transactionManager, writeTransactionAttribute);
+
+      BatchReport batchReport = new BatchReport();
+
+      if (timeToWaitMs != 0) {
+        Thread.sleep(timeToWaitMs);
+      }
+      valueAccessor.set(expectedValue);
+      try {
+        taskTransactionTemplate.execute(
+            t -> {
+              throw new RuntimeException();
+            });
+      } catch (Exception e) {
+        batchReport.error("Test error.", e);
+        return expectedResult.failed(new BatchReportBean(batchReport), e);
+      }
+
+      return expectedResult.completed(new BatchReportBean(batchReport));
+    }
+
+    public StaticValueAccessor<T> getValueAccessor() {
+      return valueAccessor;
+    }
+
+    public void setValueAccessor(StaticValueAccessor<T> valueAccessor) {
+      this.valueAccessor = valueAccessor;
+    }
+
+    public T getExpectedValue() {
+      return expectedValue;
+    }
+
+    public void setExpectedValue(T expectedValue) {
+      this.expectedValue = expectedValue;
+    }
+
+    public TaskExecutionResult getExpectedResult() {
+      return expectedResult;
+    }
+
+    public void setExpectedResult(TaskExecutionResult expectedResult) {
+      this.expectedResult = expectedResult;
+    }
+
+    public int getTimeToWaitMs() {
+      return timeToWaitMs;
+    }
+
+    public void setTimeToWaitMs(int timeToWaitMs) {
+      this.timeToWaitMs = timeToWaitMs;
+    }
   }
 }
