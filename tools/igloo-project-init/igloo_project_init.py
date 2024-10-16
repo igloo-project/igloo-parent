@@ -50,7 +50,7 @@ def init_logger():
 
 # defaults for archetype.properties
 FILTERED_EXTENSIONS = (
-    "ftl,conf,java,xml,txt,groovy,cs,mdo,aj,jsp,gsp,vm,html,xhtml,properties,launch,.classpath,.project"
+    "ftl,conf,java,xml,txt,groovy,cs,mdo,aj,jsp,gsp,vm,html,xhtml,properties,launch,.classpath,.project,sql"
 )
 EXCLUDE_PATTERNS = "target,.classpath,.project,.settings/,.factorypath"
 

@@ -1,4 +1,4 @@
-insert into basic_application_test.user_ (id, creationdate, enabled, lastupdatedate, locale,
+insert into user_ (id, creationdate, enabled, lastupdatedate, locale,
                                           passwordhash, username, email, firstname, lastname,
                                           announcementinformation_open,
                                           "type")
