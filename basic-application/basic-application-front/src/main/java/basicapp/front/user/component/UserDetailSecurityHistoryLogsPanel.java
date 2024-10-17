@@ -1,4 +1,4 @@
-package basicapp.front.user.panel;
+package basicapp.front.user.component;
 
 import static basicapp.front.property.BasicApplicationWebappPropertyIds.PORTFOLIO_ITEMS_PER_PAGE;
 

@@ -1,8 +1,8 @@
-package basicapp.front.user.panel.tab;
+package basicapp.front.user.component.tab;
 
 import basicapp.back.business.user.model.User;
-import basicapp.front.user.panel.BasicUserDetailGeneralDescriptionPanel;
-import basicapp.front.user.panel.UserDetailRolesPanel;
+import basicapp.front.user.component.BasicUserDetailGeneralDescriptionPanel;
+import basicapp.front.user.component.UserDetailRolesPanel;
 import igloo.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.IModel;
 

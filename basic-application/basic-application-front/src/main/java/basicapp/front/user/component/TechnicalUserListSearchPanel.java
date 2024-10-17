@@ -1,11 +1,11 @@
-package basicapp.front.user.panel;
+package basicapp.front.user.component;
 
 import basicapp.back.business.user.model.User;
 import basicapp.back.business.user.model.atomic.UserType;
 import basicapp.back.business.user.search.UserSearchQueryData;
 import basicapp.back.util.binding.Bindings;
 import basicapp.front.user.form.UserAjaxDropDownSingleChoice;
-import basicapp.front.user.page.BasicUserDetailPage;
+import basicapp.front.user.page.TechnicalUserDetailPage;
 import igloo.wicket.markup.html.form.PageableSearchForm;
 import igloo.wicket.model.BindingModel;
 import igloo.wicket.model.Detachables;
@@ -26,13 +26,13 @@ import org.iglooproject.wicket.more.markup.html.form.EnumDropDownSingleChoice;
 import org.iglooproject.wicket.more.markup.html.form.LabelPlaceholderBehavior;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
 
-public class BasicUserListSearchPanel extends Panel {
+public class TechnicalUserListSearchPanel extends Panel {
 
-  private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = -4624527265796845060L;
 
   private final IModel<User> quickAccessModel = new GenericEntityModel<>();
 
-  public BasicUserListSearchPanel(
+  public TechnicalUserListSearchPanel(
       String id, IPageable pageable, IModel<UserSearchQueryData> dataModel) {
     super(id);
 
@@ -49,7 +49,8 @@ public class BasicUserListSearchPanel extends Panel {
                         EnabledFilter.class)
                     .setLabel(new ResourceModel("business.user.enabled.state"))
                     .add(new LabelPlaceholderBehavior()),
-                new UserAjaxDropDownSingleChoice("quickAccess", quickAccessModel, UserType.BASIC)
+                new UserAjaxDropDownSingleChoice(
+                        "quickAccess", quickAccessModel, UserType.TECHNICAL)
                     .setLabel(new ResourceModel("common.quickAccess"))
                     .add(new LabelPlaceholderBehavior())
                     .add(
@@ -62,10 +63,10 @@ public class BasicUserListSearchPanel extends Panel {
                                   public void onBeforeRespond(
                                       Map<String, Component> map, AjaxRequestTarget target) {
                                     IPageLinkDescriptor linkDescriptor =
-                                        BasicUserDetailPage.MAPPER
+                                        TechnicalUserDetailPage.MAPPER
                                             .setParameter2(
                                                 new ComponentPageModel(
-                                                    BasicUserListSearchPanel.this))
+                                                    TechnicalUserListSearchPanel.this))
                                             .map(
                                                 new GenericEntityModel<>(
                                                     quickAccessModel.getObject()));

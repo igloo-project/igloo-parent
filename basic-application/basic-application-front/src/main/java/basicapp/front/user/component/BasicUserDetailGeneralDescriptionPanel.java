@@ -1,4 +1,4 @@
-package basicapp.front.user.panel;
+package basicapp.front.user.component;
 
 import static basicapp.back.security.model.BasicApplicationPermissionConstants.USER_BASIC_WRITE;
 
