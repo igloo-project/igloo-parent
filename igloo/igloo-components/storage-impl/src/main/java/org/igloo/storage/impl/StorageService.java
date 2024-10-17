@@ -145,7 +145,13 @@ public class StorageService
   }
 
   @Override
-  public void validateFichier(@Nonnull Fichier fichier) {
+  public void validateFichier(@Nonnull Fichier fichierDetached) {
+    Fichier fichier = getFichierById(fichierDetached.getId());
+    if (fichier != fichierDetached) {
+      LOGGER.warn(
+          "Fichier {} was not attached to Hibernate Session and has been reloaded.",
+          fichier.getId());
+    }
     if (Objects.equals(fichier.getStatus(), FichierStatus.TRANSIENT)) {
       fichier.setStatus(FichierStatus.ALIVE);
       fichier.setValidationDate(LocalDateTime.now());
@@ -155,13 +161,18 @@ public class StorageService
   }
 
   @Override
-  public void invalidateFichier(@Nonnull Fichier fichier) {
+  public void invalidateFichier(@Nonnull Fichier fichierDetached) {
+    Fichier fichier = getFichierById(fichierDetached.getId());
+    if (fichier != fichierDetached) {
+      LOGGER.warn(
+          "Fichier {} was not attached to Hibernate Session and has been reloaded.",
+          fichier.getId());
+    }
     if (Objects.equals(fichier.getStatus(), FichierStatus.ALIVE)) {
       fichier.setStatus(FichierStatus.INVALIDATED);
       fichier.setInvalidationDate(LocalDateTime.now());
     } else {
-      LOGGER.warn(
-          "[invalidate] Fichier {} is already marked INVALIDATED; no action", fichier.getId());
+      LOGGER.warn("[invalidate] Fichier {} is not marked ALIVE; no action", fichier.getId());
     }
   }
 
