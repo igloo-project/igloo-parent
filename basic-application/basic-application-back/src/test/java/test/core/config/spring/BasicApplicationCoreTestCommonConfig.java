@@ -1,9 +1,9 @@
 package test.core.config.spring;
 
 import basicapp.back.config.spring.BasicApplicationCoreCommonConfiguration;
+import igloo.test.listener.postgresql.PsqlTestContainerConfiguration;
 import org.iglooproject.jpa.more.rendering.service.EmptyRendererServiceImpl;
 import org.iglooproject.jpa.more.rendering.service.IRendererService;
-import org.iglooproject.test.jpa.junit.PSQLTestContainerConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -12,7 +12,7 @@ import test.core.TestCorePackage;
 import test.core.TestEntityDatabaseHelper;
 
 @Configuration
-@Import({BasicApplicationCoreCommonConfiguration.class, PSQLTestContainerConfiguration.class})
+@Import({BasicApplicationCoreCommonConfiguration.class, PsqlTestContainerConfiguration.class})
 @ComponentScan(basePackageClasses = TestCorePackage.class)
 public class BasicApplicationCoreTestCommonConfig {
 

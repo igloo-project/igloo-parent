@@ -1,11 +1,11 @@
-package org.iglooproject.test.jpa.junit;
+package igloo.test.listener.postgresql;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.context.annotation.Bean;
 import org.testcontainers.containers.PostgreSQLContainer;
 
-public class PSQLTestContainerConfiguration {
+public class PsqlTestContainerConfiguration {
 
   @Value("${testContainer.database.name}")
   String databaseName;

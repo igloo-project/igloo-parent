@@ -9,25 +9,16 @@ import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.spring.property.dao.IMutablePropertyDao;
-import org.iglooproject.test.jpa.junit.SetupAndCleanDatabaseTestExecutionListener;
 import org.iglooproject.test.wicket.core.AbstractWicketTestCase;
 import org.iglooproject.wicket.more.AbstractCoreSession;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlMergeMode;
 import test.core.TestEntityDatabaseHelper;
 
-@TestExecutionListeners(
-    value = {SetupAndCleanDatabaseTestExecutionListener.class},
-    mergeMode =
-        TestExecutionListeners.MergeMode
-            .MERGE_WITH_DEFAULTS // Retains default TestExecutionListeners.
-    )
 @Sql(scripts = "/scripts/init-data-wicket-test.sql")
 @SqlMergeMode(SqlMergeMode.MergeMode.MERGE)
 public abstract class AbstractBasicApplicationWebappTestCase
@@ -45,8 +36,6 @@ public abstract class AbstractBasicApplicationWebappTestCase
 
   @Autowired protected PasswordEncoder passwordEncoder;
 
-  @Autowired private IMutablePropertyDao mutablePropertyDao;
-
   @Autowired private WebApplication application;
 
   @Autowired private TestEntityDatabaseHelper entityDatabaseHelper;
@@ -54,7 +43,6 @@ public abstract class AbstractBasicApplicationWebappTestCase
   @BeforeEach
   @Override
   public void init() throws ServiceException, SecurityServiceException {
-    cleanAll();
     setWicketTester(new BasicApplicationWicketTester(application));
     initUsers();
   }
@@ -67,13 +55,7 @@ public abstract class AbstractBasicApplicationWebappTestCase
 
   @Override
   protected void cleanAll() throws ServiceException, SecurityServiceException {
-    entityManagerClear();
-
-    mutablePropertyDao.cleanInTransaction();
-
     authenticationService.signOut();
-
-    emptyIndexes();
   }
 
   private void initUsers() {

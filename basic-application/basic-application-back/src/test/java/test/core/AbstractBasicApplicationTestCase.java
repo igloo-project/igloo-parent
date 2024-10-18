@@ -6,20 +6,12 @@ import java.util.Set;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.test.jpa.junit.AbstractTestCase;
-import org.iglooproject.test.jpa.junit.SetupAndCleanDatabaseTestExecutionListener;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlMergeMode;
 
-@TestExecutionListeners(
-    value = {SetupAndCleanDatabaseTestExecutionListener.class},
-    mergeMode =
-        TestExecutionListeners.MergeMode
-            .MERGE_WITH_DEFAULTS // Retains default TestExecutionListeners.
-    )
 @Sql(scripts = "/scripts/init-data-test.sql")
 @SqlMergeMode(SqlMergeMode.MergeMode.MERGE)
 public abstract class AbstractBasicApplicationTestCase extends AbstractTestCase {
@@ -36,13 +28,14 @@ public abstract class AbstractBasicApplicationTestCase extends AbstractTestCase 
   @BeforeEach
   @Override
   public void init() throws ServiceException, SecurityServiceException {
-    clearCaches();
+    // Database cleaning performed by IglooTestExecutionListener
+    // nothing to do
   }
 
   @AfterEach
   @Override
   public void close() throws ServiceException, SecurityServiceException {
-    // Database cleaning performed by CleanDatabaseTestExecutionListener
+    // Database cleaning performed by IglooTestExecutionListener
     // nothing to do
   }
 

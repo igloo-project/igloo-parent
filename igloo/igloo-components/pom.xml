@@ -36,6 +36,7 @@
 		<module>igloo-component-jpa</module>
 		<module>igloo-component-jpa-batch</module>
 		<module>igloo-component-jpa-test</module>
+		<module>igloo-listener-test</module>
 		
 		<module>igloo-component-jpa-more</module>
 		<module>igloo-difference</module>
