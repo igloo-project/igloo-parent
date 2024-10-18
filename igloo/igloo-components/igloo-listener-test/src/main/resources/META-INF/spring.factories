@@ -1,0 +1,3 @@
+org.springframework.test.context.TestExecutionListener = \
+	igloo.test.listener.AfterSqlIglooTestExecutionListener, \
+	igloo.test.listener.IglooTestExecutionListener

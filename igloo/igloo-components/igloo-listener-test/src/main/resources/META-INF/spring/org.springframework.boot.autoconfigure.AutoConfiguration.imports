@@ -1,0 +1,3 @@
+igloo.test.listener.cache.Level2CacheIglooTestListenerAutoConfiguration
+igloo.test.listener.hsearch.HsearchIglooTestListenerAutoConfiguration
+igloo.test.listener.postgresql.PsqlIglooTestListenerAutoConfiguration
