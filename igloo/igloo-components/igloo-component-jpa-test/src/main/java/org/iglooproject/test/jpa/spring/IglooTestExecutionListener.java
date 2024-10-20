@@ -31,7 +31,7 @@ import org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener;
  */
 public class IglooTestExecutionListener implements TestExecutionListener, Ordered {
 
-  public static final Integer ORDER_TRUNCATE = 1000;
+  public static final Integer ORDER_DATABASE = 1000;
   public static final Integer ORDER_CACHE = 1100;
   public static final Integer ORDER_HSEARCH = 1300;
 
