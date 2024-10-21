@@ -9,6 +9,7 @@ import static basicapp.back.security.model.BasicApplicationPermissionConstants.U
 import basicapp.back.business.user.model.User;
 import basicapp.back.business.user.model.atomic.UserPasswordRecoveryRequestInitiator;
 import basicapp.back.business.user.model.atomic.UserPasswordRecoveryRequestType;
+import basicapp.back.business.user.predicate.UserPredicates;
 import basicapp.back.business.user.service.controller.IUserControllerService;
 import basicapp.back.security.service.controller.ISecurityManagementControllerService;
 import basicapp.back.util.binding.Bindings;
@@ -66,6 +67,8 @@ public class BasicUserDetailPage extends UserTemplate {
           .pickFirst()
           .map(CommonParameters.ID)
           .mandatory()
+          .pickFirst()
+          .validator(UserPredicates.basic())
           .pickSecond()
           .map(CommonParameters.SOURCE_PAGE_ID)
           .optional()

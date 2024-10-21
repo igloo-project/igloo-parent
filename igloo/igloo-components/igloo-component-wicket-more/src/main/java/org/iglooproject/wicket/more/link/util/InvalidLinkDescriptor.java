@@ -15,16 +15,21 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.iglooproject.wicket.more.link.descriptor.AbstractDynamicBookmarkableLink;
 import org.iglooproject.wicket.more.link.descriptor.DynamicImage;
+import org.iglooproject.wicket.more.link.descriptor.IImageResourceLinkDescriptor;
+import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.LinkInvalidTargetRuntimeException;
 import org.iglooproject.wicket.more.link.descriptor.generator.IImageResourceLinkGenerator;
 import org.iglooproject.wicket.more.link.descriptor.generator.ILinkGenerator;
 import org.iglooproject.wicket.more.link.descriptor.generator.IPageLinkGenerator;
+import org.iglooproject.wicket.more.link.descriptor.parameter.extractor.LinkParameterExtractionRuntimeException;
 import org.iglooproject.wicket.more.link.descriptor.parameter.injector.LinkParameterInjectionRuntimeException;
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.ConditionLinkParameterValidator;
+import org.iglooproject.wicket.more.link.descriptor.parameter.validator.LinkParameterModelValidationException;
+import org.iglooproject.wicket.more.link.descriptor.parameter.validator.LinkParameterSerializedFormValidationException;
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationRuntimeException;
 import org.iglooproject.wicket.more.markup.html.template.model.NavigationMenuItem;
 
-class InvalidLinkGenerator implements IPageLinkGenerator, IImageResourceLinkGenerator {
+class InvalidLinkDescriptor implements IPageLinkDescriptor, IImageResourceLinkDescriptor {
   private static final long serialVersionUID = 1L;
 
   private static LinkInvalidTargetRuntimeException invalidException() {
@@ -93,7 +98,7 @@ class InvalidLinkGenerator implements IPageLinkGenerator, IImageResourceLinkGene
   }
 
   @Override
-  public InvalidLinkGenerator wrap(Component component) {
+  public InvalidLinkDescriptor wrap(Component component) {
     return this;
   }
 
@@ -196,8 +201,43 @@ class InvalidLinkGenerator implements IPageLinkGenerator, IImageResourceLinkGene
   }
 
   @Override
-  @Deprecated
   public IPageLinkGenerator bypassPermissions() {
-    throw new UnsupportedOperationException();
+    return this;
+  }
+
+  @Override
+  public void checkModels() throws LinkParameterModelValidationException {
+    // nothing to do
+  }
+
+  @Override
+  public void extract(PageParameters parameters)
+      throws LinkParameterSerializedFormValidationException,
+          LinkParameterExtractionRuntimeException,
+          LinkParameterModelValidationException {
+    // nothing to do
+  }
+
+  @Override
+  public void extractSafely(PageParameters parameters, IPageLinkGenerator fallbackLink)
+      throws RestartResponseException {
+    // nothing to do
+  }
+
+  @Override
+  public void extractSafely(
+      PageParameters parameters, IPageLinkGenerator fallbackLink, String errorMessage)
+      throws RestartResponseException {
+    // nothing to do
+  }
+
+  @Override
+  public void checkModelsSafely(IPageLinkGenerator fallbackLink) {
+    // nothing to do
+  }
+
+  @Override
+  public void checkModelsSafely(IPageLinkGenerator fallbackLink, String errorMessage) {
+    // nothing to do
   }
 }

@@ -15,7 +15,7 @@ public abstract class ReferenceDataTemplate extends MainTemplate {
 
   private static final long serialVersionUID = -5226976873952135450L;
 
-  public ReferenceDataTemplate(PageParameters parameters) {
+  protected ReferenceDataTemplate(PageParameters parameters) {
     super(parameters);
 
     addBreadCrumbElement(

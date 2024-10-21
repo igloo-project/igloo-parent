@@ -10,7 +10,7 @@ public abstract class SecurityPasswordTemplate extends ApplicationAccessTemplate
 
   private static final long serialVersionUID = -4350860041946569108L;
 
-  public SecurityPasswordTemplate(PageParameters parameters) {
+  protected SecurityPasswordTemplate(PageParameters parameters) {
     super(parameters);
 
     if (!keepSignedIn().applies() && BasicApplicationSession.get().isSignedIn()) {

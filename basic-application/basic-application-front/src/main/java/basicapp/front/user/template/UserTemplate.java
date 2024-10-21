@@ -15,7 +15,7 @@ public abstract class UserTemplate extends MainTemplate {
 
   private static final long serialVersionUID = 1L;
 
-  public UserTemplate(PageParameters parameters) {
+  protected UserTemplate(PageParameters parameters) {
     super(parameters);
 
     addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("navigation.administration")));

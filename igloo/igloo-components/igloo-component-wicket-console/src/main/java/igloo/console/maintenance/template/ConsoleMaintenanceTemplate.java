@@ -11,7 +11,7 @@ public abstract class ConsoleMaintenanceTemplate extends ConsoleTemplate {
 
   private static final long serialVersionUID = -3192604063259001201L;
 
-  public ConsoleMaintenanceTemplate(PageParameters parameters) {
+  protected ConsoleMaintenanceTemplate(PageParameters parameters) {
     super(parameters);
 
     addBreadCrumbElement(

@@ -11,11 +11,11 @@ import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement
 import org.iglooproject.wicket.more.security.authorization.AuthorizeInstantiationIfPermission;
 
 @AuthorizeInstantiationIfPermission(permissions = GLOBAL_ANNOUNCEMENT_READ)
-public class AnnouncementTemplate extends MainTemplate {
+public abstract class AnnouncementTemplate extends MainTemplate {
 
   private static final long serialVersionUID = 1L;
 
-  public AnnouncementTemplate(PageParameters parameters) {
+  protected AnnouncementTemplate(PageParameters parameters) {
     super(parameters);
 
     addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("navigation.administration")));
