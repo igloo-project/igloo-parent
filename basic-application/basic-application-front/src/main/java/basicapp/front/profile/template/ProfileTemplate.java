@@ -7,11 +7,11 @@ import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
 
-public class ProfileTemplate extends MainTemplate {
+public abstract class ProfileTemplate extends MainTemplate {
 
   private static final long serialVersionUID = 1029271113953538262L;
 
-  public ProfileTemplate(PageParameters parameters) {
+  protected ProfileTemplate(PageParameters parameters) {
     super(parameters);
 
     addBreadCrumbElement(

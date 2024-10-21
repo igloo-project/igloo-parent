@@ -15,7 +15,7 @@ public abstract class RoleTemplate extends MainTemplate {
 
   private static final long serialVersionUID = 1L;
 
-  public RoleTemplate(PageParameters parameters) {
+  protected RoleTemplate(PageParameters parameters) {
     super(parameters);
 
     addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("navigation.administration")));

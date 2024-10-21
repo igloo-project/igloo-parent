@@ -61,7 +61,7 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
   private final IModel<BasicApplicationApplicationTheme> applicationThemeModel =
       ApplicationPropertyModel.of(APPLICATION_THEME);
 
-  public MainTemplate(PageParameters parameters) {
+  protected MainTemplate(PageParameters parameters) {
     super(parameters);
 
     if (Boolean.TRUE.equals(propertyService.get(MAINTENANCE))

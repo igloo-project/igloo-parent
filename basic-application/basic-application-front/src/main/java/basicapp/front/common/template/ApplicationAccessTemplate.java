@@ -37,7 +37,7 @@ public abstract class ApplicationAccessTemplate extends AbstractWebPageTemplate 
 
   @SpringBean private IBasicApplicationAuthenticationService authenticationService;
 
-  public ApplicationAccessTemplate(PageParameters parameters) {
+  protected ApplicationAccessTemplate(PageParameters parameters) {
     super(parameters);
 
     if (Boolean.TRUE.equals(propertyService.get(MAINTENANCE))

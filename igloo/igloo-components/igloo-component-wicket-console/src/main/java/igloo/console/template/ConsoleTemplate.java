@@ -56,7 +56,7 @@ public abstract class ConsoleTemplate extends AbstractWebPageTemplate {
   @SpringBean(required = false)
   protected IAbstractDataUpgradeService dataUpgradeService;
 
-  public ConsoleTemplate(PageParameters parameters) {
+  protected ConsoleTemplate(PageParameters parameters) {
     super(parameters);
 
     add(

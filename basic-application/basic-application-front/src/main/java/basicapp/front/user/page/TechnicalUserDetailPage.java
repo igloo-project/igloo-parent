@@ -9,6 +9,7 @@ import static org.iglooproject.jpa.security.business.authority.util.CoreAuthorit
 import basicapp.back.business.user.model.User;
 import basicapp.back.business.user.model.atomic.UserPasswordRecoveryRequestInitiator;
 import basicapp.back.business.user.model.atomic.UserPasswordRecoveryRequestType;
+import basicapp.back.business.user.predicate.UserPredicates;
 import basicapp.back.business.user.service.controller.IUserControllerService;
 import basicapp.back.security.service.controller.ISecurityManagementControllerService;
 import basicapp.back.util.binding.Bindings;
@@ -19,7 +20,7 @@ import basicapp.front.user.component.tab.TechnicalUserDetailTabGeneralPanel;
 import basicapp.front.user.component.tab.TechnicalUserDetailTabSecurityPanel;
 import basicapp.front.user.popup.UserPasswordEditPopup;
 import basicapp.front.user.renderer.UserEnabledRenderer;
-import basicapp.front.user.template.UserTemplate;
+import basicapp.front.user.template.UserDetailTemplate;
 import igloo.bootstrap.confirm.AjaxConfirmLink;
 import igloo.bootstrap.modal.AjaxModalOpenBehavior;
 import igloo.bootstrap5.markup.html.bootstrap.component.BootstrapBadge;
@@ -54,7 +55,7 @@ import org.slf4j.LoggerFactory;
 import org.wicketstuff.wiquery.core.events.MouseEvent;
 
 @AuthorizeInstantiation(ROLE_ADMIN)
-public class TechnicalUserDetailPage extends UserTemplate {
+public class TechnicalUserDetailPage extends UserDetailTemplate {
 
   private static final long serialVersionUID = 1L;
 
@@ -68,6 +69,8 @@ public class TechnicalUserDetailPage extends UserTemplate {
           .pickFirst()
           .map(CommonParameters.ID)
           .mandatory()
+          .pickFirst()
+          .validator(UserPredicates.technical())
           .pickSecond()
           .map(CommonParameters.SOURCE_PAGE_ID)
           .optional()
