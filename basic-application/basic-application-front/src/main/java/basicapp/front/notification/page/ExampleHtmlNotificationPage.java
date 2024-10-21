@@ -66,9 +66,10 @@ public class ExampleHtmlNotificationPage extends AbstractHtmlNotificationPage<Us
                       : BasicUserDetailPage.MAPPER;
               return mapper.ignoreParameter2().map(userModel).bypassPermissions().fullUrl();
             });
+
     add(
         new ExternalLink(
-            "basicUserLink", userLink, BindingModel.of(userModel, Bindings.user().username())),
+            "userLink", userLink, BindingModel.of(userModel, Bindings.user().username())),
         new CoreLabel("firstname", BindingModel.of(userModel, Bindings.user().firstName())),
         new CoreLabel("lastname", BindingModel.of(userModel, Bindings.user().lastName())),
         new CoreLabel("enabled", UserEnabledRenderer.get().asModel(userModel))
