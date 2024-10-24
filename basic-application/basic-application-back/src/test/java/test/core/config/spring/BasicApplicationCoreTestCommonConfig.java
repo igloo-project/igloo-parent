@@ -1,9 +1,9 @@
 package test.core.config.spring;
 
 import basicapp.back.config.spring.BasicApplicationCoreCommonConfiguration;
+import igloo.test.listener.postgresql.PSQLTestContainerConfiguration;
 import org.iglooproject.jpa.more.rendering.service.EmptyRendererServiceImpl;
 import org.iglooproject.jpa.more.rendering.service.IRendererService;
-import org.iglooproject.test.jpa.junit.PSQLTestContainerConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;

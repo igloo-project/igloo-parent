@@ -1,7 +1,7 @@
 package test.web.config.spring;
 
 import basicapp.front.config.spring.BasicApplicationWebappConfig;
-import org.iglooproject.test.jpa.junit.PSQLTestContainerConfiguration;
+import igloo.test.listener.postgresql.PSQLTestContainerConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
