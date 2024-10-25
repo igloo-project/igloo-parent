@@ -10,8 +10,8 @@ import org.iglooproject.test.jpa.junit.EntityManagerExecutionListener;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.TestExecutionListeners.MergeMode;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 @Retention(RUNTIME)
 @Target(TYPE)
@@ -21,8 +21,6 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
     initializers = ExtendedApplicationContextInitializer.class)
 @TestPropertySource(properties = "igloo.profile=test")
 @TestExecutionListeners(
-    listeners = {
-      DependencyInjectionTestExecutionListener.class,
-      EntityManagerExecutionListener.class
-    })
+    listeners = EntityManagerExecutionListener.class,
+    mergeMode = MergeMode.MERGE_WITH_DEFAULTS)
 public @interface SpringBootTestBasicApplicationWebapp {}

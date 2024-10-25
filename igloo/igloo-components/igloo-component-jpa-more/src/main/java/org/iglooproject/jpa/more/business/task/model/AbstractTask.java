@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.util.Date;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.iglooproject.commons.util.CloneUtils;
 import org.iglooproject.jpa.exception.SecurityServiceException;
@@ -218,44 +219,65 @@ public abstract class AbstractTask implements Runnable, Serializable {
 
       onBeforeExecute();
 
-      taskExecutionResult =
-          taskExecutionTransactionTemplate.execute(
-              new TransactionCallback<TaskExecutionResult>() {
-                @Override
-                public TaskExecutionResult doInTransaction(TransactionStatus status) {
-                  try {
-                    /*
-                     * The result may contain a business exception, caught in doTask.
-                     * We don't have to propagate it, the task will be considered in error and onFailStatus()
-                     * will be called.
-                     */
-                    TaskExecutionResult executionResult = doTask();
-                    Objects.requireNonNull(executionResult, "executionResult must not be null");
+      // save batch report if transaction end emits an exception
+      AtomicReference<BatchReportBean> batchReportBeanAtomicReference = new AtomicReference<>();
+      // save task execution result if transaction end emits an exception
+      AtomicReference<TaskExecutionResult> taskExecutionResultAtomicReference =
+          new AtomicReference<>();
+      try {
+        taskExecutionResult =
+            taskExecutionTransactionTemplate.execute(
+                new TransactionCallback<TaskExecutionResult>() {
+                  @Override
+                  public TaskExecutionResult doInTransaction(TransactionStatus status) {
+                    try {
+                      /*
+                       * The result may contain a business exception, caught in doTask.
+                       * We don't have to propagate it, the task will be considered in error and onFailStatus()
+                       * will be called.
+                       */
+                      TaskExecutionResult executionResult = doTask();
+                      batchReportBeanAtomicReference.set(executionResult.getReport());
+                      Objects.requireNonNull(executionResult, "executionResult must not be null");
 
-                    /*
-                     * If the task execution caught a business exception in doTask without propagating it
-                     * (so as to preserve a batch report), we roll back the transaction.
-                     */
-                    if (TaskResult.FATAL.equals(executionResult.getResult())) {
+                      /*
+                       * If the task execution caught a business exception in doTask without propagating it
+                       * (so as to preserve a batch report), we roll back the transaction.
+                       */
+                      if (TaskResult.FATAL.equals(executionResult.getResult())) {
+                        status.setRollbackOnly();
+                      }
+
+                      taskExecutionResultAtomicReference.set(executionResult);
+                      return executionResult;
+                    } catch (InterruptedException e) {
                       status.setRollbackOnly();
-                    }
-
-                    return executionResult;
-                  } catch (InterruptedException e) {
-                    status.setRollbackOnly();
-                    Thread.currentThread().interrupt();
-                    return TaskExecutionResult.failed(e);
-                  } catch (Exception e) {
-                    status.setRollbackOnly();
-                    return TaskExecutionResult.failed(e);
-                  } finally {
-                    if (Thread.currentThread().isInterrupted()) {
-                      // Save the information (seems to be cleared by the transaction template)
-                      interruptedFlag.setTrue();
+                      Thread.currentThread().interrupt();
+                      return TaskExecutionResult.failed(e);
+                    } catch (Exception e) {
+                      status.setRollbackOnly();
+                      return TaskExecutionResult.failed(e);
+                    } finally {
+                      if (Thread.currentThread().isInterrupted()) {
+                        // Save the information (seems to be cleared by the transaction template)
+                        interruptedFlag.setTrue();
+                      }
                     }
                   }
-                }
-              });
+                });
+      } catch (RuntimeException rollbackException) {
+        // real usecase: UnexpectedRollbackException
+        // if nested calls trigger and catch a rollback exception
+        // this exception is triggered when the whole transaction want to be committed
+        if (taskExecutionResultAtomicReference.get() != null) {
+          taskExecutionResult = taskExecutionResultAtomicReference.get();
+          taskExecutionResult.setResult(TaskResult.FATAL);
+          if (batchReportBeanAtomicReference.get() != null) {
+            taskExecutionResult.setReport(batchReportBeanAtomicReference.get());
+          }
+          taskExecutionResult.setThrowable(rollbackException);
+        }
+      }
 
       // Should not happen, but just in case...
       if (taskExecutionResult == null) {

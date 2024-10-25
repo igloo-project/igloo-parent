@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.iglooproject.components</groupId>
 		<artifactId>igloo-components</artifactId>
-		<version>6.0.0-Alpha17</version>
+		<version>6.0.0-Alpha18</version>
 	</parent>
 
 	<artifactId>igloo-hibernate-search-v5migrationhelper</artifactId>
@@ -106,6 +106,12 @@
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-jpa-test</artifactId>
 			<version>${project.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<!-- needed for DataSourceAutoConfiguration -->
+			<groupId>com.zaxxer</groupId>
+			<artifactId>HikariCP</artifactId>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

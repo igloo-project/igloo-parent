@@ -12,14 +12,14 @@
 	<groupId>org.iglooproject.archetype</groupId>
 	<artifactId>basic-application-app</artifactId>
 	
-	<version>6.0.0-Alpha17</version>
+	<version>6.0.0-Alpha18</version>
 	
 	<packaging>war</packaging>
 	
 	<name>Basic Application - Spring Application</name>
 	
 	<properties>
-		<igloo-maven.version>6.0.0-Alpha17</igloo-maven.version>
+		<igloo-maven.version>6.0.0-Alpha18</igloo-maven.version>
 		<start-class>basicapp.app.SpringBootMain</start-class>
 	</properties>
 	

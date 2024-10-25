@@ -6,7 +6,7 @@
 	<parent>
 		<artifactId>basic-application</artifactId>
 		<groupId>org.iglooproject.archetype</groupId>
-		<version>6.0.0-Alpha17</version>
+		<version>6.0.0-Alpha18</version>
 	</parent>
 	
 	<packaging>jar</packaging>
@@ -173,6 +173,14 @@
 		<dependency>
 			<groupId>com.google.code.findbugs</groupId>
 			<artifactId>jsr305</artifactId>
+		</dependency>
+
+		<!--test-containers-->
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-jpa-test</artifactId>
+			<version>${igloo.version}</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 	

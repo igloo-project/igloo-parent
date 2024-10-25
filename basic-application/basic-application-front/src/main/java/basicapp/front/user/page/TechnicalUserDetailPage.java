@@ -9,14 +9,15 @@ import static org.iglooproject.jpa.security.business.authority.util.CoreAuthorit
 import basicapp.back.business.user.model.User;
 import basicapp.back.business.user.model.atomic.UserPasswordRecoveryRequestInitiator;
 import basicapp.back.business.user.model.atomic.UserPasswordRecoveryRequestType;
+import basicapp.back.business.user.predicate.UserPredicates;
 import basicapp.back.business.user.service.controller.IUserControllerService;
 import basicapp.back.security.service.controller.ISecurityManagementControllerService;
 import basicapp.back.util.binding.Bindings;
 import basicapp.front.BasicApplicationSession;
 import basicapp.front.common.util.BootstrapTabsUtils;
 import basicapp.front.navigation.link.LinkFactory;
-import basicapp.front.user.panel.tab.TechnicalUserDetailTabGeneralPanel;
-import basicapp.front.user.panel.tab.TechnicalUserDetailTabSecurityPanel;
+import basicapp.front.user.component.tab.TechnicalUserDetailTabGeneralPanel;
+import basicapp.front.user.component.tab.TechnicalUserDetailTabSecurityPanel;
 import basicapp.front.user.popup.UserPasswordEditPopup;
 import basicapp.front.user.renderer.UserEnabledRenderer;
 import basicapp.front.user.template.UserTemplate;
@@ -68,6 +69,8 @@ public class TechnicalUserDetailPage extends UserTemplate {
           .pickFirst()
           .map(CommonParameters.ID)
           .mandatory()
+          .pickFirst()
+          .validator(UserPredicates.technical())
           .pickSecond()
           .map(CommonParameters.SOURCE_PAGE_ID)
           .optional()

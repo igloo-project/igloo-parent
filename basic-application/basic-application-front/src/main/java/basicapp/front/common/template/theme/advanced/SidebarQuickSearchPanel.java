@@ -3,7 +3,7 @@ package basicapp.front.common.template.theme.advanced;
 import basicapp.back.business.user.model.User;
 import basicapp.back.security.model.BasicApplicationPermissionConstants;
 import basicapp.front.user.form.UserAjaxDropDownSingleChoice;
-import basicapp.front.user.page.BasicUserDetailPage;
+import basicapp.front.user.util.UserLinkDescriptors;
 import igloo.wicket.component.EnclosureContainer;
 import igloo.wicket.condition.Condition;
 import igloo.wicket.model.Detachables;
@@ -48,14 +48,14 @@ public class SidebarQuickSearchPanel extends Panel {
                                   @Override
                                   public void onBeforeRespond(
                                       Map<String, Component> map, AjaxRequestTarget target) {
+                                    User searchUser = searchUserModel.getObject();
+
                                     IPageLinkDescriptor linkDescriptor =
-                                        BasicUserDetailPage.MAPPER
+                                        UserLinkDescriptors.detailMapper(searchUser)
                                             .setParameter2(
                                                 new ComponentPageModel(
                                                     SidebarQuickSearchPanel.this))
-                                            .map(
-                                                new GenericEntityModel<>(
-                                                    searchUserModel.getObject()));
+                                            .map(new GenericEntityModel<>(searchUser));
 
                                     searchUserModel.setObject(null);
                                     searchUserModel.detach();

@@ -56,15 +56,19 @@ public interface IStorageService {
   /**
    * The {@link Fichier} is marked {@link FichierStatus#ALIVE} and {@link Fichier#validationDate} is
    * initialized.
+   *
+   * <p>If the {@link Fichier} is detached it will be reloaded (with a logger warn).
    */
-  void validateFichier(@Nonnull Fichier fichier);
+  void validateFichier(@Nonnull Fichier fichierDetached);
 
   /**
    * The {@link Fichier} is marked {@link FichierStatus#INVALIDATED} and {@link
    * Fichier#invalidationDate} is initialized. The entity will soon be deleted along with associated
    * file.
+   *
+   * <p>If the {@link Fichier} is detached it will be reloaded (with a logger warn).
    */
-  void invalidateFichier(@Nonnull Fichier fichier);
+  void invalidateFichier(@Nonnull Fichier fichierDetached);
 
   /** Deletion of {@link Fichier} and associated file */
   void removeFichier(@Nonnull Fichier fichier);
