@@ -19,7 +19,7 @@
 	<name>Basic Application - Spring Application</name>
 	
 	<properties>
-		<igloo-maven.version>6.0.0-SNAPSHOT</igloo-maven.version>
+		<igloo-maven.version>6.0.0-Alpha18</igloo-maven.version>
 		<start-class>basicapp.app.SpringBootMain</start-class>
 	</properties>
 	
