@@ -15,7 +15,6 @@ import igloo.wicket.component.EnclosureContainer;
 import igloo.wicket.condition.Condition;
 import igloo.wicket.feedback.FeedbackUtils;
 import igloo.wicket.markup.html.panel.DelegatedMarkupPanel;
-import igloo.wicket.model.BindingModel;
 import igloo.wicket.model.Detachables;
 import igloo.wicket.util.DatePattern;
 import java.util.Map;
@@ -29,12 +28,15 @@ import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.wicket.more.ajax.SerializableListener;
 import org.iglooproject.wicket.more.bindable.form.CacheWritingForm;
 import org.iglooproject.wicket.more.common.behavior.UpdateOnChangeAjaxEventBehavior;
 import org.iglooproject.wicket.more.markup.html.form.EnumDropDownSingleChoice;
+import org.iglooproject.wicket.more.markup.html.form.FormMode;
 import org.iglooproject.wicket.more.markup.html.form.LocalDateDatePicker;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.mask.MaskBehavior;
@@ -48,6 +50,8 @@ public class AnnouncementSavePopup extends AbstractAjaxModalPopupPanel<Announcem
   private static final Logger LOGGER = LoggerFactory.getLogger(AnnouncementSavePopup.class);
 
   @SpringBean private IAnnouncementControllerService announcementControllerService;
+
+  private final IModel<FormMode> formModeModel = Model.of();
 
   private final AnnouncementBindableModel bindableModel;
 
@@ -254,20 +258,22 @@ public class AnnouncementSavePopup extends AbstractAjaxModalPopupPanel<Announcem
   }
 
   public void setUpAdd(Announcement announcement) {
+    formModeModel.setObject(FormMode.ADD);
     getModel().setObject(announcement);
   }
 
   public void setUpEdit(Announcement announcement) {
+    formModeModel.setObject(FormMode.EDIT);
     getModel().setObject(announcement);
   }
 
   private Condition addModeCondition() {
-    return Condition.isTrueOrNull(BindingModel.of(getModel(), Bindings.announcement().isNew()));
+    return FormMode.ADD.condition(formModeModel);
   }
 
   @Override
   protected void onDetach() {
     super.onDetach();
-    Detachables.detach(bindableModel);
+    Detachables.detach(formModeModel, bindableModel);
   }
 }
