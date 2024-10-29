@@ -62,6 +62,7 @@
 		<module>igloo-component-bootstrap</module>
 		<module>igloo-component-wicket-bootstrap4</module>
 		<module>igloo-component-wicket-bootstrap5</module>
+		<module>igloo-vue-datepicker</module>
 		
 		<module>igloo-component-web-security</module>
 		<module>igloo-component-rest-jersey</module>
