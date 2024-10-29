@@ -16,6 +16,10 @@
 		<div class="content-body-container">
 			<div class="content-body">
 				<div class="row g-4">
+					<form wicket:id="form">
+						<vue-date-picker wicket:id="vue-datepicker-container"></vue-date-picker>
+						<input wicket:id="labelDate" />
+					</form>
 					<div wicket:enclosure-component="users" class="col-md-6 col-2xl-4">
 						<div class="card h-100">
 							<div class="card-header card-img-top py-3 flex-grow-0 bg-alert-brand">
