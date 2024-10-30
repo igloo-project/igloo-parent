@@ -14,6 +14,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -1513,7 +1514,7 @@ class TestDatabaseOperations extends AbstractTest {
   @Test
   void testGetStorageCheckStatistics(EntityManagerFactory entityManagerFactory) {
     // statistic precision is limited to second
-    LocalDateTime now = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
+    ZonedDateTime now = ZonedDateTime.now().truncatedTo(ChronoUnit.SECONDS);
     StorageUnit unit1 =
         createStorageUnit(entityManagerFactory, 1, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
     StorageUnit unit2 =
@@ -1554,15 +1555,19 @@ class TestDatabaseOperations extends AbstractTest {
             atIndex(1));
 
     Duration unit1LastDuration = Duration.ofMinutes(3);
-    Duration unit1LastAge = Duration.ofDays(3);
-    LocalDateTime unit1LastFinishedOn = now.minus(unit1LastAge);
-    LocalDateTime unit1LastStartedOn = unit1LastFinishedOn.minus(unit1LastDuration);
+    ZonedDateTime unit1LastFinishedOn = now.minus(Duration.ofDays(3));
+    ZonedDateTime unit1LastStartedOn = unit1LastFinishedOn.minus(unit1LastDuration);
+    Duration unit1LastAge = Duration.between(unit1LastFinishedOn, now);
+
+    ZonedDateTime unit1LastChecksumFinishedOn = now.minus(Duration.ofDays(5));
+    ZonedDateTime unit1LastChecksumStartedOn = unit1LastChecksumFinishedOn.minus(unit1LastDuration);
+    Duration unit1LastChecksumAge = Duration.between(unit1LastChecksumFinishedOn, now);
     createConsistencyCheck(
         entityManagerFactory,
         unit1,
         StorageUnitCheckType.LISTING_SIZE,
-        unit1LastStartedOn,
-        unit1LastFinishedOn,
+        unit1LastStartedOn.toLocalDateTime(),
+        unit1LastFinishedOn.toLocalDateTime(),
         StorageConsistencyCheckResult.OK);
 
     assertThat(getStorageCheckStatistics(entityManagerFactory))
@@ -1571,7 +1576,7 @@ class TestDatabaseOperations extends AbstractTest {
             i -> {
               assertThat(i.getStorageUnitId()).isEqualTo(1);
               assertThat(i.getStorageUnitType()).isEqualTo(StorageUnitType.TYPE_1);
-              assertThat(i.getLastOn()).isEqualTo(unit1LastFinishedOn);
+              assertThat(i.getLastOn()).isEqualTo(unit1LastFinishedOn.toLocalDateTime());
               assertThat(i.getLastDuration()).isEqualTo(unit1LastDuration);
               // bdd uses now -> we cannot have exact equality
               assertThat(i.getLastAge()).isCloseTo(unit1LastAge, Duration.ofSeconds(10));
@@ -1597,8 +1602,8 @@ class TestDatabaseOperations extends AbstractTest {
         entityManagerFactory,
         unit1,
         StorageUnitCheckType.LISTING_SIZE,
-        unit1LastStartedOn.minus(Duration.ofDays(1)),
-        unit1LastStartedOn.minus(Duration.ofDays(1)),
+        unit1LastStartedOn.toLocalDateTime().minus(Duration.ofDays(1)),
+        unit1LastStartedOn.toLocalDateTime().minus(Duration.ofDays(1)),
         StorageConsistencyCheckResult.OK);
 
     // no change as consistencyCheck is older
@@ -1608,7 +1613,7 @@ class TestDatabaseOperations extends AbstractTest {
             i -> {
               assertThat(i.getStorageUnitId()).isEqualTo(1);
               assertThat(i.getStorageUnitType()).isEqualTo(StorageUnitType.TYPE_1);
-              assertThat(i.getLastOn()).isEqualTo(unit1LastFinishedOn);
+              assertThat(i.getLastOn()).isEqualTo(unit1LastFinishedOn.toLocalDateTime());
               assertThat(i.getLastDuration()).isEqualTo(unit1LastDuration);
               // bdd uses now -> we cannot have exact equality
               assertThat(i.getLastAge()).isCloseTo(unit1LastAge, Duration.ofSeconds(10));
@@ -1634,8 +1639,8 @@ class TestDatabaseOperations extends AbstractTest {
         entityManagerFactory,
         unit1,
         StorageUnitCheckType.LISTING_SIZE_CHECKSUM,
-        unit1LastStartedOn.minus(Duration.ofDays(2)),
-        unit1LastFinishedOn.minus(Duration.ofDays(2)),
+        unit1LastChecksumStartedOn.toLocalDateTime(),
+        unit1LastChecksumFinishedOn.toLocalDateTime(),
         StorageConsistencyCheckResult.OK);
 
     // checksum result
@@ -1645,14 +1650,15 @@ class TestDatabaseOperations extends AbstractTest {
             i -> {
               assertThat(i.getStorageUnitId()).isEqualTo(1);
               assertThat(i.getStorageUnitType()).isEqualTo(StorageUnitType.TYPE_1);
-              assertThat(i.getLastOn()).isEqualTo(unit1LastFinishedOn);
+              assertThat(i.getLastOn()).isEqualTo(unit1LastFinishedOn.toLocalDateTime());
               assertThat(i.getLastDuration()).isEqualTo(unit1LastDuration);
               // bdd uses now -> we cannot have exact equality
               assertThat(i.getLastAge()).isCloseTo(unit1LastAge, Duration.ofSeconds(10));
-              assertThat(i.getLastChecksumOn()).isEqualTo(unit1LastFinishedOn.minusDays(2));
+              assertThat(i.getLastChecksumOn())
+                  .isEqualTo(unit1LastChecksumFinishedOn.toLocalDateTime());
               assertThat(i.getLastChecksumDuration()).isEqualTo(unit1LastDuration);
               assertThat(i.getLastChecksumAge())
-                  .isCloseTo(unit1LastAge.plusDays(2), Duration.ofSeconds(10));
+                  .isCloseTo(unit1LastChecksumAge, Duration.ofSeconds(10));
             },
             atIndex(0))
         .satisfies(
@@ -1672,8 +1678,8 @@ class TestDatabaseOperations extends AbstractTest {
         entityManagerFactory,
         unit2,
         StorageUnitCheckType.LISTING_SIZE_CHECKSUM,
-        unit1LastStartedOn,
-        unit1LastFinishedOn,
+        unit1LastStartedOn.toLocalDateTime(),
+        unit1LastFinishedOn.toLocalDateTime(),
         StorageConsistencyCheckResult.OK);
 
     // checksum on unit2 provides result both for last basic and checksum
@@ -1683,25 +1689,26 @@ class TestDatabaseOperations extends AbstractTest {
             i -> {
               assertThat(i.getStorageUnitId()).isEqualTo(1);
               assertThat(i.getStorageUnitType()).isEqualTo(StorageUnitType.TYPE_1);
-              assertThat(i.getLastOn()).isEqualTo(unit1LastFinishedOn);
+              assertThat(i.getLastOn()).isEqualTo(unit1LastFinishedOn.toLocalDateTime());
               assertThat(i.getLastDuration()).isEqualTo(unit1LastDuration);
               // bdd uses now -> we cannot have exact equality
               assertThat(i.getLastAge()).isCloseTo(unit1LastAge, Duration.ofSeconds(10));
-              assertThat(i.getLastChecksumOn()).isEqualTo(unit1LastFinishedOn.minusDays(2));
+              assertThat(i.getLastChecksumOn())
+                  .isEqualTo(unit1LastChecksumFinishedOn.toLocalDateTime());
               assertThat(i.getLastChecksumDuration()).isEqualTo(unit1LastDuration);
               assertThat(i.getLastChecksumAge())
-                  .isCloseTo(unit1LastAge.plusDays(2), Duration.ofSeconds(10));
+                  .isCloseTo(unit1LastChecksumAge, Duration.ofSeconds(10));
             },
             atIndex(0))
         .satisfies(
             i -> {
               assertThat(i.getStorageUnitId()).isEqualTo(2);
               assertThat(i.getStorageUnitType()).isEqualTo(StorageUnitType.TYPE_2);
-              assertThat(i.getLastOn()).isEqualTo(unit1LastFinishedOn);
+              assertThat(i.getLastOn()).isEqualTo(unit1LastFinishedOn.toLocalDateTime());
               assertThat(i.getLastDuration()).isEqualTo(unit1LastDuration);
               // bdd uses now -> we cannot have exact equality
               assertThat(i.getLastAge()).isCloseTo(unit1LastAge, Duration.ofSeconds(10));
-              assertThat(i.getLastChecksumOn()).isEqualTo(unit1LastFinishedOn);
+              assertThat(i.getLastChecksumOn()).isEqualTo(unit1LastFinishedOn.toLocalDateTime());
               assertThat(i.getLastChecksumDuration()).isEqualTo(unit1LastDuration);
               assertThat(i.getLastChecksumAge()).isCloseTo(unit1LastAge, Duration.ofSeconds(10));
             },
