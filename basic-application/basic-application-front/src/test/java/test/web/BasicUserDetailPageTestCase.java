@@ -1,5 +1,7 @@
 package test.web;
 
+import static basicapp.back.security.model.BasicApplicationPermissionConstants.GLOBAL_USER_READ;
+import static basicapp.back.security.model.BasicApplicationPermissionConstants.GLOBAL_USER_WRITE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -21,7 +23,10 @@ class BasicUserDetailPageTestCase extends AbstractBasicApplicationWebappTestCase
 
   @Test
   void initPage() throws ServiceException, SecurityServiceException {
+    addPermissions(administrator, GLOBAL_USER_READ);
+
     authenticateUser(administrator);
+
     String url =
         BasicUserDetailPage.MAPPER.ignoreParameter2().map(GenericEntityModel.of(basicUser)).url();
     tester.executeUrl(url);
@@ -31,6 +36,8 @@ class BasicUserDetailPageTestCase extends AbstractBasicApplicationWebappTestCase
 
   @Test
   void breadcrumb() throws ServiceException, SecurityServiceException {
+    addPermissions(administrator, GLOBAL_USER_READ);
+
     authenticateUser(administrator);
 
     String url =
@@ -64,6 +71,8 @@ class BasicUserDetailPageTestCase extends AbstractBasicApplicationWebappTestCase
 
   @Test
   void desactivateUser() throws ServiceException, SecurityServiceException {
+    addPermissions(administrator, GLOBAL_USER_READ, GLOBAL_USER_WRITE);
+
     authenticateUser(administrator);
 
     String url =

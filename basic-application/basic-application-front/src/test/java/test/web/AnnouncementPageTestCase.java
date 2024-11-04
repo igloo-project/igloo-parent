@@ -1,5 +1,6 @@
 package test.web;
 
+import static basicapp.back.security.model.BasicApplicationPermissionConstants.GLOBAL_ANNOUNCEMENT_READ;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import basicapp.front.announcement.page.AnnouncementListPage;
@@ -14,6 +15,8 @@ class AnnouncementPageTestCase extends AbstractBasicApplicationWebappTestCase {
 
   @Test
   void initPage() throws ServiceException, SecurityServiceException {
+    addPermissions(administrator, GLOBAL_ANNOUNCEMENT_READ);
+
     authenticateUser(administrator);
 
     tester.startPage(AnnouncementListPage.class);

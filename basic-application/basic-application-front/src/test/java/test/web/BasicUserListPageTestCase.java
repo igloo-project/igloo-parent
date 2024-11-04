@@ -1,23 +1,19 @@
 package test.web;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static basicapp.back.security.model.BasicApplicationPermissionConstants.GLOBAL_USER_READ;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import basicapp.back.business.user.model.User;
 import basicapp.back.business.user.search.UserSort;
-import basicapp.front.user.form.UserAjaxDropDownSingleChoice;
 import basicapp.front.user.page.BasicUserDetailPage;
 import basicapp.front.user.page.BasicUserListPage;
 import basicapp.front.user.page.TechnicalUserListPage;
 import igloo.wicket.component.CountLabel;
-import java.util.Objects;
 import org.apache.wicket.util.tester.FormTester;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.wicket.more.markup.repeater.sequence.SequenceGridView;
-import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel;
 import org.iglooproject.wicket.more.markup.repeater.table.column.CoreLabelLinkColumnPanel;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import test.web.config.spring.SpringBootTestBasicApplicationWebapp;
 
@@ -26,6 +22,8 @@ class BasicUserListPageTestCase extends AbstractBasicApplicationWebappTestCase {
 
   @Test
   void initPage() throws ServiceException, SecurityServiceException {
+    addPermissions(administrator, GLOBAL_USER_READ);
+
     authenticateUser(administrator);
 
     tester.startPage(BasicUserListPage.class);
@@ -34,6 +32,8 @@ class BasicUserListPageTestCase extends AbstractBasicApplicationWebappTestCase {
 
   @Test
   void dataTableBuilderCountZero() throws ServiceException, SecurityServiceException {
+    addPermissions(administrator, GLOBAL_USER_READ);
+
     authenticateUser(administrator);
 
     tester.startPage(TechnicalUserListPage.class);
@@ -51,6 +51,8 @@ class BasicUserListPageTestCase extends AbstractBasicApplicationWebappTestCase {
 
   @Test
   void dataTableBuilderCountOne() throws ServiceException, SecurityServiceException {
+    addPermissions(administrator, GLOBAL_USER_READ);
+
     authenticateUser(administrator);
 
     tester.startPage(TechnicalUserListPage.class);
@@ -64,6 +66,8 @@ class BasicUserListPageTestCase extends AbstractBasicApplicationWebappTestCase {
 
   @Test
   void dataTableBuilderCountMultiple() throws ServiceException, SecurityServiceException {
+    addPermissions(administrator, GLOBAL_USER_READ);
+
     authenticateUser(administrator);
 
     tester.startPage(BasicUserListPage.class);
@@ -76,38 +80,9 @@ class BasicUserListPageTestCase extends AbstractBasicApplicationWebappTestCase {
   }
 
   @Test
-  @Disabled("n'est plus utile car plus de usergroup, a modifier pour checker le quicksearch ?")
-  public void dataTableBuilderFiltersDropDown() throws ServiceException, SecurityServiceException {
-    authenticateUser(administrator);
-
-    tester.startPage(BasicUserListPage.class);
-    tester.assertRenderedPage(BasicUserListPage.class);
-
-    tester.assertVisible("results", DecoratedCoreDataTablePanel.class);
-    @SuppressWarnings("unchecked")
-    DecoratedCoreDataTablePanel<User, ?> results =
-        (DecoratedCoreDataTablePanel<User, ?>) tester.getComponentFromLastRenderedPage("results");
-    assertThat(results.getItemCount()).isEqualTo(2);
-
-    FormTester form = tester.newFormTester("search:form");
-
-    // TODO voir comment on peut ajouter une valeur dans un AjaxDropDown et la selectionnée
-    UserAjaxDropDownSingleChoice userQuickSearch =
-        (UserAjaxDropDownSingleChoice)
-            form.getForm()
-                .streamChildren()
-                .filter(children -> Objects.equals(children.getId(), "quickAccess"))
-                .findFirst()
-                .orElse(null);
-    form.setValue(userQuickSearch, "basicUser2");
-
-    form.submit();
-
-    assertThat(results.getItemCount()).isEqualTo(1);
-  }
-
-  @Test
   void accessToDetail() throws ServiceException, SecurityServiceException {
+    addPermissions(administrator, GLOBAL_USER_READ);
+
     authenticateUser(administrator);
 
     tester.startPage(BasicUserListPage.class);
@@ -136,6 +111,8 @@ class BasicUserListPageTestCase extends AbstractBasicApplicationWebappTestCase {
 
   @Test
   void excelButtonTootilp() throws ServiceException, SecurityServiceException {
+    addPermissions(administrator, GLOBAL_USER_READ);
+
     authenticateUser(administrator);
 
     tester.startPage(BasicUserListPage.class);

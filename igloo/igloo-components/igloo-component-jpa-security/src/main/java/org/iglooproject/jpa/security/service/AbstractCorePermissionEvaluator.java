@@ -108,8 +108,7 @@ public abstract class AbstractCorePermissionEvaluator<T extends GenericUser<T>>
   @Override
   public boolean isSuperUser(Authentication authentication) {
     if (authentication != null) {
-      return securityService.hasSystemRole(authentication)
-          || securityService.hasAdminRole(authentication);
+      return securityService.hasSystemRole(authentication);
     }
     return false;
   }
