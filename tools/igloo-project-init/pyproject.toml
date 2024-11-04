@@ -21,7 +21,8 @@ classifiers = [
 ]
 dependencies = [
   "click",
-  "colorlog"
+  "colorlog",
+  "termcolor"
 ]
 
 [project.scripts]
