@@ -1,6 +1,7 @@
 package basicapp.back.business.announcement.service.business;
 
 import basicapp.back.business.announcement.model.Announcement;
+import java.util.Date;
 import java.util.List;
 import org.iglooproject.jpa.business.generic.service.IGenericEntityService;
 import org.iglooproject.jpa.exception.SecurityServiceException;
@@ -19,4 +20,6 @@ public interface IAnnouncementService extends IGenericEntityService<Long, Announ
 
   void deleteAnnouncement(Announcement announcement)
       throws ServiceException, SecurityServiceException;
+
+  void test(Date date1, Date date2) throws ServiceException, SecurityServiceException;
 }

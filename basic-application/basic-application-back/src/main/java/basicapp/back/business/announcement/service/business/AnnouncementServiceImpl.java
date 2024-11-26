@@ -8,6 +8,7 @@ import com.google.common.annotations.VisibleForTesting;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -102,6 +103,12 @@ public class AnnouncementServiceImpl extends GenericEntityServiceImpl<Long, Anno
       throws ServiceException, SecurityServiceException {
     Objects.requireNonNull(announcement);
     delete(announcement);
+  }
+
+  @Override
+  public void test(Date date1, Date date2) throws ServiceException, SecurityServiceException {
+    Objects.requireNonNull(date1);
+    Objects.requireNonNull(date2);
   }
 
   @VisibleForTesting

@@ -1,74 +1,76 @@
 package basicapp.front.navigation.page;
 
+import basicapp.back.business.announcement.service.business.IAnnouncementService;
 import basicapp.front.common.template.MainTemplate;
 import basicapp.front.profile.page.ProfilePage;
 import basicapp.front.referencedata.page.ReferenceDataPage;
 import basicapp.front.user.page.BasicUserListPage;
-import igloo.bootstrap.jsmodel.JsHelpers;
-import igloo.vuedatepicker.JsDatePicker;
-import igloo.vuedatepicker.VueBehavior;
+import igloo.vuedatepicker.DatePickerVueComponent;
 import igloo.wicket.condition.Condition;
+import igloo.wicket.feedback.FeedbackUtils;
 import igloo.wicket.model.Detachables;
 import java.util.Date;
+import org.apache.wicket.RestartResponseException;
+import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.iglooproject.wicket.more.common.behavior.UpdateOnChangeAjaxEventBehavior;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
-import org.iglooproject.wicket.more.markup.html.form.LabelPlaceholderBehavior;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
 
 public class HomePage extends MainTemplate {
 
   private static final long serialVersionUID = -6767518941118385548L;
 
+  @SpringBean private IAnnouncementService announcementService;
+
   public static final IPageLinkDescriptor linkDescriptor() {
     return LinkDescriptorBuilder.start().page(HomePage.class);
   }
 
   private final IModel<Date> dateModel = Model.of(new Date());
+  private final IModel<Date> dateModel2 = Model.of(new Date());
 
   public HomePage(PageParameters parameters) {
     super(parameters);
 
-    Form form = new Form<>("form");
-    JsDatePicker jsDatePicker =
-        JsDatePicker.builder()
-            .autoApply(JsHelpers.of(true))
-            .multiCalendars(JsHelpers.of(true))
-            .dateModel(JsHelpers.of(dateModel.getObject().getTime()))
-            .required(JsHelpers.of(true))
-            //            .onUpdateModel()
-            .build();
+    Form<Date> form = new Form<>("form");
 
     addBreadCrumbElement(
         new BreadCrumbElement(new ResourceModel("navigation.home"), HomePage.linkDescriptor()));
-    TextField<Date> labelDate = new TextField<>("labelDate", dateModel);
+    //    TextField<Date> labelDate = new TextField<>("labelDate", dateModel);
     add(
         form.add(
-            labelDate
-                .add(new LabelPlaceholderBehavior())
-                .add(new UpdateOnChangeAjaxEventBehavior())
-                .setOutputMarkupId(true),
-            new WebMarkupContainer("vue-datepicker-container")
-                .add(
-                    new VueBehavior(jsDatePicker, dateModel) {
-                      private static final long serialVersionUID = 1L;
+            //            labelDate
+            //                .add(new LabelPlaceholderBehavior())
+            //                .add(new UpdateOnChangeAjaxEventBehavior())
+            //                .setOutputMarkupId(true),
+            new DatePickerVueComponent("datePicker1", dateModel).setRequired(true),
+            new DatePickerVueComponent("datePicker2", dateModel2).setRequired(true),
+            new AjaxButton("save") {
+              private static final long serialVersionUID = 1L;
 
-                      @Override
-                      protected void respond(AjaxRequestTarget target) {
-                        super.respond(target);
-                        labelDate.clearInput();
-                        target.add(labelDate);
-                      }
-                    })));
+              @Override
+              protected void onSubmit(AjaxRequestTarget target) {
+                try {
+                  announcementService.test(dateModel.getObject(), dateModel2.getObject());
+                  Session.get().success(getString("common.success"));
+                } catch (RestartResponseException e) { // NOSONAR
+                  throw e;
+                } catch (Exception e) {
+                  Session.get().error(getString("common.error.unexpected"));
+                }
+                FeedbackUtils.refreshFeedback(target, getPage());
+              }
+            }));
+
     add(
         BasicUserListPage.linkDescriptor().link("users").hideIfInvalid(),
         ReferenceDataPage.linkDescriptor().link("referenceData").hideIfInvalid(),

@@ -61,6 +61,18 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>org.webjars.npm</groupId>
+			<artifactId>vuepic__vue-datepicker</artifactId>
+			<version>9.0.3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.webjars.npm</groupId>
+			<artifactId>vue</artifactId>
+			<version>3.5.12</version>
+		</dependency>
 		
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>

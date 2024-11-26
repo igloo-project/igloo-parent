@@ -17,9 +17,17 @@
 			<div class="content-body">
 				<div class="row g-4">
 					<form wicket:id="form">
-						<vue-date-picker wicket:id="vue-datepicker-container"></vue-date-picker>
-						<input wicket:id="labelDate" />
+						<vue-date-picker wicket:id="datePicker1"></vue-date-picker>
+						<vue-date-picker wicket:id="datePicker2"></vue-date-picker>
+<!--						<input wicket:id="labelDate" />-->
+						<div class="col-auto">
+							<button wicket:id="save" class="btn btn-success btn-lg" type="button">
+								<span class="fa fa-fw fa-save" />
+								<wicket:message key="common.action.validate" />
+							</button>
+						</div>
 					</form>
+
 					<div wicket:enclosure-component="users" class="col-md-6 col-2xl-4">
 						<div class="card h-100">
 							<div class="card-header card-img-top py-3 flex-grow-0 bg-alert-brand">
