@@ -7,7 +7,7 @@ import igloo.bootstrap.js.statement.IJsStatement;
 import igloo.bootstrap.js.statement.IJsString;
 import igloo.bootstrap.js.statement.JsBoolean;
 import igloo.bootstrap.js.statement.JsDate;
-import igloo.bootstrap.js.statement.JsDateRange;
+import igloo.bootstrap.js.statement.JsDateList;
 import igloo.bootstrap.js.statement.JsFunction;
 import igloo.bootstrap.js.statement.JsLiteral;
 import igloo.bootstrap.js.statement.JsMapping;
@@ -26,7 +26,6 @@ import org.apache.wicket.Component;
 import org.apache.wicket.model.IComponentAssignedModel;
 import org.apache.wicket.model.IDetachable;
 import org.apache.wicket.model.IModel;
-import org.javatuples.Pair;
 
 public class JsHelpers {
 
@@ -48,8 +47,8 @@ public class JsHelpers {
     return JsDate.of(value);
   }
 
-  public static IJsStatement of(Pair<Date, Date> value) {
-    return JsDateRange.of(value);
+  public static IJsStatement of(List<Date> value) {
+    return JsDateList.of(value);
   }
 
   public static IJsLiteral ofLiteral(String value) {

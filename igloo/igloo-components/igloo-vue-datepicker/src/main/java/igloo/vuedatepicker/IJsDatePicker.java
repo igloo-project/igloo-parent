@@ -1,6 +1,6 @@
 package igloo.vuedatepicker;
 
-import igloo.bootstrap.js.statement.IJsDateRange;
+import igloo.bootstrap.js.statement.IJsDateList;
 import igloo.bootstrap.js.statement.IJsObject;
 import igloo.bootstrap.js.statement.IJsStatement;
 import igloo.bootstrap.js.statement.JsBoolean;
@@ -127,7 +127,7 @@ public interface IJsDatePicker extends IJsObject, Serializable {
             Map.entry(
                 ":range",
                 () ->
-                    dateModel() != null && dateModel() instanceof IJsDateRange && range() == null
+                    dateModel() != null && dateModel() instanceof IJsDateList && range() == null
                         ? JsBoolean.of(true)
                         : range()),
             Map.entry(":range", this::range),
