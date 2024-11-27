@@ -1,19 +1,19 @@
-const vModels = new Map();
-const functions = new Map();
+export const vModels = new Map();
+export const functions = new Map();
 let app;
 
-function addVueModel(varName, model) {
+export function addVueModel(varName, model) {
     vModels.set(varName, Vue.ref(model));
 }
 
-function addVueMethode(varName, componentId, methodesImpl) {
+export function addVueMethode(varName, componentId, methodesImpl) {
     functions.set(varName, value => {
         document.getElementById(componentId)?.dispatchEvent(new Event('change'));
         methodesImpl(value)
     });
 }
 
-function mountVueApp() {
+export function mountVueApp() {
     if (!app) {
         app = Vue.createApp({
             components: { VueDatePicker },

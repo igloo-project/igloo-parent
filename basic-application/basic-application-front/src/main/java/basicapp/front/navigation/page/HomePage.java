@@ -10,6 +10,8 @@ import igloo.wicket.condition.Condition;
 import igloo.wicket.feedback.FeedbackUtils;
 import igloo.wicket.model.Detachables;
 import java.util.Date;
+import java.util.Map;
+import org.apache.wicket.Component;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -21,6 +23,8 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.iglooproject.wicket.more.ajax.SerializableListener;
+import org.iglooproject.wicket.more.common.behavior.UpdateOnChangeAjaxEventBehavior;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
@@ -46,14 +50,35 @@ public class HomePage extends MainTemplate {
     addBreadCrumbElement(
         new BreadCrumbElement(new ResourceModel("navigation.home"), HomePage.linkDescriptor()));
     //    TextField<Date> labelDate = new TextField<>("labelDate", dateModel);
+    /*    DatePickerRangeVueComponent datePicker2 =
+    new DatePickerRangeVueComponent("datePicker2", dateModel, dateModel2);*/
+    DatePickerVueComponent datePicker2 = new DatePickerVueComponent("datePicker2", dateModel2);
     add(
         form.add(
             //            labelDate
             //                .add(new LabelPlaceholderBehavior())
             //                .add(new UpdateOnChangeAjaxEventBehavior())
             //                .setOutputMarkupId(true),
-            new DatePickerVueComponent("datePicker1", dateModel).setRequired(true),
-            new DatePickerVueComponent("datePicker2", dateModel2).setRequired(true),
+            new DatePickerVueComponent("datePicker1", dateModel)
+                .setRequired(true)
+                .setOutputMarkupId(true)
+                .add(
+                    new UpdateOnChangeAjaxEventBehavior()
+                        .onChange(
+                            new SerializableListener() {
+                              private static final long serialVersionUID = 1L;
+
+                              @Override
+                              public void onBeforeRespond(
+                                  Map<String, Component> map, AjaxRequestTarget target) {
+                                dateModel2.setObject(new Date());
+                                target.add(datePicker2);
+                              }
+                            })),
+            datePicker2
+                .setRequired(true)
+                .setOutputMarkupId(true)
+                .add(new UpdateOnChangeAjaxEventBehavior()),
             new AjaxButton("save") {
               private static final long serialVersionUID = 1L;
 

@@ -13,18 +13,6 @@ import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.cycle.RequestCycle;
 
-// TODO ajouter le behaviour dans un TextField pour tester ou dans un formCOmponent
-// Comment avoir une seule application vue
-// Wicket à un ressouce settings avec un comparator d'headerItem -> PriorityFirstComparator ->
-// PriorityHeaderItem
-// Le nom du model doit être unique, donc utilser la valeur du markup ID ou le name du formComponent
-// pour le nom de la variable
-// Faire 3 JavascriptRessourceReference -> 1 style (WebjarsCssResourceReference), 1 init App Vue, 1
-// datePicker
-// importer le webjar de vue et de vue-datepicker et ajouter les lien vers le js
-// Ajouter un RessourceREfernce pour l'init de l'app
-// VOir photo tableau pour les RR
-
 public class VueBehaviorAjax extends AbstractDefaultAjaxBehavior {
 
   private static final long serialVersionUID = 1L;

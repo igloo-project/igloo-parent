@@ -14,6 +14,7 @@
 
 	<properties>
 		<igloo.processors>${igloo.processor.immutable}</igloo.processors>
+		<!--<frontend.npm.arguments>run js</frontend.npm.arguments>-->
 	</properties>
 
 	<dependencies>
@@ -97,12 +98,37 @@
 			<resource>
 				<directory>src/main/resources</directory>
 			</resource>
+<!--			<resource>
+				<directory>${project.basedir}/src/main/generated-js/</directory>
+				<targetPath>META-INF/resources/webjars/${project.artifactId}/${project.version}</targetPath>
+				<excludes>
+					<exclude>.gitkeep</exclude>
+				</excludes>
+			</resource>
+			<resource>
+				<directory>src/main/webjars</directory>
+				<targetPath>META-INF/resources/webjars/${project.artifactId}/${project.version}</targetPath>
+			</resource>-->
 		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.bsc.maven</groupId>
 				<artifactId>maven-processor-plugin</artifactId>
 			</plugin>
+<!--			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-clean-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>clean-node-modules</id>
+						<phase>clean</phase>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>com.github.eirslett</groupId>
+				<artifactId>frontend-maven-plugin</artifactId>
+			</plugin>-->
 		</plugins>
 	</build>
 
