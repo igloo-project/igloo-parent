@@ -14,7 +14,10 @@
 
 	<properties>
 		<igloo.processors>${igloo.processor.immutable}</igloo.processors>
-		<!--<frontend.npm.arguments>run js</frontend.npm.arguments>-->
+		<frontend.npm.arguments>run js</frontend.npm.arguments>
+		<node.version>v20.17.0</node.version>
+		<vue.version>3.5.12</vue.version>
+		<vue-datepicker.version>9.0.3</vue-datepicker.version>
 	</properties>
 
 	<dependencies>
@@ -66,13 +69,13 @@
 		<dependency>
 			<groupId>org.webjars.npm</groupId>
 			<artifactId>vuepic__vue-datepicker</artifactId>
-			<version>9.0.3</version>
+			<version>${vue-datepicker.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.webjars.npm</groupId>
 			<artifactId>vue</artifactId>
-			<version>3.5.12</version>
+			<version>${vue.version}</version>
 		</dependency>
 		
 		<dependency>
@@ -98,7 +101,7 @@
 			<resource>
 				<directory>src/main/resources</directory>
 			</resource>
-<!--			<resource>
+			<resource>
 				<directory>${project.basedir}/src/main/generated-js/</directory>
 				<targetPath>META-INF/resources/webjars/${project.artifactId}/${project.version}</targetPath>
 				<excludes>
@@ -108,14 +111,14 @@
 			<resource>
 				<directory>src/main/webjars</directory>
 				<targetPath>META-INF/resources/webjars/${project.artifactId}/${project.version}</targetPath>
-			</resource>-->
+			</resource>
 		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.bsc.maven</groupId>
 				<artifactId>maven-processor-plugin</artifactId>
 			</plugin>
-<!--			<plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-clean-plugin</artifactId>
 				<executions>
@@ -128,7 +131,10 @@
 			<plugin>
 				<groupId>com.github.eirslett</groupId>
 				<artifactId>frontend-maven-plugin</artifactId>
-			</plugin>-->
+				<configuration>
+					<nodeVersion>${node.version}</nodeVersion>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 

@@ -1,4 +1,4 @@
-package igloo.vuedatepicker;
+package igloo.vuedatepicker.behavior;
 
 import igloo.wicket.model.Detachables;
 import java.time.Instant;

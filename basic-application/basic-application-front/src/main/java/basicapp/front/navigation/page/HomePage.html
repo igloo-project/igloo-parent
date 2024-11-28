@@ -6,24 +6,34 @@
 		<div class="content-header-container">
 			<div class="content-header">
 				<h1 class="content-header-title">
-					<wicket:message key="home.title" />
+					<wicket:message key="home.title"/>
 				</h1>
 			</div>
 		</div>
 	</div>
-	
+
 	<div class="content-body-section">
 		<div class="content-body-container">
 			<div class="content-body">
 				<div class="row g-4">
 					<form wicket:id="form">
-						<vue-date-picker wicket:id="datePicker1"></vue-date-picker>
-						<vue-date-picker wicket:id="datePicker2"></vue-date-picker>
-<!--						<input wicket:id="labelDate" />-->
+						<div wicket:id="datePickerContainer1">
+							<vue-date-picker wicket:id="datePicker1"></vue-date-picker>
+						</div>
+						<div wicket:id="datePickerContainer2">
+							<vue-date-picker wicket:id="datePicker2"></vue-date-picker>
+						</div>
+						<div wicket:id="datePickerContainer3">
+							<vue-date-picker wicket:id="dateTimePicker"></vue-date-picker>
+						</div>
+						<div wicket:id="datePickerContainer4">
+							<vue-date-picker wicket:id="dateRange" locale="fr"></vue-date-picker>
+						</div>
+						<!--						<input wicket:id="labelDate" />-->
 						<div class="col-auto">
 							<button wicket:id="save" class="btn btn-success btn-lg" type="button">
-								<span class="fa fa-fw fa-save" />
-								<wicket:message key="common.action.validate" />
+								<span class="fa fa-fw fa-save"/>
+								<wicket:message key="common.action.validate"/>
 							</button>
 						</div>
 					</form>
@@ -37,22 +47,22 @@
 									</div>
 									<div class="col-sm">
 										<div class="card-header-title">
-											<wicket:message key="home.navigation.users.title" />
+											<wicket:message key="home.navigation.users.title"/>
 										</div>
 									</div>
 								</div>
 							</div>
 							<div class="card-body d-flex flex-column">
 								<div>
-									<wicket:message key="home.navigation.users.content" />
+									<wicket:message key="home.navigation.users.content"/>
 								</div>
 								<div class="mt-auto">
 									<div class="card-action card-action-bottom">
 										<div class="row row-action justify-content-end">
 											<div class="col-auto">
 												<a wicket:id="users" class="btn btn-brand stretched-link">
-													<span class="fa fa-fw fa-users" />
-													<wicket:message key="home.navigation.users.link" />
+													<span class="fa fa-fw fa-users"/>
+													<wicket:message key="home.navigation.users.link"/>
 												</a>
 											</div>
 										</div>
@@ -70,22 +80,22 @@
 									</div>
 									<div class="col-sm">
 										<div class="card-header-title">
-											<wicket:message key="home.navigation.referenceData.title" />
+											<wicket:message key="home.navigation.referenceData.title"/>
 										</div>
 									</div>
 								</div>
 							</div>
 							<div class="card-body d-flex flex-column">
 								<div>
-									<wicket:message key="home.navigation.referenceData.content" />
+									<wicket:message key="home.navigation.referenceData.content"/>
 								</div>
 								<div class="mt-auto">
 									<div class="card-action card-action-bottom">
 										<div class="row row-action justify-content-end">
 											<div class="col-auto">
 												<a wicket:id="referenceData" class="btn btn-brand stretched-link">
-													<span class="fa fa-fw fa-list" />
-													<wicket:message key="home.navigation.referenceData.link" />
+													<span class="fa fa-fw fa-list"/>
+													<wicket:message key="home.navigation.referenceData.link"/>
 												</a>
 											</div>
 										</div>
@@ -103,22 +113,22 @@
 									</div>
 									<div class="col-sm">
 										<div class="card-header-title">
-											<wicket:message key="home.navigation.profile.title" />
+											<wicket:message key="home.navigation.profile.title"/>
 										</div>
 									</div>
 								</div>
 							</div>
 							<div class="card-body d-flex flex-column">
 								<div>
-									<wicket:message key="home.navigation.profile.content" />
+									<wicket:message key="home.navigation.profile.content"/>
 								</div>
 								<div class="mt-auto">
 									<div class="card-action card-action-bottom">
 										<div class="row row-action justify-content-end">
 											<div class="col-auto">
 												<a wicket:id="profile" class="btn btn-secondary stretched-link">
-													<span class="fa fa-fw fa-user-circle" />
-													<wicket:message key="home.navigation.profile.link" />
+													<span class="fa fa-fw fa-user-circle"/>
+													<wicket:message key="home.navigation.profile.link"/>
 												</a>
 											</div>
 										</div>

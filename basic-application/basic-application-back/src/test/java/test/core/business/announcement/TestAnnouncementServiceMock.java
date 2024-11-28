@@ -9,12 +9,9 @@ import basicapp.back.business.user.service.business.IUserService;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
-import org.json.JSONArray;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,17 +27,6 @@ public class TestAnnouncementServiceMock {
   @InjectMocks @Spy private AnnouncementServiceImpl announcementService;
   @Mock private IUserService userService;
   @Mock private IAnnouncementDao announcementDao;
-
-  @Test
-  void gestg() {
-    List<String> test = new ArrayList<>();
-    test.add("aa");
-    test.add("bb");
-    test.add("cc");
-    JSONArray array = new JSONArray(test);
-    array.put(test);
-    Assertions.assertThat(array).isNotNull();
-  }
 
   @Nested
   class TestSaveAnnouncement {

@@ -1,9 +1,10 @@
-package igloo.vuedatepicker;
+package igloo.vuedatepicker.behavior;
 
 import igloo.bootstrap.js.statement.IJsDateList;
 import igloo.bootstrap.js.statement.IJsObject;
 import igloo.bootstrap.js.statement.IJsStatement;
 import igloo.bootstrap.js.statement.JsBoolean;
+import igloo.bootstrap.js.statement.JsString;
 import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -112,6 +113,15 @@ public interface IJsDatePicker extends IJsObject, Serializable {
   @Nullable
   IJsStatement onUpdateModel();
 
+  @Nullable
+  IJsStatement locale();
+
+  @Nullable
+  IJsStatement selectText();
+
+  @Nullable
+  IJsStatement cancelText();
+
   @Override
   @Value.Derived
   default Map<String, IJsStatement> values() {
@@ -155,7 +165,10 @@ public interface IJsDatePicker extends IJsObject, Serializable {
             Map.entry(":disable-year-select", this::disableYearSelect),
             Map.entry(":enable-time-picker", this::enableTimePicker),
             Map.entry(":loading", this::loading),
-            Map.entry("@update:model-value", this::onUpdateModel))
+            Map.entry("@update:model-value", this::onUpdateModel),
+            Map.entry(":locale", () -> locale() == null ? JsString.of("fr") : locale()),
+            Map.entry(":select-text", this::selectText),
+            Map.entry(":cancel-text ", this::cancelText))
         .map(e -> Pair.of(e.getKey(), e.getValue().get()))
         .filter(e -> e.getRight() != null)
         .forEachOrdered(e -> result.put(e.getLeft(), e.getRight()));
