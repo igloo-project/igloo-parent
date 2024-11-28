@@ -1,4 +1,4 @@
-package igloo.vuedatepicker;
+package igloo.vuedatepicker.reference;
 
 import de.agilecoders.wicket.webjars.request.resource.WebjarsJavaScriptResourceReference;
 

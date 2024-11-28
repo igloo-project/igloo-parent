@@ -1,4 +1,4 @@
-package igloo.vuedatepicker;
+package igloo.vuedatepicker.reference;
 
 import de.agilecoders.wicket.webjars.request.resource.WebjarsJavaScriptResourceReference;
 
@@ -13,7 +13,7 @@ public class VueJavaScriptResourceReference extends WebjarsJavaScriptResourceRef
     return INSTANCE;
   }
 
-  // TODO RFO .prod ?
+  // TODO RFO .prod ? (permet de ne pas pouvoir analyser le contenu de vue
   public VueJavaScriptResourceReference() {
     super("vue/current/dist/vue.global.prod.js");
   }

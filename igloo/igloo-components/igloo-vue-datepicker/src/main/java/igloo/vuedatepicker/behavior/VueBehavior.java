@@ -1,5 +1,9 @@
-package igloo.vuedatepicker;
+package igloo.vuedatepicker.behavior;
 
+import igloo.vuedatepicker.reference.VueDatePickerCssResourceReference;
+import igloo.vuedatepicker.reference.VueDatePickerJavaScriptResourceReference;
+import igloo.vuedatepicker.reference.VueInitAppResourceReference;
+import igloo.vuedatepicker.reference.VueJavaScriptResourceReference;
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.ComponentTag;
@@ -9,6 +13,11 @@ import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.head.PriorityHeaderItem;
 
+// TODO RFO :
+//  - DatePicker en erreur disparait
+//  - Recharger un composant en ajax... disparait
+//  - faire un bundle js
+//  - gerer date min / date max simplement
 public class VueBehavior extends Behavior {
 
   private static final long serialVersionUID = 1L;
@@ -22,12 +31,20 @@ public class VueBehavior extends Behavior {
   @Override
   public void onComponentTag(Component component, ComponentTag tag) {
     super.onComponentTag(component, tag);
-    tag.put("v-model", component.getMarkupId());
-    tag.put("@update:model-value", component.getMarkupId() + "_onChange");
+    tag.put("v-model", getVmodelVarName(component));
+    tag.put("@update:model-value", getVueOnChangeVarName(component));
 
     jsDatePicker.values().entrySet().stream()
         .filter(e -> !(e.getKey().equals("v-model") || e.getKey().equals("@update:model-value")))
         .forEach(e -> tag.put(e.getKey(), e.getValue().render()));
+  }
+
+  public String getVmodelVarName(Component component) {
+    return component.getMarkupId();
+  }
+
+  public String getVueOnChangeVarName(Component component) {
+    return component.getMarkupId() + "_onChange";
   }
 
   @Override
@@ -52,21 +69,23 @@ public class VueBehavior extends Behavior {
     response.render(
         new PriorityHeaderItem(
             OnDomReadyHeaderItem.forScript(
-                "addVueModel('%s', %s)"
-                    .formatted(component.getMarkupId(), jsDatePicker.dateModel().render()))));
+                "vueInit.addVueModel('%s', %s)"
+                    .formatted(getVmodelVarName(component), jsDatePicker.dateModel().render()))));
 
     response.render(
         new PriorityHeaderItem(
             OnDomReadyHeaderItem.forScript(
-                "addVueMethode('%s', '%s', %s)"
+                "vueInit.addVueOnChangeMethode('%s', '%s', %s)"
                     .formatted(
-                        component.getMarkupId() + "_onChange",
+                        getVueOnChangeVarName(component),
                         component.getMarkupId(),
                         jsDatePicker.onUpdateModel() != null
                             ? jsDatePicker.onUpdateModel().render()
                             : null))));
 
-    response.render(OnDomReadyHeaderItem.forScript("mountVueApp()"));
+    response.render(
+        OnDomReadyHeaderItem.forScript(
+            "vueInit.mountVueAppWithId('%s')".formatted(component.getParent().getMarkupId())));
   }
 
   public IJsDatePicker getJsDatePicker() {

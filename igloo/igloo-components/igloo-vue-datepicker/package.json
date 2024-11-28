@@ -6,7 +6,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "js": "npm-run-all js-compile",
     "js-compile": "npm-run-all js-compile-*",
-    "js-compile-keyboardjs": "rollup --environment SYMBOL:keyboard --environment FILE:vueInit --config rollup.config.mjs --sourcemap"
+    "js-compile-keyboardjs": "rollup --environment SYMBOL:vueInit --environment FILE:vueInit --config rollup.config.mjs --sourcemap"
   },
   "author": "",
   "license": "ISC",

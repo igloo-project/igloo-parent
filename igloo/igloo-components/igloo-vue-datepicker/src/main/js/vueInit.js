@@ -1,15 +1,19 @@
 export const vModels = new Map();
 export const functions = new Map();
-let app;
+export let app;
 
 export function addVueModel(varName, model) {
     vModels.set(varName, Vue.ref(model));
 }
 
-export function addVueMethode(varName, componentId, methodesImpl) {
+export function addVueOnChangeMethode(varName, componentId, methodesImpl) {
     functions.set(varName, value => {
-        document.getElementById(componentId)?.dispatchEvent(new Event('change'));
-        methodesImpl(value)
+        if (componentId) {
+            document.getElementById(componentId)?.dispatchEvent(new Event('change'));
+            if (typeof methodesImpl==='function') {
+                methodesImpl(value)
+            }
+        }
     });
 }
 
@@ -26,5 +30,17 @@ export function mountVueApp() {
         });
         app.mount('body');
     }
+}
+
+export function mountVueAppWithId(id) {
+       Vue.createApp({
+            components: { VueDatePicker },
+            data() {
+                return {
+                    ...Object.fromEntries(vModels),
+                    ...Object.fromEntries(functions)
+                }
+            }
+        }).mount(`#${id}`);
 }
 
