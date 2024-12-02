@@ -6,12 +6,9 @@ import basicapp.front.profile.page.ProfilePage;
 import basicapp.front.referencedata.page.ReferenceDataPage;
 import basicapp.front.user.page.BasicUserListPage;
 import igloo.bootstrap.jsmodel.JsHelpers;
-import igloo.vuedatepicker.Component.DatePickerRangeVueComponent;
 import igloo.vuedatepicker.Component.DatePickerVueComponent;
-import igloo.vuedatepicker.Component.DateTimePickerVueComponent;
 import igloo.wicket.condition.Condition;
 import igloo.wicket.feedback.FeedbackUtils;
-import igloo.wicket.model.Detachables;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -45,34 +42,28 @@ public class HomePage extends MainTemplate {
     return LinkDescriptorBuilder.start().page(HomePage.class);
   }
 
-  private final IModel<LocalDate> dateModel = Model.of(LocalDate.now());
-  private final IModel<LocalDate> dateModel2 = Model.of(LocalDate.now());
-  private final IModel<LocalDateTime> dateTimeModel = Model.of(LocalDateTime.now());
-
   public HomePage(PageParameters parameters) {
     super(parameters);
 
     Form<Date> form = new Form<>("form");
 
+    IModel<LocalDate> dateModel = Model.of(LocalDate.now());
+    IModel<LocalDate> dateModel2 = Model.of(LocalDate.now());
+    IModel<LocalDateTime> dateTimeModel = Model.of(LocalDateTime.now());
+
     addBreadCrumbElement(
         new BreadCrumbElement(new ResourceModel("navigation.home"), HomePage.linkDescriptor()));
-    //    TextField<Date> labelDate = new TextField<>("labelDate", dateModel);
-    /*    DatePickerRangeVueComponent datePicker2 =
-    new DatePickerRangeVueComponent("datePicker2", dateModel, dateModel2);*/
+
     DatePickerVueComponent datePicker1 = new DatePickerVueComponent("datePicker1", dateModel);
     DatePickerVueComponent datePicker2 =
         new DatePickerVueComponent(
             "datePicker2",
             dateModel2,
             builder -> builder.minDate(JsHelpers.ofLiteral(datePicker1.getVModelVarName())));
-    DatePickerRangeVueComponent dateRange =
-        new DatePickerRangeVueComponent("dateRange", dateModel, dateModel2);
+    //    DatePickerRangeVueComponent dateRange =
+    //        new DatePickerRangeVueComponent("dateRange", dateModel, dateModel2);
     add(
         form.add(
-            //            labelDate
-            //                .add(new LabelPlaceholderBehavior())
-            //                .add(new UpdateOnChangeAjaxEventBehavior())
-            //                .setOutputMarkupId(true),
             new WebMarkupContainer("datePickerContainer1")
                 .add(
                     datePicker1
@@ -88,7 +79,9 @@ public class HomePage extends MainTemplate {
                                       public void onBeforeRespond(
                                           Map<String, Component> map, AjaxRequestTarget target) {
                                         dateModel2.setObject(LocalDate.now());
-                                        target.add(dateRange);
+                                        LocalDate object = dateModel.getObject();
+                                        //
+                                        // target.add(dateRange);
                                         target.add(datePicker2);
                                       }
                                     }))),
@@ -97,11 +90,24 @@ public class HomePage extends MainTemplate {
                     datePicker2
                         .setRequired(true)
                         .setOutputMarkupId(true)
-                        .add(new UpdateOnChangeAjaxEventBehavior())),
-            new WebMarkupContainer("datePickerContainer3")
-                .add(new DateTimePickerVueComponent("dateTimePicker", dateTimeModel)),
-            new WebMarkupContainer("datePickerContainer4")
-                .add(dateRange.add(new UpdateOnChangeAjaxEventBehavior())),
+                        .add(
+                            new UpdateOnChangeAjaxEventBehavior()
+                                .onChange(
+                                    new SerializableListener() {
+                                      private static final long serialVersionUID = 1L;
+
+                                      @Override
+                                      public void onBeforeRespond(
+                                          Map<String, Component> map, AjaxRequestTarget target) {
+                                        //
+                                        // target.add(dateRange);
+                                        target.add(datePicker1);
+                                      }
+                                    }))),
+            //            new WebMarkupContainer("datePickerContainer3")
+            //                .add(new DateTimePickerVueComponent("dateTimePicker", dateTimeModel)),
+            //            new WebMarkupContainer("datePickerContainer4")
+            //                .add(dateRange.add(new UpdateOnChangeAjaxEventBehavior())),
             new AjaxButton("save") {
               private static final long serialVersionUID = 1L;
 
@@ -134,11 +140,5 @@ public class HomePage extends MainTemplate {
   @Override
   protected Class<? extends WebPage> getFirstMenuPage() {
     return HomePage.class;
-  }
-
-  @Override
-  protected void onDetach() {
-    super.onDetach();
-    Detachables.detach(dateModel);
   }
 }
