@@ -5,26 +5,29 @@ import igloo.vuedatepicker.behavior.JsDatePicker;
 import java.time.LocalDateTime;
 import java.util.function.Consumer;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.wicket.model.IModel;
 
-public class DateTimePickerVueComponent extends AbstractDatePickerVueComponent<LocalDateTime> {
+public class DateTimePickerVueField extends AbstractDatePickerVueField<LocalDateTime> {
 
   private static final long serialVersionUID = 1L;
 
-  public DateTimePickerVueComponent(String id, IModel<LocalDateTime> model) {
+  public DateTimePickerVueField(String id, IModel<LocalDateTime> model) {
     this(id, model, builder -> {});
   }
 
-  public DateTimePickerVueComponent(
+  public DateTimePickerVueField(
       String id, IModel<LocalDateTime> model, Consumer<JsDatePicker.Builder> jsDatePickerConsumer) {
     super(id, model, jsDatePickerConsumer);
   }
 
   @Override
   public void convertInput() {
-    String[] value = getInputAsArray();
-    if (ArrayUtils.isNotEmpty(value)) {
-      setConvertedInput(LocalDateTime.parse(value[0], getFormat()));
+    String[] values = getInputAsArray();
+    if (ArrayUtils.isNotEmpty(values)) {
+      String value = values[0];
+      setConvertedInput(
+          StringUtils.isBlank(value) ? null : LocalDateTime.parse(value, getFormat()));
     }
   }
 

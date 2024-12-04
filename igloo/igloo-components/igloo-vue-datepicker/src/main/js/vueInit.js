@@ -9,9 +9,20 @@ export function addVueModel(varName, model) {
 }
 
 export function addVueOnChangeMethode(varName, componentId, methodesImpl) {
-    functions.set(varName, value => {
+    functions.set(varName, async value => {
         if (componentId) {
-            document.getElementById(componentId)?.dispatchEvent(new Event('change'));
+            // manualy call on change on input when vue data change
+            // wait update of v-model
+            await new Promise((resolve, reject) => {
+                if (vModels.get(componentId).value === value) {
+                    resolve();
+                }
+            })
+            document.getElementById(componentId)
+                ?.getElementsByTagName('input')[0]
+                ?.dispatchEvent(new Event('change', { bubbles: true})); // set bubble true to allow event propagation
+            
+            // call optionals updates methodes
             if (typeof methodesImpl === 'function') {
                 methodesImpl(value)
             }
@@ -19,22 +30,38 @@ export function addVueOnChangeMethode(varName, componentId, methodesImpl) {
     });
 }
 
-/*export function mountVueApp() {
-    if (!app) {
-        app = Vue.createApp({
-            components: { VueDatePicker },
-            data() {
-                return {
-                    ...Object.fromEntries(vModels),
-                    ...Object.fromEntries(functions)
+export function addDivParent(varName, componentId, methodesImpl) {
+    functions.set(varName, async value => {
+        if (componentId) {
+            // manualy call on change on input when vue data change
+            // wait update of v-model
+            await new Promise((resolve, reject) => {
+                if (vModels.get(componentId).value === value) {
+                    resolve();
                 }
+            })
+            document.getElementById(componentId)
+                ?.getElementsByTagName('input')[0]
+                ?.dispatchEvent(new Event('change', { bubbles: true})); // set bubble true to allow event propagation
+
+            // call optionals updates methodes
+            if (typeof methodesImpl === 'function') {
+                methodesImpl(value)
             }
-        });
-        app.mount('body');
-    }
-}*/
+        }
+    });
+}
 
 export function mountVueAppWithId(id) {
+    const datePicker = document.getElementById(id);
+    const parent = document.getElementById(id).parentNode;
+    const idParent = `${id}_vueAppEncloser`;
+    if (parent.id !== idParent) {
+        const div = document.createElement("div");
+        div.setAttribute("id", idParent);
+        parent.insertBefore(div, datePicker);
+        div.appendChild(datePicker)
+    }
     const app = Vue.createApp({
         components: {VueDatePicker},
         data() {
@@ -44,7 +71,7 @@ export function mountVueAppWithId(id) {
             }
         }
     })
-    app.mount(`#${id}`);
+    app.mount(`#${idParent}`);
     apps.set(id, app);
 }
 

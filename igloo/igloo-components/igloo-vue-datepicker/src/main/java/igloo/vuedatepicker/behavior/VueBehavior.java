@@ -14,10 +14,8 @@ import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.head.PriorityHeaderItem;
 
 // TODO RFO :
-//  - DatePicker en erreur disparait
-//  - Recharger un composant en ajax... disparait
-//  - faire un bundle js
-//  - gerer date min / date max simplement
+//  - DatePicker en erreur css -> voir comment on ajoute la class -> avec variable :ui ? Voir
+//    FormInvalideDecoratorListener#POST_ON_BEFORE_RENDER_LISTENER
 public class VueBehavior extends Behavior {
 
   private static final long serialVersionUID = 1L;
@@ -37,14 +35,6 @@ public class VueBehavior extends Behavior {
     jsDatePicker.values().entrySet().stream()
         .filter(e -> !(e.getKey().equals("v-model") || e.getKey().equals("@update:model-value")))
         .forEach(e -> tag.put(e.getKey(), e.getValue().render()));
-  }
-
-  public String getVmodelVarName(Component component) {
-    return component.getMarkupId();
-  }
-
-  public String getVueOnChangeVarName(Component component) {
-    return component.getMarkupId() + "_onChange";
   }
 
   @Override
@@ -85,7 +75,12 @@ public class VueBehavior extends Behavior {
 
     response.render(
         OnDomReadyHeaderItem.forScript(
-            "vueInit.mountVueAppWithId('%s')".formatted(component.getParent().getMarkupId())));
+            "vueInit.mountVueAppWithId('%s')".formatted(component.getMarkupId())));
+  }
+
+  @Override
+  public void onRemove(Component component) {
+    super.onRemove(component);
   }
 
   public IJsDatePicker getJsDatePicker() {
@@ -94,5 +89,13 @@ public class VueBehavior extends Behavior {
 
   public void setJsDatePicker(IJsDatePicker jsDatePicker) {
     this.jsDatePicker = jsDatePicker;
+  }
+
+  public String getVmodelVarName(Component component) {
+    return component.getMarkupId();
+  }
+
+  public String getVueOnChangeVarName(Component component) {
+    return component.getMarkupId() + "_onChange";
   }
 }

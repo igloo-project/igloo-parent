@@ -15,17 +15,17 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.util.convert.ConversionException;
 import org.javatuples.Pair;
 
-public class DatePickerRangeVueComponent
-    extends AbstractDatePickerVueComponent<Pair<LocalDate, LocalDate>> {
+public class DatePickerRangeVueField
+    extends AbstractDatePickerVueField<Pair<LocalDate, LocalDate>> {
 
   private static final long serialVersionUID = 1L;
 
-  public DatePickerRangeVueComponent(
+  public DatePickerRangeVueField(
       String id, IModel<LocalDate> dateMinModel, IModel<LocalDate> dateMaxModel) {
     this(id, dateMinModel, dateMaxModel, builder -> {});
   }
 
-  public DatePickerRangeVueComponent(
+  public DatePickerRangeVueField(
       String id,
       IModel<LocalDate> dateMinModel,
       IModel<LocalDate> dateMaxModel,
@@ -77,9 +77,8 @@ public class DatePickerRangeVueComponent
                 .map(Failable.asFunction(dateInput -> LocalDate.parse(dateInput, getFormat())))
                 .toList();
 
-        if (list.size() == 2) {
-          setConvertedInput(Pair.fromCollection(list));
-        }
+        setConvertedInput(list.size() == 2 ? Pair.fromCollection(list) : Pair.with(null, null));
+
       } catch (ConversionException e) {
         error(newValidationError(e));
       }

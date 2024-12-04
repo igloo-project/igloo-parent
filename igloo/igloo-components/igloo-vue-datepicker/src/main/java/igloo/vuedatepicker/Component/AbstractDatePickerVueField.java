@@ -1,5 +1,6 @@
 package igloo.vuedatepicker.Component;
 
+import igloo.bootstrap.jsmodel.JsHelpers;
 import igloo.vuedatepicker.behavior.IJsDatePicker;
 import igloo.vuedatepicker.behavior.JsDatePicker;
 import igloo.vuedatepicker.behavior.VueBehavior;
@@ -8,14 +9,16 @@ import java.util.function.Consumer;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.form.AbstractTextComponent;
 import org.apache.wicket.model.IModel;
+import org.iglooproject.wicket.more.markup.html.form.IVueComponent;
 
-public abstract class AbstractDatePickerVueComponent<T> extends AbstractTextComponent<T> {
+public abstract class AbstractDatePickerVueField<T> extends AbstractTextComponent<T>
+    implements IVueComponent {
 
   private static final long serialVersionUID = -1;
 
   private final VueBehavior vueBehavior;
 
-  public AbstractDatePickerVueComponent(
+  public AbstractDatePickerVueField(
       String id, IModel<T> model, Consumer<JsDatePicker.Builder> jsDatePickerConsumer) {
     super(id, model);
     JsDatePicker.Builder builder = getDefaultJsDatePickerBuilder();
@@ -53,5 +56,15 @@ public abstract class AbstractDatePickerVueComponent<T> extends AbstractTextComp
 
   public String getVueOnChangeVarName() {
     return vueBehavior.getVueOnChangeVarName(this);
+  }
+
+  public static Consumer<JsDatePicker.Builder> dateMinConsumer(
+      AbstractDatePickerVueField<?> datePicker) {
+    return builder -> builder.minDate(JsHelpers.ofLiteral(datePicker.getVModelVarName()));
+  }
+
+  public static Consumer<JsDatePicker.Builder> dateMaxConsumer(
+      AbstractDatePickerVueField<?> datePicker) {
+    return builder -> builder.maxDate(JsHelpers.ofLiteral(datePicker.getVModelVarName()));
   }
 }
