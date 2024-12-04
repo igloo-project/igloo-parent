@@ -23,6 +23,7 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.RadioChoice;
 import org.apache.wicket.markup.html.form.RadioGroup;
+import org.iglooproject.wicket.more.markup.html.form.IVueComponent;
 import org.iglooproject.wicket.more.markup.html.form.observer.IFormComponentChangeObservable;
 import org.iglooproject.wicket.more.markup.html.form.observer.IFormComponentChangeObserver;
 import org.wicketstuff.wiquery.core.events.MouseEvent;
@@ -87,18 +88,22 @@ public class FormComponentChangeAjaxEventBehavior extends AjaxEventBehavior
   private final FormComponent<?> prerequisiteField;
 
   private final boolean choice;
+  private final boolean vueComponent;
 
   private FormComponentChangeAjaxEventBehavior(FormComponent<?> prerequisiteField) {
-    this(prerequisiteField, isChoice(prerequisiteField));
+    this(
+        prerequisiteField, isChoice(prerequisiteField), prerequisiteField instanceof IVueComponent);
   }
 
-  private FormComponentChangeAjaxEventBehavior(FormComponent<?> prerequisiteField, boolean choice) {
+  private FormComponentChangeAjaxEventBehavior(
+      FormComponent<?> prerequisiteField, boolean choice, boolean vueComponent) {
     super(
         choice
             ? MouseEvent.CLICK.getEventLabel() /* Internet Explorer... */
             : StateEvent.CHANGE.getEventLabel());
     this.prerequisiteField = checkNotNull(prerequisiteField);
     this.choice = choice;
+    this.vueComponent = vueComponent;
   }
 
   private static boolean isChoice(Component component) {
@@ -147,9 +152,8 @@ public class FormComponentChangeAjaxEventBehavior extends AjaxEventBehavior
                   .chain("off", JsUtils.quotes(getUniqueEventName(), true))
                   .render(true))
           .append(super.getCallbackScript(component));
-    } else {
-      return super.getCallbackScript(component);
     }
+    return super.getCallbackScript(component);
   }
 
   @Override
@@ -164,6 +168,22 @@ public class FormComponentChangeAjaxEventBehavior extends AjaxEventBehavior
      */
     attributes.setPreventDefault(false);
 
+    if (vueComponent) {
+      // Copied from AjaxFormChoiceComponentUpdatingBehavior
+      attributes.setSerializeRecursively(true);
+      attributes
+          .getAjaxCallListeners()
+          .add(
+              new AjaxCallListener() {
+                private static final long serialVersionUID = 1L;
+
+                @Override
+                public CharSequence getPrecondition(Component component) {
+                  return String.format(
+                      "return attrs.event.target.name === '%s'", getFormComponent().getInputName());
+                }
+              });
+    }
     if (choice) {
       // For explanations, see: getUniqueEventName(), getCallbackScript(),
       // postprocessConfiguration()
@@ -197,6 +217,14 @@ public class FormComponentChangeAjaxEventBehavior extends AjaxEventBehavior
        */
       attributesJson.put(
           AjaxAttributeName.MARKUP_ID.jsonName(), component.findParent(Form.class).getMarkupId());
+      attributesJson.put(
+          AjaxAttributeName.CHILD_SELECTOR.jsonName(),
+          "input[name=\"" + ((FormComponent<?>) component).getInputName() + "\"]");
+    }
+
+    // Vue component can have multiple element before input tag
+    // add child selector 'sel' with input in ajax attributes
+    if (vueComponent) {
       attributesJson.put(
           AjaxAttributeName.CHILD_SELECTOR.jsonName(),
           "input[name=\"" + ((FormComponent<?>) component).getInputName() + "\"]");

@@ -17,19 +17,10 @@
 			<div class="content-body">
 				<div class="row g-4">
 					<form wicket:id="form">
-						<div wicket:id="datePickerContainer1">
-							<vue-date-picker wicket:id="datePicker1"></vue-date-picker>
-						</div>
-						<div wicket:id="datePickerContainer2">
-							<vue-date-picker wicket:id="datePicker2"></vue-date-picker>
-						</div>
-<!--						<div wicket:id="datePickerContainer3">-->
-<!--							<vue-date-picker wicket:id="dateTimePicker"></vue-date-picker>-->
-<!--						</div>-->
-<!--						<div wicket:id="datePickerContainer4">-->
-<!--							<vue-date-picker wicket:id="dateRange" locale="fr"></vue-date-picker>-->
-<!--						</div>-->
-						<!--						<input wicket:id="labelDate" />-->
+						<vue-date-picker wicket:id="datePicker1"></vue-date-picker>
+						<vue-date-picker wicket:id="datePicker2" :ui="{ input: 'form-control' }" ></vue-date-picker>
+						<vue-date-picker wicket:id="dateTimePicker"></vue-date-picker>
+						<vue-date-picker wicket:id="dateRange" locale="fr"></vue-date-picker>
 						<div class="col-auto">
 							<button wicket:id="save" class="btn btn-success btn-lg" type="button">
 								<span class="fa fa-fw fa-save"/>

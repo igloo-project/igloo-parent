@@ -5,8 +5,9 @@ import basicapp.front.common.template.MainTemplate;
 import basicapp.front.profile.page.ProfilePage;
 import basicapp.front.referencedata.page.ReferenceDataPage;
 import basicapp.front.user.page.BasicUserListPage;
-import igloo.bootstrap.jsmodel.JsHelpers;
-import igloo.vuedatepicker.Component.DatePickerVueComponent;
+import igloo.vuedatepicker.Component.DatePickerRangeVueField;
+import igloo.vuedatepicker.Component.DatePickerVueField;
+import igloo.vuedatepicker.Component.DateTimePickerVueField;
 import igloo.wicket.condition.Condition;
 import igloo.wicket.feedback.FeedbackUtils;
 import java.time.LocalDate;
@@ -18,7 +19,6 @@ import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.IModel;
@@ -54,60 +54,49 @@ public class HomePage extends MainTemplate {
     addBreadCrumbElement(
         new BreadCrumbElement(new ResourceModel("navigation.home"), HomePage.linkDescriptor()));
 
-    DatePickerVueComponent datePicker1 = new DatePickerVueComponent("datePicker1", dateModel);
-    DatePickerVueComponent datePicker2 =
-        new DatePickerVueComponent(
-            "datePicker2",
-            dateModel2,
-            builder -> builder.minDate(JsHelpers.ofLiteral(datePicker1.getVModelVarName())));
-    //    DatePickerRangeVueComponent dateRange =
-    //        new DatePickerRangeVueComponent("dateRange", dateModel, dateModel2);
+    DatePickerVueField datePicker1 = new DatePickerVueField("datePicker1", dateModel);
+    DatePickerVueField datePicker2 =
+        new DatePickerVueField(
+            "datePicker2", dateModel2, DatePickerVueField.dateMinConsumer(datePicker1));
+    DatePickerRangeVueField dateRange =
+        new DatePickerRangeVueField("dateRange", dateModel, dateModel2);
     add(
         form.add(
-            new WebMarkupContainer("datePickerContainer1")
+            datePicker1
+                //                        .setRequired(true)
+                .setOutputMarkupId(true)
                 .add(
-                    datePicker1
-                        .setRequired(true)
-                        .setOutputMarkupId(true)
-                        .add(
-                            new UpdateOnChangeAjaxEventBehavior()
-                                .onChange(
-                                    new SerializableListener() {
-                                      private static final long serialVersionUID = 1L;
+                    new UpdateOnChangeAjaxEventBehavior()
+                        .onChange(
+                            new SerializableListener() {
+                              private static final long serialVersionUID = 1L;
 
-                                      @Override
-                                      public void onBeforeRespond(
-                                          Map<String, Component> map, AjaxRequestTarget target) {
-                                        dateModel2.setObject(LocalDate.now());
-                                        LocalDate object = dateModel.getObject();
-                                        //
-                                        // target.add(dateRange);
-                                        target.add(datePicker2);
-                                      }
-                                    }))),
-            new WebMarkupContainer("datePickerContainer2")
+                              @Override
+                              public void onBeforeRespond(
+                                  Map<String, Component> map, AjaxRequestTarget target) {
+                                dateModel2.setObject(dateModel.getObject().plusDays(1));
+                                target.add(datePicker2);
+                              }
+                            })),
+            datePicker2
+                .setRequired(true)
+                .setOutputMarkupId(true)
                 .add(
-                    datePicker2
-                        .setRequired(true)
-                        .setOutputMarkupId(true)
-                        .add(
-                            new UpdateOnChangeAjaxEventBehavior()
-                                .onChange(
-                                    new SerializableListener() {
-                                      private static final long serialVersionUID = 1L;
+                    new UpdateOnChangeAjaxEventBehavior()
+                        .onChange(
+                            new SerializableListener() {
+                              private static final long serialVersionUID = 1L;
 
-                                      @Override
-                                      public void onBeforeRespond(
-                                          Map<String, Component> map, AjaxRequestTarget target) {
-                                        //
-                                        // target.add(dateRange);
-                                        target.add(datePicker1);
-                                      }
-                                    }))),
-            //            new WebMarkupContainer("datePickerContainer3")
-            //                .add(new DateTimePickerVueComponent("dateTimePicker", dateTimeModel)),
-            //            new WebMarkupContainer("datePickerContainer4")
-            //                .add(dateRange.add(new UpdateOnChangeAjaxEventBehavior())),
+                              @Override
+                              public void onBeforeRespond(
+                                  Map<String, Component> map, AjaxRequestTarget target) {
+                                //
+                                // target.add(dateRange);
+                                target.add(datePicker1);
+                              }
+                            })),
+            new DateTimePickerVueField("dateTimePicker", dateTimeModel),
+            dateRange.add(new UpdateOnChangeAjaxEventBehavior()),
             new AjaxButton("save") {
               private static final long serialVersionUID = 1L;
 
@@ -122,6 +111,11 @@ public class HomePage extends MainTemplate {
                 } catch (Exception e) {
                   Session.get().error(getString("common.error.unexpected"));
                 }
+                FeedbackUtils.refreshFeedback(target, getPage());
+              }
+
+              @Override
+              protected void onError(AjaxRequestTarget target) {
                 FeedbackUtils.refreshFeedback(target, getPage());
               }
             }));
