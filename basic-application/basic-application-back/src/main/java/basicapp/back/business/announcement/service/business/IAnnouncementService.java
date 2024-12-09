@@ -22,6 +22,7 @@ public interface IAnnouncementService extends IGenericEntityService<Long, Announ
   void deleteAnnouncement(Announcement announcement)
       throws ServiceException, SecurityServiceException;
 
+  // TODO RFO pour test a supprimer
   void test(LocalDate date1, LocalDate date2, LocalDateTime dateTime)
       throws ServiceException, SecurityServiceException;
 }

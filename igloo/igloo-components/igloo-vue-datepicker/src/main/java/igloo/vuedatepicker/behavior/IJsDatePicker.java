@@ -1,6 +1,5 @@
 package igloo.vuedatepicker.behavior;
 
-import igloo.bootstrap.js.statement.IJsDateList;
 import igloo.bootstrap.js.statement.IJsObject;
 import igloo.bootstrap.js.statement.IJsStatement;
 import igloo.bootstrap.js.statement.JsBoolean;
@@ -122,6 +121,9 @@ public interface IJsDatePicker extends IJsObject, Serializable {
   @Nullable
   IJsStatement cancelText();
 
+  @Nullable
+  IJsStatement ui();
+
   @Override
   @Value.Derived
   default Map<String, IJsStatement> values() {
@@ -168,7 +170,8 @@ public interface IJsDatePicker extends IJsObject, Serializable {
             Map.entry("@update:model-value", this::onUpdateModel),
             Map.entry(":locale", () -> locale() == null ? JsString.of("fr") : locale()),
             Map.entry(":select-text", this::selectText),
-            Map.entry(":cancel-text ", this::cancelText))
+            Map.entry(":cancel-text", this::cancelText),
+            Map.entry(":ui", this::ui))
         .map(e -> Pair.of(e.getKey(), e.getValue().get()))
         .filter(e -> e.getRight() != null)
         .forEachOrdered(e -> result.put(e.getLeft(), e.getRight()));

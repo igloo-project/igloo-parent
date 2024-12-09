@@ -38,6 +38,7 @@ public class DatePickerVueField extends AbstractDatePickerVueField<LocalDate> {
         .enableTimePicker(JsHelpers.of(false))
         .format(JsHelpers.of("dd/MM/yyyy"))
         .textInput(JsHelpers.of(true))
-        .required(JsHelpers.of(this.isRequired()));
+        .required(JsHelpers.of(this.isRequired()))
+        .ui(JsHelpers.ofLiteral("{ input: 'form-control' }"));
   }
 }

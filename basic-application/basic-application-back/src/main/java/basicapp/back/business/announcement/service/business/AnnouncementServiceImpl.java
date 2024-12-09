@@ -105,6 +105,7 @@ public class AnnouncementServiceImpl extends GenericEntityServiceImpl<Long, Anno
     delete(announcement);
   }
 
+  // TODO RFO pour test a supprimer
   @Override
   public void test(LocalDate date1, LocalDate date2, LocalDateTime dateTime)
       throws ServiceException, SecurityServiceException {

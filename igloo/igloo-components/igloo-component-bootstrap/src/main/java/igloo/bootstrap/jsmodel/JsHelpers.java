@@ -5,6 +5,7 @@ import igloo.bootstrap.js.statement.IJsLiteral;
 import igloo.bootstrap.js.statement.IJsNumber;
 import igloo.bootstrap.js.statement.IJsStatement;
 import igloo.bootstrap.js.statement.IJsString;
+import igloo.bootstrap.js.statement.IJsVariable;
 import igloo.bootstrap.js.statement.JsBoolean;
 import igloo.bootstrap.js.statement.JsDate;
 import igloo.bootstrap.js.statement.JsDateList;
@@ -17,6 +18,7 @@ import igloo.bootstrap.js.statement.JsMapping;
 import igloo.bootstrap.js.statement.JsNumber;
 import igloo.bootstrap.js.statement.JsSequence;
 import igloo.bootstrap.js.statement.JsString;
+import igloo.bootstrap.js.statement.JsVariable;
 import igloo.bootstrap.js.type.JsAnyType;
 import igloo.bootstrap.woption.IWOptionDetachable;
 import igloo.bootstrap.woption.IWOptionModel;
@@ -71,6 +73,11 @@ public class JsHelpers {
 
   public static IJsLiteral ofLiteral(String value) {
     return JsLiteral.of(value);
+  }
+
+  /** Create a variable type to distinct a string value from a variable declaration */
+  public static IJsVariable ofJsVariable(String value) {
+    return JsVariable.of(value);
   }
 
   public static IJsFunction ofFunction(String value) {
