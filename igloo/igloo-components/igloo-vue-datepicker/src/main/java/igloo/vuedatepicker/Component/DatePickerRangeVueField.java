@@ -95,6 +95,7 @@ public class DatePickerRangeVueField
         .multiCalendars(JsHelpers.of(true))
         .textInput(JsHelpers.of(true))
         .selectText(JsHelpers.of("Sélectionner"))
-        .cancelText(JsHelpers.of("Annuler"));
+        .cancelText(JsHelpers.of("Annuler"))
+        .ui(JsHelpers.ofLiteral("{ input: 'form-control' }"));
   }
 }

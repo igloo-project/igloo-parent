@@ -6,6 +6,7 @@ import igloo.vuedatepicker.behavior.JsDatePicker;
 import igloo.vuedatepicker.behavior.VueBehavior;
 import java.time.format.DateTimeFormatter;
 import java.util.function.Consumer;
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.form.AbstractTextComponent;
 import org.apache.wicket.model.IModel;
@@ -60,11 +61,23 @@ public abstract class AbstractDatePickerVueField<T> extends AbstractTextComponen
 
   public static Consumer<JsDatePicker.Builder> dateMinConsumer(
       AbstractDatePickerVueField<?> datePicker) {
-    return builder -> builder.minDate(JsHelpers.ofLiteral(datePicker.getVModelVarName()));
+    return builder -> builder.minDate(JsHelpers.ofJsVariable(datePicker.getVModelVarName()));
   }
 
   public static Consumer<JsDatePicker.Builder> dateMaxConsumer(
       AbstractDatePickerVueField<?> datePicker) {
-    return builder -> builder.maxDate(JsHelpers.ofLiteral(datePicker.getVModelVarName()));
+    return builder -> builder.maxDate(JsHelpers.ofJsVariable(datePicker.getVModelVarName()));
+  }
+
+  @Override
+  public void appendCssClass(AjaxRequestTarget target, String cssClass) {
+    target.appendJavaScript(
+        "vueInit.appendInputCssClass('%s', '%s')".formatted(getMarkupId(), cssClass));
+  }
+
+  @Override
+  public void removeCssClass(AjaxRequestTarget target, String cssClass) {
+    target.appendJavaScript(
+        "vueInit.removeInputCssClass('%s', '%s')".formatted(getMarkupId(), cssClass));
   }
 }

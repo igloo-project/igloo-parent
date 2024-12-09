@@ -2,6 +2,13 @@ textarea.form-control {
 	min-height: calc(2 * #{$input-padding-y} + 2em * #{$input-line-height} + 2 * #{$input-border-width});
 }
 
+// TODO RFO vérifier les styles et class css en général
+.dp__input_wrap {
+	> .form-control {
+		padding-inline-start: var(--dp-input-icon-padding);
+	}
+}
+
 @mixin form-file-btn-variant(
 	$background,
 	$border,

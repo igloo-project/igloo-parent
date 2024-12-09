@@ -36,6 +36,7 @@ public class DateTimePickerVueField extends AbstractDatePickerVueField<LocalDate
     return JsDatePicker.builder()
         .dateModel(JsHelpers.ofLocalDateTimeModel(getModel()))
         .textInput(JsHelpers.of(true))
-        .onUpdateModel(JsHelpers.ofLiteral("value => console.log(value)"));
+        .onUpdateModel(JsHelpers.ofLiteral("value => console.log(value)"))
+        .ui(JsHelpers.ofLiteral("{ input: 'form-control' }"));
   }
 }

@@ -168,6 +168,7 @@ public class FormComponentChangeAjaxEventBehavior extends AjaxEventBehavior
      */
     attributes.setPreventDefault(false);
 
+    // Vue component can have multiple element before input tag
     if (vueComponent) {
       // Copied from AjaxFormChoiceComponentUpdatingBehavior
       attributes.setSerializeRecursively(true);

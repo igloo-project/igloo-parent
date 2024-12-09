@@ -1,9 +1,12 @@
 package igloo.vuedatepicker.behavior;
 
+import com.google.common.base.Joiner;
+import igloo.bootstrap.js.statement.IJsVariable;
 import igloo.vuedatepicker.reference.VueDatePickerCssResourceReference;
 import igloo.vuedatepicker.reference.VueDatePickerJavaScriptResourceReference;
 import igloo.vuedatepicker.reference.VueInitAppResourceReference;
 import igloo.vuedatepicker.reference.VueJavaScriptResourceReference;
+import java.util.function.Predicate;
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.ComponentTag;
@@ -13,9 +16,6 @@ import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.head.PriorityHeaderItem;
 
-// TODO RFO :
-//  - DatePicker en erreur css -> voir comment on ajoute la class -> avec variable :ui ? Voir
-//    FormInvalideDecoratorListener#POST_ON_BEFORE_RENDER_LISTENER
 public class VueBehavior extends Behavior {
 
   private static final long serialVersionUID = 1L;
@@ -33,7 +33,14 @@ public class VueBehavior extends Behavior {
     tag.put("@update:model-value", getVueOnChangeVarName(component));
 
     jsDatePicker.values().entrySet().stream()
+        .filter(e -> e.getKey().startsWith(":"))
+        .filter(Predicate.not(e -> e.getValue() instanceof IJsVariable))
+        .forEach(e -> tag.put(e.getKey(), getVueOptionVarName(component, e.getKey())));
+
+    // Add references to others variables
+    jsDatePicker.values().entrySet().stream()
         .filter(e -> !(e.getKey().equals("v-model") || e.getKey().equals("@update:model-value")))
+        .filter(e -> e.getValue() instanceof IJsVariable)
         .forEach(e -> tag.put(e.getKey(), e.getValue().render()));
   }
 
@@ -73,14 +80,23 @@ public class VueBehavior extends Behavior {
                             ? jsDatePicker.onUpdateModel().render()
                             : null))));
 
+    // add optionals props that should be updated with vue component
+    jsDatePicker.values().entrySet().stream()
+        .filter(entry -> entry.getKey().startsWith(":"))
+        .filter(Predicate.not(e -> e.getValue() instanceof IJsVariable))
+        .forEach(
+            entry ->
+                response.render(
+                    new PriorityHeaderItem(
+                        OnDomReadyHeaderItem.forScript(
+                            "vueInit.addVueOptionModel('%s', %s)"
+                                .formatted(
+                                    getVueOptionVarName(component, entry.getKey()),
+                                    entry.getValue().render())))));
+
     response.render(
         OnDomReadyHeaderItem.forScript(
             "vueInit.mountVueAppWithId('%s')".formatted(component.getMarkupId())));
-  }
-
-  @Override
-  public void onRemove(Component component) {
-    super.onRemove(component);
   }
 
   public IJsDatePicker getJsDatePicker() {
@@ -97,5 +113,9 @@ public class VueBehavior extends Behavior {
 
   public String getVueOnChangeVarName(Component component) {
     return component.getMarkupId() + "_onChange";
+  }
+
+  public String getVueOptionVarName(Component component, String option) {
+    return Joiner.on("_").join(component.getMarkupId(), option.replace(":", "").replace("-", "_"));
   }
 }

@@ -2,21 +2,18 @@ package igloo.bootstrap.js.statement;
 
 import igloo.bootstrap.js.util.ImmutableStyle;
 import java.io.Serializable;
-import java.util.Date;
-import javax.annotation.Nullable;
 import org.immutables.value.Value;
 
+/** JsStatement to distinct variable from string js value */
 @Value.Immutable
 @ImmutableStyle
-public interface IJsDate extends IJsStatement, Serializable {
+public interface IJsVariable extends IJsStatement, Serializable {
 
   @Value.Parameter
-  @Nullable
-  Date value();
+  String value();
 
   @Override
   default String render() {
-    Date value = value();
-    return value != null ? String.valueOf(value.getTime()) : "null";
+    return value();
   }
 }
