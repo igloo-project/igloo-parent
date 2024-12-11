@@ -5,6 +5,7 @@ import basicapp.front.common.template.MainTemplate;
 import basicapp.front.profile.page.ProfilePage;
 import basicapp.front.referencedata.page.ReferenceDataPage;
 import basicapp.front.user.page.BasicUserListPage;
+import igloo.bootstrap.js.statement.JsLiteral;
 import igloo.vuedatepicker.Component.DatePickerRangeVueField;
 import igloo.vuedatepicker.Component.DatePickerVueField;
 import igloo.vuedatepicker.Component.DateTimePickerVueField;
@@ -57,27 +58,33 @@ public class HomePage extends MainTemplate {
     DatePickerVueField datePicker1 = new DatePickerVueField("datePicker1", dateModel);
     DatePickerVueField datePicker2 =
         new DatePickerVueField(
-            "datePicker2", dateModel2, DatePickerVueField.dateMinConsumer(datePicker1));
+            "datePicker2",
+            dateModel2,
+            DatePickerVueField.dateMinConsumer(datePicker1)
+                .andThen(
+                    builder ->
+                        builder.vif(JsLiteral.of("%s".formatted(datePicker1.getVModelVarName())))));
     DatePickerRangeVueField dateRange =
         new DatePickerRangeVueField("dateRange", dateModel, dateModel2);
     add(
         form.add(
             datePicker1
                 //                        .setRequired(true)
-                .setOutputMarkupId(true)
-                .add(
-                    new UpdateOnChangeAjaxEventBehavior()
-                        .onChange(
-                            new SerializableListener() {
-                              private static final long serialVersionUID = 1L;
+                .setOutputMarkupId(true),
+            /*                .add(
+            new UpdateOnChangeAjaxEventBehavior()
+                .onChange(
+                    new SerializableListener() {
+                      private static final long serialVersionUID = 1L;
 
-                              @Override
-                              public void onBeforeRespond(
-                                  Map<String, Component> map, AjaxRequestTarget target) {
-                                dateModel2.setObject(dateModel.getObject().plusDays(1));
-                                target.add(datePicker2);
-                              }
-                            })),
+                      @Override
+                      public void onBeforeRespond(
+                          Map<String, Component> map, AjaxRequestTarget target) {
+                          if (dateModel.getObject())
+                        dateModel2.setObject(dateModel.getObject().plusDays(1));
+                        target.add(datePicker2);
+                      }
+                    })),*/
             datePicker2
                 .setRequired(true)
                 .setOutputMarkupId(true)

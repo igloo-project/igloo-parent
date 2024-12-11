@@ -7,8 +7,6 @@ import igloo.bootstrap.js.statement.IJsStatement;
 import igloo.bootstrap.js.statement.IJsString;
 import igloo.bootstrap.js.statement.IJsVariable;
 import igloo.bootstrap.js.statement.JsBoolean;
-import igloo.bootstrap.js.statement.JsDate;
-import igloo.bootstrap.js.statement.JsDateList;
 import igloo.bootstrap.js.statement.JsFunction;
 import igloo.bootstrap.js.statement.JsLiteral;
 import igloo.bootstrap.js.statement.JsLocalDateModel;
@@ -26,7 +24,6 @@ import igloo.wicket.factory.IComponentFactory;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.function.Function;
 import org.apache.wicket.Component;
@@ -51,10 +48,6 @@ public class JsHelpers {
     return JsNumber.of(value);
   }
 
-  public static IJsStatement of(Date value) {
-    return JsDate.of(value);
-  }
-
   public static IJsStatement ofLocalDateModel(IModel<LocalDate> localDate) {
     return JsLocalDateModel.of(localDate);
   }
@@ -62,11 +55,7 @@ public class JsHelpers {
   public static IJsStatement ofLocalDateTimeModel(IModel<LocalDateTime> localDateTime) {
     return JsLocalDateTimeModel.of(localDateTime);
   }
-
-  public static IJsStatement of(List<Date> value) {
-    return JsDateList.of(value);
-  }
-
+  
   public static IJsStatement of(IModel<Pair<LocalDate, LocalDate>> value) {
     return JsLocalDatePairModel.of(value);
   }
