@@ -37,10 +37,10 @@ public class VueBehavior extends Behavior {
         .filter(Predicate.not(e -> e.getValue() instanceof IJsVariable))
         .forEach(e -> tag.put(e.getKey(), getVueOptionVarName(component, e.getKey())));
 
-    // Add references to others variables
+    // Add references to others variables or not ref
     jsDatePicker.values().entrySet().stream()
         .filter(e -> !(e.getKey().equals("v-model") || e.getKey().equals("@update:model-value")))
-        .filter(e -> e.getValue() instanceof IJsVariable)
+        .filter(e -> e.getValue() instanceof IJsVariable || !e.getKey().startsWith(":"))
         .forEach(e -> tag.put(e.getKey(), e.getValue().render()));
   }
 

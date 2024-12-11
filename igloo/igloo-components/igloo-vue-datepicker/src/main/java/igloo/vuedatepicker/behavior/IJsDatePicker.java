@@ -1,5 +1,6 @@
 package igloo.vuedatepicker.behavior;
 
+import igloo.bootstrap.js.statement.IJsLocalDatePairModel;
 import igloo.bootstrap.js.statement.IJsObject;
 import igloo.bootstrap.js.statement.IJsStatement;
 import igloo.bootstrap.js.statement.JsBoolean;
@@ -124,6 +125,12 @@ public interface IJsDatePicker extends IJsObject, Serializable {
   @Nullable
   IJsStatement ui();
 
+  @Nullable
+  IJsStatement vif();
+
+  @Nullable
+  IJsStatement velse();
+
   @Override
   @Value.Derived
   default Map<String, IJsStatement> values() {
@@ -139,7 +146,9 @@ public interface IJsDatePicker extends IJsObject, Serializable {
             Map.entry(
                 ":range",
                 () ->
-                    dateModel() != null && dateModel() instanceof IJsDateList && range() == null
+                    dateModel() != null
+                            && dateModel() instanceof IJsLocalDatePairModel
+                            && range() == null
                         ? JsBoolean.of(true)
                         : range()),
             Map.entry(":range", this::range),
@@ -171,6 +180,8 @@ public interface IJsDatePicker extends IJsObject, Serializable {
             Map.entry(":locale", () -> locale() == null ? JsString.of("fr") : locale()),
             Map.entry(":select-text", this::selectText),
             Map.entry(":cancel-text", this::cancelText),
+            Map.entry("v-if", this::vif),
+            Map.entry("v-else", this::velse),
             Map.entry(":ui", this::ui))
         .map(e -> Pair.of(e.getKey(), e.getValue().get()))
         .filter(e -> e.getRight() != null)
