@@ -180,6 +180,13 @@
 			<artifactId>jsr305</artifactId>
 		</dependency>
 
+<!--		 TODO RFO a étudier-->
+<!--		<dependency>
+			<groupId>org.apache.wicket</groupId>
+			<artifactId>wicket-velocity</artifactId>
+			<version>10.1.0</version>
+		</dependency>-->
+
 		<!--test-containers-->
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>

@@ -86,12 +86,14 @@ public class DatePickerRangeVueField
   }
 
   @Override
-  protected JsDatePicker.Builder getDefaultJsDatePickerBuilder() {
+  protected JsDatePicker.Builder initDefaultJsDatePickerBuilder() {
     return JsDatePicker.builder()
         .dateModel(JsHelpers.of(getModel()))
         .enableTimePicker(JsHelpers.of(false))
         .range(JsHelpers.ofLiteral("{ partialRange: false }"))
         .format(JsHelpers.of("dd/MM/yyyy"))
+        // TODO RFO faire une clef de conf ? Override dans projet pour recuperer clef de trad ?
+        .placeholder(JsHelpers.of("jj/mm/aaaa - jj/mm/aaaa"))
         .multiCalendars(JsHelpers.of(true))
         .textInput(JsHelpers.of(true))
         .selectText(JsHelpers.of("Sélectionner"))
