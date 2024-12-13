@@ -31,12 +31,14 @@ public class DatePickerVueField extends AbstractDatePickerVueField<LocalDate> {
   }
 
   @Override
-  protected JsDatePicker.Builder getDefaultJsDatePickerBuilder() {
+  protected JsDatePicker.Builder initDefaultJsDatePickerBuilder() {
     return JsDatePicker.builder()
         .dateModel(JsHelpers.ofLocalDateModel(getModel()))
         .autoApply(JsHelpers.of(true))
         .enableTimePicker(JsHelpers.of(false))
         .format(JsHelpers.of("dd/MM/yyyy"))
+        // TODO RFO faire une clef de conf ? Override dans projet pour recuperer clef de trad ?
+        .placeholder(JsHelpers.of("jj/mm/aaaa"))
         .textInput(JsHelpers.of(true))
         .required(JsHelpers.of(this.isRequired()))
         .ui(JsHelpers.ofLiteral("{ input: 'form-control' }"));
