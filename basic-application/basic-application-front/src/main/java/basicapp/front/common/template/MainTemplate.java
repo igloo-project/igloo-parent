@@ -16,6 +16,7 @@ import basicapp.front.common.template.theme.common.BootstrapBreakpointPanel;
 import basicapp.front.referencedata.page.ReferenceDataPage;
 import basicapp.front.role.page.RoleListPage;
 import basicapp.front.security.password.page.SecurityPasswordExpirationPage;
+import basicapp.front.testdatepicker.TestDatePickerPage;
 import basicapp.front.user.page.BasicUserListPage;
 import basicapp.front.user.page.TechnicalUserListPage;
 import com.google.common.collect.ImmutableList;
@@ -113,6 +114,9 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
             .getHomePageLinkDescriptor()
             .navigationMenuItem(new ResourceModel("navigation.home"))
             .iconClasses(Model.of("fa fa-fw fa-home")),
+        TestDatePickerPage.linkDescriptor()
+            .navigationMenuItem(Model.of("Test datepicker vue"))
+            .iconClasses(Model.of("fa fa-fw fa-clock")),
         ReferenceDataPage.linkDescriptor()
             .navigationMenuItem(new ResourceModel("navigation.referenceData"))
             .iconClasses(Model.of("fa fa-fw fa-list")),

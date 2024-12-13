@@ -6,7 +6,6 @@ import basicapp.back.business.history.service.IHistoryEventSummaryService;
 import basicapp.back.business.user.service.business.IUserService;
 import com.google.common.annotations.VisibleForTesting;
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
@@ -104,15 +103,7 @@ public class AnnouncementServiceImpl extends GenericEntityServiceImpl<Long, Anno
     Objects.requireNonNull(announcement);
     delete(announcement);
   }
-
-  // TODO RFO pour test a supprimer
-  @Override
-  public void test(LocalDate date1, LocalDate date2, LocalDateTime dateTime)
-      throws ServiceException, SecurityServiceException {
-    Objects.requireNonNull(date1);
-    Objects.requireNonNull(date2);
-    Objects.requireNonNull(dateTime);
-  }
+  
 
   @VisibleForTesting
   public void cleanAnnouncement(Announcement announcement) {

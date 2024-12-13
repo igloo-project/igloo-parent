@@ -35,7 +35,7 @@ export function addVueOnChangeMethode(varName, componentId, methodesImpl) {
 
 export function mountVueAppWithId(id) {
   const datePicker = document.getElementById(id);
-  const parent = document.getElementById(id).parentNode;
+  const parent = document.getElementById(id).parentElement;
   const idParent = `${id}_vueAppEncloser`;
   if (parent.id !== idParent) {
     const div = document.createElement('div');
@@ -45,7 +45,7 @@ export function mountVueAppWithId(id) {
   }
   const app = Vue.createApp({
     components: { VueDatePicker },
-    data() {
+    setup() {
       return {
         ...Object.fromEntries(vModels),
         ...Object.fromEntries(functions),

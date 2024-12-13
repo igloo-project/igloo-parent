@@ -1,9 +1,7 @@
 package igloo.vuedatepicker.behavior;
 
-import igloo.bootstrap.js.statement.IJsLocalDatePairModel;
 import igloo.bootstrap.js.statement.IJsObject;
 import igloo.bootstrap.js.statement.IJsStatement;
-import igloo.bootstrap.js.statement.JsBoolean;
 import igloo.bootstrap.js.statement.JsString;
 import java.io.Serializable;
 import java.util.LinkedHashMap;
@@ -131,6 +129,12 @@ public interface IJsDatePicker extends IJsObject, Serializable {
   @Nullable
   IJsStatement velse();
 
+  @Nullable
+  IJsStatement disableWeekDays();
+
+  @Nullable
+  IJsStatement markers();
+
   @Override
   @Value.Derived
   default Map<String, IJsStatement> values() {
@@ -143,14 +147,6 @@ public interface IJsDatePicker extends IJsObject, Serializable {
             Map.entry(":auto-apply", this::autoApply),
             Map.entry(":format", this::format),
             Map.entry(":multi-calendars", this::multiCalendars),
-            Map.entry(
-                ":range",
-                () ->
-                    dateModel() != null
-                            && dateModel() instanceof IJsLocalDatePairModel
-                            && range() == null
-                        ? JsBoolean.of(true)
-                        : range()),
             Map.entry(":range", this::range),
             Map.entry(":month-picker", this::monthPicker),
             Map.entry(":year-picker", this::yearPicker),
@@ -180,9 +176,11 @@ public interface IJsDatePicker extends IJsObject, Serializable {
             Map.entry(":locale", () -> locale() == null ? JsString.of("fr") : locale()),
             Map.entry(":select-text", this::selectText),
             Map.entry(":cancel-text", this::cancelText),
+            Map.entry(":ui", this::ui),
             Map.entry("v-if", this::vif),
             Map.entry("v-else", this::velse),
-            Map.entry(":ui", this::ui))
+            Map.entry(":disabled-week-days", this::disableWeekDays),
+            Map.entry(":markers", this::markers))
         .map(e -> Pair.of(e.getKey(), e.getValue().get()))
         .filter(e -> e.getRight() != null)
         .forEachOrdered(e -> result.put(e.getLeft(), e.getRight()));

@@ -6,6 +6,7 @@ import igloo.vuedatepicker.behavior.JsDatePicker;
 import igloo.vuedatepicker.behavior.VueBehavior;
 import java.time.format.DateTimeFormatter;
 import java.util.function.Consumer;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.form.AbstractTextComponent;
@@ -22,9 +23,9 @@ public abstract class AbstractDatePickerVueField<T> extends AbstractTextComponen
   public AbstractDatePickerVueField(
       String id, IModel<T> model, Consumer<JsDatePicker.Builder> jsDatePickerConsumer) {
     super(id, model);
-    JsDatePicker.Builder builder = getDefaultJsDatePickerBuilder();
+    JsDatePicker.Builder builder = initDefaultJsDatePickerBuilder();
     jsDatePickerConsumer.accept(builder);
-    vueBehavior = new VueBehavior(builder.build());
+    vueBehavior = new VueBehavior(builder);
     add(vueBehavior);
   }
 
@@ -45,14 +46,18 @@ public abstract class AbstractDatePickerVueField<T> extends AbstractTextComponen
             : jsDatePicker.format().render().replace("\"", ""));
   }
 
-  protected abstract JsDatePicker.Builder getDefaultJsDatePickerBuilder();
+  protected abstract JsDatePicker.Builder initDefaultJsDatePickerBuilder();
 
-  protected VueBehavior getVueBehavior() {
+  public VueBehavior getVueBehavior() {
     return vueBehavior;
   }
 
   public String getVModelVarName() {
     return vueBehavior.getVmodelVarName(this);
+  }
+
+  public String getVModel() {
+    return "vueInit.vModels.get('%s')".formatted(vueBehavior.getVmodelVarName(this));
   }
 
   public String getVueOnChangeVarName() {
@@ -69,6 +74,20 @@ public abstract class AbstractDatePickerVueField<T> extends AbstractTextComponen
     return builder -> builder.maxDate(JsHelpers.ofJsVariable(datePicker.getVModelVarName()));
   }
 
+  public AbstractDatePickerVueField<?> setDateMin(AbstractDatePickerVueField<?> datePicker) {
+    getVueBehavior()
+        .getJsDatePickerBuilder()
+        .minDate(JsHelpers.ofJsVariable(datePicker.getVModelVarName()));
+    return this;
+  }
+
+  public AbstractDatePickerVueField<?> setDateMax(AbstractDatePickerVueField<?> datePicker) {
+    getVueBehavior()
+        .getJsDatePickerBuilder()
+        .maxDate(JsHelpers.ofJsVariable(datePicker.getVModelVarName()));
+    return this;
+  }
+
   @Override
   public void appendCssClass(AjaxRequestTarget target, String cssClass) {
     target.appendJavaScript(
@@ -79,5 +98,27 @@ public abstract class AbstractDatePickerVueField<T> extends AbstractTextComponen
   public void removeCssClass(AjaxRequestTarget target, String cssClass) {
     target.appendJavaScript(
         "vueInit.removeInputCssClass('%s', '%s')".formatted(getMarkupId(), cssClass));
+  }
+
+  public AbstractDatePickerVueField<?> setSelectText(IModel<String> selectTextModel) {
+    if (selectTextModel != null && StringUtils.isNotBlank(selectTextModel.getObject())) {
+      getVueBehavior()
+          .getJsDatePickerBuilder()
+          .selectText(JsHelpers.of(selectTextModel.getObject()));
+    }
+    return this;
+  }
+
+  public AbstractDatePickerVueField<?> setCancelText(IModel<String> cancelTextModel) {
+    if (cancelTextModel != null && StringUtils.isNotBlank(cancelTextModel.getObject())) {
+      getVueBehavior()
+          .getJsDatePickerBuilder()
+          .cancelText(JsHelpers.of(cancelTextModel.getObject()));
+    }
+    return this;
+  }
+
+  public JsDatePicker.Builder getJsBuilder() {
+    return getVueBehavior().getJsDatePickerBuilder();
   }
 }

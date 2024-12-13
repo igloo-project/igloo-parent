@@ -20,10 +20,19 @@ public class VueBehavior extends Behavior {
 
   private static final long serialVersionUID = 1L;
 
+  private transient JsDatePicker.Builder jsDatePickerBuilder; // not serializable
   private IJsDatePicker jsDatePicker;
 
-  public VueBehavior(IJsDatePicker jsDatePicker) {
-    this.jsDatePicker = jsDatePicker;
+  public VueBehavior(JsDatePicker.Builder jsDatePickerBuilder) {
+    this.jsDatePickerBuilder = jsDatePickerBuilder;
+  }
+
+  @Override
+  public void onConfigure(Component component) {
+    super.onConfigure(component);
+    if (jsDatePicker == null) {
+      jsDatePicker = jsDatePickerBuilder.build();
+    }
   }
 
   @Override
@@ -103,8 +112,12 @@ public class VueBehavior extends Behavior {
     return jsDatePicker;
   }
 
-  public void setJsDatePicker(IJsDatePicker jsDatePicker) {
-    this.jsDatePicker = jsDatePicker;
+  public JsDatePicker.Builder getJsDatePickerBuilder() {
+    return jsDatePickerBuilder;
+  }
+
+  public void setJsDatePickerBuilder(JsDatePicker.Builder jsDatePickerBuilder) {
+    this.jsDatePickerBuilder = jsDatePickerBuilder;
   }
 
   public String getVmodelVarName(Component component) {
