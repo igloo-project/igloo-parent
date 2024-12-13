@@ -181,11 +181,11 @@
 		</dependency>
 
 <!--		 TODO RFO a étudier-->
-<!--		<dependency>
+		<dependency>
 			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket-velocity</artifactId>
 			<version>10.1.0</version>
-		</dependency>-->
+		</dependency>
 
 		<!--test-containers-->
 		<dependency>

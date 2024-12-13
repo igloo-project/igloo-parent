@@ -61,11 +61,6 @@ public class DatePickerRangeVueField
   }
 
   @Override
-  public String getInput() {
-    return super.getInput();
-  }
-
-  @Override
   public void convertInput() {
     String[] value = getInputAsArray();
 

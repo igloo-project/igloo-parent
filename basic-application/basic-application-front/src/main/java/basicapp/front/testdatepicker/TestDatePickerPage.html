@@ -31,7 +31,10 @@
 													<label wicket:for="datepickerClassic" class="col-form-label form-label"><wicket:label /></label>
 												</div>
 												<div class="col-md-6">
-													<vue-date-picker wicket:id="datepickerClassic"></vue-date-picker>
+													<vue-date-picker 
+															wicket:id="datepickerClassic" 
+															v-model="dateClassiqueRef"
+													></vue-date-picker>
 												</div>
 											</div>
 										</div>
@@ -39,85 +42,85 @@
 								</div>
 							</div>
 						</div>
-						<div class="col-lg-6">
-							<div class="card card-main">
-								<div class="card-header">
-									<div class="card-header-title">
-										Datepicker sans input modifiable
-									</div>
-								</div>
-								<div class="card-body">
-									<div class="row row-form">
-										<div class="col-12">
-											<div class="row row-form-group form-group">
-												<div class="col-md-4">
-													<label wicket:for="dateSansSaisieInput" class="col-form-label form-label"><wicket:label /></label>
-												</div>
-												<div class="col-md-6">
-													<vue-date-picker wicket:id="dateSansSaisieInput"></vue-date-picker>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-6">
-							<div class="card card-main">
-								<div class="card-header">
-									<div class="card-header-title">
-										Datepicker avec validation
-									</div>
-								</div>
-								<div class="card-body">
-									<div class="row row-form">
-										<div class="col-12">
-											<div class="row row-form-group form-group">
-												<div class="col-md-4">
-													<label wicket:for="datePickerWithValidation" class="col-form-label form-label"><wicket:label /></label>
-												</div>
-												<div class="col-md-6">
-													<vue-date-picker wicket:id="datePickerWithValidation"></vue-date-picker>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-6">
-							<div class="card card-main">
-								<div class="card-header">
-									<div class="card-header-title">
-										Saisie d'un intervalle - 2 datepicker
-									</div>
-								</div>
-								<div class="card-body">
-									<div class="row row-form">
-										<div class="col-12">
-											<div class="row row-form-group form-group">
-												<div class="col-md-4">
-													<label wicket:for="datepickerIntervalleFormulaireDebut" class="col-form-label form-label"><wicket:label /></label>
-												</div>
-												<div class="col-md-6">
-														<vue-date-picker wicket:id="datepickerIntervalleFormulaireDebut"></vue-date-picker>
-												</div>
-											</div>
-										</div>
-										<div class="col-12">
-											<div class="row row-form-group form-group">
-												<div class="col-md-4">
-													<label wicket:for="datepickerIntervalleFormulaireFin" class="col-form-label form-label"><wicket:label /></label>
-												</div>
-												<div class="col-md-6">
-													<vue-date-picker wicket:id="datepickerIntervalleFormulaireFin"></vue-date-picker>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
+<!--						<div class="col-lg-6">-->
+<!--							<div class="card card-main">-->
+<!--								<div class="card-header">-->
+<!--									<div class="card-header-title">-->
+<!--										Datepicker sans input modifiable-->
+<!--									</div>-->
+<!--								</div>-->
+<!--								<div class="card-body">-->
+<!--									<div class="row row-form">-->
+<!--										<div class="col-12">-->
+<!--											<div class="row row-form-group form-group">-->
+<!--												<div class="col-md-4">-->
+<!--													<label wicket:for="dateSansSaisieInput" class="col-form-label form-label"><wicket:label /></label>-->
+<!--												</div>-->
+<!--												<div class="col-md-6">-->
+<!--													<vue-date-picker wicket:id="dateSansSaisieInput"></vue-date-picker>-->
+<!--												</div>-->
+<!--											</div>-->
+<!--										</div>-->
+<!--									</div>-->
+<!--								</div>-->
+<!--							</div>-->
+<!--						</div>-->
+<!--						<div class="col-lg-6">-->
+<!--							<div class="card card-main">-->
+<!--								<div class="card-header">-->
+<!--									<div class="card-header-title">-->
+<!--										Datepicker avec validation-->
+<!--									</div>-->
+<!--								</div>-->
+<!--								<div class="card-body">-->
+<!--									<div class="row row-form">-->
+<!--										<div class="col-12">-->
+<!--											<div class="row row-form-group form-group">-->
+<!--												<div class="col-md-4">-->
+<!--													<label wicket:for="datePickerWithValidation" class="col-form-label form-label"><wicket:label /></label>-->
+<!--												</div>-->
+<!--												<div class="col-md-6">-->
+<!--													<vue-date-picker wicket:id="datePickerWithValidation"></vue-date-picker>-->
+<!--												</div>-->
+<!--											</div>-->
+<!--										</div>-->
+<!--									</div>-->
+<!--								</div>-->
+<!--							</div>-->
+<!--						</div>-->
+<!--						<div class="col-lg-6">-->
+<!--							<div class="card card-main">-->
+<!--								<div class="card-header">-->
+<!--									<div class="card-header-title">-->
+<!--										Saisie d'un intervalle - 2 datepicker-->
+<!--									</div>-->
+<!--								</div>-->
+<!--								<div class="card-body">-->
+<!--									<div class="row row-form">-->
+<!--										<div class="col-12">-->
+<!--											<div class="row row-form-group form-group">-->
+<!--												<div class="col-md-4">-->
+<!--													<label wicket:for="datepickerIntervalleFormulaireDebut" class="col-form-label form-label"><wicket:label /></label>-->
+<!--												</div>-->
+<!--												<div class="col-md-6">-->
+<!--														<vue-date-picker wicket:id="datepickerIntervalleFormulaireDebut"></vue-date-picker>-->
+<!--												</div>-->
+<!--											</div>-->
+<!--										</div>-->
+<!--										<div class="col-12">-->
+<!--											<div class="row row-form-group form-group">-->
+<!--												<div class="col-md-4">-->
+<!--													<label wicket:for="datepickerIntervalleFormulaireFin" class="col-form-label form-label"><wicket:label /></label>-->
+<!--												</div>-->
+<!--												<div class="col-md-6">-->
+<!--													<vue-date-picker wicket:id="datepickerIntervalleFormulaireFin"></vue-date-picker>-->
+<!--												</div>-->
+<!--											</div>-->
+<!--										</div>-->
+<!--									</div>-->
+<!--								</div>-->
+<!--							</div>-->
+<!--						</div>-->
 						<div class="col-lg-6">
 							<div class="card card-main">
 								<div class="card-header">
@@ -135,334 +138,346 @@
 															<label wicket:for="datepickerRange" class="col-form-label form-label"><wicket:label /></label>
 														</div>
 														<div class="col-md-6">
-															<vue-date-picker wicket:id="datepickerRange"></vue-date-picker>
+															<vue-date-picker
+																	wicket:id="datepickerRange"
+																	v-model="dateRangeRef"
+																	range
+																	multi-calendars
+															></vue-date-picker>
+															<vue-date-picker
+																	wicket:id="datepickerRange2"
+																	v-model="dateRangeRef2"
+																	range
+																	multi-calendars
+																	v-if="!!dateRangeRef && dateRangeRef.length > 0"
+															></vue-date-picker>
 														</div>
 													</div>
 												</div>
-												<div class="col-12">
-													<div class="row row-form-group form-group">
-														<div class="col-md-4">
-															<label wicket:for="datepickerRangeSolo" class="col-form-label form-label"><wicket:label /></label>
-														</div>
-														<div class="col-md-6">
-															<vue-date-picker wicket:id="datepickerRangeSolo"></vue-date-picker>
-														</div>
-													</div>
-												</div>
-												<div class="col-12">
-													<div class="row row-form-group form-group">
-														<div class="col-md-4">
-															<label wicket:for="datepickerRangeThree" class="col-form-label form-label"><wicket:label /></label>
-														</div>
-														<div class="col-md-6">
-															<vue-date-picker wicket:id="datepickerRangeThree"></vue-date-picker>
-														</div>
-													</div>
-												</div>
+<!--												<div class="col-12">-->
+<!--													<div class="row row-form-group form-group">-->
+<!--														<div class="col-md-4">-->
+<!--															<label wicket:for="datepickerRangeSolo" class="col-form-label form-label"><wicket:label /></label>-->
+<!--														</div>-->
+<!--														<div class="col-md-6">-->
+<!--															<vue-date-picker wicket:id="datepickerRangeSolo"></vue-date-picker>-->
+<!--														</div>-->
+<!--													</div>-->
+<!--												</div>-->
+<!--												<div class="col-12">-->
+<!--													<div class="row row-form-group form-group">-->
+<!--														<div class="col-md-4">-->
+<!--															<label wicket:for="datepickerRangeThree" class="col-form-label form-label"><wicket:label /></label>-->
+<!--														</div>-->
+<!--														<div class="col-md-6">-->
+<!--															<vue-date-picker wicket:id="datepickerRangeThree"></vue-date-picker>-->
+<!--														</div>-->
+<!--													</div>-->
+<!--												</div>-->
 											</div>
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-						<div class="col-lg-6">
-							<div class="card card-main">
-								<div class="card-header">
-									<div class="card-header-title">
-										Date et heure
-									</div>
-								</div>
-								<div class="card-body">
-									<div class="row row-form">
-										<div class="col-12">
-											<div class="row row-form-group form-group">
-												<div class="col-12">
-													<div class="row row-form-group form-group">
-														<div class="col-md-4">
-															<label wicket:for="dateTimePicker" class="col-form-label form-label"><wicket:label /></label>
-														</div>
-														<div class="col-md-6">
-															<vue-date-picker wicket:id="dateTimePicker"></vue-date-picker>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-6">
-							<div class="card card-main">
-								<div class="card-header">
-									<div class="card-header-title">
-										Heure
-									</div>
-								</div>
-								<div class="card-body">
-									<div class="row row-form">
-										<div class="col-12">
-											<div class="row row-form-group form-group">
-												<div class="col-12">
-													<div class="row row-form-group form-group">
-														<div class="col-md-4">
-															<label wicket:for="timePicker" class="col-form-label form-label"><wicket:label /></label>
-														</div>
-														<div class="col-md-6">
-															<vue-date-picker wicket:id="timePicker"></vue-date-picker>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-6">
-							<div class="card card-main">
-								<div class="card-header">
-									<div class="card-header-title">
-										Mois / année
-									</div>
-								</div>
-								<div class="card-body">
-									<div class="row row-form">
-										<div class="col-12">
-											<div class="row row-form-group form-group">
-												<div class="col-12">
-													<div class="row row-form-group form-group">
-														<div class="col-md-4">
-															<label wicket:for="monthPicker" class="col-form-label form-label"><wicket:label /></label>
-														</div>
-														<div class="col-md-6">
-															<vue-date-picker wicket:id="monthPicker"></vue-date-picker>
-														</div>
-													</div>
-												</div>
-												<div class="col-12">
-													<div class="row row-form-group form-group">
-														<div class="col-md-4">
-															<label wicket:for="yearPicker" class="col-form-label form-label"><wicket:label /></label>
-														</div>
-														<div class="col-md-6">
-															<vue-date-picker wicket:id="yearPicker"></vue-date-picker>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-6">
-							<div class="card card-main">
-								<div class="card-header">
-									<div class="card-header-title">
-										<wicket:message key="tips.forms.datepickers.intervalle.title" />
-									</div>
-								</div>
-								<div class="card-body">
-									<div class="row row-form">
-										<div class="col-12">
-											<div class="row row-form-group form-group">
-												<div class="col-md-4">
-													<label wicket:for="datepickerIntervalle5j" class="col-form-label form-label"><wicket:label /></label>
-												</div>
-												<div class="col-md-6">
-													<vue-date-picker wicket:id="datepickerIntervalle5j"></vue-date-picker>
-												</div>
-											</div>
-										</div>
-										<div class="col-12">
-											<div class="row row-form-group form-group">
-												<div class="col-md-4">
-													<label wicket:for="datepickerIntervalle15j" class="col-form-label form-label"><wicket:label /></label>
-												</div>
-												<div class="col-md-6">
-													<vue-date-picker wicket:id="datepickerIntervalle15j"></vue-date-picker>
-												</div>
-											</div>
-										</div>
-										<div class="col-12">
-											<div class="row row-form-group form-group">
-												<div class="col-md-4">
-													<label wicket:for="datepickerIntervalle2m" class="col-form-label form-label"><wicket:label /></label>
-												</div>
-												<div class="col-md-6">
-													<vue-date-picker wicket:id="datepickerIntervalle2m"></vue-date-picker>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-6">
-							<div class="card card-main">
-								<div class="card-header">
-									<div class="card-header-title">
-										<wicket:message key="tips.forms.datepickers.format.title" />
-									</div>
-								</div>
-								<div class="card-body">
-									<div class="row row-form">
-										<div class="col-12">
-											<div class="row row-form-group form-group">
-												<div class="col-md-4">
-													<label wicket:for="datepickerFormatRestreint" class="col-form-label form-label"><wicket:label /></label>
-												</div>
-												<div class="col-md-6">
-													<div class="col-md-6">
-														<vue-date-picker wicket:id="datepickerFormatRestreint"></vue-date-picker>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-6">
-							<div class="card card-main">
-								<div class="card-header">
-									<div class="card-header-title">
-										<wicket:message key="tips.forms.datepickers.plusieursMois.title" />
-									</div>
-								</div>
-								<div class="card-body">
-									<div class="row row-form">
-										<div class="col-12">
-											<div class="row row-form-group form-group">
-												<div class="col-md-4">
-													<label wicket:for="datepickerPlusieursMois" class="col-form-label form-label"><wicket:label /></label>
-												</div>
-												<div class="col-md-6">
-													<vue-date-picker wicket:id="datepickerPlusieursMois"></vue-date-picker>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-6">
-							<div class="card card-main">
-								<div class="card-header">
-									<div class="card-header-title">
-										<wicket:message key="tips.forms.datepickers.weekendsOff.title" />
-									</div>
-								</div>
-								<div class="card-body">
-									<div class="row row-form">
-										<div class="col-12">
-											<div class="row row-form-group form-group">
-												<div class="col-md-4">
-													<label wicket:for="datepickerWeekendOff" class="col-form-label form-label"><wicket:label /></label>
-												</div>
-												<div class="col-md-6">
-													<vue-date-picker wicket:id="datepickerWeekendOff"></vue-date-picker>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-6">
-							<div class="card card-main">
-								<div class="card-header">
-									<div class="card-header-title">
-										onchange Ajax modification
-									</div>
-								</div>
-								<div class="card-body">
-									<div class="row row-form">
-										<div class="col-12">
-											<div class="row row-form-group form-group">
-												<div class="col-md-4">
-													<label wicket:for="datePickerAjaxChange1" class="col-form-label form-label"><wicket:label /></label>
-												</div>
-												<div class="col-md-6">
-													<vue-date-picker wicket:id="datePickerAjaxChange1"></vue-date-picker>
-												</div>
-											</div>
-										</div>
-										<div class="col-12">
-											<div class="row row-form-group form-group">
-												<div class="col-md-4">
-													<label wicket:for="datePickerAjaxChange2" class="col-form-label form-label"><wicket:label /></label>
-												</div>
-												<div class="col-md-6">
-													<vue-date-picker wicket:id="datePickerAjaxChange2"></vue-date-picker>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-6">
-							<div class="card card-main">
-								<div class="card-header">
-									<div class="card-header-title">
-										onchange js modification
-									</div>
-								</div>
-								<div class="card-body">
-									<div class="row row-form">
-										<div class="col-12">
-											<div class="row row-form-group form-group">
-												<div class="col-md-4">
-													<label wicket:for="datePickerJsChange1" class="col-form-label form-label"><wicket:label /></label>
-												</div>
-												<div class="col-md-6">
-													<vue-date-picker wicket:id="datePickerJsChange1"></vue-date-picker>
-												</div>
-											</div>
-										</div>
-										<div class="col-12">
-											<div class="row row-form-group form-group">
-												<div class="col-md-4">
-													<label wicket:for="datePickerJsChange2" class="col-form-label form-label"><wicket:label /></label>
-												</div>
-												<div class="col-md-6">
-													<vue-date-picker wicket:id="datePickerJsChange2"></vue-date-picker>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-6">
-							<div class="card card-main">
-								<div class="card-header">
-									<div class="card-header-title">
-										Dates avec markers
-									</div>
-								</div>
-								<div class="card-body">
-									<div class="row row-form">
-										<div class="col-12">
-											<div class="row row-form-group form-group">
-												<div class="col-md-4">
-													<label wicket:for="datePickerMarkers" class="col-form-label form-label"><wicket:label /></label>
-												</div>
-												<div class="col-md-6">
-													<vue-date-picker wicket:id="datePickerMarkers">
-														<template #marker="{ marker, day, date }">
-															<span class="custom-marker"></span>
-														</template>
-													</vue-date-picker>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
+<!--						<div class="col-lg-6">-->
+<!--							<div class="card card-main">-->
+<!--								<div class="card-header">-->
+<!--									<div class="card-header-title">-->
+<!--										Date et heure-->
+<!--									</div>-->
+<!--								</div>-->
+<!--								<div class="card-body">-->
+<!--									<div class="row row-form">-->
+<!--										<div class="col-12">-->
+<!--											<div class="row row-form-group form-group">-->
+<!--												<div class="col-12">-->
+<!--													<div class="row row-form-group form-group">-->
+<!--														<div class="col-md-4">-->
+<!--															<label wicket:for="dateTimePicker" class="col-form-label form-label"><wicket:label /></label>-->
+<!--														</div>-->
+<!--														<div class="col-md-6">-->
+<!--															<vue-date-picker wicket:id="dateTimePicker"></vue-date-picker>-->
+<!--														</div>-->
+<!--													</div>-->
+<!--												</div>-->
+<!--											</div>-->
+<!--										</div>-->
+<!--									</div>-->
+<!--								</div>-->
+<!--							</div>-->
+<!--						</div>-->
+<!--						<div class="col-lg-6">-->
+<!--							<div class="card card-main">-->
+<!--								<div class="card-header">-->
+<!--									<div class="card-header-title">-->
+<!--										Heure-->
+<!--									</div>-->
+<!--								</div>-->
+<!--								<div class="card-body">-->
+<!--									<div class="row row-form">-->
+<!--										<div class="col-12">-->
+<!--											<div class="row row-form-group form-group">-->
+<!--												<div class="col-12">-->
+<!--													<div class="row row-form-group form-group">-->
+<!--														<div class="col-md-4">-->
+<!--															<label wicket:for="timePicker" class="col-form-label form-label"><wicket:label /></label>-->
+<!--														</div>-->
+<!--														<div class="col-md-6">-->
+<!--															<vue-date-picker wicket:id="timePicker"></vue-date-picker>-->
+<!--														</div>-->
+<!--													</div>-->
+<!--												</div>-->
+<!--											</div>-->
+<!--										</div>-->
+<!--									</div>-->
+<!--								</div>-->
+<!--							</div>-->
+<!--						</div>-->
+<!--						<div class="col-lg-6">-->
+<!--							<div class="card card-main">-->
+<!--								<div class="card-header">-->
+<!--									<div class="card-header-title">-->
+<!--										Mois / année-->
+<!--									</div>-->
+<!--								</div>-->
+<!--								<div class="card-body">-->
+<!--									<div class="row row-form">-->
+<!--										<div class="col-12">-->
+<!--											<div class="row row-form-group form-group">-->
+<!--												<div class="col-12">-->
+<!--													<div class="row row-form-group form-group">-->
+<!--														<div class="col-md-4">-->
+<!--															<label wicket:for="monthPicker" class="col-form-label form-label"><wicket:label /></label>-->
+<!--														</div>-->
+<!--														<div class="col-md-6">-->
+<!--															<vue-date-picker wicket:id="monthPicker"></vue-date-picker>-->
+<!--														</div>-->
+<!--													</div>-->
+<!--												</div>-->
+<!--												<div class="col-12">-->
+<!--													<div class="row row-form-group form-group">-->
+<!--														<div class="col-md-4">-->
+<!--															<label wicket:for="yearPicker" class="col-form-label form-label"><wicket:label /></label>-->
+<!--														</div>-->
+<!--														<div class="col-md-6">-->
+<!--															<vue-date-picker wicket:id="yearPicker"></vue-date-picker>-->
+<!--														</div>-->
+<!--													</div>-->
+<!--												</div>-->
+<!--											</div>-->
+<!--										</div>-->
+<!--									</div>-->
+<!--								</div>-->
+<!--							</div>-->
+<!--						</div>-->
+<!--						<div class="col-lg-6">-->
+<!--							<div class="card card-main">-->
+<!--								<div class="card-header">-->
+<!--									<div class="card-header-title">-->
+<!--										<wicket:message key="tips.forms.datepickers.intervalle.title" />-->
+<!--									</div>-->
+<!--								</div>-->
+<!--								<div class="card-body">-->
+<!--									<div class="row row-form">-->
+<!--										<div class="col-12">-->
+<!--											<div class="row row-form-group form-group">-->
+<!--												<div class="col-md-4">-->
+<!--													<label wicket:for="datepickerIntervalle5j" class="col-form-label form-label"><wicket:label /></label>-->
+<!--												</div>-->
+<!--												<div class="col-md-6">-->
+<!--													<vue-date-picker wicket:id="datepickerIntervalle5j"></vue-date-picker>-->
+<!--												</div>-->
+<!--											</div>-->
+<!--										</div>-->
+<!--										<div class="col-12">-->
+<!--											<div class="row row-form-group form-group">-->
+<!--												<div class="col-md-4">-->
+<!--													<label wicket:for="datepickerIntervalle15j" class="col-form-label form-label"><wicket:label /></label>-->
+<!--												</div>-->
+<!--												<div class="col-md-6">-->
+<!--													<vue-date-picker wicket:id="datepickerIntervalle15j"></vue-date-picker>-->
+<!--												</div>-->
+<!--											</div>-->
+<!--										</div>-->
+<!--										<div class="col-12">-->
+<!--											<div class="row row-form-group form-group">-->
+<!--												<div class="col-md-4">-->
+<!--													<label wicket:for="datepickerIntervalle2m" class="col-form-label form-label"><wicket:label /></label>-->
+<!--												</div>-->
+<!--												<div class="col-md-6">-->
+<!--													<vue-date-picker wicket:id="datepickerIntervalle2m"></vue-date-picker>-->
+<!--												</div>-->
+<!--											</div>-->
+<!--										</div>-->
+<!--									</div>-->
+<!--								</div>-->
+<!--							</div>-->
+<!--						</div>-->
+<!--						<div class="col-lg-6">-->
+<!--							<div class="card card-main">-->
+<!--								<div class="card-header">-->
+<!--									<div class="card-header-title">-->
+<!--										<wicket:message key="tips.forms.datepickers.format.title" />-->
+<!--									</div>-->
+<!--								</div>-->
+<!--								<div class="card-body">-->
+<!--									<div class="row row-form">-->
+<!--										<div class="col-12">-->
+<!--											<div class="row row-form-group form-group">-->
+<!--												<div class="col-md-4">-->
+<!--													<label wicket:for="datepickerFormatRestreint" class="col-form-label form-label"><wicket:label /></label>-->
+<!--												</div>-->
+<!--												<div class="col-md-6">-->
+<!--													<div class="col-md-6">-->
+<!--														<vue-date-picker wicket:id="datepickerFormatRestreint"></vue-date-picker>-->
+<!--													</div>-->
+<!--												</div>-->
+<!--											</div>-->
+<!--										</div>-->
+<!--									</div>-->
+<!--								</div>-->
+<!--							</div>-->
+<!--						</div>-->
+<!--						<div class="col-lg-6">-->
+<!--							<div class="card card-main">-->
+<!--								<div class="card-header">-->
+<!--									<div class="card-header-title">-->
+<!--										<wicket:message key="tips.forms.datepickers.plusieursMois.title" />-->
+<!--									</div>-->
+<!--								</div>-->
+<!--								<div class="card-body">-->
+<!--									<div class="row row-form">-->
+<!--										<div class="col-12">-->
+<!--											<div class="row row-form-group form-group">-->
+<!--												<div class="col-md-4">-->
+<!--													<label wicket:for="datepickerPlusieursMois" class="col-form-label form-label"><wicket:label /></label>-->
+<!--												</div>-->
+<!--												<div class="col-md-6">-->
+<!--													<vue-date-picker wicket:id="datepickerPlusieursMois"></vue-date-picker>-->
+<!--												</div>-->
+<!--											</div>-->
+<!--										</div>-->
+<!--									</div>-->
+<!--								</div>-->
+<!--							</div>-->
+<!--						</div>-->
+<!--						<div class="col-lg-6">-->
+<!--							<div class="card card-main">-->
+<!--								<div class="card-header">-->
+<!--									<div class="card-header-title">-->
+<!--										<wicket:message key="tips.forms.datepickers.weekendsOff.title" />-->
+<!--									</div>-->
+<!--								</div>-->
+<!--								<div class="card-body">-->
+<!--									<div class="row row-form">-->
+<!--										<div class="col-12">-->
+<!--											<div class="row row-form-group form-group">-->
+<!--												<div class="col-md-4">-->
+<!--													<label wicket:for="datepickerWeekendOff" class="col-form-label form-label"><wicket:label /></label>-->
+<!--												</div>-->
+<!--												<div class="col-md-6">-->
+<!--													<vue-date-picker wicket:id="datepickerWeekendOff"></vue-date-picker>-->
+<!--												</div>-->
+<!--											</div>-->
+<!--										</div>-->
+<!--									</div>-->
+<!--								</div>-->
+<!--							</div>-->
+<!--						</div>-->
+<!--						<div class="col-lg-6">-->
+<!--							<div class="card card-main">-->
+<!--								<div class="card-header">-->
+<!--									<div class="card-header-title">-->
+<!--										onchange Ajax modification-->
+<!--									</div>-->
+<!--								</div>-->
+<!--								<div class="card-body">-->
+<!--									<div class="row row-form">-->
+<!--										<div class="col-12">-->
+<!--											<div class="row row-form-group form-group">-->
+<!--												<div class="col-md-4">-->
+<!--													<label wicket:for="datePickerAjaxChange1" class="col-form-label form-label"><wicket:label /></label>-->
+<!--												</div>-->
+<!--												<div class="col-md-6">-->
+<!--													<vue-date-picker wicket:id="datePickerAjaxChange1"></vue-date-picker>-->
+<!--												</div>-->
+<!--											</div>-->
+<!--										</div>-->
+<!--										<div class="col-12">-->
+<!--											<div class="row row-form-group form-group">-->
+<!--												<div class="col-md-4">-->
+<!--													<label wicket:for="datePickerAjaxChange2" class="col-form-label form-label"><wicket:label /></label>-->
+<!--												</div>-->
+<!--												<div class="col-md-6">-->
+<!--													<vue-date-picker wicket:id="datePickerAjaxChange2"></vue-date-picker>-->
+<!--												</div>-->
+<!--											</div>-->
+<!--										</div>-->
+<!--									</div>-->
+<!--								</div>-->
+<!--							</div>-->
+<!--						</div>-->
+<!--						<div class="col-lg-6">-->
+<!--							<div class="card card-main">-->
+<!--								<div class="card-header">-->
+<!--									<div class="card-header-title">-->
+<!--										onchange js modification-->
+<!--									</div>-->
+<!--								</div>-->
+<!--								<div class="card-body">-->
+<!--									<div class="row row-form">-->
+<!--										<div class="col-12">-->
+<!--											<div class="row row-form-group form-group">-->
+<!--												<div class="col-md-4">-->
+<!--													<label wicket:for="datePickerJsChange1" class="col-form-label form-label"><wicket:label /></label>-->
+<!--												</div>-->
+<!--												<div class="col-md-6">-->
+<!--													<vue-date-picker wicket:id="datePickerJsChange1"></vue-date-picker>-->
+<!--												</div>-->
+<!--											</div>-->
+<!--										</div>-->
+<!--										<div class="col-12">-->
+<!--											<div class="row row-form-group form-group">-->
+<!--												<div class="col-md-4">-->
+<!--													<label wicket:for="datePickerJsChange2" class="col-form-label form-label"><wicket:label /></label>-->
+<!--												</div>-->
+<!--												<div class="col-md-6">-->
+<!--													<vue-date-picker wicket:id="datePickerJsChange2"></vue-date-picker>-->
+<!--												</div>-->
+<!--											</div>-->
+<!--										</div>-->
+<!--									</div>-->
+<!--								</div>-->
+<!--							</div>-->
+<!--						</div>-->
+<!--						<div class="col-lg-6">-->
+<!--							<div class="card card-main">-->
+<!--								<div class="card-header">-->
+<!--									<div class="card-header-title">-->
+<!--										Dates avec markers-->
+<!--									</div>-->
+<!--								</div>-->
+<!--								<div class="card-body">-->
+<!--									<div class="row row-form">-->
+<!--										<div class="col-12">-->
+<!--											<div class="row row-form-group form-group">-->
+<!--												<div class="col-md-4">-->
+<!--													<label wicket:for="datePickerMarkers" class="col-form-label form-label"><wicket:label /></label>-->
+<!--												</div>-->
+<!--												<div class="col-md-6">-->
+<!--													<vue-date-picker wicket:id="datePickerMarkers">-->
+<!--														<template #marker="{ marker, day, date }">-->
+<!--															<span class="custom-marker"></span>-->
+<!--														</template>-->
+<!--													</vue-date-picker>-->
+<!--												</div>-->
+<!--											</div>-->
+<!--										</div>-->
+<!--									</div>-->
+<!--								</div>-->
+<!--							</div>-->
+<!--						</div>-->
 						<div class="col-auto ms-auto ">
 							<div class="form-group">
 								<button wicket:id="save" class="btn btn-success" type="submit">
