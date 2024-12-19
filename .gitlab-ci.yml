@@ -27,11 +27,11 @@ maven-build:
       junit:
         - "**/target/surefire-reports/TEST-*.xml"
   rules:
-  - if: $CHECK_DEPENDENCIES
-    when: never
-  - if: $CI_PIPELINE_SOURCE == 'api'
-    when: never
-  - when: on_success
+    - if: $CHECK_DEPENDENCIES
+      when: never
+    - if: $CI_PIPELINE_SOURCE == 'api'
+      when: never
+    - when: on_success
   tags:
     - docker
   services:
@@ -62,9 +62,9 @@ maven-dependencies:
     - "source gitlab-ci.build.conf"
     - "./ci/maven-dependencies.sh"
   rules:
-  - if: $CHECK_DEPENDENCIES
-  - if: $CI_PIPELINE_SOURCE == 'api'
-    when: never
+    - if: $CI_PIPELINE_SOURCE == 'api'
+      when: never
+    - if: $CHECK_DEPENDENCIES == "true"
   tags:
     - docker
 
@@ -94,17 +94,16 @@ test-init:
     basic-application org.iglooproject.archetype CURRENT_IGLOO_VERSION basicapp
     BasicApplication basicApplication "Basic Application" basic_application
   rules:
-  - if: $CHECK_DEPENDENCIES
-    when: never
-  - if: $CI_PIPELINE_SOURCE == 'api'
-    when: never
-  - if: $CI_COMMIT_BRANCH == "dev"
-  - if: $CI_COMMIT_BRANCH == "master"
-  - if: $CI_COMMIT_BRANCH == "main"
-  - if: $CI_COMMIT_BRANCH == "igloo-boot"
-  - if: $CI_COMMIT_BRANCH == "igloo-boot-dev"
-  - if: $CI_COMMIT_BRANCH =~ /^ft-.*-deploy$/
-
+    - if: $CHECK_DEPENDENCIES
+      when: never
+    - if: $CI_PIPELINE_SOURCE == 'api'
+      when: never
+    - if: $CI_COMMIT_BRANCH == "dev"
+    - if: $CI_COMMIT_BRANCH == "master"
+    - if: $CI_COMMIT_BRANCH == "main"
+    - if: $CI_COMMIT_BRANCH == "igloo-boot"
+    - if: $CI_COMMIT_BRANCH == "igloo-boot-dev"
+    - if: $CI_COMMIT_BRANCH =~ /^ft-.*-deploy$/
   tags:
   - docker
 
@@ -128,7 +127,7 @@ basic-application-init:
     "$ARTIFACT_ID" "$GROUP_ID" "$VERSION" "$PACKAGE"
     "$ARCHETYPE_APPLICATION_NAME_PREFIX" "$ARCHETYPE_SPRING_ANNOTATION_VALUE_PREFIX" "$ARCHETYPE_FULL_APPLICTION_NAME" "$ARCHETYPE_DATABASE_PREFIX"
   rules:
-  - if: $CI_PIPELINE_SOURCE == 'api'
+    - if: $CI_PIPELINE_SOURCE == 'api'
   tags:
     - docker
 
@@ -138,18 +137,18 @@ maven-deploy:
   script:
     - "mvn -U deploy -DperformRelease -Ddistribution=igloo-release -DskipTests"
   rules:
-  - if: $CI_PIPELINE_SOURCE == 'api'
-    when: never
-  - if: $CHECK_DEPENDENCIES
-    when: never
-  - if: $CI_COMMIT_BRANCH == "main"
-  - if: $CI_COMMIT_BRANCH == "master"
-  - if: $CI_COMMIT_BRANCH == "dev"
-  - if: $CI_COMMIT_BRANCH == "igloo-boot"
-  - if: $CI_COMMIT_BRANCH == "igloo-boot-dev"
-  - if: $CI_COMMIT_BRANCH =~ /^ft-.*-deploy$/
-  - if: $CI_COMMIT_BRANCH =~ /^hf-.*$/
-  - if: $CI_COMMIT_BRANCH =~ /^igloo-boot-hf-.*$/
+    - if: $CI_PIPELINE_SOURCE == 'api'
+      when: never
+    - if: $CHECK_DEPENDENCIES
+      when: never
+    - if: $CI_COMMIT_BRANCH == "main"
+    - if: $CI_COMMIT_BRANCH == "master"
+    - if: $CI_COMMIT_BRANCH == "dev"
+    - if: $CI_COMMIT_BRANCH == "igloo-boot"
+    - if: $CI_COMMIT_BRANCH == "igloo-boot-dev"
+    - if: $CI_COMMIT_BRANCH =~ /^ft-.*-deploy$/
+    - if: $CI_COMMIT_BRANCH =~ /^hf-.*$/
+    - if: $CI_COMMIT_BRANCH =~ /^igloo-boot-hf-.*$/
   tags:
     - docker
 
@@ -163,10 +162,10 @@ sonar-analyze:
       -DskipTests
       -Dsonar.host.url="https://sonar.tools.kobalt.fr"
   rules:
-  - if: $CI_PIPELINE_SOURCE == 'api'
-    when: never
-  - if: $CHECK_DEPENDENCIES
-    when: never
-  - when: on_success
+    - if: $CI_PIPELINE_SOURCE == 'api'
+      when: never
+    - if: $CHECK_DEPENDENCIES
+      when: never
+    - when: on_success
   tags:
     - docker
