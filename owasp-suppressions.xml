@@ -183,4 +183,41 @@
 		<vulnerabilityName>jQuery 1.x and 2.x are End-of-Life and no longer receiving security updates
 		</vulnerabilityName>
 	</suppress>
+	<suppress>
+		<notes><![CDATA[
+		file name: lucene-core-5.5.5.jar
+
+		Igloo don't use LuceneReplicator. If we have to, we would not use it on arbitrary data but on our data.
+		Lucene 9.12.0 is not compatible with hibernate search 5
+		]]></notes>
+		<packageUrl regex="true">^pkg:maven/org\.apache\.lucene/lucene-.*$</packageUrl>
+		<cve>CVE-2024-45772</cve>
+	</suppress>
+	<suppress>
+		<notes><![CDATA[
+		file name: querydsl-jpa-5.1.0.jar
+		
+		Igloo 5 don't use QueryDSL with orderBy parameter in URL
+		]]></notes>
+		<packageUrl regex="true">^pkg:maven/com\.querydsl/querydsl-jpa@.*$</packageUrl>
+		<vulnerabilityName>CVE-2024-49203</vulnerabilityName>
+	</suppress>
+	<suppress>
+		<notes><![CDATA[
+		file name: spring-core-5.3.39.jar
+		
+		Igloo don't use byte[] parameter in spring-webmvc
+		]]></notes>
+		<packageUrl regex="true">^pkg:maven/org\.springframework/spring-.*$</packageUrl>
+		<cve>CVE-2024-38828</cve>
+	</suppress>
+	<suppress>
+		<notes><![CDATA[
+		file name: spring-core-5.3.39.jar
+		
+		Igloo 5 don't use disallowedFields patterns in DataBinder
+		]]></notes>
+		<packageUrl regex="true">^pkg:maven/org\.springframework/spring-.*$</packageUrl>
+		<cve>CVE-2024-38820</cve>
+	</suppress>
 </suppressions>
