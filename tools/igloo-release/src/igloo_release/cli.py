@@ -442,7 +442,7 @@ def _push(commands, project, release_version, branch, main_branch, path, push):
         commands,
         f"{project}-push",
         f"{project}: push {branch}, {main_branch}, v{release_version}",
-        ["git", "-C", path, "origin", branch, main_branch, f"v{release_version}"],
+        ["git", "-C", path, "push", "origin", branch, main_branch, f"v{release_version}"],
     )
 
 
