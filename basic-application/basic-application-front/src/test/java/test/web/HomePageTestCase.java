@@ -1,5 +1,9 @@
 package test.web;
 
+import static basicapp.back.security.model.BasicApplicationPermissionConstants.GLOBAL_ANNOUNCEMENT_READ;
+import static basicapp.back.security.model.BasicApplicationPermissionConstants.GLOBAL_REFERENCE_DATA_READ;
+import static basicapp.back.security.model.BasicApplicationPermissionConstants.GLOBAL_ROLE_READ;
+import static basicapp.back.security.model.BasicApplicationPermissionConstants.GLOBAL_USER_READ;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import basicapp.back.security.model.BasicApplicationPermissionConstants;
@@ -77,6 +81,13 @@ class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
 
   @Test
   void sidebarMenuUserAdmin() throws ServiceException, SecurityServiceException {
+    addPermissions(
+        administrator,
+        GLOBAL_REFERENCE_DATA_READ,
+        GLOBAL_USER_READ,
+        GLOBAL_ROLE_READ,
+        GLOBAL_ANNOUNCEMENT_READ);
+
     authenticateUser(administrator);
 
     tester.startPage(HomePage.class);

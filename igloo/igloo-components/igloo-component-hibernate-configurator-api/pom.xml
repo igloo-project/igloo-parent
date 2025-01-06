@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.iglooproject.components</groupId>
 		<artifactId>igloo-components</artifactId>
-		<version>6.0.0-Alpha18</version>
+		<version>6.0.0</version>
 	</parent>
 
 	<artifactId>igloo-component-hibernate-configurator-api</artifactId>

@@ -1,5 +1,7 @@
 package test.web;
 
+import static basicapp.back.security.model.BasicApplicationPermissionConstants.GLOBAL_USER_READ;
+
 import basicapp.front.profile.page.ProfilePage;
 import basicapp.front.user.page.TechnicalUserListPage;
 import org.apache.wicket.Component;
@@ -17,6 +19,8 @@ class ValidatorTestCase extends AbstractBasicApplicationWebappTestCase {
   /** Test the UserPasswordValidator when username = password which shouldn't be allowed */
   @Test
   void technicalUserPasswordValidator() throws ServiceException, SecurityServiceException {
+    addPermissions(administrator, GLOBAL_USER_READ);
+
     authenticateUser(administrator);
 
     tester.startPage(TechnicalUserListPage.class);

@@ -43,6 +43,7 @@ import org.apache.wicket.validation.validator.EmailAddressValidator;
 import org.iglooproject.spring.property.SpringPropertyIds;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.spring.util.StringUtils;
+import org.iglooproject.wicket.more.markup.html.form.FormMode;
 import org.iglooproject.wicket.more.markup.html.form.LocaleDropDownChoice;
 import org.iglooproject.wicket.more.markup.html.form.ModelValidatingForm;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
@@ -75,6 +76,8 @@ public class BasicUserSavePopup extends AbstractAjaxModalPopupPanel<User> {
   @SpringBean private ISecurityManagementControllerService securityManagementControllerService;
 
   @SpringBean private IPropertyService propertyService;
+
+  private final IModel<FormMode> formModeModel = Model.of();
 
   private final IModel<String> passwordModel = Model.of();
 
@@ -217,6 +220,7 @@ public class BasicUserSavePopup extends AbstractAjaxModalPopupPanel<User> {
   }
 
   public void setUpAdd(User user) {
+    formModeModel.setObject(FormMode.ADD);
     if (user.getLocale() == null) {
       user.setLocale(propertyService.get(SpringPropertyIds.DEFAULT_LOCALE));
     }
@@ -224,6 +228,7 @@ public class BasicUserSavePopup extends AbstractAjaxModalPopupPanel<User> {
   }
 
   public void setUpEdit(User user) {
+    formModeModel.setObject(FormMode.EDIT);
     if (user.getLocale() == null) {
       user.setLocale(propertyService.get(SpringPropertyIds.DEFAULT_LOCALE));
     }
@@ -231,12 +236,12 @@ public class BasicUserSavePopup extends AbstractAjaxModalPopupPanel<User> {
   }
 
   private Condition addModeCondition() {
-    return Condition.isTrueOrNull(BindingModel.of(getModel(), Bindings.user().isNew()));
+    return FormMode.ADD.condition(formModeModel);
   }
 
   @Override
   protected void onDetach() {
     super.onDetach();
-    Detachables.detach(passwordModel);
+    Detachables.detach(formModeModel, passwordModel);
   }
 }

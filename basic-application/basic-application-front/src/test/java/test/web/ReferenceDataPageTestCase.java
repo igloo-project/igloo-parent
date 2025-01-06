@@ -1,5 +1,6 @@
 package test.web;
 
+import static basicapp.back.security.model.BasicApplicationPermissionConstants.GLOBAL_REFERENCE_DATA_READ;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import basicapp.front.referencedata.page.ReferenceDataPage;
@@ -14,6 +15,8 @@ class ReferenceDataPageTestCase extends AbstractBasicApplicationWebappTestCase {
 
   @Test
   void initPage() throws ServiceException, SecurityServiceException {
+    addPermissions(administrator, GLOBAL_REFERENCE_DATA_READ);
+
     authenticateUser(administrator);
 
     tester.startPage(ReferenceDataPage.class);

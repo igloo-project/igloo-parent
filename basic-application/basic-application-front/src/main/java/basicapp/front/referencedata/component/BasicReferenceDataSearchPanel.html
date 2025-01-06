@@ -5,11 +5,11 @@
 	<form wicket:id="form" onsubmit="return false;">
 		<div class="row row-form">
 			<div class="form-group col-lg-6 col-2xl-5">
-				<label class="visually-hidden" wicket:for="label"><wicket:label /></label>
+				<label wicket:for="label" class="visually-hidden"><wicket:label /></label>
 				<input wicket:id="label" class="form-control" type="text" />
 			</div>
 			<div class="form-group col-lg-6 col-2xl-4">
-				<label class="visually-hidden" wicket:for="enabledFilter"><wicket:label /></label>
+				<label wicket:for="enabledFilter" class="visually-hidden"><wicket:label /></label>
 				<select wicket:id="enabledFilter" class="form-control" />
 			</div>
 			<wicket:child />

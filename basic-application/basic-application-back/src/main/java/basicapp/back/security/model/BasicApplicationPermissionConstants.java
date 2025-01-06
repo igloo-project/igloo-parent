@@ -39,12 +39,15 @@ public class BasicApplicationPermissionConstants extends CorePermissionConstants
   // Add contants of the form public static final String MY_PERMISSION_NAME = "MY_PERMISSION_NAME";
   // here
 
-  public static final String GLOBAL_ROLE_READ = "GLOBAL_ROLE_READ";
-  public static final String GLOBAL_ROLE_WRITE = "GLOBAL_ROLE_WRITE";
-  public static final String GLOBAL_USER_READ = "GLOBAL_USER_READ";
-  public static final String GLOBAL_USER_WRITE = "GLOBAL_USER_WRITE";
-  public static final String GLOBAL_ANNOUNCEMENT_READ = "GLOBAL_ANNOUNCEMENT_READ";
-  public static final String GLOBAL_ANNOUNCEMENT_WRITE = "GLOBAL_ANNOUNCEMENT_WRITE";
   public static final String GLOBAL_REFERENCE_DATA_READ = "GLOBAL_REFERENCE_DATA_READ";
   public static final String GLOBAL_REFERENCE_DATA_WRITE = "GLOBAL_REFERENCE_DATA_WRITE";
+
+  public static final String GLOBAL_USER_READ = "GLOBAL_USER_READ";
+  public static final String GLOBAL_USER_WRITE = "GLOBAL_USER_WRITE";
+
+  public static final String GLOBAL_ROLE_READ = "GLOBAL_ROLE_READ";
+  public static final String GLOBAL_ROLE_WRITE = "GLOBAL_ROLE_WRITE";
+
+  public static final String GLOBAL_ANNOUNCEMENT_READ = "GLOBAL_ANNOUNCEMENT_READ";
+  public static final String GLOBAL_ANNOUNCEMENT_WRITE = "GLOBAL_ANNOUNCEMENT_WRITE";
 }
