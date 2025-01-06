@@ -410,6 +410,7 @@ def _release_start_version(commands, project, release_version, development_versi
             "gitflow:release-start",
             f"-DreleaseVersion={release_version}",
             f"-DdevelopmentVersion={development_version}",
+            "-DallowSnapshots=true"
         ],
         cwd=path,
     )
