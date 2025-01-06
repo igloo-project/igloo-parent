@@ -41,33 +41,6 @@
 	</suppress>
 	<suppress>
 		<notes><![CDATA[
-		file name: bootstrap4-4.6.0.jar: bootstrap.bundle.min.js
-		
-		same than CVE-2024-6484 : we don't use bootstrap carousel component on Igloo
-	]]></notes>
-		<packageUrl regex="true">^pkg:javascript/bootstrap@.*$</packageUrl>
-		<vulnerabilityName>CVE-2024-6531</vulnerabilityName>
-	</suppress>
-	<suppress>
-		<notes><![CDATA[
-	file name: bootstrap4-4.6.0.jar: bootstrap.js
-	
-	
-	]]></notes>
-		<packageUrl regex="true">^pkg:javascript/bootstrap@.*$</packageUrl>
-		<vulnerabilityName>CVE-2024-6531</vulnerabilityName>
-	</suppress>
-	<suppress>
-		<notes><![CDATA[
-		file name: bootstrap4-4.6.0.jar: bootstrap.min.js
-		
-		same than CVE-2024-6484 : we don't use bootstrap carousel component on Igloo
-	]]></notes>
-		<packageUrl regex="true">^pkg:javascript/bootstrap@.*$</packageUrl>
-		<vulnerabilityName>CVE-2024-6531</vulnerabilityName>
-	</suppress>
-	<suppress>
-		<notes><![CDATA[
 		file name: prometheus-metrics-core-1.2.1.jar
 
 		False positive with Prometheus monitoring system version
@@ -84,4 +57,14 @@
 		<packageUrl regex="true">^pkg:maven/org\.webjars\.npm/select2\-bootstrap\-5\-theme@.*$</packageUrl>
 		<cve>CVE-2016-10744</cve>
 	</suppress>
+	<suppress>
+		<notes><![CDATA[
+		file name: querydsl-jpa-5.1.0.jar
+		
+		Igloo 5 don't use QueryDSL with orderBy parameter in URL.
+		]]></notes>
+		<packageUrl regex="true">^pkg:maven/com\.querydsl/querydsl-jpa@.*$</packageUrl>
+		<vulnerabilityName>CVE-2024-49203</vulnerabilityName>
+	</suppress>
+
 </suppressions>
