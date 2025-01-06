@@ -19,9 +19,10 @@ maven-build:
   script:
     - "mvn spotless:check"
     - "mvn -U -DskipTests clean package"
-  except:
-    variables:
-      - $CHECK_DEPENDENCIES
+  rules:
+    - if: $CHECK_DEPENDENCIES == "true"
+      when: never
+    - when: always
   tags:
     - docker
 
@@ -58,9 +59,8 @@ maven-dependencies:
   script:
     - "source gitlab-ci.build.conf"
     - "./ci/maven-dependencies.sh"
-  only:
-    variables:
-      - $CHECK_DEPENDENCIES
+  rules:
+    - if: $CHECK_DEPENDENCIES == "true"
   tags:
     - docker
 
@@ -69,14 +69,13 @@ maven-deploy:
   environment: staging
   script:
     - "mvn -U deploy -DskipTests -DperformRelease -Ddistribution=igloo-release"
-  only:
-    - /^master$/
-    - /^dev$/
-    - /^ft-.*-deploy$/
-    - /^hf-.*$/
-  except:
-    variables:
-      - $CHECK_DEPENDENCIES
+  rules:
+    - if: $CHECK_DEPENDENCIES == "true"
+      when: never
+    - if: $CI_COMMIT_BRANCH == "master"
+    - if: $CI_COMMIT_BRANCH == "dev"
+    - if: $CI_COMMIT_BRANCH =~ /^ft-.*-deploy$/
+    - if: $CI_COMMIT_BRANCH =~ /^hf-.*$/
   tags:
     - docker
 
@@ -98,16 +97,15 @@ sonar-analyze:
       -DskipTests
       -Dsonar.qualitygate.wait=true
       "${SONAR_OPTS[@]}"
-  only:
-    - /^dev$/
-    - /^master$/
-    - /^main$/
-    - /^igloo-boot$/
-    - /^igloo-boot-dev$/
-    - /^hf-.*$/
+  rules:
+    - if: $CHECK_DEPENDENCIES == "true"
+      when: never
+    - if: $CI_COMMIT_BRANCH == "dev"
+    - if: $CI_COMMIT_BRANCH == "master"
+    - if: $CI_COMMIT_BRANCH =~ "main"
+    - if: $CI_COMMIT_BRANCH =~ "igloo-boot"
+    - if: $CI_COMMIT_BRANCH =~ "igloo-boot-dev"
+    - if: $CI_COMMIT_BRANCH =~ /^hf-.*$/
   allow_failure: true
-  except:
-    variables:
-      - $CHECK_DEPENDENCIES
   tags:
     - docker
