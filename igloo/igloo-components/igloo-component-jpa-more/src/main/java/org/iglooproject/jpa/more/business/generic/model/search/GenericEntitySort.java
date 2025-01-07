@@ -1,16 +1,19 @@
 package org.iglooproject.jpa.more.business.generic.model.search;
 
+import static org.iglooproject.jpa.more.search.query.HibernateSearchUtils.toSortOrder;
+
 import java.util.List;
-import org.apache.lucene.search.SortField;
+import java.util.function.Function;
+import org.hibernate.search.engine.search.sort.dsl.SearchSortFactory;
+import org.hibernate.search.engine.search.sort.dsl.SortFinalStep;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.more.business.sort.ISort;
-import org.iglooproject.jpa.more.business.sort.SortUtils;
 
-public enum GenericEntitySort implements ISort<SortField> {
+public enum GenericEntitySort implements ISort<Function<SearchSortFactory, SortFinalStep>> {
   SCORE {
     @Override
-    public List<SortField> getSortFields(SortOrder sortOrder) {
-      return List.of(SortField.FIELD_SCORE); // Order is irrelevant
+    public List<Function<SearchSortFactory, SortFinalStep>> getSortFields(SortOrder sortOrder) {
+      return List.of(SearchSortFactory::score);
     }
 
     @Override
@@ -20,9 +23,8 @@ public enum GenericEntitySort implements ISort<SortField> {
   },
   ID {
     @Override
-    public List<SortField> getSortFields(SortOrder sortOrder) {
-      return List.of(
-          SortUtils.luceneSortField(this, sortOrder, SortField.Type.LONG, GenericEntity.ID));
+    public List<Function<SearchSortFactory, SortFinalStep>> getSortFields(SortOrder sortOrder) {
+      return List.of(f -> f.field(GenericEntity.ID).order(toSortOrder(this, sortOrder)));
     }
 
     @Override
