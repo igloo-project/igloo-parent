@@ -4,15 +4,18 @@ import jakarta.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
-import org.apache.lucene.search.SortField;
 import org.hibernate.search.engine.search.predicate.SearchPredicate;
 import org.hibernate.search.engine.search.predicate.dsl.PredicateFinalStep;
 import org.hibernate.search.engine.search.predicate.dsl.SearchPredicateFactory;
+import org.hibernate.search.engine.search.sort.dsl.SearchSortFactory;
+import org.hibernate.search.engine.search.sort.dsl.SortFinalStep;
 import org.hibernate.search.mapper.orm.Search;
 import org.hibernate.search.mapper.orm.session.SearchSession;
 import org.iglooproject.jpa.more.business.sort.ISort;
+import org.springframework.util.CollectionUtils;
 
-public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<SortField>>
+public abstract class AbstractHibernateSearchSearchQuery<
+        T, S extends ISort<Function<SearchSortFactory, SortFinalStep>>>
     extends AbstractSearchQuery<T, S> /* NOT Serializable */ {
 
   private final Class<T> mainClass;
@@ -65,7 +68,11 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 
   @Override
   public List<T> fullList() {
-    return session.search(mainClass).where(topLevelPredicate()).fetchAllHits();
+    return session
+        .search(mainClass)
+        .where(topLevelPredicate())
+        .sort(sortContributor())
+        .fetchAllHits();
   }
 
   @Override
@@ -73,11 +80,27 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
     return session
         .search(mainClass)
         .where(topLevelPredicate())
+        .sort(sortContributor())
         .fetchHits((int) offset, (int) limit);
   }
 
   @Override
   public long count() {
-    return session.search(mainClass).where(topLevelPredicate()).fetchTotalHitCount();
+    return session
+        .search(mainClass)
+        .where(topLevelPredicate())
+        .sort(sortContributor())
+        .fetchTotalHitCount();
+  }
+
+  protected Function<SearchSortFactory, SortFinalStep> sortContributor() {
+    return CollectionUtils.isEmpty(sortMap)
+        ? SearchSortFactory::composite
+        : f ->
+            f.composite(
+                c ->
+                    sortMap.forEach(
+                        (sort, order) ->
+                            sort.getSortFields(order).forEach(s -> c.add(s.apply(f)))));
   }
 }

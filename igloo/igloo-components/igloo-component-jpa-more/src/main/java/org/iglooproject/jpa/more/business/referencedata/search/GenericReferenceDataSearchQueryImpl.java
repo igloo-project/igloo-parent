@@ -1,7 +1,9 @@
 package org.iglooproject.jpa.more.business.referencedata.search;
 
 import java.util.Map;
-import org.apache.lucene.search.SortField;
+import java.util.function.Function;
+import org.hibernate.search.engine.search.sort.dsl.SearchSortFactory;
+import org.hibernate.search.engine.search.sort.dsl.SortFinalStep;
 import org.iglooproject.commons.util.exception.IllegalSwitchValueException;
 import org.iglooproject.jpa.more.business.generic.model.search.EnabledFilter;
 import org.iglooproject.jpa.more.business.referencedata.model.GenericReferenceData;
@@ -11,7 +13,7 @@ import org.iglooproject.jpa.more.business.sort.ISort.SortOrder;
 
 public class GenericReferenceDataSearchQueryImpl<
         T extends GenericReferenceData<? super T, ?>,
-        S extends ISort<SortField>,
+        S extends ISort<Function<SearchSortFactory, SortFinalStep>>,
         Q extends IGenericReferenceDataSearchQuery<T, S, Q>>
     extends AbstractHibernateSearchSearchQuery<T, S>
     implements IGenericReferenceDataSearchQuery<T, S, Q> {

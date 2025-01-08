@@ -410,6 +410,7 @@ def _release_start_version(commands, project, release_version, development_versi
             "gitflow:release-start",
             f"-DreleaseVersion={release_version}",
             f"-DdevelopmentVersion={development_version}",
+            "-DallowSnapshots=true"
         ],
         cwd=path,
     )
@@ -442,7 +443,7 @@ def _push(commands, project, release_version, branch, main_branch, path, push):
         commands,
         f"{project}-push",
         f"{project}: push {branch}, {main_branch}, v{release_version}",
-        ["git", "-C", path, "origin", branch, main_branch, f"v{release_version}"],
+        ["git", "-C", path, "push", "origin", branch, main_branch, f"v{release_version}"],
     )
 
 
