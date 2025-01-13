@@ -33,7 +33,7 @@ public abstract class AbstractJpaSearchQuery<T, S extends ISort<OrderSpecifier<?
   }
 
   @PostConstruct
-  private void init() {
+  protected void init() {
     jpaQuery = new JPAQuery<T>(entityManager).select(entityPath).from(entityPath);
   }
 
