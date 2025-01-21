@@ -1,5 +1,6 @@
 package org.iglooproject.jpa.more.business.search.query;
 
+import com.google.common.primitives.Ints;
 import jakarta.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
@@ -81,7 +82,7 @@ public abstract class AbstractHibernateSearchSearchQuery<
         .search(mainClass)
         .where(topLevelPredicate())
         .sort(sortContributor())
-        .fetchHits((int) offset, (int) limit);
+        .fetchHits(Ints.saturatedCast(offset), (Ints.saturatedCast(limit)));
   }
 
   @Override
