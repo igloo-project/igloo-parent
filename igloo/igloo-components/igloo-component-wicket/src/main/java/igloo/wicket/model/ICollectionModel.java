@@ -18,5 +18,7 @@ public interface ICollectionModel<T, C extends Collection<T>>
 
   void remove(T item);
 
+  void update(C collection);
+
   void clear();
 }

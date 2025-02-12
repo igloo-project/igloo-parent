@@ -48,6 +48,11 @@ public abstract class ForwardingCollectionModel<T, C extends Collection<T>>
   }
 
   @Override
+  public void update(C collection) {
+    delegate().update(collection);
+  }
+
+  @Override
   public void clear() {
     delegate().clear();
   }

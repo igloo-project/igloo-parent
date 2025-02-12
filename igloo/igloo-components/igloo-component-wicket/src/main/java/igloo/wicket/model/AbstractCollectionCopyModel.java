@@ -161,6 +161,12 @@ abstract class AbstractCollectionCopyModel<T, C extends Collection<T>, M extends
   }
 
   @Override
+  public void update(C collection) {
+    setObject(collection);
+    updateModelsIfExternalChangeIsPossible();
+  }
+
+  @Override
   public void clear() {
     super.setObject(
         createCollection()); // Remove the cached collection from LoadableDetachableModel

@@ -86,6 +86,11 @@ public class BindableCollectionModel<T, C extends Collection<T>> extends Bindabl
   }
 
   @Override
+  public void update(C collection) {
+    mainModel.update(collection);
+  }
+
+  @Override
   public void clear() {
     mainModel.clear();
   }

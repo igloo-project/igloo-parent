@@ -54,6 +54,11 @@ public class WorkingCopyCollectionModel<T, C extends Collection<T>, M extends IM
   }
 
   @Override
+  public void update(C collection) {
+    collectionWorkingCopy.update(collection);
+  }
+
+  @Override
   public void clear() {
     collectionWorkingCopy.clear();
   }
