@@ -385,7 +385,6 @@ public abstract class AbstractGenericEntityDifferenceServiceImpl<T extends Gener
     return mainDifferenceGenerator;
   }
 
-  @Override
   public IDifferenceFromReferenceGenerator<T> getMinimalDifferenceGenerator() {
     return minimalDifferenceGenerator;
   }

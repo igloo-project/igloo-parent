@@ -61,6 +61,11 @@ class FilterByModelItemModelAwareCollectionModel<T, C extends Collection<T>, M e
   }
 
   @Override
+  public void update(C collection) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
   public void clear() {
     throw new UnsupportedOperationException();
   }

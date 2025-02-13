@@ -1,20 +1,13 @@
 package igloo.difference;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
-import de.danielbechler.diff.NodeQueryService;
 import de.danielbechler.diff.ObjectDiffer;
 import de.danielbechler.diff.ObjectDifferBuilder;
 import de.danielbechler.diff.differ.BeanDiffer;
-import de.danielbechler.diff.differ.Differ;
-import de.danielbechler.diff.differ.DifferDispatcher;
-import de.danielbechler.diff.differ.DifferFactory;
-import de.danielbechler.diff.inclusion.Inclusion;
-import de.danielbechler.diff.inclusion.InclusionResolver;
 import de.danielbechler.diff.instantiation.TypeInfo;
 import de.danielbechler.diff.introspection.Introspector;
 import de.danielbechler.diff.introspection.StandardIntrospector;
@@ -34,7 +27,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.Callable;
-import org.bindgen.BindingRoot;
 import org.hibernate.proxy.HibernateProxy;
 import org.iglooproject.commons.util.context.IExecutionContext.ITearDownHandle;
 import org.iglooproject.commons.util.fieldpath.FieldPath;
@@ -48,7 +40,6 @@ import org.iglooproject.jpa.more.business.difference.differ.ExtendedCollectionDi
 import org.iglooproject.jpa.more.business.difference.differ.MultimapDiffer;
 import org.iglooproject.jpa.more.business.difference.factory.DefaultHistoryDifferenceFactory;
 import org.iglooproject.jpa.more.business.difference.factory.IHistoryDifferenceFactory;
-import org.iglooproject.jpa.more.business.difference.inclusion.NonInheritingNodePathInclusionResolver;
 import org.iglooproject.jpa.more.business.difference.model.Difference;
 import org.iglooproject.jpa.more.business.difference.service.IDifferenceService;
 import org.iglooproject.jpa.more.business.difference.util.CompositeProxyInitializer;
@@ -80,9 +71,7 @@ public abstract class AbstractConfiguredDifferenceServiceImpl<T extends GenericE
 
   private IDifferenceFromReferenceGenerator<T> mainDifferenceGenerator;
 
-  private IDifferenceFromReferenceGenerator<T> minimalDifferenceGenerator;
-
-  private DifferenceConfigurer differenceConfigurer;
+  private final DifferenceConfigurer differenceConfigurer;
 
   private final Map<FieldPath, DifferenceField> differenceFieldsByFieldPath = new HashMap<>();
 
@@ -98,14 +87,6 @@ public abstract class AbstractConfiguredDifferenceServiceImpl<T extends GenericE
           @Override
           protected ObjectDiffer createDiffer() {
             return initializeDiffer(DiffUtils.builder()).build();
-          }
-        };
-
-    this.minimalDifferenceGenerator =
-        new AbstractDifferenceFromReferenceGenerator() {
-          @Override
-          protected ObjectDiffer createDiffer() {
-            return initializeMinimalDiffer(DiffUtils.builder()).build();
           }
         };
 
@@ -172,102 +153,34 @@ public abstract class AbstractConfiguredDifferenceServiceImpl<T extends GenericE
     builder
         .differs()
         .register(
-            new DifferFactory() {
-              @Override
-              public Differ createDiffer(
-                  DifferDispatcher differDispatcher, NodeQueryService nodeQueryService) {
-                return new BeanDiffer(
+            (differDispatcher, nodeQueryService) ->
+                new BeanDiffer(
                     differDispatcher,
                     nodeQueryService,
                     nodeQueryService,
                     new OverrideRootComparisonStrategyResolver(nodeQueryService),
-                    (TypeInfoResolver) builder.introspection());
-              }
+                    (TypeInfoResolver) builder.introspection()));
+
+    builder
+        .differs()
+        .register(
+            (differDispatcher, nodeQueryService) -> {
+              ExtendedCollectionDiffer differ =
+                  new ExtendedCollectionDiffer(
+                      differDispatcher, nodeQueryService, nodeQueryService);
+              return initializeCollectionDiffer(differ);
             });
 
     builder
         .differs()
         .register(
-            new DifferFactory() {
-              @Override
-              public Differ createDiffer(
-                  DifferDispatcher differDispatcher, NodeQueryService nodeQueryService) {
-                ExtendedCollectionDiffer differ =
-                    new ExtendedCollectionDiffer(
-                        differDispatcher, nodeQueryService, nodeQueryService);
-                return initializeCollectionDiffer(differ);
-              }
-            });
-
-    builder
-        .differs()
-        .register(
-            new DifferFactory() {
-              @Override
-              public Differ createDiffer(
-                  DifferDispatcher differDispatcher, NodeQueryService nodeQueryService) {
-                MultimapDiffer differ =
-                    new MultimapDiffer(differDispatcher, nodeQueryService, nodeQueryService);
-                return initializeMultimapDiffer(differ);
-              }
+            (differDispatcher, nodeQueryService) -> {
+              MultimapDiffer differ =
+                  new MultimapDiffer(differDispatcher, nodeQueryService, nodeQueryService);
+              return initializeMultimapDiffer(differ);
             });
 
     differenceConfigurer.configureDiffer(builder);
-
-    return builder;
-  }
-
-  protected Iterable<? extends BindingRoot<? super T, ?>> getMinimalDifferenceFieldsBindings() {
-    // By default, the minimal diff does not include any nodes
-    return ImmutableList.<BindingRoot<? super T, ?>>of();
-  }
-
-  protected final ObjectDifferBuilder initializeMinimalDiffer(ObjectDifferBuilder builder) {
-    builder = initializeDiffer(builder);
-
-    // Allows to include a node without having all its children included
-    NonInheritingNodePathInclusionResolver parentInclusionResolver =
-        new NonInheritingNodePathInclusionResolver();
-    builder = builder.inclusion().resolveUsing(parentInclusionResolver).and();
-
-    // We make sure, that if no nodes have been specified as included, all
-    // the other nodes won't be considered
-    // as included "by default"
-    builder =
-        builder
-            .inclusion()
-            .resolveUsing(
-                new InclusionResolver() {
-                  @Override
-                  public Inclusion getInclusion(DiffNode node) {
-                    return Inclusion.DEFAULT; // Don't vote
-                  }
-
-                  @Override
-                  public boolean enablesStrictIncludeMode() {
-                    return true;
-                  }
-                })
-            .and();
-
-    for (BindingRoot<? super T, ?> binding : getMinimalDifferenceFieldsBindings()) {
-      FieldPath path = FieldPath.fromBinding(binding);
-
-      // The node and all its children are included
-      builder = builder.inclusion().include().node(DiffUtils.toNodePath(path)).and();
-
-      // For it to work, we also need to include the potential parents.
-      // However we don't use the category system here nor the
-      // NodePathInclusionResolver because it would include
-      // all the children of the parent (the categories are inherited by
-      // the children and the NodePathInclusionResolver
-      // considers that we include all the children of a node.
-      path = path.parent().get();
-      while (!path.isRoot()) {
-        parentInclusionResolver.setInclusion(DiffUtils.toNodePath(path), Inclusion.INCLUDED);
-        path = path.parent().get();
-      }
-    }
 
     return builder;
   }
@@ -397,16 +310,13 @@ public abstract class AbstractConfiguredDifferenceServiceImpl<T extends GenericE
 
     private Callable<T> getReferenceProviderAndInitializer(T value) {
       final GenericEntityReference<?, T> reference = GenericEntityReference.ofUnknownIdType(value);
-      return new Callable<T>() {
-        @Override
-        public T call() throws Exception {
-          if (reference == null) {
-            return null;
-          } else {
-            T databaseVersion = HibernateUtils.unwrap(entityService.getEntity(reference));
-            proxyInitializer.initialize(databaseVersion);
-            return databaseVersion;
-          }
+      return () -> {
+        if (reference == null) {
+          return null;
+        } else {
+          T databaseVersion = HibernateUtils.unwrap(entityService.getEntity(reference));
+          proxyInitializer.initialize(databaseVersion);
+          return databaseVersion;
         }
       };
     }
@@ -414,15 +324,12 @@ public abstract class AbstractConfiguredDifferenceServiceImpl<T extends GenericE
     @Override
     public Callable<T> getReferenceProvider(T value) {
       final GenericEntityReference<?, T> reference = GenericEntityReference.ofUnknownIdType(value);
-      return new Callable<T>() {
-        @Override
-        public T call() throws Exception {
-          if (reference == null) {
-            return null;
-          } else {
-            T databaseVersion = entityService.getEntity(reference);
-            return HibernateUtils.unwrap(databaseVersion);
-          }
+      return () -> {
+        if (reference == null) {
+          return null;
+        } else {
+          T databaseVersion = entityService.getEntity(reference);
+          return HibernateUtils.unwrap(databaseVersion);
         }
       };
     }
@@ -436,10 +343,5 @@ public abstract class AbstractConfiguredDifferenceServiceImpl<T extends GenericE
   @Override
   public IDifferenceFromReferenceGenerator<T> getMainDifferenceGenerator() {
     return mainDifferenceGenerator;
-  }
-
-  @Override
-  public IDifferenceFromReferenceGenerator<T> getMinimalDifferenceGenerator() {
-    return minimalDifferenceGenerator;
   }
 }

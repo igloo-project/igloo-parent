@@ -79,6 +79,11 @@ public final class SequenceProviders {
     }
 
     @Override
+    public void update(List<T> collection) {
+      throw new UnsupportedOperationException("This model is read-only");
+    }
+
+    @Override
     public void clear() {
       throw new UnsupportedOperationException("This model is read-only");
     }

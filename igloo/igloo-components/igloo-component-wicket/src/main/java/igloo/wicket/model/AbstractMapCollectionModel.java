@@ -49,6 +49,11 @@ abstract class AbstractMapCollectionModel<T, C extends Collection<T>, M extends 
   }
 
   @Override
+  public void update(C collection) {
+    throw newReadOnlyException();
+  }
+
+  @Override
   public void clear() {
     throw newReadOnlyException();
   }

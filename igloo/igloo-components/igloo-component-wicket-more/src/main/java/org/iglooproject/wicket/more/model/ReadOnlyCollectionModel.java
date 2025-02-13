@@ -104,6 +104,11 @@ public class ReadOnlyCollectionModel<T, C extends Collection<T>>
   }
 
   @Override
+  public void update(C collection) {
+    throw newReadOnlyException();
+  }
+
+  @Override
   public void clear() {
     throw newReadOnlyException();
   }
