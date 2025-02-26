@@ -2,6 +2,8 @@ package test.jpa.more.business.property;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
@@ -35,6 +37,12 @@ class TestPropertyServiceAndDao extends AbstractJpaMoreTestCase {
       registry.registerDateTime(PropertyIds.IMMUTABLE_DATETIME);
       registry.registerDateTime(PropertyIds.IMMUTABLE_DATETIME_WITH_DEFAULT, new Date());
       registry.registerDateTime(PropertyIds.MUTABLE_DATETIME_TEMPLATE, new Date());
+      registry.registerLocalDate(PropertyIds.IMMUTABLE_LOCALDATE);
+      registry.registerLocalDateTime(PropertyIds.IMMUTABLE_LOCALDATETIME);
+      registry.registerLocalDateTime(
+          PropertyIds.IMMUTABLE_LOCALDATETIME_WITH_DEFAULT, LocalDateTime.now());
+      registry.registerLocalDateTime(
+          PropertyIds.MUTABLE_LOCALDATETIME_TEMPLATE, LocalDateTime.now());
     }
   }
 
@@ -52,6 +60,14 @@ class TestPropertyServiceAndDao extends AbstractJpaMoreTestCase {
         immutable("property.dateTime.value2");
     static final MutablePropertyIdTemplate<Date> MUTABLE_DATETIME_TEMPLATE =
         mutableTemplate("property.date.%1s");
+    static final ImmutablePropertyId<LocalDate> IMMUTABLE_LOCALDATE =
+        immutable("property.localDate.value");
+    static final ImmutablePropertyId<LocalDateTime> IMMUTABLE_LOCALDATETIME =
+        immutable("property.localDateTime.value");
+    static final ImmutablePropertyId<LocalDateTime> IMMUTABLE_LOCALDATETIME_WITH_DEFAULT =
+        immutable("property.localdateTime.value2");
+    static final MutablePropertyIdTemplate<LocalDateTime> MUTABLE_LOCALDATETIME_TEMPLATE =
+        mutableTemplate("property.localdate.%1s");
   }
 
   @Test
@@ -93,10 +109,22 @@ class TestPropertyServiceAndDao extends AbstractJpaMoreTestCase {
 
     propertyService.get(PropertyIds.IMMUTABLE_DATETIME_WITH_DEFAULT);
 
+    propertyService.get(PropertyIds.IMMUTABLE_LOCALDATE);
+
+    propertyService.get(PropertyIds.IMMUTABLE_LOCALDATETIME);
+
+    propertyService.get(PropertyIds.IMMUTABLE_LOCALDATETIME_WITH_DEFAULT);
+
     MutablePropertyId<Date> mutablePropertyDate =
         PropertyIds.MUTABLE_DATETIME_TEMPLATE.create("value");
     propertyService.get(mutablePropertyDate);
     propertyService.set(mutablePropertyDate, new Date());
     propertyService.get(mutablePropertyDate);
+
+    MutablePropertyId<LocalDateTime> mutablePropertyLocalDateTime =
+        PropertyIds.MUTABLE_LOCALDATETIME_TEMPLATE.create("value");
+    propertyService.get(mutablePropertyLocalDateTime);
+    propertyService.set(mutablePropertyLocalDateTime, LocalDateTime.now());
+    propertyService.get(mutablePropertyLocalDateTime);
   }
 }

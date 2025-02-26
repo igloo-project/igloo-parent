@@ -19,6 +19,9 @@ import java.text.DateFormat;
 import java.text.Format;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
@@ -28,6 +31,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.convert.ConversionException;
 import org.apache.wicket.util.convert.IConverter;
 import org.iglooproject.commons.util.rendering.IRenderer;
+import org.iglooproject.commons.util.time.IDateTimePattern;
 import org.iglooproject.functional.Functions2;
 import org.iglooproject.functional.Predicates2;
 import org.iglooproject.functional.SerializableFunction2;
@@ -499,6 +503,37 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
     }
   }
 
+  public static <T extends TemporalAccessor> Renderer<T> fromDateTimeFormatter(
+      DateTimeFormatter dateTimeFormatter) {
+    checkNotNull(dateTimeFormatter);
+    return fromDateTimeFormatter(dateTimeFormatter::withLocale);
+  }
+
+  public static <T extends TemporalAccessor> Renderer<T> fromDateTimeFormatter(
+      SerializableFunction2<? super Locale, DateTimeFormatter> dateTimeFormatterFunction) {
+    return new DateTimeFormatterRenderer<T>(dateTimeFormatterFunction).nullsAsBlank();
+  }
+
+  private static class DateTimeFormatterRenderer<T extends TemporalAccessor> extends Renderer<T> {
+    private static final long serialVersionUID = -2023856554950929671L;
+
+    private final SerializableFunction2<? super Locale, DateTimeFormatter>
+        dateTimeFormatterFunction;
+
+    public DateTimeFormatterRenderer(
+        SerializableFunction2<? super Locale, DateTimeFormatter> dateTimeFormatterFunction) {
+      super();
+      this.dateTimeFormatterFunction = checkNotNull(dateTimeFormatterFunction);
+    }
+
+    @Override
+    public String render(T value, Locale locale) {
+      checkNotNull(locale);
+      DateTimeFormatter dateTimeFormatter = dateTimeFormatterFunction.apply(locale);
+      return dateTimeFormatter.format(value);
+    }
+  }
+
   public static Renderer<Iterable<?>> fromJoiner(
       SerializableFunction2<? super Locale, ? extends Joiner> joinerFunction) {
     return fromJoiner(joinerFunction, stringValue());
@@ -672,6 +707,28 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
       renderer = renderer.compose(Functions2.capitalize());
     }
     return renderer;
+  }
+
+  public static <T extends TemporalAccessor> Renderer<T> fromDateTimePattern(
+      final IDateTimePattern dateTimePattern) {
+    return fromDateTimePattern(dateTimePattern, ZoneId.systemDefault());
+  }
+
+  public static <T extends TemporalAccessor> Renderer<T> fromDateTimePattern(
+      final IDateTimePattern dateTimePattern, ZoneId zoneId) {
+    return fromDateTimeFormatter(
+        locale ->
+            DateTimeFormatter.ofPattern(
+                    Localizer.get()
+                        .getString(
+                            dateTimePattern.getKey(),
+                            null,
+                            null,
+                            locale,
+                            null,
+                            (IModel<String>) null))
+                .withLocale(locale)
+                .withZone(zoneId));
   }
 
   public static <T extends Number> Renderer<T> count(String resourceKeyPrefix) {
