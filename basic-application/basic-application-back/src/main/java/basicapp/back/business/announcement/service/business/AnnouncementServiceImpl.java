@@ -79,6 +79,7 @@ public class AnnouncementServiceImpl extends GenericEntityServiceImpl<Long, Anno
     return dao.listEnabled();
   }
 
+  @Override
   public boolean isOpen() {
     return Optional.ofNullable(userService.getAuthenticatedUser())
         .map(

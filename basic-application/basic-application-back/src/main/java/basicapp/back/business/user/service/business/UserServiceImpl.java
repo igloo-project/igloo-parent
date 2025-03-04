@@ -8,7 +8,6 @@ import basicapp.back.business.user.model.User;
 import basicapp.back.business.user.model.atomic.UserPasswordRecoveryRequestInitiator;
 import basicapp.back.business.user.model.atomic.UserPasswordRecoveryRequestType;
 import basicapp.back.business.user.model.atomic.UserType;
-import basicapp.back.business.user.predicate.UserPredicates;
 import basicapp.back.security.service.IBasicApplicationAuthenticationService;
 import basicapp.back.security.service.ISecurityManagementService;
 import com.google.common.base.Preconditions;
@@ -122,7 +121,6 @@ public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implemen
   @Override
   public void openAnnouncement(User user) throws ServiceException, SecurityServiceException {
     Objects.requireNonNull(user);
-    Preconditions.checkArgument(UserPredicates.announcementClose().apply(user));
     user.getAnnouncementInformation().setLastActionDate(Instant.now());
     user.getAnnouncementInformation().setOpen(true);
     update(user);
@@ -131,7 +129,6 @@ public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implemen
   @Override
   public void closeAnnouncement(User user) throws ServiceException, SecurityServiceException {
     Objects.requireNonNull(user);
-    Preconditions.checkArgument(UserPredicates.announcementOpen().apply(user));
     user.getAnnouncementInformation().setLastActionDate(Instant.now());
     user.getAnnouncementInformation().setOpen(false);
     update(user);
