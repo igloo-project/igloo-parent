@@ -1,4 +1,4 @@
-package basicapp.back.config.hibernate.type;
+package basicapp.back.config.hibernate.search.bridge;
 
 import basicapp.back.business.common.model.PostalCode;
 import org.hibernate.search.mapper.pojo.bridge.ValueBridge;

@@ -17,8 +17,6 @@ public final class PostalCodeConverter extends AbstractConverter<PostalCode> {
     return INSTANCE;
   }
 
-  private PostalCodeConverter() {}
-
   @Override
   public PostalCode convertToObject(String value, Locale locale) throws ConversionException {
     String trimmedValue = StringUtils.trimAllWhitespace(value);

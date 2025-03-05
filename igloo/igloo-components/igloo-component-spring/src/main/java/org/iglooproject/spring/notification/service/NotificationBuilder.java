@@ -84,7 +84,10 @@ public class NotificationBuilder
 
   private static final Function2<INotificationRecipient, NotificationTarget>
       I_NOTIFICATION_RECIPIENT_TO_TARGET_FUNCTION =
-          recipient -> recipient != null ? NotificationTarget.of(recipient.getEmail()) : null;
+          recipient ->
+              recipient != null
+                  ? NotificationTarget.of(recipient.getNotificationEmailAddress())
+                  : null;
 
   @Autowired private JavaMailSender mailSender;
 
@@ -646,7 +649,7 @@ public class NotificationBuilder
       INotificationRecipient recipient) {
     if ((recipient.isNotificationEnabled() || bypassDisabledRecipients)
         && recipient.isEnabled()
-        && StringUtils.hasText(recipient.getEmail())) {
+        && StringUtils.hasText(recipient.getNotificationEmailAddress())) {
       addRecipientUnsafe(recipientsByTarget, NotificationTarget.of(recipient, charset), recipient);
     } else if (propertyService.get(NOTIFICATION_MAIL_DISABLED_RECIPIENT_FALLBACK) != null) {
       for (String redirectionEmail :

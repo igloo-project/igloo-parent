@@ -33,7 +33,7 @@ public abstract class AbstractGenericEntityComparator<
 
   private final Comparator<? super K> keyComparator;
 
-  public AbstractGenericEntityComparator() {
+  protected AbstractGenericEntityComparator() {
     this(false, Ordering.natural().nullsLast());
   }
 
@@ -44,7 +44,8 @@ public abstract class AbstractGenericEntityComparator<
    *     order for this comparator to be null-safe. Must be serializable in order for this
    *     comparator to be serializable.
    */
-  public AbstractGenericEntityComparator(boolean nullIsLow, Comparator<? super K> keyComparator) {
+  protected AbstractGenericEntityComparator(
+      boolean nullIsLow, Comparator<? super K> keyComparator) {
     super(nullIsLow);
     Assert.notNull(
         keyComparator, "[Assertion failed] - this argument is required; it must not be null");

@@ -11,6 +11,7 @@ import igloo.wicket.behavior.ClassAttributeAppender;
 import igloo.wicket.component.CoreLabel;
 import igloo.wicket.component.EnclosureContainer;
 import igloo.wicket.condition.Condition;
+import igloo.wicket.model.BindingModel;
 import java.util.List;
 import java.util.Objects;
 import org.apache.wicket.Component;
@@ -24,7 +25,6 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
@@ -32,7 +32,6 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.jpa.more.business.upgrade.service.IAbstractDataUpgradeService;
-import org.iglooproject.jpa.security.business.user.model.GenericUser;
 import org.iglooproject.spring.property.SpringPropertyIds;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.more.AbstractCoreSession;
@@ -46,6 +45,7 @@ import org.iglooproject.wicket.more.markup.html.template.component.BodyBreadCrum
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
 import org.iglooproject.wicket.more.model.ApplicationPropertyModel;
 import org.iglooproject.wicket.more.security.page.LogoutPage;
+import org.iglooproject.wicket.more.util.binding.CoreWicketMoreBindings;
 
 public abstract class ConsoleTemplate extends AbstractWebPageTemplate {
 
@@ -158,20 +158,10 @@ public abstract class ConsoleTemplate extends AbstractWebPageTemplate {
 
     add(
         new CoreLabel(
-                "userFullName",
-                new LoadableDetachableModel<String>() {
-                  private static final long serialVersionUID = 1L;
-
-                  @Override
-                  protected String load() {
-                    String userFullName = null;
-                    GenericUser<?> user = AbstractCoreSession.get().getUser();
-                    if (user != null) {
-                      userFullName = user.getFullName();
-                    }
-                    return userFullName;
-                  }
-                })
+                "username",
+                BindingModel.of(
+                    AbstractCoreSession.get().getUserModel(),
+                    CoreWicketMoreBindings.user().username()))
             .hideIfEmpty());
 
     add(new BookmarkablePageLink<Void>("logoutLink", LogoutPage.class));

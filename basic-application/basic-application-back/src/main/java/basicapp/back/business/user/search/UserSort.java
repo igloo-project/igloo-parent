@@ -35,7 +35,7 @@ public enum UserSort implements ISort<Function<SearchSortFactory, SortFinalStep>
   LAST_NAME {
     @Override
     public List<Function<SearchSortFactory, SortFinalStep>> getSortFields(SortOrder sortOrder) {
-      return List.of(f -> f.field(User.LAST_NAME_SORT).order(toSortOrder(this, sortOrder)));
+      return List.of(f -> f.field(User.LAST_NAME).order(toSortOrder(this, sortOrder)));
     }
 
     @Override
@@ -46,7 +46,7 @@ public enum UserSort implements ISort<Function<SearchSortFactory, SortFinalStep>
   FIRST_NAME {
     @Override
     public List<Function<SearchSortFactory, SortFinalStep>> getSortFields(SortOrder sortOrder) {
-      return List.of(f -> f.field(User.FIRST_NAME_SORT).order(toSortOrder(this, sortOrder)));
+      return List.of(f -> f.field(User.FIRST_NAME).order(toSortOrder(this, sortOrder)));
     }
 
     @Override
@@ -58,8 +58,8 @@ public enum UserSort implements ISort<Function<SearchSortFactory, SortFinalStep>
     @Override
     public List<Function<SearchSortFactory, SortFinalStep>> getSortFields(SortOrder sortOrder) {
       return List.of(
-          f -> f.field(User.LAST_NAME_SORT).order(toSortOrder(this, sortOrder)),
-          f -> f.field(User.FIRST_NAME_SORT).order(toSortOrder(this, sortOrder)));
+          f -> f.field(User.LAST_NAME).order(toSortOrder(this, sortOrder)),
+          f -> f.field(User.FIRST_NAME).order(toSortOrder(this, sortOrder)));
     }
 
     @Override

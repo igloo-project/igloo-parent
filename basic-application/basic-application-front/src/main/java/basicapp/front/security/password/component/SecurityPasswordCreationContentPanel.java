@@ -2,9 +2,11 @@ package basicapp.front.security.password.component;
 
 import static basicapp.back.property.BasicApplicationCorePropertyIds.SECURITY_PASSWORD_LENGTH_MIN;
 
+import basicapp.back.business.common.model.EmailAddress;
 import basicapp.back.business.user.model.User;
 import basicapp.back.security.service.controller.ISecurityManagementControllerService;
 import basicapp.back.util.binding.Bindings;
+import basicapp.front.common.form.EmailAddressTextField;
 import basicapp.front.common.validator.UserPasswordValidator;
 import igloo.igloojs.showpassword.ShowPasswordBehavior;
 import igloo.wicket.component.CoreLabel;
@@ -12,6 +14,7 @@ import igloo.wicket.feedback.FeedbackUtils;
 import igloo.wicket.markup.html.panel.GenericPanel;
 import igloo.wicket.model.BindingModel;
 import igloo.wicket.model.Detachables;
+import java.util.Objects;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -41,9 +44,9 @@ public class SecurityPasswordCreationContentPanel extends GenericPanel<User> {
 
   @SpringBean private ISecurityManagementControllerService securityManagementController;
 
-  private final IModel<String> emailModel = Model.of("");
+  private final IModel<EmailAddress> emailAddressModel = Model.of();
 
-  private final IModel<String> passwordModel = Model.of("");
+  private final IModel<String> passwordModel = Model.of();
 
   public SecurityPasswordCreationContentPanel(String wicketId, IModel<User> userModel) {
     super(wicketId, userModel);
@@ -54,14 +57,15 @@ public class SecurityPasswordCreationContentPanel extends GenericPanel<User> {
     TextField<String> password = new PasswordTextField("password", passwordModel);
 
     form.add(
-        new TextField<String>("email", emailModel)
-            .setLabel(new ResourceModel("business.user.email"))
+        new EmailAddressTextField("emailAddress", emailAddressModel)
+            .setLabel(new ResourceModel("business.user.emailAddress"))
             .setRequired(true)
             .add(new LabelPlaceholderBehavior())
             .add(
                 PredicateValidator.of(
-                        email -> email != null && email.equals(getModelObject().getEmail()))
-                    .errorKey("common.validator.email.match.user"))
+                        emailAddress ->
+                            Objects.equals(emailAddress, getModelObject().getEmailAddress()))
+                    .errorKey("common.validator.emailAddress.match.user"))
             .setOutputMarkupId(true),
         password
             .setLabel(new ResourceModel("business.user.password"))
@@ -115,6 +119,6 @@ public class SecurityPasswordCreationContentPanel extends GenericPanel<User> {
   @Override
   protected void onDetach() {
     super.onDetach();
-    Detachables.detach(emailModel, passwordModel);
+    Detachables.detach(emailAddressModel, passwordModel);
   }
 }

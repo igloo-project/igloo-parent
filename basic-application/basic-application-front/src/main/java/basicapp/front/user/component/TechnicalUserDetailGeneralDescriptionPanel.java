@@ -29,15 +29,16 @@ public class TechnicalUserDetailGeneralDescriptionPanel extends GenericPanel<Use
     TechnicalUserSavePopup editPopup = new TechnicalUserSavePopup("editPopup");
     add(editPopup);
 
-    IModel<String> emailModel = BindingModel.of(userModel, Bindings.user().email());
+    IModel<String> emailAddressValueModel =
+        BindingModel.of(userModel, Bindings.user().emailAddress().value());
 
     add(
         new CoreLabel("username", BindingModel.of(userModel, Bindings.user().username()))
             .showPlaceholder(),
         new BooleanIcon("enabled", BindingModel.of(userModel, Bindings.user().enabled())),
-        new EmailLink("email", emailModel),
-        new DefaultPlaceholderPanel("emailPlaceholder")
-            .condition(Condition.modelNotNull(emailModel)),
+        new EmailLink("emailAddress", emailAddressValueModel),
+        new DefaultPlaceholderPanel("emailAddressPlaceholder")
+            .condition(Condition.modelNotNull(emailAddressValueModel)),
         new CoreLabel("locale", BindingModel.of(userModel, Bindings.user().locale()))
             .showPlaceholder(),
         new CoreLabel("creationDate", BindingModel.of(userModel, Bindings.user().creationDate()))

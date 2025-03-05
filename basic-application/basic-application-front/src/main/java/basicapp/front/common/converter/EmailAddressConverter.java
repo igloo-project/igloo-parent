@@ -1,27 +1,33 @@
 package basicapp.front.common.converter;
 
 import basicapp.back.business.common.model.EmailAddress;
+import basicapp.front.common.validator.EmailAddressValidator;
 import java.util.Locale;
 import org.apache.wicket.util.convert.ConversionException;
 import org.apache.wicket.util.convert.converter.AbstractConverter;
-import org.iglooproject.commons.util.validator.AnyTldEmailAddressValidator;
 import org.springframework.util.StringUtils;
 
 public final class EmailAddressConverter extends AbstractConverter<EmailAddress> {
 
-  private static final long serialVersionUID = -2929883038769154563L;
+  private static final long serialVersionUID = 1L;
+
+  private static final EmailAddressConverter INSTANCE = new EmailAddressConverter();
+
+  public static EmailAddressConverter get() {
+    return INSTANCE;
+  }
 
   @Override
   public EmailAddress convertToObject(String value, Locale locale) throws ConversionException {
-    String trimmedValue = StringUtils.trimAllWhitespace(value);
-    if (StringUtils.hasText(trimmedValue)) {
-      if (!AnyTldEmailAddressValidator.getInstance().isValid(trimmedValue)) {
-        throw newConversionException("Invalid email format", value, locale)
-            .setResourceKey("common.validator.email");
-      }
-      return new EmailAddress(trimmedValue);
+    String valueClean = StringUtils.trimAllWhitespace(value);
+    if (!StringUtils.hasText(valueClean)) {
+      return null;
     }
-    return null;
+    if (!EmailAddressValidator.getInstance().isValid(valueClean)) {
+      throw newConversionException("Invalid email address format", value, locale)
+          .setResourceKey("common.validator.emailAddress");
+    }
+    return new EmailAddress(valueClean);
   }
 
   @Override

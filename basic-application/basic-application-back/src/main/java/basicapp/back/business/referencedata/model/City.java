@@ -2,7 +2,7 @@ package basicapp.back.business.referencedata.model;
 
 import basicapp.back.business.common.model.PostalCode;
 import basicapp.back.business.common.model.embeddable.LocalizedText;
-import basicapp.back.config.hibernate.type.PostalCodeValueBridge;
+import basicapp.back.config.hibernate.search.bridge.PostalCodeValueBridge;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Cacheable;
 import jakarta.persistence.Entity;

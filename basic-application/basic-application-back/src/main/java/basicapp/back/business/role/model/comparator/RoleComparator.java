@@ -21,8 +21,8 @@ public class RoleComparator extends AbstractGenericEntityComparator<Long, Role> 
     int order =
         ComparisonChain.start()
             .compare(
-                Bindings.role().title().getSafelyWithRoot(left),
-                Bindings.role().title().getSafelyWithRoot(right),
+                Bindings.role().title().apply(left),
+                Bindings.role().title().apply(right),
                 Ordering.natural())
             .result();
 

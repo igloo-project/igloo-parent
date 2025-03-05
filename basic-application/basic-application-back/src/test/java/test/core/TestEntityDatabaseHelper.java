@@ -3,6 +3,7 @@ package test.core;
 import basicapp.back.business.announcement.model.Announcement;
 import basicapp.back.business.announcement.model.atomic.AnnouncementType;
 import basicapp.back.business.announcement.service.business.IAnnouncementService;
+import basicapp.back.business.common.model.EmailAddress;
 import basicapp.back.business.role.model.Role;
 import basicapp.back.business.role.service.IRoleService;
 import basicapp.back.business.user.model.User;
@@ -101,7 +102,7 @@ public class TestEntityDatabaseHelper {
     user.setUsername(token);
     user.setFirstName(token);
     user.setLastName(token);
-    user.setEmail(token + "@kobalt.fr");
+    user.setEmailAddress(new EmailAddress(token + "@kobalt.fr"));
     user.setPasswordHash(passwordEncoder.encode(USER_PASSWORD));
 
     Optional.ofNullable(userConsumer).ifPresent(consumer -> consumer.accept(user));

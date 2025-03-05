@@ -30,7 +30,7 @@ public class UserExcelTableExport extends AbstractSimpleExcelTableExport {
           new ColumnInformation("business.user.username"),
           new ColumnInformation("business.user.lastName"),
           new ColumnInformation("business.user.firstName"),
-          new ColumnInformation("business.user.email"),
+          new ColumnInformation("business.user.emailAddress"),
           new ColumnInformation("business.user.enabled"),
           new ColumnInformation("business.user.roles"),
           new ColumnInformation("business.user.creationDate"),
@@ -76,9 +76,9 @@ public class UserExcelTableExport extends AbstractSimpleExcelTableExport {
 
     XSSFCreationHelper helper = (XSSFCreationHelper) workbook.getCreationHelper();
     XSSFHyperlink emailLink = helper.createHyperlink(HyperlinkType.EMAIL);
-    String emailAddress = binding.email().getSafely();
-    emailLink.setAddress("mailto:" + emailAddress);
-    addLinkToCell(addTextCell(row, columnIndex++, emailAddress), emailLink);
+    String emailAddressValue = binding.emailAddress().value().getSafely();
+    emailLink.setAddress("mailto:" + emailAddressValue);
+    addLinkToCell(addTextCell(row, columnIndex++, emailAddressValue), emailLink);
 
     if (binding.enabled().getSafely()) {
       addTextCell(row, columnIndex++, "Oui");

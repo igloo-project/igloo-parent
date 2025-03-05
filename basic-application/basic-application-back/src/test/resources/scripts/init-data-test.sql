@@ -12,7 +12,7 @@ values (-1, 'GLOBAL_ROLE_READ'),
        (-1, 'GLOBAL_REFERENCE_DATA_READ');
 
 insert into user_ (id, creationdate, enabled, lastupdatedate,
-                   passwordhash, username, email, firstname, lastname,
+                   passwordhash, username, emailaddress, firstname, lastname,
                    announcementinformation_open,
                    "type")
 values (-1, '2024-09-27 14:55:47.143', true, '2024-09-27 14:55:47.143',

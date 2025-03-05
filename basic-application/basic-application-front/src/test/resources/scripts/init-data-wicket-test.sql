@@ -1,5 +1,5 @@
 insert into user_ (id, creationdate, enabled, lastupdatedate, locale,
-                                          passwordhash, username, email, firstname, lastname,
+                                          passwordhash, username, emailaddress, firstname, lastname,
                                           announcementinformation_open,
                                           "type")
 values (-1, '2024-09-27 17:10:29.287', true, '2024-09-27 17:10:29.287', 'fr',
