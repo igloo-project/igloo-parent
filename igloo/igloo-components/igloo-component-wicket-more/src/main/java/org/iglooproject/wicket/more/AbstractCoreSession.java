@@ -21,7 +21,6 @@ import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
 import org.iglooproject.jpa.security.business.user.model.GenericUser;
 import org.iglooproject.jpa.security.business.user.service.IGenericUserService;
-import org.iglooproject.jpa.security.model.NamedPermission;
 import org.iglooproject.jpa.security.service.IAuthenticationService;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.more.model.threadsafe.SessionThreadSafeGenericEntityModel;
@@ -338,7 +337,7 @@ public abstract class AbstractCoreSession<U extends GenericUser<U>>
   }
 
   public boolean hasSignInAsPermissions(U utilisateurConnecte, U utilisateurCible) {
-    return authenticationService.hasPermission(NamedPermission.ADMIN_SIGN_IN_AS);
+    return authenticationService.hasAdminRole();
   }
 
   /**

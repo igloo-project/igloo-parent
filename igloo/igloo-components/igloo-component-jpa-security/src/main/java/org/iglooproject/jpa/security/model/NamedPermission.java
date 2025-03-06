@@ -14,8 +14,6 @@ public class NamedPermission implements Permission {
   public static final NamedPermission DELETE = new NamedPermission(CorePermissionConstants.DELETE);
   public static final NamedPermission ADMINISTRATION =
       new NamedPermission(CorePermissionConstants.ADMINISTRATION);
-  public static final NamedPermission ADMIN_SIGN_IN_AS =
-      new NamedPermission(CorePermissionConstants.ADMIN_SIGN_IN_AS);
 
   protected String name;
 
