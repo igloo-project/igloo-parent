@@ -1,40 +1,32 @@
 package org.iglooproject.jpa.util;
 
-import com.google.common.base.Optional;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Optional;
 import org.hibernate.Hibernate;
-import org.hibernate.proxy.HibernateProxy;
 
 public final class HibernateUtils {
 
-  public static Class<?> getClass(Object potentiallyProxyfiedObject) {
-    return Hibernate.getClass(potentiallyProxyfiedObject);
+  public static Class<?> getClass(Object proxy) {
+    return Hibernate.getClass(proxy);
   }
 
   @SuppressWarnings("unchecked")
-  public static <E> E unwrap(E potentiallyProxyfiedObject) {
-    if (potentiallyProxyfiedObject instanceof HibernateProxy) {
-      return (E)
-          ((HibernateProxy) potentiallyProxyfiedObject)
-              .getHibernateLazyInitializer()
-              .getImplementation();
-    } else {
-      return potentiallyProxyfiedObject;
-    }
+  public static <E> E unwrap(E proxy) {
+    return (E) Hibernate.unproxy(proxy);
   }
 
   @SuppressWarnings("unchecked")
-  public static <E> Optional<E> cast(Object potentiallyProxyfiedObject, Class<E> acceptableClass) {
-    return cast(potentiallyProxyfiedObject, acceptableClass, new Class[0]);
+  public static <E> Optional<E> cast(Object proxy, Class<E> acceptableClass) {
+    return cast(proxy, acceptableClass, new Class[0]);
   }
 
   @SafeVarargs
   public static <E> Optional<E> cast(
-      Object potentiallyProxyfiedObject,
+      Object proxy,
       Class<? extends E> acceptableClass,
       Class<? extends E>... otherAcceptableClasses) {
-    Object unwrapped = unwrap(potentiallyProxyfiedObject);
+    Object unwrapped = unwrap(proxy);
     if (acceptableClass.isInstance(unwrapped)) {
       return Optional.of((E) acceptableClass.cast(unwrapped));
     }
@@ -43,19 +35,19 @@ public final class HibernateUtils {
         return Optional.of((E) otherAcceptableClass.cast(unwrapped));
       }
     }
-    return Optional.absent();
+    return Optional.empty();
   }
 
-  public static void initialize(Object potentiallyProxyfiedObject) {
-    Hibernate.initialize(potentiallyProxyfiedObject);
+  public static void initialize(Object proxy) {
+    Hibernate.initialize(proxy);
 
     // Initialize wrapped collections (Collections.unmodifiableCollection, for instance)
-    if (potentiallyProxyfiedObject instanceof Collection) {
-      ((Collection<?>) potentiallyProxyfiedObject).iterator();
+    if (proxy instanceof Collection) {
+      ((Collection<?>) proxy).iterator();
     }
     // Initialize wrapped maps
-    if (potentiallyProxyfiedObject instanceof Map) {
-      ((Map<?, ?>) potentiallyProxyfiedObject).entrySet().iterator();
+    if (proxy instanceof Map) {
+      ((Map<?, ?>) proxy).entrySet().iterator();
     }
   }
 
