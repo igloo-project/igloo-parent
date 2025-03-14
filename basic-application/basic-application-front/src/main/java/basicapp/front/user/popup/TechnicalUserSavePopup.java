@@ -8,7 +8,8 @@ import basicapp.back.business.user.service.controller.IUserControllerService;
 import basicapp.back.security.service.controller.ISecurityManagementControllerService;
 import basicapp.back.util.binding.Bindings;
 import basicapp.front.BasicApplicationSession;
-import basicapp.front.common.validator.EmailUnicityValidator;
+import basicapp.front.common.form.EmailAddressTextField;
+import basicapp.front.common.validator.EmailAddressUnicityValidator;
 import basicapp.front.common.validator.UserPasswordValidator;
 import basicapp.front.common.validator.UsernamePatternValidator;
 import basicapp.front.common.validator.UsernameUnicityValidator;
@@ -29,7 +30,6 @@ import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.CheckBox;
-import org.apache.wicket.markup.html.form.EmailTextField;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
@@ -40,7 +40,6 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.IValidatable;
 import org.apache.wicket.validation.IValidationError;
 import org.apache.wicket.validation.ValidationError;
-import org.apache.wicket.validation.validator.EmailAddressValidator;
 import org.iglooproject.spring.property.SpringPropertyIds;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.spring.util.StringUtils;
@@ -126,10 +125,10 @@ public class TechnicalUserSavePopup extends AbstractAjaxModalPopupPanel<User> {
             .setRequired(true)
             .add(USERNAME_PATTERN_VALIDATOR)
             .add(new UsernameUnicityValidator(getModel())),
-        new EmailTextField("email", BindingModel.of(getModel(), Bindings.user().email()))
-            .setLabel(new ResourceModel("business.user.email"))
-            .add(EmailAddressValidator.getInstance())
-            .add(new EmailUnicityValidator(getModel())),
+        new EmailAddressTextField(
+                "emailAddress", BindingModel.of(getModel(), Bindings.user().emailAddress()))
+            .setLabel(new ResourceModel("business.user.emailAddress"))
+            .add(new EmailAddressUnicityValidator(getModel())),
         new LocaleDropDownChoice("locale", BindingModel.of(getModel(), Bindings.user().locale()))
             .setLabel(new ResourceModel("business.user.locale"))
             .setRequired(true),

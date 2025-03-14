@@ -80,7 +80,7 @@ public class UserPasswordValidator implements IFormModelValidator {
     }
 
     User user = userModel != null ? userModel.getObject() : null;
-    String username = Bindings.user().username().getSafelyWithRoot(user);
+    String username = Bindings.user().username().apply(user);
 
     PasswordData passwordData = new PasswordData(password);
 

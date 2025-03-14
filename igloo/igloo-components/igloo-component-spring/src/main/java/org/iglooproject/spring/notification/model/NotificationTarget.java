@@ -48,7 +48,8 @@ public class NotificationTarget implements Serializable {
   public static NotificationTarget of(INotificationRecipient recipient, Charset charset)
       throws InvalidNotificationTargetException {
     return new NotificationTarget(
-        getInternetAddress(recipient.getEmail(), recipient.getFullName(), charset));
+        getInternetAddress(
+            recipient.getNotificationEmailAddress(), recipient.getFullName(), charset));
   }
 
   private static InternetAddress getInternetAddress(String email, String fullName, Charset charset)

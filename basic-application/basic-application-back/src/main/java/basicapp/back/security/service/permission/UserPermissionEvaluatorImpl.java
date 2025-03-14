@@ -159,11 +159,11 @@ public class UserPermissionEvaluatorImpl extends AbstractGenericPermissionEvalua
 
   @VisibleForTesting
   public boolean canOpenAnnouncement(User user, User targetUser) {
-    return Objects.equals(user, targetUser) && UserPredicates.announcementClose().apply(targetUser);
+    return Objects.equals(user, targetUser);
   }
 
   @VisibleForTesting
   public boolean canCloseAnnouncement(User user, User targetUser) {
-    return Objects.equals(user, targetUser) && UserPredicates.announcementOpen().apply(targetUser);
+    return Objects.equals(user, targetUser);
   }
 }

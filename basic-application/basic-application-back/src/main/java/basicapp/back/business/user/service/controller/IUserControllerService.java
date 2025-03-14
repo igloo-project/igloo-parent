@@ -8,6 +8,7 @@ import static basicapp.back.security.model.BasicApplicationSecurityExpressionCon
 import static basicapp.back.security.model.BasicApplicationSecurityExpressionConstants.USER_TECHNICAL_WRITE;
 import static basicapp.back.security.model.BasicApplicationSecurityExpressionConstants.USER_WRITE;
 
+import basicapp.back.business.common.model.EmailAddress;
 import basicapp.back.business.user.model.User;
 import org.iglooproject.commons.util.security.PermissionObject;
 import org.iglooproject.jpa.exception.SecurityServiceException;
@@ -41,14 +42,14 @@ public interface IUserControllerService {
   void closeAnnouncement(@PermissionObject User user)
       throws ServiceException, SecurityServiceException;
 
-  void initPasswordRecoveryRequest(String emailModel)
+  void initPasswordRecoveryRequest(EmailAddress emailAddress)
       throws SecurityServiceException, ServiceException;
 
   void onSignIn(User user) throws ServiceException, SecurityServiceException;
 
   void onSignInFail(User user) throws ServiceException, SecurityServiceException;
 
-  User getByEmailCaseInsensitive(String value);
+  User getByEmailAddressCaseInsensitive(EmailAddress emailAddress);
 
   User getByUsername(String value);
 }

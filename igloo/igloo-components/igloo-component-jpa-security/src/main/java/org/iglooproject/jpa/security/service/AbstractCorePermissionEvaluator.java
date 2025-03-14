@@ -8,19 +8,20 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import org.iglooproject.jpa.security.business.user.model.GenericUser;
-import org.iglooproject.jpa.security.business.user.service.IGenericUserService;
+import org.iglooproject.jpa.business.generic.model.GenericEntity;
+import org.iglooproject.jpa.security.business.user.model.IUser;
+import org.iglooproject.jpa.security.business.user.service.ICoreUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.acls.domain.PermissionFactory;
 import org.springframework.security.acls.model.Permission;
 import org.springframework.security.core.Authentication;
 
-public abstract class AbstractCorePermissionEvaluator<T extends GenericUser<T>>
+public abstract class AbstractCorePermissionEvaluator<U extends GenericEntity<Long, U> & IUser>
     implements ICorePermissionEvaluator {
 
   @Autowired private PermissionFactory permissionFactory;
 
-  @Autowired private IGenericUserService<T> userService;
+  @Autowired private ICoreUserService<U> userService;
 
   @Autowired private ISecurityService securityService;
 
@@ -30,9 +31,9 @@ public abstract class AbstractCorePermissionEvaluator<T extends GenericUser<T>>
    * @param user peut être <code>null</code> dans le cas d'une authentification anonyme
    */
   protected abstract boolean hasPermission(
-      T user, Object targetDomainObject, Permission permission);
+      U user, Object targetDomainObject, Permission permission);
 
-  protected T getUser(Authentication authentication) {
+  protected U getUser(Authentication authentication) {
     return ofNullable(AuthenticationUtil.getUsername())
         .map(userService::getByUsername)
         .orElse(null);
@@ -59,7 +60,7 @@ public abstract class AbstractCorePermissionEvaluator<T extends GenericUser<T>>
       return true;
     }
 
-    T user = getUser(authentication);
+    U user = getUser(authentication);
 
     List<Permission> permissions = resolvePermission(permission);
 
@@ -114,7 +115,7 @@ public abstract class AbstractCorePermissionEvaluator<T extends GenericUser<T>>
   }
 
   protected boolean checkObjectsPermissions(
-      T user, Collection<?> targetDomainObject, List<Permission> permissions) {
+      U user, Collection<?> targetDomainObject, List<Permission> permissions) {
     for (Object object : targetDomainObject) {
       // il faut que tous les objets possèdent les permissions requises
       boolean allowed = checkAcceptablePermissions(user, object, permissions);
@@ -126,7 +127,7 @@ public abstract class AbstractCorePermissionEvaluator<T extends GenericUser<T>>
   }
 
   protected boolean checkAcceptablePermissions(
-      T user, Object targetDomainObject, List<Permission> permissions) {
+      U user, Object targetDomainObject, List<Permission> permissions) {
     return permissions.stream()
         .anyMatch(permission -> hasPermission(user, targetDomainObject, permission));
   }

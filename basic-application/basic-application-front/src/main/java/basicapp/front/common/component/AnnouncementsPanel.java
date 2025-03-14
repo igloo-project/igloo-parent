@@ -8,6 +8,7 @@ import basicapp.front.BasicApplicationSession;
 import igloo.wicket.behavior.ClassAttributeAppender;
 import igloo.wicket.component.EnclosureContainer;
 import igloo.wicket.condition.Condition;
+import igloo.wicket.feedback.FeedbackUtils;
 import igloo.wicket.model.Detachables;
 import java.util.List;
 import org.apache.wicket.Session;
@@ -75,6 +76,7 @@ public class AnnouncementsPanel extends Panel {
                       LOGGER.error("Error on update user announcement information.", e);
                       Session.get().error(getString("common.error.unexpected"));
                     }
+                    FeedbackUtils.refreshFeedback(target, getPage());
                   }
                 }),
         new AjaxLink<Void>("open") {
@@ -93,6 +95,7 @@ public class AnnouncementsPanel extends Panel {
               LOGGER.error("Error on update user announcement information.", e);
               Session.get().error(getString("common.error.unexpected"));
             }
+            FeedbackUtils.refreshFeedback(target, getPage());
           }
         }.add(openCondition.thenHide()));
 

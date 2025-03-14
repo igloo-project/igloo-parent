@@ -4,8 +4,10 @@ import com.google.common.base.CharMatcher;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringUtils;
+import org.bindgen.Bindable;
 import org.iglooproject.jpa.hibernate.usertype.AbstractMaterializedPrimitiveValue;
 
+@Bindable
 public final class PhoneNumber extends AbstractMaterializedPrimitiveValue<String, PhoneNumber> {
 
   private static final long serialVersionUID = 7055290426664681655L;

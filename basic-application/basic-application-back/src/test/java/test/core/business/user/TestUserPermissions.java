@@ -542,16 +542,13 @@ public class TestUserPermissions {
     @Test
     void canOpenAnnouncement_announcementClose_sameUser() {
       User user = new User();
-      user.getAnnouncementInformation().setOpen(false);
-
       Assertions.assertThat(userPermissionEvaluator.canOpenAnnouncement(user, user)).isTrue();
     }
 
     @Test
     void canOpenAnnouncement_announcementOpen_sameUser() {
       User user = new User();
-      user.getAnnouncementInformation().setOpen(true);
-      Assertions.assertThat(userPermissionEvaluator.canOpenAnnouncement(user, user)).isFalse();
+      Assertions.assertThat(userPermissionEvaluator.canOpenAnnouncement(user, user)).isTrue();
     }
 
     @Test
@@ -568,15 +565,13 @@ public class TestUserPermissions {
     @Test
     void canCloseAnnouncement_announcementOpen_sameUser() {
       User user = new User();
-      user.getAnnouncementInformation().setOpen(true);
       Assertions.assertThat(userPermissionEvaluator.canCloseAnnouncement(user, user)).isTrue();
     }
 
     @Test
     void canCloseAnnouncement_announcementClose_sameUser() {
       User user = new User();
-      user.getAnnouncementInformation().setOpen(false);
-      Assertions.assertThat(userPermissionEvaluator.canCloseAnnouncement(user, user)).isFalse();
+      Assertions.assertThat(userPermissionEvaluator.canCloseAnnouncement(user, user)).isTrue();
     }
 
     @Test

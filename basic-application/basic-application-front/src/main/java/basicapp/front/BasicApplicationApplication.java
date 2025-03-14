@@ -1,13 +1,17 @@
 package basicapp.front;
 
+import basicapp.back.business.common.model.EmailAddress;
+import basicapp.back.business.common.model.PhoneNumber;
 import basicapp.back.business.common.model.PostalCode;
 import basicapp.back.business.history.model.atomic.HistoryEventType;
 import basicapp.back.business.role.model.Role;
 import basicapp.back.business.user.model.User;
 import basicapp.front.announcement.page.AnnouncementListPage;
+import basicapp.front.common.converter.EmailAddressConverter;
 import basicapp.front.common.converter.LocalDateConverter;
 import basicapp.front.common.converter.LocalDateTimeConverter;
 import basicapp.front.common.converter.LocalTimeConverter;
+import basicapp.front.common.converter.PhoneNumberConverter;
 import basicapp.front.common.converter.PostalCodeConverter;
 import basicapp.front.common.renderer.InstantRenderer;
 import basicapp.front.common.renderer.RoleRenderer;
@@ -144,17 +148,18 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
     converterLocator.set(LocalDateTime.class, LocalDateTimeConverter.get());
     converterLocator.set(LocalTime.class, LocalTimeConverter.get());
     converterLocator.set(Instant.class, InstantRenderer.get());
+    converterLocator.set(Locale.class, LocaleRenderer.get());
+    converterLocator.set(Boolean.class, BooleanRenderer.get());
+
+    converterLocator.set(EmailAddress.class, EmailAddressConverter.get());
+    converterLocator.set(PhoneNumber.class, PhoneNumberConverter.get());
+    converterLocator.set(PostalCode.class, PostalCodeConverter.get());
 
     converterLocator.set(User.class, UserRenderer.get());
     converterLocator.set(Role.class, RoleRenderer.get());
 
-    converterLocator.set(Locale.class, LocaleRenderer.get());
-    converterLocator.set(Boolean.class, BooleanRenderer.get());
-
     converterLocator.set(HistoryValue.class, HistoryValueRenderer.get());
     converterLocator.set(HistoryEventType.class, EnumRenderer.get());
-
-    converterLocator.set(PostalCode.class, PostalCodeConverter.get());
 
     return new EnumClassAwareConverterLocator(
         new HibernateProxyAwareConverterLocator(converterLocator));

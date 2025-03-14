@@ -10,7 +10,6 @@ public class CorePermissionConstants {
   public static final String DELETE = "DELETE";
   public static final String ALLOWED = "ALLOWED";
   public static final String DENIED = "DENIED";
-  public static final String ADMIN_SIGN_IN_AS = "ADMIN_SIGN_IN_AS";
 
   protected CorePermissionConstants() {}
 }

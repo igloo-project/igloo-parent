@@ -13,6 +13,12 @@ public final class PhoneNumberConverter extends AbstractConverter<PhoneNumber> {
 
   private static final long serialVersionUID = 7575610087030468757L;
 
+  private static final PhoneNumberConverter INSTANCE = new PhoneNumberConverter();
+
+  public static PhoneNumberConverter get() {
+    return INSTANCE;
+  }
+
   @Override
   public PhoneNumber convertToObject(String value, Locale locale) throws ConversionException {
     String trimmedValue = StringUtils.trimAllWhitespace(value);

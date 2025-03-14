@@ -11,8 +11,8 @@ import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.iglooproject.jpa.security.business.user.model.GenericUser;
-import org.iglooproject.jpa.security.business.user.service.IGenericUserService;
+import org.iglooproject.jpa.security.business.user.model.IUser;
+import org.iglooproject.jpa.security.business.user.service.ICoreUserService;
 import org.iglooproject.spring.util.StringUtils;
 import org.iglooproject.wicket.more.AbstractCoreSession;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
@@ -22,12 +22,11 @@ import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement
 import org.iglooproject.wicket.more.security.page.LoginSuccessPage;
 import org.springframework.security.authentication.DisabledException;
 
-public class ConsoleMaintenanceAuthenticationPage<U extends GenericUser<U>>
-    extends ConsoleMaintenanceTemplate {
+public class ConsoleMaintenanceAuthenticationPage extends ConsoleMaintenanceTemplate {
 
   private static final long serialVersionUID = 3401416708867386953L;
 
-  @SpringBean private IGenericUserService<U> genericUserService;
+  @SpringBean private ICoreUserService<?> userService;
 
   public static final IPageLinkDescriptor linkDescriptor() {
     return LinkDescriptorBuilder.start().page(ConsoleMaintenanceAuthenticationPage.class);
@@ -56,7 +55,7 @@ public class ConsoleMaintenanceAuthenticationPage<U extends GenericUser<U>>
               throw linkDescriptor().newRestartResponseException();
             }
 
-            U user = genericUserService.getByUsername(username);
+            IUser user = userService.getByUsername(username);
 
             if (user == null) {
               AbstractCoreSession.get()

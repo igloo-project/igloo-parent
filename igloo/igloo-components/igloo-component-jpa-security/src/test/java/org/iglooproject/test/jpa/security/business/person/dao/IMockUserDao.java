@@ -1,9 +1,11 @@
 package org.iglooproject.test.jpa.security.business.person.dao;
 
-import org.iglooproject.jpa.security.business.user.dao.IGenericUserDao;
+import org.iglooproject.jpa.business.generic.dao.IGenericEntityDao;
 import org.iglooproject.test.jpa.security.business.person.model.MockUser;
 
-public interface IMockUserDao extends IGenericUserDao<MockUser> {
+public interface IMockUserDao extends IGenericEntityDao<Long, MockUser> {
+
+  MockUser getByUsernameCaseInsensitive(String username);
 
   Long countEnabled();
 }

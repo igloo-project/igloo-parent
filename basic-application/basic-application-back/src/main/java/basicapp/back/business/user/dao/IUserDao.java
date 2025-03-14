@@ -1,12 +1,15 @@
 package basicapp.back.business.user.dao;
 
+import basicapp.back.business.common.model.EmailAddress;
 import basicapp.back.business.user.model.User;
 import java.util.List;
-import org.iglooproject.jpa.security.business.user.dao.IGenericUserDao;
+import org.iglooproject.jpa.business.generic.dao.IGenericEntityDao;
 
-public interface IUserDao extends IGenericUserDao<User> {
+public interface IUserDao extends IGenericEntityDao<Long, User> {
 
-  User getByEmailCaseInsensitive(String email);
+  User getByUsernameCaseInsensitive(String username);
+
+  User getByEmailCaseInsensitive(EmailAddress emailAddress);
 
   List<User> listByUsername(String username);
 }

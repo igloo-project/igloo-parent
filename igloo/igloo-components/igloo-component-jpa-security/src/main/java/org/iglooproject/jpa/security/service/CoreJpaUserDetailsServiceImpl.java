@@ -9,7 +9,7 @@ import java.util.stream.Stream;
 import org.apache.commons.lang3.tuple.Pair;
 import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
 import org.iglooproject.jpa.security.business.user.model.IUser;
-import org.iglooproject.jpa.security.business.user.service.ISecurityUserService;
+import org.iglooproject.jpa.security.business.user.service.ICoreUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.access.hierarchicalroles.NullRoleHierarchy;
@@ -30,7 +30,7 @@ public abstract class CoreJpaUserDetailsServiceImpl implements ICoreUserDetailsS
 
   public static final String EMPTY_PASSWORD_HASH = "*NO PASSWORD*";
 
-  @Autowired private ISecurityUserService<?> userService;
+  @Autowired private ICoreUserService<?> userService;
 
   private AuthenticationUsernameComparison authenticationUsernameComparison =
       AuthenticationUsernameComparison.CASE_SENSITIVE;

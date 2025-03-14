@@ -1,5 +1,6 @@
 package basicapp.back.business.user.service.controller;
 
+import basicapp.back.business.common.model.EmailAddress;
 import basicapp.back.business.user.model.User;
 import basicapp.back.business.user.service.business.IUserService;
 import org.iglooproject.jpa.exception.SecurityServiceException;
@@ -55,9 +56,9 @@ public class UserControllerServiceImpl implements IUserControllerService {
   }
 
   @Override
-  public void initPasswordRecoveryRequest(String email)
+  public void initPasswordRecoveryRequest(EmailAddress emailAddress)
       throws SecurityServiceException, ServiceException {
-    userService.initPasswordRecoveryRequest(email);
+    userService.initPasswordRecoveryRequest(emailAddress);
   }
 
   @Override
@@ -71,8 +72,8 @@ public class UserControllerServiceImpl implements IUserControllerService {
   }
 
   @Override
-  public User getByEmailCaseInsensitive(String value) {
-    return userService.getByEmailCaseInsensitive(value);
+  public User getByEmailAddressCaseInsensitive(EmailAddress emailAddress) {
+    return userService.getByEmailAddressCaseInsensitive(emailAddress);
   }
 
   @Override

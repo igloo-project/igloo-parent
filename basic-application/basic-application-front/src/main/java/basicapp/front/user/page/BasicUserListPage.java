@@ -126,7 +126,7 @@ public class BasicUserListPage extends UserTemplate {
             .withSort(UserSort.FIRST_NAME, SortIconStyle.ALPHABET, CycleMode.DEFAULT_REVERSE)
             .withClass("cell-w-250")
             .addColumn(
-                new AbstractCoreColumn<>(new ResourceModel("business.user.email")) {
+                new AbstractCoreColumn<>(new ResourceModel("business.user.emailAddress")) {
                   private static final long serialVersionUID = 1L;
 
                   @Override
@@ -134,9 +134,10 @@ public class BasicUserListPage extends UserTemplate {
                       Item<ICellPopulator<User>> cellItem,
                       String componentId,
                       IModel<User> rowModel) {
-                    IModel<String> emailModel = BindingModel.of(rowModel, Bindings.user().email());
+                    IModel<String> emailAddressValueModel =
+                        BindingModel.of(rowModel, Bindings.user().emailAddress().value());
                     cellItem.add(
-                        new EmailLink(componentId, emailModel) {
+                        new EmailLink(componentId, emailAddressValueModel) {
                           private static final long serialVersionUID = 1L;
 
                           @Override
@@ -144,7 +145,9 @@ public class BasicUserListPage extends UserTemplate {
                             tag.setName("a");
                             super.onComponentTag(tag);
                           }
-                        }.add(Condition.predicate(emailModel, Predicates2.hasText()).thenShow()));
+                        }.add(
+                            Condition.predicate(emailAddressValueModel, Predicates2.hasText())
+                                .thenShow()));
                   }
                 })
             .withClass("cell-w-350")

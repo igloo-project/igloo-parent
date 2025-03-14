@@ -70,11 +70,11 @@ public class UserSearchQueryImpl implements IUserSearchQuery {
                     or -> {
                       or.add(
                           f.simpleQueryString()
-                              .field(User.LAST_NAME)
+                              .field(User.LAST_NAME_AUTOCOMPLETE)
                               .matching(wildcardTokensOr(data.getTerm())));
                       or.add(
                           f.simpleQueryString()
-                              .field(User.FIRST_NAME)
+                              .field(User.FIRST_NAME_AUTOCOMPLETE)
                               .matching(wildcardTokensOr(data.getTerm())));
                       or.add(
                           f.simpleQueryString()
@@ -99,7 +99,9 @@ public class UserSearchQueryImpl implements IUserSearchQuery {
       }
       if (data.getEmail() != null) {
         root.add(
-            f.simpleQueryString().field(User.EMAIL).matching(wildcardTokensOr(data.getEmail())));
+            f.simpleQueryString()
+                .field(User.EMAIL_ADDRESS)
+                .matching(wildcardTokensOr(data.getEmail())));
       }
       if (data.getRole() != null) {
         root.add(f.match().field(User.ROLES).matching(data.getRole()));

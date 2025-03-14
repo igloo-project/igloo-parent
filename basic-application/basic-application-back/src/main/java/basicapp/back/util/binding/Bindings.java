@@ -1,6 +1,9 @@
 package basicapp.back.util.binding;
 
 import basicapp.back.business.announcement.model.AnnouncementBinding;
+import basicapp.back.business.common.model.EmailAddressBinding;
+import basicapp.back.business.common.model.PhoneNumberBinding;
+import basicapp.back.business.common.model.PostalCodeBinding;
 import basicapp.back.business.history.model.HistoryDifferenceBinding;
 import basicapp.back.business.history.model.HistoryLogBinding;
 import basicapp.back.business.history.search.HistoryLogSearchQueryDataBinding;
@@ -13,6 +16,10 @@ import basicapp.back.business.user.model.UserBinding;
 import basicapp.back.business.user.search.UserSearchQueryDataBinding;
 
 public final class Bindings {
+
+  private static final EmailAddressBinding EMAIL_ADDRESS = new EmailAddressBinding();
+  private static final PhoneNumberBinding PHONE_NUMBER = new PhoneNumberBinding();
+  private static final PostalCodeBinding POSTAL_CODE = new PostalCodeBinding();
 
   private static final IReferenceDataBindingInterfaceBinding REFERENCE_DATA =
       new IReferenceDataBindingInterfaceBinding();
@@ -35,6 +42,18 @@ public final class Bindings {
   private static final HistoryLogSearchQueryDataBinding HISTORY_LOG_SEARCH_QUERY_DATA =
       new HistoryLogSearchQueryDataBinding();
   private static final HistoryDifferenceBinding HISTORY_DIFFERENCE = new HistoryDifferenceBinding();
+
+  public static EmailAddressBinding emailAddress() {
+    return EMAIL_ADDRESS;
+  }
+
+  public static PhoneNumberBinding phoneNumber() {
+    return PHONE_NUMBER;
+  }
+
+  public static PostalCodeBinding postalCode() {
+    return POSTAL_CODE;
+  }
 
   public static IReferenceDataBindingInterfaceBinding referenceData() {
     return REFERENCE_DATA;

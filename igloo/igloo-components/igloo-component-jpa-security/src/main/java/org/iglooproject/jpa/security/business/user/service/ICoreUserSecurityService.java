@@ -1,8 +1,8 @@
 package org.iglooproject.jpa.security.business.user.service;
 
-import org.iglooproject.jpa.security.business.user.model.GenericUser;
+import org.iglooproject.jpa.security.business.user.model.IUser;
 
-public interface ISecurityUserService<U extends GenericUser<U>> {
+public interface ICoreUserSecurityService<U extends IUser> {
 
   U getByUsername(String username);
 

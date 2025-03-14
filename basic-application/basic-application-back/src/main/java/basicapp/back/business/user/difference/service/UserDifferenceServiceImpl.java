@@ -25,7 +25,7 @@ public class UserDifferenceServiceImpl extends AbstractGenericEntityDifferenceSe
     return ImmutableList.of(
         Bindings.user().firstName(),
         Bindings.user().lastName(),
-        Bindings.user().email(),
+        Bindings.user().emailAddress(),
         Bindings.user().locale(),
         Bindings.user().type());
   }

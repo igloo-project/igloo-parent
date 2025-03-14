@@ -76,9 +76,7 @@ public class ConsoleMaintenanceDataPage extends ConsoleMaintenanceTemplate {
                     () -> dataUpgradeRecordService.getByDataUpgrade(item.getModelObject()));
 
             item.add(
-                new CoreLabel(
-                    "name",
-                    BindingModel.of(dataUpgradeRecordModel, dataUpgradeRecordBinding.name())),
+                new CoreLabel("name", item.getModel().map(IDataUpgrade::getName)),
                 new CoreLabel(
                         "executionDate",
                         BindingModel.of(

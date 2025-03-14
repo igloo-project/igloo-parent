@@ -16,17 +16,13 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.iglooproject.jpa.exception.SecurityServiceException;
-import org.iglooproject.jpa.exception.ServiceException;
+import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
-import org.iglooproject.jpa.security.business.user.model.GenericUser;
-import org.iglooproject.jpa.security.business.user.service.IGenericUserService;
-import org.iglooproject.jpa.security.model.NamedPermission;
+import org.iglooproject.jpa.security.business.user.model.IUser;
+import org.iglooproject.jpa.security.business.user.service.ICoreUserService;
 import org.iglooproject.jpa.security.service.IAuthenticationService;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.more.model.threadsafe.SessionThreadSafeGenericEntityModel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.acls.model.Permission;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -43,15 +39,13 @@ import org.springframework.security.web.authentication.switchuser.SwitchUserGran
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
 
-public abstract class AbstractCoreSession<U extends GenericUser<U>>
+public abstract class AbstractCoreSession<U extends GenericEntity<Long, U> & IUser>
     extends AuthenticatedWebSession {
 
   private static final long serialVersionUID = 2591467597835056981L;
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(AbstractCoreSession.class);
-
   @SpringBean(name = "userService")
-  protected IGenericUserService<U> userService;
+  private ICoreUserService<U> userService;
 
   @SpringBean(name = "authenticationService")
   protected IAuthenticationService authenticationService;
@@ -103,7 +97,7 @@ public abstract class AbstractCoreSession<U extends GenericUser<U>>
 
   private boolean isSuperUserInitialized = false;
 
-  public AbstractCoreSession(Request request) {
+  protected AbstractCoreSession(Request request) {
     super(request);
 
     Injector.get().inject(this);
@@ -154,26 +148,7 @@ public abstract class AbstractCoreSession<U extends GenericUser<U>>
 
     userModel.setObject(user);
 
-    try {
-      if (user.getLastLoginDate() == null) {
-        onFirstLogin(user);
-      }
-
-      userService.updateLastLoginDate(user);
-
-      Locale locale = user.getLocale();
-      if (locale != null) {
-        setLocale(user.getLocale());
-      } else {
-        // si la personne ne possède pas de locale
-        // alors on enregistre celle mise en place
-        // automatiquement par le navigateur.
-        userService.updateLocale(user, getLocale());
-      }
-    } catch (RuntimeException | ServiceException | SecurityServiceException e) {
-      LOGGER.error(
-          String.format("Unable to update the user information on sign in: %1$s", user), e);
-    }
+    onSignIn(user);
 
     Collection<? extends GrantedAuthority> authorities = authenticationService.getAuthorities();
     roles = new Roles();
@@ -189,7 +164,7 @@ public abstract class AbstractCoreSession<U extends GenericUser<U>>
     isSuperUserInitialized = true;
   }
 
-  protected void onFirstLogin(U user) {}
+  protected abstract void onSignIn(U user);
 
   public IModel<U> getUserModel() {
     return userModel;
@@ -338,7 +313,7 @@ public abstract class AbstractCoreSession<U extends GenericUser<U>>
   }
 
   public boolean hasSignInAsPermissions(U utilisateurConnecte, U utilisateurCible) {
-    return authenticationService.hasPermission(NamedPermission.ADMIN_SIGN_IN_AS);
+    return authenticationService.hasAdminRole();
   }
 
   /**
