@@ -3,6 +3,7 @@ package org.igloo.spring.autoconfigure.task;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
 import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.util.Collection;
 import java.util.TreeSet;
 import org.igloo.spring.autoconfigure.property.IglooPropertyAutoConfiguration;
@@ -58,6 +59,7 @@ public class IglooTaskManagementAutoConfiguration {
   @Bean(name = OBJECT_MAPPER_BEAN_NAME)
   public ObjectMapper queuedTaskHolderObjectMapper() {
     return new ObjectMapper()
+        .registerModule(new JavaTimeModule())
         .activateDefaultTyping(LaissezFaireSubTypeValidator.instance, DefaultTyping.NON_FINAL);
   }
 

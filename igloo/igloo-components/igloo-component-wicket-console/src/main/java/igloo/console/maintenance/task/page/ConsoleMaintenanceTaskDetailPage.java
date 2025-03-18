@@ -3,6 +3,7 @@ package igloo.console.maintenance.task.page;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import igloo.bootstrap.common.BootstrapColor;
 import igloo.bootstrap.common.IBootstrapColor;
 import igloo.bootstrap.confirm.AjaxConfirmLink;
@@ -60,6 +61,7 @@ public class ConsoleMaintenanceTaskDetailPage extends ConsoleMaintenanceTemplate
 
   private static final ObjectMapper OBJECT_MAPPER =
       new ObjectMapper()
+          .registerModule(new JavaTimeModule())
           .enableDefaultTyping(DefaultTyping.NON_FINAL)
           .enable(SerializationFeature.INDENT_OUTPUT);
 
