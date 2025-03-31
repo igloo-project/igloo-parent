@@ -1,0 +1,118 @@
+@mixin make-row($gutter-x: $grid-gutter-width, $gutter-y: $grid-gutter-height) {
+  --#{$prefix}gutter-x: #{$gutter-x / 2};
+  --#{$prefix}gutter-y: #{$gutter-y};
+  --#{$prefix}gutter-row-x: #{-$gutter-x / 2};
+  --#{$prefix}gutter-row-y: #{-$gutter-y};
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: var(--#{$prefix}gutter-row-y);
+  margin-right: var(--#{$prefix}gutter-row-x);
+  margin-left: var(--#{$prefix}gutter-row-x);
+}
+
+@mixin make-col-ready() {
+  box-sizing: if(variable-exists(include-column-box-sizing) and $include-column-box-sizing, border-box, null);
+  flex-shrink: 0;
+  width: 100%;
+  max-width: 100%;
+  
+  > .col-inner {
+    padding-right: var(--#{$prefix}gutter-x);
+    padding-left: var(--#{$prefix}gutter-x);
+    margin-top: var(--#{$prefix}gutter-y);
+  }
+}
+
+@mixin make-col($size: false, $columns: $grid-columns) {
+  @if $size {
+    flex: 0 0 auto;
+    width: percentage(divide($size, $columns));
+
+  } @else {
+    flex: 1 1 0;
+    max-width: 100%;
+  }
+}
+
+@mixin make-col-auto() {
+  flex: 0 0 auto;
+  width: auto;
+}
+
+@mixin make-col-offset($size, $columns: $grid-columns) {
+  $num: divide($size, $columns);
+  margin-left: if($num == 0, 0, percentage($num));
+}
+
+@mixin row-cols($count) {
+  > * {
+    flex: 0 0 auto;
+    width: divide(100%, $count);
+  }
+}
+
+@mixin make-grid-columns($columns: $grid-columns, $gutter: $grid-gutter-width, $breakpoints: $grid-breakpoints) {
+  .col {
+    flex: 1 0 0%;
+  }
+
+  .row-cols-auto > * {
+    @include make-col-auto();
+  }
+
+  @if $grid-row-columns > 0 {
+    @for $i from 1 through $grid-row-columns {
+      .row-cols-#{$i} {
+        @include row-cols($i);
+      }
+    }
+  }
+
+  .col-auto {
+    @include make-col-auto();
+  }
+
+  @if $columns > 0 {
+    @for $i from 1 through $columns {
+      .col-#{$i} {
+        @include make-col($i, $columns);
+      }
+    }
+
+    @for $i from 0 through ($columns - 1) {
+      @if not ($i == 0) {
+        .offset-#{$i} {
+          @include make-col-offset($i, $columns);
+        }
+      }
+    }
+  }
+
+  @each $key, $value in $gutters {
+    .g-#{$key},
+    .gx-#{$key} {
+      --#{$prefix}gutter-x: #{$value};
+    }
+
+    .g-#{$key},
+    .gy-#{$key} {
+      --#{$prefix}gutter-y: #{$value};
+    }
+  }
+}
+
+@mixin make-cssgrid($columns: $grid-columns, $breakpoints: $grid-breakpoints) {
+  @if $columns > 0 {
+    @for $i from 1 through $columns {
+      .g-col-#{$i} {
+        grid-column: auto / span $i;
+      }
+    }
+
+    @for $i from 1 through ($columns - 1) {
+      .g-start-#{$i} {
+        grid-column-start: $i;
+      }
+    }
+  }
+}

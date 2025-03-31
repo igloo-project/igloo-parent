@@ -1,0 +1,39 @@
+.alert {
+  --#{$prefix}alert-bg: transparent;
+  --#{$prefix}alert-padding-x: #{$alert-padding-x};
+  --#{$prefix}alert-padding-y: #{$alert-padding-y};
+  --#{$prefix}alert-color: inherit;
+  --#{$prefix}alert-border-color: transparent;
+  --#{$prefix}alert-border-width: #{$alert-border-width};
+  --#{$prefix}alert-border-style: solid;
+  --#{$prefix}alert-border-color: transparent;
+  --#{$prefix}alert-border-radius: #{$alert-border-radius};
+  --#{$prefix}alert-link-color: inherit;
+
+  position: relative;
+  padding: var(--#{$prefix}alert-padding-y) var(--#{$prefix}alert-padding-x);
+  color: var(--#{$prefix}alert-color);
+  background-color: var(--#{$prefix}alert-bg);
+  border-width: var(--#{$prefix}alert-border-width);
+  border-style: var(--#{$prefix}alert-border-style);
+  border-color: var(--#{$prefix}alert-border-color);
+  @include border-radius(var(--#{$prefix}alert-border-radius));
+}
+
+.alert-heading {
+  color: inherit;
+}
+
+.alert-link {
+  font-weight: $alert-link-font-weight;
+  color: var(--#{$prefix}alert-link-color);
+}
+
+@each $state in map-keys($theme-colors) {
+  .alert-#{$state} {
+    --#{$prefix}alert-color: var(--#{$prefix}#{$state}-text-emphasis);
+    --#{$prefix}alert-bg: var(--#{$prefix}#{$state}-bg-subtle);
+    --#{$prefix}alert-border-color: var(--#{$prefix}#{$state}-border-subtle);
+    --#{$prefix}alert-link-color: var(--#{$prefix}#{$state}-text-emphasis);
+  }
+}

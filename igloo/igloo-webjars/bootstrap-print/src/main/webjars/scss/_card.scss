@@ -1,0 +1,53 @@
+.card {
+  --#{$prefix}card-spacer-y: #{$card-spacer-y};
+  --#{$prefix}card-spacer-x: #{$card-spacer-x};
+  --#{$prefix}card-title-spacer-y: #{$card-title-spacer-y};
+  --#{$prefix}card-title-color: #{$card-title-color};
+  --#{$prefix}card-subtitle-color: #{$card-subtitle-color};
+  --#{$prefix}card-border-width: #{$card-border-width};
+  --#{$prefix}card-border-color: #{$card-border-color};
+  --#{$prefix}card-border-radius: #{$card-border-radius};
+  --#{$prefix}card-bg: #{$card-bg};
+
+  position: relative;
+  word-wrap: break-word;
+  background-color: var(--#{$prefix}card-bg);
+  background-clip: border-box;
+  border-width: var(--#{$prefix}card-border-width);
+  border-style: solid;
+  border-color: var(--#{$prefix}card-border-color);
+  @include border-radius(var(--#{$prefix}card-border-radius));
+
+  > hr {
+    margin-right: 0;
+    margin-left: 0;
+  }
+}
+
+.card-body {
+  padding-top: var(--#{$prefix}card-spacer-y);
+  padding-bottom: var(--#{$prefix}card-spacer-y);
+  padding-left: var(--#{$prefix}card-spacer-x);
+  padding-right: var(--#{$prefix}card-spacer-x);
+}
+
+.card-title {
+  margin-bottom: var(--#{$prefix}card-title-spacer-y);
+  color: var(--#{$prefix}card-title-color);
+}
+
+.card-subtitle {
+  margin-top: var(--#{$prefix}card-title-spacer-y);
+  margin-bottom: 0;
+  color: var(--#{$prefix}card-subtitle-color);
+}
+
+.card-text:last-child {
+  margin-bottom: 0;
+}
+
+.card-link {
+  + .card-link {
+    margin-left: var(--#{$prefix}card-spacer-x);
+  }
+}

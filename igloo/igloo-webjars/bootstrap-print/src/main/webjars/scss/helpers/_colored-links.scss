@@ -1,0 +1,11 @@
+@each $color, $value in $theme-colors {
+  .link-#{$color} {
+    color: var(--#{$prefix}#{$color}) if($enable-important-utilities, !important, null);
+    text-decoration-color: var(--#{$prefix}#{$color}) if($enable-important-utilities, !important, null);
+  }
+}
+
+.link-body-emphasis {
+  color: var(--#{$prefix}emphasis-color) if($enable-important-utilities, !important, null);
+  text-decoration-color: var(--#{$prefix}emphasis-color) if($enable-important-utilities, !important, null);
+}

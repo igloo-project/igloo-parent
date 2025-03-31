@@ -1,0 +1,6 @@
+@each $color, $value in $theme-colors {
+  .text-bg-#{$color} {
+    color: color-contrast($value) if($enable-important-utilities, !important, null);
+    background-color: var(--#{$prefix}#{$color}) if($enable-important-utilities, !important, null);
+  }
+}

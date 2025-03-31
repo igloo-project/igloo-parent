@@ -1,0 +1,13 @@
+@each $color, $value in
+(
+    "sante": #e69735,
+    "technique": #f7cd45,
+    "cadre-de-vie": #9aad36,
+    "juridique": #007db3,
+    "multi-section": #868686
+) {
+    .badge-section-#{$color} {
+        color: color-contrast($value) !important;
+        background-color: $value !important;
+    }
+}
