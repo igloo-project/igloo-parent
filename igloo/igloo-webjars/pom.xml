@@ -26,6 +26,7 @@
 		<module>bootstrap4-override</module>
 		<module>bootstrap5-override</module>
 		<module>bootstrap-email</module>
+		<module>bootstrap-print</module>
 		<module>igloojs</module>
 	</modules>
 	
