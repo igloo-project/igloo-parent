@@ -1,5 +1,7 @@
 package org.iglooproject.jpa.security.business.user.service;
 
+import com.google.common.base.Preconditions;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.Locale;
 import org.iglooproject.jpa.business.generic.service.GenericEntityServiceImpl;
@@ -82,6 +84,12 @@ public abstract class GenericUserServiceImpl<U extends GenericUser<U, ?>>
   @Override
   public void setPasswords(U user, String clearTextPassword)
       throws ServiceException, SecurityServiceException {
+    Preconditions.checkArgument(StringUtils.hasText(clearTextPassword));
+
+    if (clearTextPassword.getBytes(StandardCharsets.UTF_8).length > 72) {
+      throw new SecurityServiceException("password cannot be more than 72 bytes");
+    }
+
     user.setPasswordHash(passwordEncoder.encode(clearTextPassword));
     super.update(user);
   }
