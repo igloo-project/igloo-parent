@@ -121,6 +121,18 @@ public class UserServiceImpl extends GenericEntityServiceImpl<Long, User> implem
    * @see org.springframework.security.crypto.bcrypt.BCrypt#hashpw(byte[], String, boolean)
    */
   @Override
+  public void onSignIn(User user) throws ServiceException, SecurityServiceException {
+    historyLogService.log(
+        HistoryEventType.SIGN_IN, user, HistoryLogAdditionalInformationBean.empty());
+  }
+
+  @Override
+  public void onSignInFail(User user) throws ServiceException, SecurityServiceException {
+    historyLogService.log(
+        HistoryEventType.SIGN_IN_FAIL, user, HistoryLogAdditionalInformationBean.empty());
+  }
+
+  @Override
   public void setPasswords(User user, String rawPassword)
       throws ServiceException, SecurityServiceException {
     Preconditions.checkArgument(StringUtils.hasText(rawPassword));
@@ -149,13 +161,6 @@ public class UserServiceImpl extends GenericEntityServiceImpl<Long, User> implem
   }
 
   @Override
-  public void updateLocale(User user, Locale locale)
-      throws ServiceException, SecurityServiceException {
-    user.setLocale(locale);
-    updateEntity(user);
-  }
-
-  @Override
   public void enable(User user) throws ServiceException, SecurityServiceException {
     Objects.requireNonNull(user);
     Preconditions.checkArgument(!user.isEnabled());
@@ -176,15 +181,22 @@ public class UserServiceImpl extends GenericEntityServiceImpl<Long, User> implem
   }
 
   @Override
-  public void updateRoles(User user) throws SecurityServiceException, ServiceException {
-    Objects.requireNonNull(user);
-    update(user);
-  }
-
-  @Override
   public void updateLastLoginDate(User user) throws ServiceException, SecurityServiceException {
     user.setLastLoginDate(Instant.now());
     updateEntity(user);
+  }
+
+  @Override
+  public void updateLocale(User user, Locale locale)
+      throws ServiceException, SecurityServiceException {
+    user.setLocale(locale);
+    updateEntity(user);
+  }
+
+  @Override
+  public void updateRoles(User user) throws SecurityServiceException, ServiceException {
+    Objects.requireNonNull(user);
+    update(user);
   }
 
   @Override
@@ -201,18 +213,6 @@ public class UserServiceImpl extends GenericEntityServiceImpl<Long, User> implem
     user.getAnnouncementInformation().setLastActionDate(Instant.now());
     user.getAnnouncementInformation().setOpen(false);
     update(user);
-  }
-
-  @Override
-  public void onSignIn(User user) throws ServiceException, SecurityServiceException {
-    historyLogService.log(
-        HistoryEventType.SIGN_IN, user, HistoryLogAdditionalInformationBean.empty());
-  }
-
-  @Override
-  public void onSignInFail(User user) throws ServiceException, SecurityServiceException {
-    historyLogService.log(
-        HistoryEventType.SIGN_IN_FAIL, user, HistoryLogAdditionalInformationBean.empty());
   }
 
   @Override
