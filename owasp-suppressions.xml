@@ -220,4 +220,13 @@
 		<packageUrl regex="true">^pkg:maven/org\.springframework/spring-.*$</packageUrl>
 		<cve>CVE-2024-38820</cve>
 	</suppress>
+	<suppress>
+		<notes><![CDATA[
+		file name: spring-security-crypto-5.8.16.jar
+		
+		Igloo check that password size is less than 72 bytes
+		]]></notes>
+		<packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring-security-crypto@.*$</packageUrl>
+		<vulnerabilityName>CVE-2025-22228</vulnerabilityName>
+	</suppress>
 </suppressions>

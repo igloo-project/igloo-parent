@@ -19,6 +19,7 @@ import org.iglooproject.basicapp.core.security.service.IBasicApplicationUserDeta
 import org.iglooproject.basicapp.core.security.service.ISecurityManagementService;
 import org.iglooproject.basicapp.core.security.service.SecurityManagementServiceImpl;
 import org.iglooproject.jpa.security.business.user.model.GenericUser;
+import org.iglooproject.jpa.security.business.user.service.GenericUserServiceImpl;
 import org.iglooproject.jpa.security.config.spring.DefaultJpaSecurityConfig;
 import org.iglooproject.jpa.security.runas.CoreRunAsManagerImpl;
 import org.iglooproject.jpa.security.service.AuthenticationUsernameComparison;
@@ -92,6 +93,12 @@ public class BasicApplicationCoreSecurityConfig {
     return runAsAuthenticationProvider;
   }
 
+  /**
+   * Password max byte length cannot be more than 72 bytes.
+   *
+   * @see GenericUserServiceImpl#setPasswords
+   * @see <a href="https://spring.io/security/cve-2025-22228">CVE-2025-22228</a>
+   */
   @Bean
   public ISecurityManagementService securityManagementService() {
     int passwordLengthMin = propertyService.get(SECURITY_PASSWORD_LENGTH_MIN);
