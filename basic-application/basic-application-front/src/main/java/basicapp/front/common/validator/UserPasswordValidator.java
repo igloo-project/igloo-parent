@@ -11,6 +11,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import igloo.wicket.model.Detachables;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import org.apache.wicket.injection.Injector;
@@ -79,6 +80,8 @@ public class UserPasswordValidator implements IFormModelValidator {
       return;
     }
 
+    checkPasswordLength(password);
+
     User user = userModel != null ? userModel.getObject() : null;
     String username = Bindings.user().username().apply(user);
 
@@ -146,6 +149,18 @@ public class UserPasswordValidator implements IFormModelValidator {
 
   protected String errorCodeKeyPrefix() {
     return Classes.simpleName(UserPasswordValidator.class);
+  }
+
+  /**
+   * check that Password cannot be more than 72 bytes.
+   *
+   * @see <a href="https://spring.io/security/cve-2025-22228">CVE-2025-22228</a>
+   */
+  protected void checkPasswordLength(String password) {
+    if (password.getBytes(StandardCharsets.UTF_8).length > 72) {
+      passwordFormComponent.error(
+          new ValidationError().addKey("UserPasswordValidator.bytes.tooLong"));
+    }
   }
 
   @Override

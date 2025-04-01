@@ -12,6 +12,7 @@ import basicapp.back.business.user.model.atomic.UserType;
 import basicapp.back.security.service.IBasicApplicationAuthenticationService;
 import basicapp.back.security.service.ISecurityManagementService;
 import com.google.common.base.Preconditions;
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.Locale;
 import java.util.Objects;
@@ -111,9 +112,23 @@ public class UserServiceImpl extends GenericEntityServiceImpl<Long, User> implem
     }
   }
 
+  /**
+   * Encode and set Password to user.
+   *
+   * <p>check that Password cannot be more than 72 bytes.
+   *
+   * @see <a href="https://spring.io/security/cve-2025-22228">CVE-2025-22228</a>
+   * @see org.springframework.security.crypto.bcrypt.BCrypt#hashpw(byte[], String, boolean)
+   */
   @Override
   public void setPasswords(User user, String rawPassword)
       throws ServiceException, SecurityServiceException {
+    Preconditions.checkArgument(StringUtils.hasText(rawPassword));
+
+    if (rawPassword.getBytes(StandardCharsets.UTF_8).length > 72) {
+      throw new SecurityServiceException("password cannot be more than 72 bytes");
+    }
+
     user.setPasswordHash(passwordEncoder.encode(rawPassword));
     update(user);
   }
