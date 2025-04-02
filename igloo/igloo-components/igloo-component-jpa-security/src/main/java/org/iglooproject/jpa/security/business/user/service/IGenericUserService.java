@@ -12,6 +12,13 @@ public interface IGenericUserService<U extends GenericUser<U, ?>>
 
   void setEnabled(U user, boolean enabled) throws ServiceException, SecurityServiceException;
 
+  /**
+   * Encode and set Password to user.
+   *
+   * <p>check that Password cannot be more than 72 bytes.
+   *
+   * @see <a href="https://spring.io/security/cve-2025-22228">CVE-2025-22228</a>
+   */
   void setPasswords(U user, String clearTextPassword)
       throws ServiceException, SecurityServiceException;
 

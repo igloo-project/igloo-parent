@@ -18,6 +18,8 @@ import org.iglooproject.imports.table.common.mapping.column.builder.state.BigDec
 import org.iglooproject.imports.table.common.mapping.column.builder.state.DateState;
 import org.iglooproject.imports.table.common.mapping.column.builder.state.DoubleState;
 import org.iglooproject.imports.table.common.mapping.column.builder.state.IntegerState;
+import org.iglooproject.imports.table.common.mapping.column.builder.state.LocalDateState;
+import org.iglooproject.imports.table.common.mapping.column.builder.state.LocalDateTimeState;
 import org.iglooproject.imports.table.common.mapping.column.builder.state.LongState;
 import org.iglooproject.imports.table.common.mapping.column.builder.state.StringState;
 import org.iglooproject.imports.table.common.mapping.column.builder.state.TypeState;
@@ -129,6 +131,42 @@ public class ApachePoiImportColumnBuilder
                     return null;
                   default:
                     return cell.getDateCellValue();
+                }
+              });
+    }
+
+    @Override
+    public LocalDateState<Sheet, Row, Cell, CellReference> asLocalDate() {
+      return new TypeStateSwitcher<Cell>(Functions2.<Cell>identity())
+          .toLocalDate(
+              cell -> {
+                if (cell == null) {
+                  return null;
+                }
+
+                switch (ApachePoiImportUtils.getCellActualValueType(cell)) {
+                  case STRING:
+                    return null;
+                  default:
+                    return cell.getLocalDateTimeCellValue().toLocalDate();
+                }
+              });
+    }
+
+    @Override
+    public LocalDateTimeState<Sheet, Row, Cell, CellReference> asLocalDateTime() {
+      return new TypeStateSwitcher<Cell>(Functions2.<Cell>identity())
+          .toLocalDateTime(
+              cell -> {
+                if (cell == null) {
+                  return null;
+                }
+
+                switch (ApachePoiImportUtils.getCellActualValueType(cell)) {
+                  case STRING:
+                    return null;
+                  default:
+                    return cell.getLocalDateTimeCellValue();
                 }
               });
     }

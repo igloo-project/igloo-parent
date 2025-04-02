@@ -8,7 +8,6 @@ import org.iglooproject.jpa.more.business.task.model.AbstractTask;
 import org.iglooproject.jpa.more.business.task.model.QueuedTaskHolder;
 import org.iglooproject.jpa.more.business.task.service.IQueuedTaskHolderManager;
 import org.iglooproject.jpa.more.business.task.service.IQueuedTaskHolderService;
-import org.iglooproject.jpa.more.config.spring.AbstractTaskManagementConfig;
 import org.iglooproject.jpa.more.property.JpaMoreTaskPropertyIds;
 import org.iglooproject.jpa.more.rendering.service.IRendererService;
 import org.iglooproject.jpa.util.EntityManagerUtils;
@@ -38,7 +37,7 @@ class ConsumerThread extends Thread {
   @Autowired protected EntityManagerUtils entityManagerUtils;
 
   @Autowired
-  @Qualifier(AbstractTaskManagementConfig.OBJECT_MAPPER_BEAN_NAME)
+  @Qualifier(AbstractTask.OBJECT_MAPPER_BEAN_NAME)
   private ObjectMapper queuedTaskHolderObjectMapper;
 
   @Autowired private IPropertyService propertyService;

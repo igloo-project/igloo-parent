@@ -16,7 +16,6 @@ import org.iglooproject.jpa.more.business.task.transaction.OpenEntityManagerWith
 import org.iglooproject.jpa.more.business.task.transaction.TaskExecutionTransactionTemplateConfig;
 import org.iglooproject.jpa.more.business.task.util.TaskResult;
 import org.iglooproject.jpa.more.business.task.util.TaskStatus;
-import org.iglooproject.jpa.more.config.spring.AbstractTaskManagementConfig;
 import org.iglooproject.jpa.util.EntityManagerUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,8 +35,10 @@ public abstract class AbstractTask implements Runnable, Serializable {
 
   @Autowired protected IQueuedTaskHolderService queuedTaskHolderService;
 
+  public static final String OBJECT_MAPPER_BEAN_NAME = "queuedTaskHolderObjectMapper";
+
   @Autowired
-  @Qualifier(AbstractTaskManagementConfig.OBJECT_MAPPER_BEAN_NAME)
+  @Qualifier(OBJECT_MAPPER_BEAN_NAME)
   private ObjectMapper queuedTaskHolderObjectMapper;
 
   @JsonIgnore private TransactionTemplate taskManagementTransactionTemplate;

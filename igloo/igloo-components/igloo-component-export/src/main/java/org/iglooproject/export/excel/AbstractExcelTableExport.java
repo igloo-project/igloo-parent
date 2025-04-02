@@ -22,6 +22,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Range;
 import com.google.common.collect.RangeMap;
 import com.google.common.collect.TreeRangeMap;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -417,6 +419,32 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 
     if (date != null) {
       cell.setCellValue(date);
+    } else {
+      cell.setBlank();
+    }
+
+    return cell;
+  }
+
+  protected Cell addLocalDateCell(Row row, int columnIndex, LocalDate localDate) {
+    Cell cell = row.createCell(columnIndex);
+    cell.setCellStyle(getRowStyle(STYLE_DATE_NAME, row.getRowNum()));
+
+    if (localDate != null) {
+      cell.setCellValue(localDate);
+    } else {
+      cell.setBlank();
+    }
+
+    return cell;
+  }
+
+  protected Cell addLocalDateTimeCell(Row row, int columnIndex, LocalDateTime localDateTime) {
+    Cell cell = row.createCell(columnIndex);
+    cell.setCellStyle(getRowStyle(STYLE_DATE_TIME_NAME, row.getRowNum()));
+
+    if (localDateTime != null) {
+      cell.setCellValue(localDateTime);
     } else {
       cell.setBlank();
     }

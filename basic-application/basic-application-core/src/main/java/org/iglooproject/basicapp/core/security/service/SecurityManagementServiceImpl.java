@@ -94,8 +94,8 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
 
     user.getPasswordRecoveryRequest()
         .setToken(
-            RandomStringUtils.randomAlphanumeric(
-                propertyService.get(PASSWORD_RECOVERY_REQUEST_TOKEN_RANDOM_COUNT)));
+            RandomStringUtils.secure()
+                .nextAlphabetic(propertyService.get(PASSWORD_RECOVERY_REQUEST_TOKEN_RANDOM_COUNT)));
     user.getPasswordRecoveryRequest().setCreationDate(now);
     user.getPasswordRecoveryRequest().setType(type);
     user.getPasswordRecoveryRequest().setInitiator(initiator);

@@ -5,9 +5,6 @@ import com.google.common.collect.Lists;
 import igloo.wicket.util.IDatePattern;
 import java.util.Date;
 import java.util.List;
-import org.apache.wicket.markup.ComponentTag;
-import org.apache.wicket.markup.head.IHeaderResponse;
-import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.convert.IConverter;
 import org.apache.wicket.validation.validator.DateValidator;
@@ -15,13 +12,9 @@ import org.iglooproject.wicket.more.util.convert.converters.CascadingConverter;
 import org.iglooproject.wicket.more.util.convert.converters.PatternDateConverter;
 import org.wicketstuff.wiquery.ui.datepicker.DateOption;
 
-public class DatePicker extends org.wicketstuff.wiquery.ui.datepicker.DatePicker<Date> {
+public class DatePicker extends AbstractDatePicker<Date> {
 
   private static final long serialVersionUID = 8051575483617364457L;
-
-  private static final String AUTOCOMPLETE_ATTRIBUTE = "autocomplete";
-
-  private static final String AUTOCOMPLETE_ATTRIBUTE_OFF_VALUE = "off";
 
   private IConverter<Date> converter;
 
@@ -30,32 +23,9 @@ public class DatePicker extends org.wicketstuff.wiquery.ui.datepicker.DatePicker
   private List<IDatePattern> datePatternsToTryBefore = Lists.newArrayList();
   private List<IDatePattern> datePatternsToTryAfter = Lists.newArrayList();
 
-  private boolean isAutocompleteActive;
-
   public DatePicker(String id, IModel<Date> model, IDatePattern datePattern) {
-    this(id, model, datePattern, false);
-  }
-
-  public DatePicker(
-      String id, IModel<Date> model, IDatePattern datePattern, boolean isAutocompleteActive) {
     super(id, model, Date.class);
     this.datePattern = datePattern;
-    this.isAutocompleteActive = isAutocompleteActive;
-
-    // Options par défaut
-    setChangeMonth(true);
-    setChangeYear(true);
-
-    setPrevText("");
-    setNextText("");
-
-    setShowButtonPanel(true);
-
-    setShowWeek(true);
-    setWeekHeader("");
-
-    setShowOtherMonths(true);
-    setSelectOtherMonths(true);
   }
 
   public DatePicker addDatePatternToTryBefore(IDatePattern datePatternToTryBefore) {
@@ -124,23 +94,6 @@ public class DatePicker extends org.wicketstuff.wiquery.ui.datepicker.DatePicker
   @Override
   protected void detachModel() {
     super.detachModel();
-
     converter = null;
-  }
-
-  @Override
-  protected void onComponentTag(ComponentTag tag) {
-    super.onComponentTag(tag);
-
-    if (!isAutocompleteActive) {
-      tag.put(AUTOCOMPLETE_ATTRIBUTE, AUTOCOMPLETE_ATTRIBUTE_OFF_VALUE);
-    }
-  }
-
-  @Override
-  public void renderHead(IHeaderResponse response) {
-    super.renderHead(response);
-    response.render(
-        JavaScriptHeaderItem.forReference(DatePickerOverrideJavaScriptResourceReference.get()));
   }
 }

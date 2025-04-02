@@ -21,6 +21,13 @@ import de.danielbechler.diff.node.DiffNode;
 import de.danielbechler.diff.node.DiffNode.Visitor;
 import de.danielbechler.diff.node.Visit;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.Month;
+import java.time.Year;
+import java.time.YearMonth;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Deque;
@@ -190,6 +197,8 @@ public abstract class AbstractGenericEntityDifferenceServiceImpl<T extends Gener
                   }
                 });
 
+    initJavaTimeEqualsComparaison(builder);
+
     return builder;
   }
 
@@ -226,6 +235,8 @@ public abstract class AbstractGenericEntityDifferenceServiceImpl<T extends Gener
                 })
             .and();
 
+    initJavaTimeEqualsComparaison(builder);
+
     for (BindingRoot<? super T, ?> binding : getMinimalDifferenceFieldsBindings()) {
       FieldPath path = FieldPath.fromBinding(binding);
 
@@ -246,6 +257,23 @@ public abstract class AbstractGenericEntityDifferenceServiceImpl<T extends Gener
     }
 
     return builder;
+  }
+
+  /**
+   * java-object-diff library was designed to be compatible with Java 5 not java 8 and java.time
+   *
+   * <p>@See <a href="https://github.com/SQiShER/java-object-diff/issues/118">java.time issue</a>
+   *
+   * <p>we use equals to compare java.time and not go deep inside class
+   */
+  protected void initJavaTimeEqualsComparaison(ObjectDifferBuilder builder) {
+    builder.comparison().ofType(LocalDate.class).toUseEqualsMethod();
+    builder.comparison().ofType(LocalDateTime.class).toUseEqualsMethod();
+    builder.comparison().ofType(LocalTime.class).toUseEqualsMethod();
+    builder.comparison().ofType(Instant.class).toUseEqualsMethod();
+    builder.comparison().ofType(Year.class).toUseEqualsMethod();
+    builder.comparison().ofType(YearMonth.class).toUseEqualsMethod();
+    builder.comparison().ofType(Month.class).toUseEqualsMethod();
   }
 
   protected Iterable<? extends IProxyInitializer<? super T>> initializeInitializers() {
