@@ -99,8 +99,8 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
       throws ServiceException, SecurityServiceException {
     user.getPasswordRecoveryRequest()
         .setToken(
-            RandomStringUtils.randomAlphanumeric(
-                propertyService.get(PASSWORD_RECOVERY_REQUEST_TOKEN_RANDOM_COUNT)));
+            RandomStringUtils.secure()
+                .nextAlphabetic(propertyService.get(PASSWORD_RECOVERY_REQUEST_TOKEN_RANDOM_COUNT)));
     user.getPasswordRecoveryRequest().setCreationDate(Instant.now());
     user.getPasswordRecoveryRequest().setType(type);
     user.getPasswordRecoveryRequest().setInitiator(initiator);
