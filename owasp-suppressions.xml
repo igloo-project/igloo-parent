@@ -229,4 +229,13 @@
 		<packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring-security-crypto@.*$</packageUrl>
 		<vulnerabilityName>CVE-2025-22228</vulnerabilityName>
 	</suppress>
+	<suppress>
+		<notes><![CDATA[
+		file name: spring-webmvc-5.3.39.jar
+		
+		Igloo applications runs on Tomcat
+   ]]></notes>
+		<packageUrl regex="true">^pkg:maven/org\.springframework/spring-webmvc@.*$</packageUrl>
+		<vulnerabilityName>CVE-2024-38816</vulnerabilityName>
+	</suppress>
 </suppressions>
