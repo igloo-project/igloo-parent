@@ -69,6 +69,12 @@ public class BasicApplicationCoreSecurityConfig {
     return new NamedPermissionFactory(BasicApplicationPermission.ALL);
   }
 
+  /**
+   * Password max byte length cannot be more than 72 bytes.
+   *
+   * @see basicapp.back.business.user.service.business.UserServiceImpl#setPasswords
+   * @see org.springframework.security.crypto.bcrypt.BCrypt#hashpw(byte[], String, boolean)
+   */
   @Bean
   public ISecurityManagementService securityManagementService(IPropertyService propertyService) {
     int passwordLengthMin = propertyService.get(SECURITY_PASSWORD_LENGTH_MIN);

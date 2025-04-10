@@ -12,6 +12,7 @@ import basicapp.back.business.user.model.atomic.UserType;
 import basicapp.back.security.service.IBasicApplicationAuthenticationService;
 import basicapp.back.security.service.ISecurityManagementService;
 import com.google.common.base.Preconditions;
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.Locale;
 import java.util.Objects;
@@ -111,9 +112,35 @@ public class UserServiceImpl extends GenericEntityServiceImpl<Long, User> implem
     }
   }
 
+  /**
+   * Encode and set Password to user.
+   *
+   * <p>check that Password cannot be more than 72 bytes.
+   *
+   * @see <a href="https://spring.io/security/cve-2025-22228">CVE-2025-22228</a>
+   * @see org.springframework.security.crypto.bcrypt.BCrypt#hashpw(byte[], String, boolean)
+   */
+  @Override
+  public void onSignIn(User user) throws ServiceException, SecurityServiceException {
+    historyLogService.log(
+        HistoryEventType.SIGN_IN, user, HistoryLogAdditionalInformationBean.empty());
+  }
+
+  @Override
+  public void onSignInFail(User user) throws ServiceException, SecurityServiceException {
+    historyLogService.log(
+        HistoryEventType.SIGN_IN_FAIL, user, HistoryLogAdditionalInformationBean.empty());
+  }
+
   @Override
   public void setPasswords(User user, String rawPassword)
       throws ServiceException, SecurityServiceException {
+    Preconditions.checkArgument(StringUtils.hasText(rawPassword));
+
+    if (rawPassword.getBytes(StandardCharsets.UTF_8).length > 72) {
+      throw new SecurityServiceException("password cannot be more than 72 bytes");
+    }
+
     user.setPasswordHash(passwordEncoder.encode(rawPassword));
     update(user);
   }
@@ -131,13 +158,6 @@ public class UserServiceImpl extends GenericEntityServiceImpl<Long, User> implem
               : UserPasswordRecoveryRequestType.CREATION,
           UserPasswordRecoveryRequestInitiator.USER);
     }
-  }
-
-  @Override
-  public void updateLocale(User user, Locale locale)
-      throws ServiceException, SecurityServiceException {
-    user.setLocale(locale);
-    updateEntity(user);
   }
 
   @Override
@@ -161,15 +181,22 @@ public class UserServiceImpl extends GenericEntityServiceImpl<Long, User> implem
   }
 
   @Override
-  public void updateRoles(User user) throws SecurityServiceException, ServiceException {
-    Objects.requireNonNull(user);
-    update(user);
-  }
-
-  @Override
   public void updateLastLoginDate(User user) throws ServiceException, SecurityServiceException {
     user.setLastLoginDate(Instant.now());
     updateEntity(user);
+  }
+
+  @Override
+  public void updateLocale(User user, Locale locale)
+      throws ServiceException, SecurityServiceException {
+    user.setLocale(locale);
+    updateEntity(user);
+  }
+
+  @Override
+  public void updateRoles(User user) throws SecurityServiceException, ServiceException {
+    Objects.requireNonNull(user);
+    update(user);
   }
 
   @Override
@@ -186,18 +213,6 @@ public class UserServiceImpl extends GenericEntityServiceImpl<Long, User> implem
     user.getAnnouncementInformation().setLastActionDate(Instant.now());
     user.getAnnouncementInformation().setOpen(false);
     update(user);
-  }
-
-  @Override
-  public void onSignIn(User user) throws ServiceException, SecurityServiceException {
-    historyLogService.log(
-        HistoryEventType.SIGN_IN, user, HistoryLogAdditionalInformationBean.empty());
-  }
-
-  @Override
-  public void onSignInFail(User user) throws ServiceException, SecurityServiceException {
-    historyLogService.log(
-        HistoryEventType.SIGN_IN_FAIL, user, HistoryLogAdditionalInformationBean.empty());
   }
 
   @Override

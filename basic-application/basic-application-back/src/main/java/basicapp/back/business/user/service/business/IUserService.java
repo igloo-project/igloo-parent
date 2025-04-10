@@ -14,26 +14,26 @@ public interface IUserService extends ICoreUserService<User> {
   void saveTechnicalUser(User user, String password)
       throws SecurityServiceException, ServiceException;
 
+  void onSignIn(User user) throws ServiceException, SecurityServiceException;
+
+  void onSignInFail(User user) throws ServiceException, SecurityServiceException;
+
   void initPasswordRecoveryRequest(EmailAddress emailAddress)
       throws SecurityServiceException, ServiceException;
-
-  void updateLocale(User user, Locale locale) throws ServiceException, SecurityServiceException;
 
   void enable(User user) throws ServiceException, SecurityServiceException;
 
   void disable(User user) throws ServiceException, SecurityServiceException;
+
+  void updateLastLoginDate(User user) throws ServiceException, SecurityServiceException;
+
+  void updateLocale(User user, Locale locale) throws ServiceException, SecurityServiceException;
 
   void updateRoles(User user) throws SecurityServiceException, ServiceException;
 
   void openAnnouncement(User user) throws ServiceException, SecurityServiceException;
 
   void closeAnnouncement(User user) throws ServiceException, SecurityServiceException;
-
-  void updateLastLoginDate(User user) throws ServiceException, SecurityServiceException;
-
-  void onSignIn(User user) throws ServiceException, SecurityServiceException;
-
-  void onSignInFail(User user) throws ServiceException, SecurityServiceException;
 
   User getByEmailAddressCaseInsensitive(EmailAddress emailAddress);
 
