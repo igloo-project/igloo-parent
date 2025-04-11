@@ -1,0 +1,15 @@
+@mixin make-cssgrid($columns: $grid-columns) {
+  @if $columns > 0 {
+    @for $i from 1 through $columns {
+      .g-col-#{$i} {
+        grid-column: auto / span $i;
+      }
+    }
+
+    @for $i from 1 through ($columns - 1) {
+      .g-start-#{$i} {
+        grid-column-start: $i;
+      }
+    }
+  }
+}

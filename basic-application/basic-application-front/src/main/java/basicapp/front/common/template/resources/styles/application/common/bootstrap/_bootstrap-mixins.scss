@@ -1,10 +1,8 @@
 @import "META-INF/resources/webjars/bootstrap/scss/vendor/rfs";
 
-
 @import "META-INF/resources/webjars/bootstrap/scss/mixins/deprecate";
 @import "META-INF/resources/webjars/bootstrap5-override/scss/mixins/deprecate";
 @import "override/mixins/deprecate";
-
 
 @import "META-INF/resources/webjars/bootstrap/scss/mixins/breakpoints";
 @import "META-INF/resources/webjars/bootstrap5-override/scss/mixins/breakpoints";
@@ -41,11 +39,9 @@
 @import "META-INF/resources/webjars/bootstrap5-override/scss/mixins/text-truncate";
 @import "override/mixins/text-truncate";
 
-
 @import "META-INF/resources/webjars/bootstrap/scss/mixins/utilities";
 @import "META-INF/resources/webjars/bootstrap5-override/scss/mixins/utilities";
 @import "override/mixins/utilities";
-
 
 @import "META-INF/resources/webjars/bootstrap/scss/mixins/alert";
 @import "META-INF/resources/webjars/bootstrap5-override/scss/mixins/alert";
@@ -86,7 +82,6 @@
 @import "META-INF/resources/webjars/bootstrap5-override/scss/mixins/table-variants";
 @import "override/mixins/table-variants";
 
-
 @import "META-INF/resources/webjars/bootstrap/scss/mixins/border-radius";
 @import "META-INF/resources/webjars/bootstrap5-override/scss/mixins/border-radius";
 @import "override/mixins/border-radius";
@@ -102,7 +97,6 @@
 @import "META-INF/resources/webjars/bootstrap/scss/mixins/transition";
 @import "META-INF/resources/webjars/bootstrap5-override/scss/mixins/transition";
 @import "override/mixins/transition";
-
 
 @import "META-INF/resources/webjars/bootstrap/scss/mixins/clearfix";
 @import "META-INF/resources/webjars/bootstrap5-override/scss/mixins/clearfix";
