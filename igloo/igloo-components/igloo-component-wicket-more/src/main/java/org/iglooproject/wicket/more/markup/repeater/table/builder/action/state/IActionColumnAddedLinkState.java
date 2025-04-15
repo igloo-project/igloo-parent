@@ -53,6 +53,10 @@ public interface IActionColumnAddedLinkState<T, I> extends IActionColumnAddedEle
   IActionColumnAddedLinkState<T, I> showPlaceholder(Condition showPlaceholderCondition);
 
   @Override
+  IActionColumnAddedLinkState<T, I> showPlaceholder(
+      IDetachableFactory<? super IModel<? extends T>, Condition> showPlaceholderConditionFactory);
+
+  @Override
   IActionColumnAddedLinkState<T, I> hidePlaceholder();
 
   @Override

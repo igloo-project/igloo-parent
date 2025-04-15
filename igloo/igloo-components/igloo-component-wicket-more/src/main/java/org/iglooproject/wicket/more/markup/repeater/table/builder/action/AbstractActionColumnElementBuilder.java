@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Objects;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
-import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.AbstractLink;
@@ -32,7 +31,7 @@ import org.springframework.security.acls.model.Permission;
 
 public abstract class AbstractActionColumnElementBuilder<
         T, L extends AbstractLink, F extends AbstractActionColumnElementBuilder<T, L, F>>
-    implements IOneParameterComponentFactory<MarkupContainer, IModel<T>> {
+    implements IActionColumnBaseBuilder<T> {
 
   private static final long serialVersionUID = 8791565179874571105L;
 
@@ -46,7 +45,8 @@ public abstract class AbstractActionColumnElementBuilder<
 
   private Condition showIconCondition = Condition.alwaysTrue();
 
-  private Condition showPlaceholderCondition = Condition.alwaysTrue();
+  private IDetachableFactory<? super IModel<? extends T>, Condition>
+      showPlaceholderConditionFactory = ConditionFactories.constant(Condition.alwaysTrue());
 
   private final List<IDetachableFactory<? super IModel<? extends T>, ? extends Behavior>>
       cssClassBehaviorFactories = Lists.newArrayList();
@@ -87,7 +87,7 @@ public abstract class AbstractActionColumnElementBuilder<
     IBootstrapRendererModel rendererModel = renderer.asModel(rowModel);
 
     placeholder
-        .condition(showPlaceholderCondition.negate())
+        .condition(showPlaceholderConditionFactory.create(rowModel).negate())
         .add(getIconComponent("icon", rendererModel), getLabelComponent("label", rendererModel));
 
     placeholder.add(
@@ -122,8 +122,7 @@ public abstract class AbstractActionColumnElementBuilder<
   }
 
   public F showLabel() {
-    showLabelCondition = Condition.alwaysTrue();
-    return thisAsF();
+    return showLabel(Condition.alwaysTrue());
   }
 
   public F showLabel(Condition showLabelCondition) {
@@ -132,8 +131,7 @@ public abstract class AbstractActionColumnElementBuilder<
   }
 
   public F hideLabel() {
-    showLabelCondition = Condition.alwaysFalse();
-    return thisAsF();
+    return showLabel(Condition.alwaysFalse());
   }
 
   public F hideLabel(Condition hideLabelCondition) {
@@ -141,8 +139,7 @@ public abstract class AbstractActionColumnElementBuilder<
   }
 
   public F showTooltip() {
-    showTooltipCondition = Condition.alwaysTrue();
-    return thisAsF();
+    return showTooltip(Condition.alwaysTrue());
   }
 
   public F showTooltip(Condition showTooltipCondition) {
@@ -151,8 +148,7 @@ public abstract class AbstractActionColumnElementBuilder<
   }
 
   public F hideTooltip() {
-    showTooltipCondition = Condition.alwaysFalse();
-    return thisAsF();
+    return showTooltip(Condition.alwaysFalse());
   }
 
   public F hideTooltip(Condition hideTooltipCondition) {
@@ -160,8 +156,7 @@ public abstract class AbstractActionColumnElementBuilder<
   }
 
   public F showIcon() {
-    showIconCondition = Condition.alwaysTrue();
-    return thisAsF();
+    return showIcon(Condition.alwaysTrue());
   }
 
   public F showIcon(Condition showIconCondition) {
@@ -170,8 +165,7 @@ public abstract class AbstractActionColumnElementBuilder<
   }
 
   public F hideIcon() {
-    showIconCondition = Condition.alwaysFalse();
-    return thisAsF();
+    return showIcon(Condition.alwaysFalse());
   }
 
   public F hideIcon(Condition hideIconCondition) {
@@ -179,24 +173,29 @@ public abstract class AbstractActionColumnElementBuilder<
   }
 
   public F showPlaceholder() {
-    showPlaceholderCondition = Condition.alwaysTrue();
-    return thisAsF();
+    return showPlaceholder(Condition.alwaysTrue());
   }
 
   public F showPlaceholder(Condition showPlaceholderCondition) {
-    this.showPlaceholderCondition = Objects.requireNonNull(showPlaceholderCondition);
+    return showPlaceholder(
+        ConditionFactories.constant(Objects.requireNonNull(showPlaceholderCondition)));
+  }
+
+  public F showPlaceholder(
+      IDetachableFactory<? super IModel<? extends T>, Condition> showPlaceholderConditionFactory) {
+    this.showPlaceholderConditionFactory = Objects.requireNonNull(showPlaceholderConditionFactory);
     return thisAsF();
   }
 
   public F hidePlaceholder() {
-    showPlaceholderCondition = Condition.alwaysFalse();
-    return thisAsF();
+    return showPlaceholder(Condition.alwaysFalse());
   }
 
   public F hidePlaceholder(Condition hidePlaceholderCondition) {
     return showPlaceholder(Objects.requireNonNull(hidePlaceholderCondition).negate());
   }
 
+  @Override
   public F withClass(
       Collection<
               ? extends
@@ -282,7 +281,10 @@ public abstract class AbstractActionColumnElementBuilder<
   @Override
   public void detach() {
     Detachables.detach(
-        showLabelCondition, showTooltipCondition, showIconCondition, showPlaceholderCondition);
+        showLabelCondition,
+        showTooltipCondition,
+        showIconCondition,
+        showPlaceholderConditionFactory);
     Detachables.detach(cssClassBehaviorFactories);
     Detachables.detach(behaviorFactories);
   }

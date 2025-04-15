@@ -31,6 +31,7 @@ import org.iglooproject.wicket.more.markup.repeater.table.builder.action.state.I
 import org.iglooproject.wicket.more.markup.repeater.table.builder.action.state.IActionColumnAddedConfirmActionState;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.action.state.IActionColumnAddedElementState;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.action.state.IActionColumnAddedLinkState;
+import org.iglooproject.wicket.more.markup.repeater.table.builder.action.state.IActionColumnAddedPlaceholderState;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.action.state.IActionColumnBuildState;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.action.state.IActionColumnConfirmActionBuilderStepStart;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.action.state.IActionColumnNoParameterBuildState;
@@ -39,7 +40,7 @@ import org.springframework.security.acls.model.Permission;
 public abstract class ActionColumnBuilder<T, I>
     implements IActionColumnNoParameterBuildState<T, I>, IActionColumnBuildState<T, I> {
 
-  private final List<AbstractActionColumnElementBuilder<T, ?, ?>> builders = Lists.newArrayList();
+  private final List<IActionColumnBaseBuilder<T>> builders = Lists.newArrayList();
 
   private final List<
           IDetachableFactory<? super IModel<? extends T>, ? extends IModel<? extends String>>>
@@ -122,6 +123,12 @@ public abstract class ActionColumnBuilder<T, I>
         IBootstrapRenderer<? super T> renderer,
         IOneParameterComponentFactory<? extends AbstractLink, IModel<T>> factory) {
       return ActionColumnBuilder.this.addLabelledAction(renderer, factory);
+    }
+
+    @Override
+    public IActionColumnAddedPlaceholderState<T, I> addPlaceholder(
+        IBootstrapRenderer<? super T> renderer) {
+      return ActionColumnBuilder.this.addPlaceholder(renderer);
     }
 
     @Override
@@ -253,6 +260,14 @@ public abstract class ActionColumnBuilder<T, I>
     @Override
     public NextState showPlaceholder(Condition showPlaceholderCondition) {
       getElementBuilder().showPlaceholder(showPlaceholderCondition);
+      return getNextState();
+    }
+
+    @Override
+    public NextState showPlaceholder(
+        IDetachableFactory<? super IModel<? extends T>, Condition>
+            showPlaceholderConditionFactory) {
+      getElementBuilder().showPlaceholder(showPlaceholderConditionFactory);
       return getNextState();
     }
 
@@ -450,6 +465,160 @@ public abstract class ActionColumnBuilder<T, I>
     }
   }
 
+  private class ActionColumnAddedPlaceholderState extends ActionColumnBuilderWrapper
+      implements IActionColumnAddedPlaceholderState<T, I> {
+
+    private final ActionColumnPlaceholderBuilder<T> elementBuilder;
+
+    public ActionColumnAddedPlaceholderState(ActionColumnPlaceholderBuilder<T> elementBuilder) {
+      super();
+      this.elementBuilder = Objects.requireNonNull(elementBuilder);
+    }
+
+    public ActionColumnPlaceholderBuilder<T> getElementBuilder() {
+      return elementBuilder;
+    }
+
+    protected IActionColumnAddedPlaceholderState<T, I> getNextState() {
+      return this;
+    }
+
+    @Override
+    public IActionColumnAddedPlaceholderState<T, I> showLabel() {
+      getElementBuilder().showLabel();
+      return getNextState();
+    }
+
+    @Override
+    public IActionColumnAddedPlaceholderState<T, I> showLabel(Condition showLabelCondition) {
+      getElementBuilder().showLabel(showLabelCondition);
+      return getNextState();
+    }
+
+    @Override
+    public IActionColumnAddedPlaceholderState<T, I> hideLabel() {
+      getElementBuilder().hideLabel();
+      return getNextState();
+    }
+
+    @Override
+    public IActionColumnAddedPlaceholderState<T, I> hideLabel(Condition hideLabelCondition) {
+      getElementBuilder().hideLabel(hideLabelCondition);
+      return getNextState();
+    }
+
+    @Override
+    public IActionColumnAddedPlaceholderState<T, I> showIcon() {
+      getElementBuilder().showIcon();
+      return getNextState();
+    }
+
+    @Override
+    public IActionColumnAddedPlaceholderState<T, I> showIcon(Condition showIconCondition) {
+      getElementBuilder().showIcon(showIconCondition);
+      return getNextState();
+    }
+
+    @Override
+    public IActionColumnAddedPlaceholderState<T, I> hideIcon() {
+      getElementBuilder().hideIcon();
+      return getNextState();
+    }
+
+    @Override
+    public IActionColumnAddedPlaceholderState<T, I> hideIcon(Condition hideIconCondition) {
+      getElementBuilder().hideIcon(hideIconCondition);
+      return getNextState();
+    }
+
+    @Override
+    public IActionColumnAddedPlaceholderState<T, I> withClass(
+        Collection<
+                ? extends
+                    IDetachableFactory<
+                        ? super IModel<? extends T>, ? extends IModel<? extends String>>>
+            valueModelFactories) {
+      getElementBuilder().withClass(valueModelFactories);
+      return getNextState();
+    }
+
+    @Override
+    public IActionColumnAddedPlaceholderState<T, I> withClass(
+        IDetachableFactory<? super IModel<? extends T>, ? extends IModel<? extends String>>
+            valueModelFactory) {
+      getElementBuilder().withClass(valueModelFactory);
+      return getNextState();
+    }
+
+    @Override
+    public IActionColumnAddedPlaceholderState<T, I> withClass(IModel<? extends String> valueModel) {
+      getElementBuilder().withClass(valueModel);
+      return getNextState();
+    }
+
+    @Override
+    public IActionColumnAddedPlaceholderState<T, I> withClass(
+        String firstValue, String... otherValues) {
+      getElementBuilder().withClass(firstValue, otherValues);
+      return getNextState();
+    }
+
+    @Override
+    public IActionColumnAddedPlaceholderState<T, I> when(
+        final IDetachableFactory<? super IModel<? extends T>, ? extends Condition>
+            conditionFactory) {
+      getElementBuilder().when(conditionFactory);
+      return getNextState();
+    }
+
+    @Override
+    public IActionColumnAddedPlaceholderState<T, I> when(final Condition condition) {
+      getElementBuilder().when(condition);
+      return getNextState();
+    }
+
+    @Override
+    public IActionColumnAddedPlaceholderState<T, I> whenPredicate(
+        final SerializablePredicate2<? super T> predicate) {
+      getElementBuilder().whenPredicate(predicate);
+      return getNextState();
+    }
+
+    @Override
+    public IActionColumnAddedPlaceholderState<T, I> whenPermission(final String permission) {
+      getElementBuilder().whenPermission(permission);
+      return getNextState();
+    }
+
+    @Override
+    public IActionColumnAddedPlaceholderState<T, I> whenPermission(final Permission permission) {
+      getElementBuilder().whenPermission(permission);
+      return getNextState();
+    }
+
+    @Override
+    public IActionColumnAddedPlaceholderState<T, I> add(
+        Collection<? extends IDetachableFactory<? super IModel<? extends T>, ? extends Behavior>>
+            behaviorFactories) {
+      getElementBuilder().add(behaviorFactories);
+      return getNextState();
+    }
+
+    @Override
+    public IActionColumnAddedPlaceholderState<T, I> add(
+        IDetachableFactory<? super IModel<? extends T>, ? extends Behavior> behaviorFactory) {
+      getElementBuilder().add(behaviorFactory);
+      return getNextState();
+    }
+
+    @Override
+    public IActionColumnAddedPlaceholderState<T, I> add(
+        Behavior firstBehavior, Behavior... otherBehaviors) {
+      getElementBuilder().add(firstBehavior, otherBehaviors);
+      return getNextState();
+    }
+  }
+
   @Override
   public IActionColumnAddedLinkState<T, I> addLink(
       IBootstrapRenderer<? super T> renderer,
@@ -550,6 +719,14 @@ public abstract class ActionColumnBuilder<T, I>
   }
 
   @Override
+  public IActionColumnAddedPlaceholderState<T, I> addPlaceholder(
+      IBootstrapRenderer<? super T> renderer) {
+    ActionColumnPlaceholderBuilder<T> factory = new ActionColumnPlaceholderBuilder<>(renderer);
+    builders.add(factory);
+    return new ActionColumnAddedPlaceholderState(factory);
+  }
+
+  @Override
   public IActionColumnBuildState<T, I> withClassOnElements(
       Collection<
               ? extends
@@ -583,11 +760,11 @@ public abstract class ActionColumnBuilder<T, I>
 
   @Override
   public I end() {
-    for (AbstractActionColumnElementBuilder<T, ?, ?> builder : builders) {
+    for (IActionColumnBaseBuilder<T> builder : builders) {
       builder.withClass(cssClassOnElementsModelFactories);
     }
     return onEnd(builders);
   }
 
-  protected abstract I onEnd(List<AbstractActionColumnElementBuilder<T, ?, ?>> builders);
+  protected abstract I onEnd(List<IActionColumnBaseBuilder<T>> builders);
 }

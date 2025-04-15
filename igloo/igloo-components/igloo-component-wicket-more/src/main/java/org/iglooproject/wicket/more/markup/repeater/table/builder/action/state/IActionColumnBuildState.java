@@ -55,6 +55,8 @@ public interface IActionColumnBuildState<T, I> extends IActionColumnCommonBuildS
       IBootstrapRenderer<? super T> renderer,
       IOneParameterComponentFactory<? extends AbstractLink, IModel<T>> factory);
 
+  IActionColumnAddedPlaceholderState<T, I> addPlaceholder(IBootstrapRenderer<? super T> renderer);
+
   @Override
   IActionColumnBuildState<T, I> withClassOnElements(
       Collection<
