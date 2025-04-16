@@ -68,6 +68,7 @@ public class User extends GenericEntity<Long, User> implements IUser, INotificat
   public static final String LAST_NAME = "lastName";
   public static final String LAST_NAME_AUTOCOMPLETE = LAST_NAME + "Autocomplete";
   public static final String EMAIL_ADDRESS = "emailAddress";
+  public static final String EMAIL_ADDRESS_AUTOCOMPLETE = EMAIL_ADDRESS + "Autocomplete";
   public static final String ROLES = "roles";
   public static final String ENABLED = "enabled";
 
@@ -111,7 +112,7 @@ public class User extends GenericEntity<Long, User> implements IUser, INotificat
 
   @Basic
   @FullTextField(
-      name = EMAIL_ADDRESS,
+      name = EMAIL_ADDRESS_AUTOCOMPLETE,
       analyzer = HibernateSearchAnalyzer.TEXT,
       valueBridge = @ValueBridgeRef(type = EmailAddressValueBridge.class))
   private EmailAddress emailAddress;
