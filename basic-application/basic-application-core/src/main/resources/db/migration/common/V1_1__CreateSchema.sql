@@ -50,7 +50,11 @@ alter table ${schema}.user__UserGroup add constraint FKpctvagil9lsn2dovvt1fpfa5y
 alter table ${schema}.user__UserGroup add constraint FKi09rq0mpjvl80ck9tglp995d6 foreign key (users_id) references ${schema}.user_;
 alter table ${schema}.UserGroup_Authority add constraint FK9gql8awj70oo2bgxupgcu9qxf foreign key (authorities_id) references ${schema}.Authority;
 alter table ${schema}.UserGroup_Authority add constraint FKrpwlh5niy92myi8fi0yiwr4ep foreign key (UserGroup_id) references ${schema}.UserGroup;
-
+create index historylog_type_id_main_idx on ${schema}.HistoryLog (mainObject_reference_type, mainObject_reference_id);
+create index historylog_type_id_1_idx on ${schema}.HistoryLog (object1_reference_type, object1_reference_id);
+create index historylog_type_id_2_idx on ${schema}.HistoryLog (object2_reference_type, object2_reference_id);
+create index historylog_type_id_3_idx on ${schema}.HistoryLog (object3_reference_type, object3_reference_id);
+create index historylog_type_id_4_idx on ${schema}.HistoryLog (object4_reference_type, object4_reference_id);
 --
 -- Custom model
 --

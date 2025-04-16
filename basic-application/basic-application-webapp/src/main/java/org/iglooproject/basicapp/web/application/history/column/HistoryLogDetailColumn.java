@@ -12,6 +12,7 @@ import org.apache.wicket.model.ResourceModel;
 import org.bindgen.BindingRoot;
 import org.iglooproject.basicapp.core.business.history.model.HistoryDifference;
 import org.iglooproject.basicapp.core.business.history.model.HistoryLog;
+import org.iglooproject.basicapp.core.business.history.search.HistoryLogSort;
 import org.iglooproject.basicapp.core.util.binding.Bindings;
 import org.iglooproject.basicapp.web.application.history.component.DefaultHistoryDifferencePanel;
 import org.iglooproject.basicapp.web.application.history.component.HistoryLogDetailColumnPanel;
@@ -21,7 +22,6 @@ import org.iglooproject.commons.util.fieldpath.FieldPath;
 import org.iglooproject.functional.Predicates2;
 import org.iglooproject.functional.SerializablePredicate2;
 import org.iglooproject.jpa.business.generic.model.GenericEntityReference;
-import org.iglooproject.jpa.more.business.history.search.HistoryLogSort;
 import org.iglooproject.wicket.more.markup.repeater.table.column.AbstractCoreColumn;
 
 /**
