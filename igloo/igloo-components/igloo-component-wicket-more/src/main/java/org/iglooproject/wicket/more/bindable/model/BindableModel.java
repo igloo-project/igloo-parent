@@ -127,7 +127,9 @@ public class BindableModel<E> implements IBindableModel<E> {
   @Override
   public void setInitialValueModel(IModel<E> initialValueModel) {
     this.initialValueModel = initialValueModel;
-    this.initialValueModel.setObject(this.mainModel.getObject());
+    if (this.initialValueModel != null && mainModel != null) {
+      this.initialValueModel.setObject(mainModel.getObject());
+    }
   }
 
   private Map<FieldPath, BindableModel<?>> getPropertyModels() {
