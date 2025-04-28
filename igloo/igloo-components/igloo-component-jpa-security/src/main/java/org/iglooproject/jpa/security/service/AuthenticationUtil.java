@@ -12,7 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-final class AuthenticationUtil {
+public final class AuthenticationUtil {
 
   static Authentication getAuthentication() {
     return SecurityContextHolder.getContext().getAuthentication();

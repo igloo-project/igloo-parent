@@ -52,8 +52,8 @@ import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTable
 import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel.CountAddInComponentFactory;
 import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel.LabelAddInComponentFactory;
 import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel.PagerAddInComponentFactory;
-import org.iglooproject.wicket.more.markup.repeater.table.builder.action.AbstractActionColumnElementBuilder;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.action.ActionColumnBuilder;
+import org.iglooproject.wicket.more.markup.repeater.table.builder.action.IActionColumnBaseBuilder;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.action.state.IActionColumnBuildState;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.action.state.IActionColumnNoParameterBuildState;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.rows.DataTableRowsBuilder;
@@ -393,8 +393,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
       final IModel<String> headerLabelModel) {
     return new ActionColumnBuilder<T, IAddedCoreColumnState<T, S>>() {
       @Override
-      protected IAddedCoreColumnState<T, S> onEnd(
-          List<AbstractActionColumnElementBuilder<T, ?, ?>> builders) {
+      protected IAddedCoreColumnState<T, S> onEnd(List<IActionColumnBaseBuilder<T>> builders) {
         return addActionColumn(new CoreActionColumn<T, S>(headerLabelModel, builders));
       }
     };
@@ -1048,8 +1047,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
         final AddInPlacement placement) {
       return new ActionColumnBuilder<Void, IDecoratedBuildState<T, S>>() {
         @Override
-        protected IDecoratedBuildState<T, S> onEnd(
-            List<AbstractActionColumnElementBuilder<Void, ?, ?>> builders) {
+        protected IDecoratedBuildState<T, S> onEnd(List<IActionColumnBaseBuilder<Void>> builders) {
           for (final IOneParameterComponentFactory<?, IModel<Void>> builder : builders) {
             addIn(placement, wicketId -> builder.create(wicketId, null));
           }
@@ -1063,8 +1061,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
         final AddInPlacement placement, final IModel<Z> model) {
       return new ActionColumnBuilder<Z, IDecoratedBuildState<T, S>>() {
         @Override
-        protected IDecoratedBuildState<T, S> onEnd(
-            List<AbstractActionColumnElementBuilder<Z, ?, ?>> builders) {
+        protected IDecoratedBuildState<T, S> onEnd(List<IActionColumnBaseBuilder<Z>> builders) {
           for (final IOneParameterComponentFactory<?, IModel<Z>> builder : builders) {
             addIn(placement, wicketId -> builder.create(wicketId, model));
           }

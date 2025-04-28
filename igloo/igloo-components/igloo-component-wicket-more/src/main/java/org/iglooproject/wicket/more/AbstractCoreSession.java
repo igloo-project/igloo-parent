@@ -4,10 +4,13 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import igloo.security.CoreUserDetails;
 import igloo.security.UserDetails;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.Collection;
 import java.util.Locale;
+import java.util.Optional;
 import org.apache.wicket.Session;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.authroles.authorization.strategies.role.Roles;
@@ -20,6 +23,7 @@ import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
 import org.iglooproject.jpa.security.business.user.model.IUser;
 import org.iglooproject.jpa.security.business.user.service.ICoreUserService;
+import org.iglooproject.jpa.security.service.AuthenticationUtil;
 import org.iglooproject.jpa.security.service.IAuthenticationService;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.more.model.threadsafe.SessionThreadSafeGenericEntityModel;
@@ -30,6 +34,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -135,6 +140,12 @@ public abstract class AbstractCoreSession<U extends GenericEntity<Long, U> & IUs
     Authentication authentication =
         authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(username, password));
+    U user =
+        Optional.ofNullable(AuthenticationUtil.getUserDetails(authentication))
+            .map(UserDetails::getUsername)
+            .map(userService::getByUsername)
+            .orElse(null);
+    onSuccessfulAuthentication(authentication, user);
     setSpringSecurityContext(authentication);
     return authentication;
   }
@@ -400,5 +411,27 @@ public abstract class AbstractCoreSession<U extends GenericEntity<Long, U> & IUs
         SecurityContextHolder.getContext(),
         (HttpServletRequest) RequestCycle.get().getRequest().getContainerRequest(),
         (HttpServletResponse) RequestCycle.get().getResponse().getContainerResponse());
+  }
+
+  /**
+   * This method may be overriden to restrict user login when authentication is done, but user is
+   * not allowed to login either. A use-case is to restrict user login based on user-type based on
+   * current domain (intranet user cannot login on extranet, extranet user cannot login on
+   * intranet).
+   *
+   * <p>This method is called before spring context is set. Use {@link #onSignIn(GenericEntity)}
+   * event if you want to perform some task after spring context is set.
+   *
+   * <p>Login may be interrupted by throwing an {@link AuthenticationException} children.
+   * Application must ensure that appropriate user feedback when this exception is thrown.
+   *
+   * @param authentication successful {@link Authentication} object. Must not be null.
+   * @param user application user linked to this authentication. May be null for exceptional cases
+   *     where authentication is performed with extra authentication stacks not user-based (API
+   *     configuration-based authentication, ...)
+   */
+  protected void onSuccessfulAuthentication(
+      @Nonnull Authentication authentication, @Nullable U user) {
+    // Override in applications
   }
 }

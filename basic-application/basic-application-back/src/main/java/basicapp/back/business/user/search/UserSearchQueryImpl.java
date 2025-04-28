@@ -78,7 +78,7 @@ public class UserSearchQueryImpl implements IUserSearchQuery {
                               .matching(wildcardTokensOr(data.getTerm())));
                       or.add(
                           f.simpleQueryString()
-                              .field(User.USERNAME)
+                              .field(User.USERNAME_AUTOCOMPLETE)
                               .matching(wildcardTokensOr(data.getTerm())));
                     }));
       }
@@ -88,19 +88,19 @@ public class UserSearchQueryImpl implements IUserSearchQuery {
       if (data.getLastName() != null) {
         root.add(
             f.simpleQueryString()
-                .field(User.LAST_NAME)
+                .field(User.LAST_NAME_AUTOCOMPLETE)
                 .matching(wildcardTokensOr(data.getLastName())));
       }
       if (data.getFirstName() != null) {
         root.add(
             f.simpleQueryString()
-                .field(User.FIRST_NAME)
+                .field(User.FIRST_NAME_AUTOCOMPLETE)
                 .matching(wildcardTokensOr(data.getFirstName())));
       }
       if (data.getEmail() != null) {
         root.add(
             f.simpleQueryString()
-                .field(User.EMAIL_ADDRESS)
+                .field(User.EMAIL_ADDRESS_AUTOCOMPLETE)
                 .matching(wildcardTokensOr(data.getEmail())));
       }
       if (data.getRole() != null) {
