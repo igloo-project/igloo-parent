@@ -146,7 +146,9 @@ public class StorageService
 
   @Override
   public void validateFichier(@Nonnull Fichier fichierDetached) {
-    Fichier fichier = getFichierById(fichierDetached.getId());
+    // getFichierById may return a proxy and defeat fichier != fichierDetached comparison
+    // use getAttachedFichier instead
+    Fichier fichier = databaseOperations.getAttachedFichier(fichierDetached);
     if (fichier != fichierDetached) {
       LOGGER.warn(
           "Fichier {} was not attached to Hibernate Session and has been reloaded.",
@@ -162,7 +164,9 @@ public class StorageService
 
   @Override
   public void invalidateFichier(@Nonnull Fichier fichierDetached) {
-    Fichier fichier = getFichierById(fichierDetached.getId());
+    // getFichierById may return a proxy and defeat fichier != fichierDetached comparison
+    // use getAttachedFichier instead
+    Fichier fichier = databaseOperations.getAttachedFichier(fichierDetached);
     if (fichier != fichierDetached) {
       LOGGER.warn(
           "Fichier {} was not attached to Hibernate Session and has been reloaded.",
