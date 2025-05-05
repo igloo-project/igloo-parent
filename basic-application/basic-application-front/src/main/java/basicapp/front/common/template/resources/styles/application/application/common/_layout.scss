@@ -26,7 +26,10 @@
 				
 				> .header-alert-btn-close {
 					flex: 0 0 auto;
-					margin: calc(-1 * var(--header-alert-container-padding-y)) (-1 * $layout-container-padding-x) calc(-1 * var(--header-alert-container-padding-y)) $layout-container-padding-x;
+					margin-top: calc(-1 * var(--header-alert-container-padding-y));
+					margin-right: -1 * $layout-container-padding-x;
+					margin-bottom: calc(-1 * var(--header-alert-container-padding-y));
+					margin-left: $layout-container-padding-x;
 					padding: var(--header-alert-container-padding-y) $layout-container-padding-x;
 				}
 			}
