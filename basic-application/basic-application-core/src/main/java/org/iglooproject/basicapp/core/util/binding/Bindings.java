@@ -3,6 +3,7 @@ package org.iglooproject.basicapp.core.util.binding;
 import org.iglooproject.basicapp.core.business.announcement.model.AnnouncementBinding;
 import org.iglooproject.basicapp.core.business.history.model.HistoryDifferenceBinding;
 import org.iglooproject.basicapp.core.business.history.model.HistoryLogBinding;
+import org.iglooproject.basicapp.core.business.history.search.HistoryLogSearchQueryDataBinding;
 import org.iglooproject.basicapp.core.business.referencedata.model.CityBinding;
 import org.iglooproject.basicapp.core.business.referencedata.model.IReferenceDataBindingInterfaceBinding;
 import org.iglooproject.basicapp.core.business.user.model.UserBinding;
@@ -23,6 +24,9 @@ public final class Bindings {
   private static final CityBinding CITY = new CityBinding();
 
   private static final AnnouncementBinding ANNOUNCEMENT = new AnnouncementBinding();
+
+  private static final HistoryLogSearchQueryDataBinding HISTORY_LOG_SEARCH_QUERY_DATA =
+      new HistoryLogSearchQueryDataBinding();
 
   public static UserBinding user() {
     return USER;
@@ -50,6 +54,10 @@ public final class Bindings {
 
   public static AnnouncementBinding announcement() {
     return ANNOUNCEMENT;
+  }
+
+  public static HistoryLogSearchQueryDataBinding historyLogSearchQueryData() {
+    return HISTORY_LOG_SEARCH_QUERY_DATA;
   }
 
   private Bindings() {}

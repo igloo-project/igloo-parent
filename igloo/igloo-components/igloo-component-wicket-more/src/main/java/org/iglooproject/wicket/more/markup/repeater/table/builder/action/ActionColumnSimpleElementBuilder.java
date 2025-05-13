@@ -26,14 +26,14 @@ public class ActionColumnSimpleElementBuilder<T, L extends AbstractLink>
       private static final long serialVersionUID = 1L;
 
       @Override
-      protected Component getLink(String string, IModel<T> rowModel) {
+      protected Component getLink(String wicketId, IModel<T> rowModel) {
         L link = getFactory().create("link", rowModel);
         decorateLink(link, rowModel);
         return link;
       }
 
       @Override
-      protected PlaceholderContainer getPlaceholder(String string, IModel<T> rowModel) {
+      protected PlaceholderContainer getPlaceholder(String wicketId, IModel<T> rowModel) {
         PlaceholderContainer placeholder = new PlaceholderContainer("linkPlaceholder");
         decoratePlaceholder(placeholder, rowModel);
         return placeholder;

@@ -54,6 +54,10 @@ public interface IActionColumnAddedAjaxActionState<T, I>
   IActionColumnAddedAjaxActionState<T, I> showPlaceholder(Condition showPlaceholderCondition);
 
   @Override
+  IActionColumnAddedAjaxActionState<T, I> showPlaceholder(
+      IDetachableFactory<? super IModel<? extends T>, Condition> showPlaceholderConditionFactory);
+
+  @Override
   IActionColumnAddedAjaxActionState<T, I> hidePlaceholder();
 
   @Override

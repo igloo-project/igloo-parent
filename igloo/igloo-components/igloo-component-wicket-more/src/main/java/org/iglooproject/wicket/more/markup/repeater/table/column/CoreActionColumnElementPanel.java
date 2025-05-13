@@ -20,7 +20,7 @@ public abstract class CoreActionColumnElementPanel<T> extends Panel {
     add(Condition.anyChildVisible(this).thenShow());
   }
 
-  protected abstract Component getLink(String string, IModel<T> rowModel);
+  protected abstract Component getLink(String wicketId, IModel<T> rowModel);
 
-  protected abstract PlaceholderContainer getPlaceholder(String string, IModel<T> rowModel);
+  protected abstract PlaceholderContainer getPlaceholder(String wicketId, IModel<T> rowModel);
 }

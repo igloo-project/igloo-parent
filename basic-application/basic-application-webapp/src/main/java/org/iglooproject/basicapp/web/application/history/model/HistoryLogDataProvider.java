@@ -1,90 +1,74 @@
 package org.iglooproject.basicapp.web.application.history.model;
 
-import igloo.wicket.model.Detachables;
-import java.util.Date;
-import java.util.EnumSet;
-import java.util.Set;
+import com.google.common.collect.ImmutableMap;
+import igloo.wicket.model.CollectionCopyModel;
+import java.util.function.UnaryOperator;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.basicapp.core.business.history.model.HistoryLog;
-import org.iglooproject.basicapp.core.business.history.model.atomic.HistoryEventType;
+import org.iglooproject.basicapp.core.business.history.search.HistoryLogSearchQueryData;
+import org.iglooproject.basicapp.core.business.history.search.HistoryLogSort;
 import org.iglooproject.basicapp.core.business.history.search.IHistoryLogSearchQuery;
-import org.iglooproject.basicapp.core.business.user.model.User;
-import org.iglooproject.jpa.business.generic.model.GenericEntity;
-import org.iglooproject.jpa.more.business.history.search.HistoryLogSort;
-import org.iglooproject.jpa.more.business.search.query.ISearchQuery;
+import org.iglooproject.basicapp.core.util.binding.Bindings;
+import org.iglooproject.functional.Suppliers2;
 import org.iglooproject.wicket.more.markup.html.sort.model.CompositeSortModel;
 import org.iglooproject.wicket.more.markup.html.sort.model.CompositeSortModel.CompositingStrategy;
-import org.iglooproject.wicket.more.model.AbstractSearchQueryDataProvider;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
+import org.iglooproject.wicket.more.model.data.DataModel;
+import org.iglooproject.wicket.more.model.search.query.SearchQueryDataProvider;
 
 public class HistoryLogDataProvider
-    extends AbstractSearchQueryDataProvider<HistoryLog, HistoryLogSort> {
+    extends SearchQueryDataProvider<
+        HistoryLog, HistoryLogSort, HistoryLogSearchQueryData, IHistoryLogSearchQuery> {
 
-  private static final long serialVersionUID = 1604966591810765209L;
+  private static final long serialVersionUID = 1L;
 
-  private final IModel<? extends User> subjectModel;
-
-  private final IModel<Date> dateMinModel = new Model<>();
-  private final IModel<Date> dateMaxModel = new Model<>();
-
-  private final IModel<? extends GenericEntity<?, ?>> objectModel;
-
-  private final Set<HistoryEventType> mandatoryDifferencesEventTypes =
-      EnumSet.noneOf(HistoryEventType.class);
+  @SpringBean private IHistoryLogSearchQuery searchQuery;
 
   private final CompositeSortModel<HistoryLogSort> sortModel =
-      new CompositeSortModel<>(CompositingStrategy.LAST_ONLY, HistoryLogSort.DATE);
+      new CompositeSortModel<>(
+          CompositingStrategy.LAST_ONLY,
+          ImmutableMap.of(HistoryLogSort.DATE, HistoryLogSort.DATE.getDefaultOrder().reverse()),
+          ImmutableMap.of(HistoryLogSort.ID, HistoryLogSort.ID.getDefaultOrder()));
 
-  public static HistoryLogDataProvider subject(IModel<? extends User> subjectModel) {
-    return new HistoryLogDataProvider(subjectModel, new GenericEntityModel<>());
-  }
-
-  public static HistoryLogDataProvider object(IModel<? extends GenericEntity<?, ?>> objectModel) {
-    return new HistoryLogDataProvider(new GenericEntityModel<Long, User>(), objectModel);
+  public HistoryLogDataProvider() {
+    this(UnaryOperator.identity());
   }
 
   public HistoryLogDataProvider(
-      IModel<? extends User> subjectModel, IModel<? extends GenericEntity<?, ?>> objectModel) {
-    this.subjectModel = subjectModel;
-    this.objectModel = objectModel;
+      UnaryOperator<DataModel<HistoryLogSearchQueryData>> dataModelOperator) {
+    this(
+        dataModelOperator.apply(
+            new DataModel<>(HistoryLogSearchQueryData::new)
+                .bind(Bindings.historyLogSearchQueryData().dateMin(), Model.of())
+                .bind(Bindings.historyLogSearchQueryData().dateMax(), Model.of())
+                .bind(
+                    Bindings.historyLogSearchQueryData().eventTypes(),
+                    CollectionCopyModel.serializable(Suppliers2.linkedHashSet()))
+                .bind(Bindings.historyLogSearchQueryData().subject(), new GenericEntityModel<>())
+                .bind(Bindings.historyLogSearchQueryData().allObjects(), Model.of())
+                .bind(Bindings.historyLogSearchQueryData().mainObject(), Model.of())
+                .bind(Bindings.historyLogSearchQueryData().object1(), Model.of())
+                .bind(Bindings.historyLogSearchQueryData().object2(), Model.of())
+                .bind(Bindings.historyLogSearchQueryData().object3(), Model.of())
+                .bind(Bindings.historyLogSearchQueryData().object4(), Model.of())
+                .bind(
+                    Bindings.historyLogSearchQueryData().mandatoryDifferencesEventTypes(),
+                    CollectionCopyModel.serializable(Suppliers2.linkedHashSet()))));
+  }
+
+  public HistoryLogDataProvider(IModel<HistoryLogSearchQueryData> dataModel) {
+    super(dataModel);
   }
 
   @Override
-  public IModel<HistoryLog> model(HistoryLog object) {
-    return GenericEntityModel.of(object);
-  }
-
-  @Override
-  protected ISearchQuery<HistoryLog, HistoryLogSort> getSearchQuery() {
-    return createSearchQuery(IHistoryLogSearchQuery.class)
-        .subject(subjectModel.getObject())
-        .date(dateMinModel.getObject(), dateMaxModel.getObject())
-        .object(objectModel.getObject())
-        .mandatoryDifferencesEventTypes(mandatoryDifferencesEventTypes)
-        .sort(sortModel.getObject());
-  }
-
-  public IModel<Date> getDateMinModel() {
-    return dateMinModel;
-  }
-
-  public IModel<Date> getDateMaxModel() {
-    return dateMaxModel;
-  }
-
-  public HistoryLogDataProvider addMandatoryDifferencesEventType(HistoryEventType eventType) {
-    mandatoryDifferencesEventTypes.add(eventType);
-    return this;
-  }
-
   public CompositeSortModel<HistoryLogSort> getSortModel() {
     return sortModel;
   }
 
   @Override
-  public void detach() {
-    super.detach();
-    Detachables.detach(subjectModel, dateMinModel, dateMaxModel, objectModel, sortModel);
+  protected IHistoryLogSearchQuery searchQuery() {
+    return searchQuery;
   }
 }

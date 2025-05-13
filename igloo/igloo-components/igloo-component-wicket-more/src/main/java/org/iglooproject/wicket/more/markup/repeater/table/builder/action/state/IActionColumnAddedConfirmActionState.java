@@ -54,6 +54,10 @@ public interface IActionColumnAddedConfirmActionState<T, I>
   IActionColumnAddedConfirmActionState<T, I> showPlaceholder(Condition showPlaceholderCondition);
 
   @Override
+  IActionColumnAddedConfirmActionState<T, I> showPlaceholder(
+      IDetachableFactory<? super IModel<? extends T>, Condition> showPlaceholderConditionFactory);
+
+  @Override
   IActionColumnAddedConfirmActionState<T, I> hidePlaceholder();
 
   @Override
