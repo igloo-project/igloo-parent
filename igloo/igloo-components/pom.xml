@@ -76,6 +76,7 @@
 		<module>storage-model</module>
 		<module>storage-micrometer</module>
 		<module>storage-integration</module>
+		<module>storage-tools</module>
 		
 		<module>igloo-monitoring-page</module>
 		<module>igloo-cache</module>
