@@ -8,9 +8,6 @@ import com.google.common.collect.Multimap;
 import de.danielbechler.diff.ObjectDiffer;
 import de.danielbechler.diff.ObjectDifferBuilder;
 import de.danielbechler.diff.differ.BeanDiffer;
-import de.danielbechler.diff.instantiation.TypeInfo;
-import de.danielbechler.diff.introspection.Introspector;
-import de.danielbechler.diff.introspection.StandardIntrospector;
 import de.danielbechler.diff.introspection.TypeInfoResolver;
 import de.danielbechler.diff.node.DiffNode;
 import de.danielbechler.diff.node.DiffNode.Visitor;
@@ -27,7 +24,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.Callable;
-import org.hibernate.proxy.HibernateProxy;
 import org.iglooproject.commons.util.context.IExecutionContext.ITearDownHandle;
 import org.iglooproject.commons.util.fieldpath.FieldPath;
 import org.iglooproject.commons.util.fieldpath.FieldPathComponent;
@@ -119,21 +115,7 @@ public abstract class AbstractConfiguredDifferenceServiceImpl<T extends GenericE
 
   protected ObjectDifferBuilder initializeDiffer(final ObjectDifferBuilder builder) {
     // Ignore Hibernate proxies fields
-    builder
-        .introspection()
-        .setDefaultIntrospector(
-            new Introspector() {
-              private Introspector delegate = new StandardIntrospector();
-
-              @Override
-              public TypeInfo introspect(Class<?> type) {
-                if (HibernateProxy.class.isAssignableFrom(type)) {
-                  type = type.getSuperclass();
-                }
-                return delegate.introspect(type);
-              }
-            })
-        .and();
+    builder.introspection().setDefaultIntrospector(new HibernateProxyAwareIntrospector()).and();
 
     // TODO modify java-object-diff to allow to ignore useEqual by path to
     // ignore useEqual on root ?
