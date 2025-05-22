@@ -2,6 +2,8 @@ package basicapp.front.common.converter;
 
 import basicapp.back.business.common.model.EmailAddress;
 import basicapp.front.common.validator.EmailAddressValidator;
+import jakarta.mail.internet.AddressException;
+import jakarta.mail.internet.InternetAddress;
 import java.util.Locale;
 import org.apache.wicket.util.convert.ConversionException;
 import org.apache.wicket.util.convert.converter.AbstractConverter;
@@ -20,13 +22,24 @@ public final class EmailAddressConverter extends AbstractConverter<EmailAddress>
   @Override
   public EmailAddress convertToObject(String value, Locale locale) throws ConversionException {
     String valueClean = StringUtils.trimAllWhitespace(value);
+
     if (!StringUtils.hasText(valueClean)) {
       return null;
     }
+
     if (!EmailAddressValidator.getInstance().isValid(valueClean)) {
       throw newConversionException("Invalid email address format", value, locale)
           .setResourceKey("common.validator.emailAddress");
     }
+
+    try {
+      InternetAddress internetAddress = new InternetAddress(valueClean);
+      internetAddress.validate();
+    } catch (AddressException e) {
+      throw newConversionException("Invalid email address format", value, locale)
+          .setResourceKey("common.validator.emailAddress");
+    }
+
     return new EmailAddress(valueClean);
   }
 
