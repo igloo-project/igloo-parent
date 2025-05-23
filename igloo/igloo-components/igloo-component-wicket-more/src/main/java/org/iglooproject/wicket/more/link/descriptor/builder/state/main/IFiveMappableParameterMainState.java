@@ -4,14 +4,14 @@ import java.util.Collection;
 import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.main.common.IMainState;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.main.common.IMappableParameterDeclarationState;
-import org.iglooproject.wicket.more.link.descriptor.builder.state.main.generic.IGenericFourMappableParameterMainState;
+import org.iglooproject.wicket.more.link.descriptor.builder.state.main.generic.IGenericFiveMappableParameterMainState;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.chosen.common.IChosenParameterState;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.terminal.ILateTargetDefinitionTerminalState;
-import org.iglooproject.wicket.more.link.descriptor.mapper.IFourParameterLinkDescriptorMapper;
+import org.iglooproject.wicket.more.link.descriptor.mapper.IFiveParameterLinkDescriptorMapper;
 import org.springframework.core.convert.TypeDescriptor;
 
 /**
- * A builder state with four mappable parameters from which one may:
+ * A builder state with five mappable parameters from which one may:
  *
  * <ul>
  *   <li>call any of the {@link IMainState} methods to map parameters and defined validators
@@ -23,20 +23,22 @@ import org.springframework.core.convert.TypeDescriptor;
  *   <li>end the build with one of the {@link ILateTargetDefinitionTerminalState} methods.
  * </ul>
  */
-public interface IFourMappableParameterMainState<
+public interface IFiveMappableParameterMainState<
         TParam1,
         TParam2,
         TParam3,
         TParam4,
+        TParam5,
         TLateTargetDefinitionPageLinkDescriptor,
         TLateTargetDefinitionResourceLinkDescriptor,
         TLateTargetDefinitionImageResourceLinkDescriptor>
-    extends IGenericFourMappableParameterMainState<
-            IFourMappableParameterMainState<
+    extends IGenericFiveMappableParameterMainState<
+            IFiveMappableParameterMainState<
                 TParam1,
                 TParam2,
                 TParam3,
                 TParam4,
+                TParam5,
                 TLateTargetDefinitionPageLinkDescriptor,
                 TLateTargetDefinitionResourceLinkDescriptor,
                 TLateTargetDefinitionImageResourceLinkDescriptor>,
@@ -44,70 +46,86 @@ public interface IFourMappableParameterMainState<
             TParam2,
             TParam3,
             TParam4,
-            IFourParameterLinkDescriptorMapper<
-                TLateTargetDefinitionPageLinkDescriptor, TParam1, TParam2, TParam3, TParam4>,
-            IFourParameterLinkDescriptorMapper<
-                TLateTargetDefinitionResourceLinkDescriptor, TParam1, TParam2, TParam3, TParam4>,
-            IFourParameterLinkDescriptorMapper<
+            TParam5,
+            IFiveParameterLinkDescriptorMapper<
+                TLateTargetDefinitionPageLinkDescriptor,
+                TParam1,
+                TParam2,
+                TParam3,
+                TParam4,
+                TParam5>,
+            IFiveParameterLinkDescriptorMapper<
+                TLateTargetDefinitionResourceLinkDescriptor,
+                TParam1,
+                TParam2,
+                TParam3,
+                TParam4,
+                TParam5>,
+            IFiveParameterLinkDescriptorMapper<
                 TLateTargetDefinitionImageResourceLinkDescriptor,
                 TParam1,
                 TParam2,
                 TParam3,
-                TParam4>>,
+                TParam4,
+                TParam5>>,
         IMappableParameterDeclarationState {
 
   @Override
-  <TParam5>
-      IFiveMappableParameterMainState<
+  <TParam6>
+      ISixMappableParameterMainState<
               TParam1,
               TParam2,
               TParam3,
               TParam4,
               TParam5,
+              TParam6,
               TLateTargetDefinitionPageLinkDescriptor,
               TLateTargetDefinitionResourceLinkDescriptor,
               TLateTargetDefinitionImageResourceLinkDescriptor>
-          model(Class<TParam5> clazz);
+          model(Class<TParam6> clazz);
 
   @Override
-  <TParam5 extends Collection<TElement>, TElement>
-      IFiveMappableParameterMainState<
+  <TParam6 extends Collection<TElement>, TElement>
+      ISixMappableParameterMainState<
               TParam1,
               TParam2,
               TParam3,
               TParam4,
               TParam5,
+              TParam6,
               TLateTargetDefinitionPageLinkDescriptor,
               TLateTargetDefinitionResourceLinkDescriptor,
               TLateTargetDefinitionImageResourceLinkDescriptor>
-          model(Class<? super TParam5> clazz, Class<TElement> elementType);
+          model(Class<? super TParam6> clazz, Class<TElement> elementType);
 
   @Override
-  <TParam5 extends Collection<?>>
-      IFiveMappableParameterMainState<
+  <TParam6 extends Collection<?>>
+      ISixMappableParameterMainState<
               TParam1,
               TParam2,
               TParam3,
               TParam4,
               TParam5,
+              TParam6,
               TLateTargetDefinitionPageLinkDescriptor,
               TLateTargetDefinitionResourceLinkDescriptor,
               TLateTargetDefinitionImageResourceLinkDescriptor>
-          model(Class<? super TParam5> clazz, TypeDescriptor elementTypeDescriptor);
+          model(Class<? super TParam6> clazz, TypeDescriptor elementTypeDescriptor);
 
   @Override
-  <TParam5 extends Collection<?>>
-      IFiveMappableParameterMainState<
+  <TParam6 extends Collection<?>>
+      ISixMappableParameterMainState<
               TParam1,
               TParam2,
               TParam3,
               TParam4,
               TParam5,
+              TParam6,
               TLateTargetDefinitionPageLinkDescriptor,
               TLateTargetDefinitionResourceLinkDescriptor,
               TLateTargetDefinitionImageResourceLinkDescriptor>
           model(
-              Class<? super TParam5> clazz,
+              Class<? super TParam6> clazz,
               TypeDescriptor elementTypeDescriptor,
-              SerializableSupplier2<? extends TParam5> emptyCollectionSupplier);
+              SerializableSupplier2<? extends TParam6> emptyCollectionSupplier);
 }

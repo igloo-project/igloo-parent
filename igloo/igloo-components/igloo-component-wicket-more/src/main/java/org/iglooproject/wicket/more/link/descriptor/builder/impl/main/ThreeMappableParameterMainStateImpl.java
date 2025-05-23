@@ -59,7 +59,7 @@ final class ThreeMappableParameterMainStateImpl<
 
   @Override
   public <TParam4>
-      FourMappableParameterMainStateImpl<
+      IFourMappableParameterMainState<
               TParam1,
               TParam2,
               TParam3,
