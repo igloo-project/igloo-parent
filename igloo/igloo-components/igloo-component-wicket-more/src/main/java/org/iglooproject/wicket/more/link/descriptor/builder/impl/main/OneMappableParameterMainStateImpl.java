@@ -55,7 +55,7 @@ final class OneMappableParameterMainStateImpl<
 
   @Override
   public <TParam2>
-      TwoMappableParameterMainStateImpl<
+      ITwoMappableParameterMainState<
               TParam1,
               TParam2,
               TLateTargetDefinitionPageLinkDescriptor,

@@ -9,154 +9,164 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.wicket.more.link.descriptor.builder.impl.factory.IBuilderLinkDescriptorFactory;
-import org.iglooproject.wicket.more.link.descriptor.builder.impl.mapper.CoreFourParameterLinkDescriptorMapperImpl;
+import org.iglooproject.wicket.more.link.descriptor.builder.impl.mapper.CoreFiveParameterLinkDescriptorMapperImpl;
 import org.iglooproject.wicket.more.link.descriptor.builder.impl.parameter.LinkParameterTypeInformation;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.main.IFiveMappableParameterMainState;
-import org.iglooproject.wicket.more.link.descriptor.builder.state.main.IFourMappableParameterMainState;
-import org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.chosen.IFourMappableParameterFourChosenParameterState;
-import org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.chosen.IFourMappableParameterOneChosenParameterState;
-import org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.chosen.IFourMappableParameterThreeChosenParameterState;
-import org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.chosen.IFourMappableParameterTwoChosenParameterState;
-import org.iglooproject.wicket.more.link.descriptor.mapper.IFourParameterLinkDescriptorMapper;
+import org.iglooproject.wicket.more.link.descriptor.builder.state.main.ISixMappableParameterMainState;
+import org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.chosen.IFiveMappableParameterFiveChosenParameterState;
+import org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.chosen.IFiveMappableParameterFourChosenParameterState;
+import org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.chosen.IFiveMappableParameterOneChosenParameterState;
+import org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.chosen.IFiveMappableParameterThreeChosenParameterState;
+import org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.chosen.IFiveMappableParameterTwoChosenParameterState;
+import org.iglooproject.wicket.more.link.descriptor.mapper.IFiveParameterLinkDescriptorMapper;
 import org.javatuples.Tuple;
 import org.springframework.core.convert.TypeDescriptor;
 
-final class FourMappableParameterMainStateImpl<
+final class FiveMappableParameterMainStateImpl<
         TParam1,
         TParam2,
         TParam3,
         TParam4,
+        TParam5,
         TLateTargetDefinitionPageLinkDescriptor,
         TLateTargetDefinitionResourceLinkDescriptor,
         TLateTargetDefinitionImageResourceLinkDescriptor>
     extends AbstractOneOrMoreMappableParameterMainStateImpl<
-        IFourMappableParameterMainState<
+        IFiveMappableParameterMainState<
             TParam1,
             TParam2,
             TParam3,
             TParam4,
+            TParam5,
             TLateTargetDefinitionPageLinkDescriptor,
             TLateTargetDefinitionResourceLinkDescriptor,
             TLateTargetDefinitionImageResourceLinkDescriptor>,
         TLateTargetDefinitionPageLinkDescriptor,
         TLateTargetDefinitionResourceLinkDescriptor,
         TLateTargetDefinitionImageResourceLinkDescriptor>
-    implements IFourMappableParameterMainState<
+    implements IFiveMappableParameterMainState<
         TParam1,
         TParam2,
         TParam3,
         TParam4,
+        TParam5,
         TLateTargetDefinitionPageLinkDescriptor,
         TLateTargetDefinitionResourceLinkDescriptor,
         TLateTargetDefinitionImageResourceLinkDescriptor> {
 
-  FourMappableParameterMainStateImpl(
+  FiveMappableParameterMainStateImpl(
       AbstractOneOrMoreMappableParameterMainStateImpl<
               ?,
               TLateTargetDefinitionPageLinkDescriptor,
               TLateTargetDefinitionResourceLinkDescriptor,
               TLateTargetDefinitionImageResourceLinkDescriptor>
           previousState,
-      LinkParameterTypeInformation<TParam4> addedParameterType) {
-    super(previousState, addedParameterType, 4);
+      LinkParameterTypeInformation<TParam5> addedParameterType) {
+    super(previousState, addedParameterType, 5);
   }
 
   @Override
-  public <TParam5>
-      IFiveMappableParameterMainState<
+  public <TParam6>
+      ISixMappableParameterMainState<
               TParam1,
               TParam2,
               TParam3,
               TParam4,
               TParam5,
+              TParam6,
               TLateTargetDefinitionPageLinkDescriptor,
               TLateTargetDefinitionResourceLinkDescriptor,
               TLateTargetDefinitionImageResourceLinkDescriptor>
-          model(Class<TParam5> clazz) {
-    return new FiveMappableParameterMainStateImpl<>(
+          model(Class<TParam6> clazz) {
+    return new SixMappableParameterMainStateImpl<>(
         this, LinkParameterTypeInformation.valueOf(clazz));
   }
 
   @Override
-  public <TParam5 extends Collection<TElement>, TElement>
-      IFiveMappableParameterMainState<
+  public <TParam6 extends Collection<TElement>, TElement>
+      ISixMappableParameterMainState<
               TParam1,
               TParam2,
               TParam3,
               TParam4,
               TParam5,
+              TParam6,
               TLateTargetDefinitionPageLinkDescriptor,
               TLateTargetDefinitionResourceLinkDescriptor,
               TLateTargetDefinitionImageResourceLinkDescriptor>
-          model(Class<? super TParam5> clazz, Class<TElement> elementType) {
-    return new FiveMappableParameterMainStateImpl<>(
+          model(Class<? super TParam6> clazz, Class<TElement> elementType) {
+    return new SixMappableParameterMainStateImpl<>(
         this, LinkParameterTypeInformation.collection(clazz, elementType));
   }
 
   @Override
-  public <TParam5 extends Collection<?>>
-      IFiveMappableParameterMainState<
+  public <TParam6 extends Collection<?>>
+      ISixMappableParameterMainState<
               TParam1,
               TParam2,
               TParam3,
               TParam4,
               TParam5,
+              TParam6,
               TLateTargetDefinitionPageLinkDescriptor,
               TLateTargetDefinitionResourceLinkDescriptor,
               TLateTargetDefinitionImageResourceLinkDescriptor>
-          model(Class<? super TParam5> clazz, TypeDescriptor elementTypeDescriptor) {
-    return new FiveMappableParameterMainStateImpl<>(
+          model(Class<? super TParam6> clazz, TypeDescriptor elementTypeDescriptor) {
+    return new SixMappableParameterMainStateImpl<>(
         this, LinkParameterTypeInformation.collection(clazz, elementTypeDescriptor));
   }
 
   @Override
-  public <TParam5 extends Collection<?>>
-      IFiveMappableParameterMainState<
+  public <TParam6 extends Collection<?>>
+      ISixMappableParameterMainState<
               TParam1,
               TParam2,
               TParam3,
               TParam4,
               TParam5,
+              TParam6,
               TLateTargetDefinitionPageLinkDescriptor,
               TLateTargetDefinitionResourceLinkDescriptor,
               TLateTargetDefinitionImageResourceLinkDescriptor>
           model(
-              Class<? super TParam5> clazz,
+              Class<? super TParam6> clazz,
               TypeDescriptor elementTypeDescriptor,
-              SerializableSupplier2<? extends TParam5> emptyCollectionSupplier) {
-    return new FiveMappableParameterMainStateImpl<>(
+              SerializableSupplier2<? extends TParam6> emptyCollectionSupplier) {
+    return new SixMappableParameterMainStateImpl<>(
         this,
         LinkParameterTypeInformation.collection(
             clazz, elementTypeDescriptor, emptyCollectionSupplier));
   }
 
   private <TTarget, TLinkDescriptor>
-      IFourParameterLinkDescriptorMapper<TLinkDescriptor, TParam1, TParam2, TParam3, TParam4>
+      IFiveParameterLinkDescriptorMapper<
+              TLinkDescriptor, TParam1, TParam2, TParam3, TParam4, TParam5>
           createMapper(
               IBuilderLinkDescriptorFactory<TTarget, TLinkDescriptor> linkDescriptorFactory,
               IDetachableFactory<? extends Tuple, ? extends IModel<? extends TTarget>>
                   pageClassFactory,
               List<Integer> parameterIndices) {
-    return new CoreFourParameterLinkDescriptorMapperImpl<>(
+    return new CoreFiveParameterLinkDescriptorMapperImpl<>(
         mapperLinkDescriptorFactory(linkDescriptorFactory, pageClassFactory, parameterIndices));
   }
 
   @SuppressWarnings({"rawtypes", "unchecked"})
-  private class FourParameterChosenParameterStateImpl
-      extends AbstractInternalChosenParameterStateImpl<FourParameterChosenParameterStateImpl>
-      implements IFourMappableParameterOneChosenParameterState,
-          IFourMappableParameterTwoChosenParameterState,
-          IFourMappableParameterThreeChosenParameterState,
-          IFourMappableParameterFourChosenParameterState {
+  private class FiveParameterChosenParameterStateImpl
+      extends AbstractInternalChosenParameterStateImpl<FiveParameterChosenParameterStateImpl>
+      implements IFiveMappableParameterOneChosenParameterState,
+          IFiveMappableParameterTwoChosenParameterState,
+          IFiveMappableParameterThreeChosenParameterState,
+          IFiveMappableParameterFourChosenParameterState,
+          IFiveMappableParameterFiveChosenParameterState {
 
     @Override
-    protected FourParameterChosenParameterStateImpl thisAsTSelf() {
+    protected FiveParameterChosenParameterStateImpl thisAsTSelf() {
       return this;
     }
 
     @Override
-    public IFourParameterLinkDescriptorMapper<
-            TLateTargetDefinitionPageLinkDescriptor, TParam1, TParam2, TParam3, TParam4>
+    public IFiveParameterLinkDescriptorMapper<
+            TLateTargetDefinitionPageLinkDescriptor, TParam1, TParam2, TParam3, TParam4, TParam5>
         page(IDetachableFactory pageClassFactory) {
       return createMapper(
           getTargetFactories().getLateTargetDefinitionPageLinkDescriptorFactory(),
@@ -165,8 +175,13 @@ final class FourMappableParameterMainStateImpl<
     }
 
     @Override
-    public IFourParameterLinkDescriptorMapper<
-            TLateTargetDefinitionResourceLinkDescriptor, TParam1, TParam2, TParam3, TParam4>
+    public IFiveParameterLinkDescriptorMapper<
+            TLateTargetDefinitionResourceLinkDescriptor,
+            TParam1,
+            TParam2,
+            TParam3,
+            TParam4,
+            TParam5>
         resource(IDetachableFactory resourceReferenceFactory) {
       return createMapper(
           getTargetFactories().getLateTargetDefinitionResourceLinkDescriptorFactory(),
@@ -175,8 +190,13 @@ final class FourMappableParameterMainStateImpl<
     }
 
     @Override
-    public IFourParameterLinkDescriptorMapper<
-            TLateTargetDefinitionImageResourceLinkDescriptor, TParam1, TParam2, TParam3, TParam4>
+    public IFiveParameterLinkDescriptorMapper<
+            TLateTargetDefinitionImageResourceLinkDescriptor,
+            TParam1,
+            TParam2,
+            TParam3,
+            TParam4,
+            TParam5>
         imageResource(IDetachableFactory resourceReferenceFactory) {
       return createMapper(
           getTargetFactories().getLateTargetDefinitionImageResourceLinkDescriptorFactory(),
@@ -185,68 +205,83 @@ final class FourMappableParameterMainStateImpl<
     }
   }
 
-  private FourParameterChosenParameterStateImpl pickNone() {
-    return new FourParameterChosenParameterStateImpl();
+  private FiveParameterChosenParameterStateImpl pickNone() {
+    return new FiveParameterChosenParameterStateImpl();
   }
 
   @Override
-  public FourParameterChosenParameterStateImpl pickFirst() {
+  public FiveParameterChosenParameterStateImpl pickFirst() {
     return pickNone().andFirst();
   }
 
   @Override
-  public FourParameterChosenParameterStateImpl pickSecond() {
+  public FiveParameterChosenParameterStateImpl pickSecond() {
     return pickNone().andSecond();
   }
 
   @Override
-  public FourParameterChosenParameterStateImpl pickThird() {
+  public FiveParameterChosenParameterStateImpl pickThird() {
     return pickNone().andThird();
   }
 
   @Override
-  public FourParameterChosenParameterStateImpl pickFourth() {
+  public FiveParameterChosenParameterStateImpl pickFourth() {
     return pickNone().andFourth();
   }
 
   @Override
-  public IFourParameterLinkDescriptorMapper<
-          TLateTargetDefinitionPageLinkDescriptor, TParam1, TParam2, TParam3, TParam4>
+  public FiveParameterChosenParameterStateImpl pickFifth() {
+    return pickNone().andFifth();
+  }
+
+  @Override
+  public IFiveParameterLinkDescriptorMapper<
+          TLateTargetDefinitionPageLinkDescriptor, TParam1, TParam2, TParam3, TParam4, TParam5>
       page(IModel<? extends Class<? extends Page>> pageClassModel) {
     return pickNone().page(constantModelFactory(pageClassModel));
   }
 
   @Override
-  public IFourParameterLinkDescriptorMapper<
-          TLateTargetDefinitionResourceLinkDescriptor, TParam1, TParam2, TParam3, TParam4>
+  public IFiveParameterLinkDescriptorMapper<
+          TLateTargetDefinitionResourceLinkDescriptor, TParam1, TParam2, TParam3, TParam4, TParam5>
       resource(IModel<? extends ResourceReference> resourceReferenceModel) {
     return pickNone().resource(constantModelFactory(resourceReferenceModel));
   }
 
   @Override
-  public IFourParameterLinkDescriptorMapper<
-          TLateTargetDefinitionImageResourceLinkDescriptor, TParam1, TParam2, TParam3, TParam4>
+  public IFiveParameterLinkDescriptorMapper<
+          TLateTargetDefinitionImageResourceLinkDescriptor,
+          TParam1,
+          TParam2,
+          TParam3,
+          TParam4,
+          TParam5>
       imageResource(IModel<? extends ResourceReference> resourceReferenceModel) {
     return pickNone().imageResource(constantModelFactory(resourceReferenceModel));
   }
 
   @Override
-  public IFourParameterLinkDescriptorMapper<
-          TLateTargetDefinitionPageLinkDescriptor, TParam1, TParam2, TParam3, TParam4>
+  public IFiveParameterLinkDescriptorMapper<
+          TLateTargetDefinitionPageLinkDescriptor, TParam1, TParam2, TParam3, TParam4, TParam5>
       page(Class<? extends Page> pageClass) {
     return page(Model.of(pageClass));
   }
 
   @Override
-  public IFourParameterLinkDescriptorMapper<
-          TLateTargetDefinitionResourceLinkDescriptor, TParam1, TParam2, TParam3, TParam4>
+  public IFiveParameterLinkDescriptorMapper<
+          TLateTargetDefinitionResourceLinkDescriptor, TParam1, TParam2, TParam3, TParam4, TParam5>
       resource(ResourceReference resourceReference) {
     return resource(Model.of(resourceReference));
   }
 
   @Override
-  public IFourParameterLinkDescriptorMapper<
-          TLateTargetDefinitionImageResourceLinkDescriptor, TParam1, TParam2, TParam3, TParam4>
+  public IFiveParameterLinkDescriptorMapper<
+          TLateTargetDefinitionImageResourceLinkDescriptor,
+          TParam1,
+          TParam2,
+          TParam3,
+          TParam4,
+          TParam5>
       imageResource(ResourceReference resourceReference) {
     return imageResource(Model.of(resourceReference));
   }
