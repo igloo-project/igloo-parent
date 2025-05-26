@@ -139,7 +139,7 @@ def igloo(
             igloo_commons_path,
             push,
         )
-        wait_for_artifact(commands, "igloo-commans", IGLOO_REPOSITORY, "org.iglooproject.components", "igloo-security-api", "jar", release_version, 5 * 60, 30)
+        wait_for_artifact(commands, "igloo-commons", IGLOO_REPOSITORY, "org.iglooproject.components", "igloo-security-api", "jar", release_version, 5 * 60, 30)
         _push(
             commands,
             "igloo-parent",
