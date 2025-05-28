@@ -11,8 +11,17 @@ import org.iglooproject.jpa.more.business.sort.ISort;
 public class HibernateSearchUtils {
 
   public static final String WILDCARD = "*";
-  public static final String OR = " | ";
-  public static final String AND = " + ";
+  public static final String OR = "|";
+  public static final String AND = "+";
+  public static final String NOT = "-";
+
+  // Any of these characters. The NOT must be escaped.
+  public static final String REPLACEMENT_REGEX = "[" + AND + OR + "\\" + NOT + WILDCARD + "]";
+
+  /** Escape characters that matches an operator character */
+  public static String escapeSpecialCharacters(String term) {
+    return term.replaceAll("(" + REPLACEMENT_REGEX + ")", "\\\\$1");
+  }
 
   /** Split on whitespace. */
   public static String wildcardTokensOr(String term) {
@@ -27,8 +36,9 @@ public class HibernateSearchUtils {
         .trimResults()
         .omitEmptyStrings()
         .splitToStream(term)
+        .map(HibernateSearchUtils::escapeSpecialCharacters)
         .map(t -> t + WILDCARD)
-        .collect(Collectors.joining(OR));
+        .collect(Collectors.joining(" " + OR + " "));
   }
 
   /** Split on whitespace. */
@@ -44,8 +54,9 @@ public class HibernateSearchUtils {
         .trimResults()
         .omitEmptyStrings()
         .splitToStream(term)
+        .map(HibernateSearchUtils::escapeSpecialCharacters)
         .map(t -> t + WILDCARD)
-        .collect(Collectors.joining(AND));
+        .collect(Collectors.joining(" " + AND + " "));
   }
 
   public static SortOrder toSortOrder(ISort<?> sort, ISort.SortOrder sortOrder) {
