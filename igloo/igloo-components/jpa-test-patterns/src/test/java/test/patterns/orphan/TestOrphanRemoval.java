@@ -9,6 +9,7 @@ import jakarta.persistence.criteria.Root;
 import java.util.Arrays;
 import java.util.List;
 import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.search.mapper.orm.cfg.HibernateOrmMapperSettings;
 import org.igloo.jpa.test.EntityManagerFactoryExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -18,13 +19,20 @@ class TestOrphanRemoval {
   @RegisterExtension
   EntityManagerFactoryExtension extension =
       new EntityManagerFactoryExtension(
-          AvailableSettings.DIALECT, org.hibernate.dialect.H2Dialect.class.getName(),
-          AvailableSettings.HBM2DDL_AUTO, "create",
-          AvailableSettings.JPA_JDBC_DRIVER, org.h2.Driver.class.getName(),
-          AvailableSettings.JPA_JDBC_URL,
-              "jdbc:h2:mem:jpa_patterns;INIT=create schema if not exists jpa_patterns",
-          AvailableSettings.LOADED_CLASSES, Arrays.asList(OrphanOwner.class, OrphanItem.class),
-          AvailableSettings.XML_MAPPING_ENABLED, Boolean.FALSE.toString());
+          AvailableSettings.DIALECT,
+          org.hibernate.dialect.H2Dialect.class.getName(),
+          AvailableSettings.HBM2DDL_AUTO,
+          "create",
+          AvailableSettings.JAKARTA_JDBC_DRIVER,
+          org.h2.Driver.class.getName(),
+          AvailableSettings.JAKARTA_JDBC_URL,
+          "jdbc:h2:mem:jpa_patterns;INIT=create schema if not exists jpa_patterns",
+          AvailableSettings.LOADED_CLASSES,
+          Arrays.asList(OrphanOwner.class, OrphanItem.class),
+          AvailableSettings.XML_MAPPING_ENABLED,
+          Boolean.FALSE.toString(),
+          HibernateOrmMapperSettings.ENABLED,
+          Boolean.FALSE.toString());
 
   /**
    * Test orphanRemoval behavior. {@link OrphanOwner} is an entity with a list of {@link OrphanItem}
