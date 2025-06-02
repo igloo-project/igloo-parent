@@ -11,7 +11,6 @@ import basicapp.back.business.user.model.embeddable.UserPasswordInformation;
 import basicapp.back.business.user.model.embeddable.UserPasswordRecoveryRequest;
 import basicapp.back.config.hibernate.search.bridge.EmailAddressValueBridge;
 import basicapp.back.util.binding.Bindings;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.base.MoreObjects.ToStringHelper;
 import com.google.common.collect.Sets;
 import igloo.hibernateconfig.api.HibernateSearchAnalyzer;
@@ -88,7 +87,7 @@ public class User extends GenericEntity<Long, User> implements IUser, INotificat
   @FullTextField(name = USERNAME_AUTOCOMPLETE, analyzer = HibernateSearchAnalyzer.TEXT)
   private String username;
 
-  @Basic @JsonIgnore private String passwordHash = EMPTY_PASSWORD_HASH;
+  @Basic private String passwordHash = EMPTY_PASSWORD_HASH;
 
   @Embedded private UserPasswordInformation passwordInformation;
 
@@ -117,7 +116,7 @@ public class User extends GenericEntity<Long, User> implements IUser, INotificat
       valueBridge = @ValueBridgeRef(type = EmailAddressValueBridge.class))
   private EmailAddress emailAddress;
 
-  @Basic @JsonIgnore private Locale locale;
+  @Basic private Locale locale;
 
   @Basic(optional = false)
   @GenericField(name = ENABLED)
@@ -133,18 +132,12 @@ public class User extends GenericEntity<Long, User> implements IUser, INotificat
   private UserAnnouncementInformation announcementInformation = new UserAnnouncementInformation();
 
   @Basic(optional = false)
-  @JsonIgnore
   private Instant creationDate;
 
   @Basic(optional = false)
-  @JsonIgnore
   private Instant lastUpdateDate;
 
-  @Basic @JsonIgnore private Instant lastLoginDate;
-
-  public User() {
-    super();
-  }
+  @Basic private Instant lastLoginDate;
 
   @Override
   public Long getId() {
