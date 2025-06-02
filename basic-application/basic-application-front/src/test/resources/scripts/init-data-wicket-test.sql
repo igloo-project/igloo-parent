@@ -1,4 +1,4 @@
-insert into user_ (id, creationdate, enabled, lastupdatedate, locale,
+insert into user_ (id, creation_date, enabled, modification_date, locale,
                                           passwordhash, username, emailaddress, firstname, lastname,
                                           announcementinformation_open,
                                           "type")

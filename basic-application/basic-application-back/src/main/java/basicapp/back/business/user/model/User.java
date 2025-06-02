@@ -45,6 +45,7 @@ import org.hibernate.search.mapper.pojo.mapping.definition.annotation.KeywordFie
 import org.iglooproject.commons.util.collections.CollectionUtils;
 import org.iglooproject.functional.Joiners;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
+import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryEventSummary;
 import org.iglooproject.jpa.search.bridge.GenericEntityIdBridge;
 import org.iglooproject.jpa.security.business.user.model.IUser;
 import org.iglooproject.mail.api.INotificationRecipient;
@@ -131,11 +132,9 @@ public class User extends GenericEntity<Long, User> implements IUser, INotificat
   @Embedded
   private UserAnnouncementInformation announcementInformation = new UserAnnouncementInformation();
 
-  @Basic(optional = false)
-  private Instant creationDate;
+  @Embedded private HistoryEventSummary creation;
 
-  @Basic(optional = false)
-  private Instant lastUpdateDate;
+  @Embedded private HistoryEventSummary modification;
 
   @Basic private Instant lastLoginDate;
 
@@ -296,20 +295,26 @@ public class User extends GenericEntity<Long, User> implements IUser, INotificat
     this.announcementInformation = announcementInformation;
   }
 
-  public Instant getCreationDate() {
-    return creationDate;
+  public HistoryEventSummary getCreation() {
+    if (creation == null) {
+      creation = new HistoryEventSummary();
+    }
+    return creation;
   }
 
-  public void setCreationDate(Instant creationDate) {
-    this.creationDate = creationDate;
+  public void setCreation(HistoryEventSummary creation) {
+    this.creation = creation;
   }
 
-  public Instant getLastUpdateDate() {
-    return lastUpdateDate;
+  public HistoryEventSummary getModification() {
+    if (modification == null) {
+      modification = new HistoryEventSummary();
+    }
+    return modification;
   }
 
-  public void setLastUpdateDate(Instant lastUpdateDate) {
-    this.lastUpdateDate = lastUpdateDate;
+  public void setModification(HistoryEventSummary modification) {
+    this.modification = modification;
   }
 
   public Instant getLastLoginDate() {

@@ -54,9 +54,9 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 
   private static final String ID_FIELD_NAME = "id";
 
-  private static final String CREATION_DATE_FIELD_NAME = "creationDate";
+  private static final String CREATION_DATE_FIELD_NAME = "creation.date";
 
-  private static final String LAST_UPDATE_DATE_FIELD_NAME = "lastUpdateDate";
+  private static final String MODIFICATION_DATE_FIELD_NAME = "modification.date";
 
   private static final String PASSWORD_FIELD_NAME = "password";
 
@@ -259,11 +259,13 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
   protected <E extends GenericEntity<Long, ?>> void doFilterLine(
       Class<E> clazz, Map<String, Object> line) {
     Date creationDate = new Date();
+
     if (!line.containsKey(CREATION_DATE_FIELD_NAME)) {
       line.put(CREATION_DATE_FIELD_NAME, creationDate);
     }
-    if (!line.containsKey(LAST_UPDATE_DATE_FIELD_NAME)) {
-      line.put(LAST_UPDATE_DATE_FIELD_NAME, creationDate);
+
+    if (!line.containsKey(MODIFICATION_DATE_FIELD_NAME)) {
+      line.put(MODIFICATION_DATE_FIELD_NAME, creationDate);
     }
 
     if (line.containsKey(PASSWORD_FIELD_NAME)) {

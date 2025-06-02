@@ -41,10 +41,11 @@ public class BasicUserDetailGeneralDescriptionPanel extends GenericPanel<User> {
             .condition(Condition.modelNotNull(emailAddressValueModel)),
         new CoreLabel("locale", BindingModel.of(userModel, Bindings.user().locale()))
             .showPlaceholder(),
-        new CoreLabel("creationDate", BindingModel.of(userModel, Bindings.user().creationDate()))
+        new CoreLabel("creationDate", BindingModel.of(userModel, Bindings.user().creation().date()))
             .showPlaceholder(),
         new CoreLabel(
-                "lastUpdateDate", BindingModel.of(userModel, Bindings.user().lastUpdateDate()))
+                "modificationDate",
+                BindingModel.of(userModel, Bindings.user().modification().date()))
             .showPlaceholder(),
         new CoreLabel("lastLoginDate", BindingModel.of(userModel, Bindings.user().lastLoginDate()))
             .showPlaceholder());

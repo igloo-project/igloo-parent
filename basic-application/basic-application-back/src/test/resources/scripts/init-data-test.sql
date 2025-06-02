@@ -11,7 +11,7 @@ values (-1, 'GLOBAL_ROLE_READ'),
        (-1, 'GLOBAL_USER_WRITE'),
        (-1, 'GLOBAL_REFERENCE_DATA_READ');
 
-insert into user_ (id, creationdate, enabled, lastupdatedate,
+insert into user_ (id, creation_date, enabled, modification_date,
                    passwordhash, username, emailaddress, firstname, lastname,
                    announcementinformation_open,
                    "type")

@@ -57,8 +57,8 @@ class TestUserService extends AbstractBasicApplicationTestCase {
       Assertions.assertThat(userBdd.getPasswordHash()).startsWith("{bcrypt}");
       Assertions.assertThat(userBdd.isEnabled()).isTrue();
       Assertions.assertThat(userBdd.getLocale()).isEqualTo(Locale.FRENCH);
-      Assertions.assertThat(new Date()).isInSameDayAs(userBdd.getCreationDate());
-      Assertions.assertThat(new Date()).isInSameDayAs(userBdd.getLastUpdateDate());
+      Assertions.assertThat(new Date()).isInSameDayAs(userBdd.getCreation().getDate());
+      Assertions.assertThat(new Date()).isInSameDayAs(userBdd.getModification().getDate());
       Assertions.assertThat(new Date())
           .isInSameDayAs(userBdd.getPasswordInformation().getLastUpdateDate());
     }
@@ -88,8 +88,8 @@ class TestUserService extends AbstractBasicApplicationTestCase {
       Assertions.assertThat(userBdd.getPasswordHash()).startsWith("{bcrypt}");
       Assertions.assertThat(userBdd.isEnabled()).isTrue();
       Assertions.assertThat(userBdd.getLocale()).isEqualTo(Locale.FRENCH);
-      Assertions.assertThat(new Date()).isInSameDayAs(userBdd.getCreationDate());
-      Assertions.assertThat(new Date()).isInSameDayAs(userBdd.getLastUpdateDate());
+      Assertions.assertThat(new Date()).isInSameDayAs(userBdd.getCreation().getDate());
+      Assertions.assertThat(new Date()).isInSameDayAs(userBdd.getModification().getDate());
       Assertions.assertThat(new Date())
           .isInSameDayAs(userBdd.getPasswordInformation().getLastUpdateDate());
     }
@@ -112,8 +112,9 @@ class TestUserService extends AbstractBasicApplicationTestCase {
       Assertions.assertThat(userBdd.getPasswordHash()).startsWith("{bcrypt}");
       Assertions.assertThat(userBdd.isEnabled()).isTrue();
       Assertions.assertThat(userBdd.getLocale()).isEqualTo(Locale.FRENCH);
-      Assertions.assertThat(DateUtil.parse("2024-01-01")).isInSameDayAs(userBdd.getCreationDate());
-      Assertions.assertThat(new Date()).isInSameDayAs(userBdd.getLastUpdateDate());
+      Assertions.assertThat(DateUtil.parse("2024-01-01"))
+          .isInSameDayAs(userBdd.getCreation().getDate());
+      Assertions.assertThat(new Date()).isInSameDayAs(userBdd.getModification().getDate());
     }
 
     @WithUserDetails(

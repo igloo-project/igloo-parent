@@ -3,6 +3,7 @@ package basicapp.back.business.user.service.business;
 import basicapp.back.business.common.model.EmailAddress;
 import basicapp.back.business.history.model.atomic.HistoryEventType;
 import basicapp.back.business.history.model.bean.HistoryLogAdditionalInformationBean;
+import basicapp.back.business.history.service.IHistoryEventSummaryService;
 import basicapp.back.business.history.service.IHistoryLogService;
 import basicapp.back.business.user.dao.IUserDao;
 import basicapp.back.business.user.model.User;
@@ -35,6 +36,7 @@ public class UserServiceImpl extends GenericEntityServiceImpl<Long, User> implem
   private final IUserDao dao;
   private final IBasicApplicationAuthenticationService authenticationService;
   private final IHistoryLogService historyLogService;
+  private IHistoryEventSummaryService historyEventSummaryService;
   private final IPropertyService propertyService;
   private final ISecurityManagementService securityManagementService;
   private final PasswordEncoder passwordEncoder;
@@ -44,6 +46,7 @@ public class UserServiceImpl extends GenericEntityServiceImpl<Long, User> implem
       IUserDao dao,
       @Lazy IBasicApplicationAuthenticationService authenticationService,
       @Lazy IHistoryLogService historyLogService,
+      @Lazy IHistoryEventSummaryService historyEventSummaryService,
       IPropertyService propertyService,
       @Lazy ISecurityManagementService securityManagementService,
       PasswordEncoder passwordEncoder) {
@@ -51,6 +54,7 @@ public class UserServiceImpl extends GenericEntityServiceImpl<Long, User> implem
     this.dao = dao;
     this.authenticationService = authenticationService;
     this.historyLogService = historyLogService;
+    this.historyEventSummaryService = historyEventSummaryService;
     this.propertyService = propertyService;
     this.securityManagementService = securityManagementService;
     this.passwordEncoder = passwordEncoder;
@@ -58,15 +62,14 @@ public class UserServiceImpl extends GenericEntityServiceImpl<Long, User> implem
 
   @Override
   protected void createEntity(User user) throws ServiceException, SecurityServiceException {
-    Instant now = Instant.now();
-    user.setCreationDate(now);
-    user.setLastUpdateDate(now);
+    historyEventSummaryService.refresh(user.getCreation());
+    historyEventSummaryService.refresh(user.getModification());
     super.createEntity(user);
   }
 
   @Override
   protected void updateEntity(User user) throws ServiceException, SecurityServiceException {
-    user.setLastUpdateDate(Instant.now());
+    historyEventSummaryService.refresh(user.getModification());
     super.updateEntity(user);
   }
 
