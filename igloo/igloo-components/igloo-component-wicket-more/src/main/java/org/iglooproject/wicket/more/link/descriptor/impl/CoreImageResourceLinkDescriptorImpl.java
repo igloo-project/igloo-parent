@@ -1,7 +1,7 @@
 package org.iglooproject.wicket.more.link.descriptor.impl;
 
-import com.google.common.collect.ImmutableList;
 import igloo.wicket.model.Models;
+import java.util.List;
 import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.resource.ResourceReference;
@@ -42,6 +42,6 @@ public class CoreImageResourceLinkDescriptorImpl extends CoreResourceLinkDescrip
     if (other instanceof IImageResourceLinkGenerator) {
       return chain((IImageResourceLinkGenerator) other);
     }
-    return new ChainedImageResourceLinkGeneratorImpl(ImmutableList.of(this, other));
+    return new ChainedImageResourceLinkGeneratorImpl(List.of(this, other));
   }
 }

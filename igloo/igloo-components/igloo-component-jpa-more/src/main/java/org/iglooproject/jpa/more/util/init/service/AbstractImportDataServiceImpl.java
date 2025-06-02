@@ -2,7 +2,6 @@ package org.iglooproject.jpa.more.util.init.service;
 
 import static org.iglooproject.jpa.more.property.JpaMorePropertyIds.DATABASE_INITIALIZED;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import java.io.FileNotFoundException;
@@ -48,10 +47,10 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
   private static final Logger LOGGER = LoggerFactory.getLogger(AbstractImportDataServiceImpl.class);
 
   protected static final List<String> REFERENCE_DATA_FILE_NAMES =
-      ImmutableList.of("reference_data.xlsx", "reference_data.xls");
+      List.of("reference_data.xlsx", "reference_data.xls");
 
   protected static final List<String> BUSINESS_DATA_FILE_NAMES =
-      ImmutableList.of("business_data.xlsx", "business_data.xls");
+      List.of("business_data.xlsx", "business_data.xls");
 
   private static final String ID_FIELD_NAME = "id";
 

@@ -219,7 +219,7 @@ public abstract class AbstractActionColumnElementBuilder<
   public F withClass(
       IDetachableFactory<? super IModel<? extends T>, ? extends IModel<? extends String>>
           valueModelFactory) {
-    return withClass(ImmutableList.of(Objects.requireNonNull(valueModelFactory)));
+    return withClass(List.of(Objects.requireNonNull(valueModelFactory)));
   }
 
   public F withClass(IModel<? extends String> valueModel) {
@@ -242,7 +242,7 @@ public abstract class AbstractActionColumnElementBuilder<
 
   public F add(
       IDetachableFactory<? super IModel<? extends T>, ? extends Behavior> behaviorFactory) {
-    return add(ImmutableList.of(Objects.requireNonNull(behaviorFactory)));
+    return add(List.of(Objects.requireNonNull(behaviorFactory)));
   }
 
   public F add(Behavior firstBehavior, Behavior... otherBehaviors) {

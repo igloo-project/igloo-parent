@@ -1,10 +1,10 @@
 package basicapp.back.business.common.util;
 
 import com.google.common.base.MoreObjects;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Ordering;
 import java.util.Collection;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import org.iglooproject.commons.util.ordering.SerializableCollator;
@@ -23,7 +23,7 @@ public final class BasicApplicationLocale {
           .build();
 
   /** Every possible locale used in this application, sorted by descending order of priority. */
-  public static final Collection<Locale> ALL = ImmutableList.of(FRENCH, ENGLISH);
+  public static final Collection<Locale> ALL = List.of(FRENCH, ENGLISH);
 
   public static final Ordering<String> initCollator(Locale locale) {
     return new SerializableCollator(locale).nullsFirst();

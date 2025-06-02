@@ -1,6 +1,5 @@
 package org.iglooproject.jpa.more.business.difference.service;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.LinkedHashMultimap;
@@ -210,7 +209,7 @@ public abstract class AbstractGenericEntityDifferenceServiceImpl<T extends Gener
 
   protected Iterable<? extends BindingRoot<? super T, ?>> getMinimalDifferenceFieldsBindings() {
     // By default, the minimal diff does not include any nodes
-    return ImmutableList.<BindingRoot<? super T, ?>>of();
+    return List.of();
   }
 
   protected final ObjectDifferBuilder initializeMinimalDiffer(ObjectDifferBuilder builder) {

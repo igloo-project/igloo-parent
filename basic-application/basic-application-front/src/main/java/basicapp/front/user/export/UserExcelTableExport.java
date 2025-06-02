@@ -3,12 +3,12 @@ package basicapp.front.user.export;
 import basicapp.back.business.user.model.User;
 import basicapp.back.business.user.model.UserBinding;
 import basicapp.front.user.renderer.UserRenderer;
-import com.google.common.collect.ImmutableList;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import org.apache.poi.common.usermodel.HyperlinkType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -26,7 +26,7 @@ public class UserExcelTableExport extends AbstractSimpleExcelTableExport {
   private static final String SHEET_NAME_RESOURCE_KEY = "user.common.export.excel.sheetName";
 
   private final Collection<ColumnInformation> columns =
-      ImmutableList.of(
+      List.of(
           new ColumnInformation("business.user.username"),
           new ColumnInformation("business.user.lastName"),
           new ColumnInformation("business.user.firstName"),

@@ -53,7 +53,6 @@ import basicapp.front.user.page.BasicUserListPage;
 import basicapp.front.user.page.TechnicalUserDetailPage;
 import basicapp.front.user.page.TechnicalUserListPage;
 import basicapp.front.user.renderer.UserRenderer;
-import com.google.common.collect.ImmutableList;
 import igloo.console.navigation.page.ConsoleAccessDeniedPage;
 import igloo.console.navigation.page.ConsoleLoginFailurePage;
 import igloo.console.navigation.page.ConsoleLoginSuccessPage;
@@ -64,6 +63,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.Locale;
 import org.apache.wicket.Application;
 import org.apache.wicket.ConverterLocator;
@@ -128,7 +128,7 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
         .getStringResourceLoaders()
         .addAll(
             0, // Override the keys in existing resource loaders with the following
-            ImmutableList.of(
+            List.of(
                 new ClassStringResourceLoader(BasicApplicationApplicationResources.class),
                 new ClassStringResourceLoader(BasicApplicationBusinessResources.class),
                 new ClassStringResourceLoader(BasicApplicationCommonResources.class),

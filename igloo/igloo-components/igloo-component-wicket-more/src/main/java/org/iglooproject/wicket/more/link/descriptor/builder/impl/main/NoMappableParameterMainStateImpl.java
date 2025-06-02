@@ -1,8 +1,8 @@
 package org.iglooproject.wicket.more.link.descriptor.builder.impl.main;
 
-import com.google.common.collect.ImmutableList;
 import igloo.wicket.model.ModelFactories;
 import java.util.Collection;
+import java.util.List;
 import org.apache.wicket.Page;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -101,7 +101,7 @@ public final class NoMappableParameterMainStateImpl<
     return mapperLinkDescriptorFactory(
             linkDescriptorFactory,
             ModelFactories.<IModel<? extends TTarget>, Tuple>constant(targetModel),
-            ImmutableList.<Integer>of())
+            List.of())
         .create(
             new Tuple() {
               private static final long serialVersionUID = 1L;

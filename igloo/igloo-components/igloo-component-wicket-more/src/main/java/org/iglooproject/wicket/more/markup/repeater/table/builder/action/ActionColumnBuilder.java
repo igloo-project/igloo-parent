@@ -1,6 +1,5 @@
 package org.iglooproject.wicket.more.markup.repeater.table.builder.action;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import igloo.bootstrap.renderer.IBootstrapRenderer;
 import igloo.wicket.action.AjaxActions;
@@ -741,7 +740,7 @@ public abstract class ActionColumnBuilder<T, I>
   public IActionColumnBuildState<T, I> withClassOnElements(
       IDetachableFactory<? super IModel<? extends T>, ? extends IModel<? extends String>>
           valueModelFactory) {
-    return withClassOnElements(ImmutableList.of(Objects.requireNonNull(valueModelFactory)));
+    return withClassOnElements(List.of(Objects.requireNonNull(valueModelFactory)));
   }
 
   @Override

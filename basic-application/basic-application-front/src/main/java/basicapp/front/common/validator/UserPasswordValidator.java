@@ -7,7 +7,6 @@ import basicapp.back.business.user.model.atomic.UserType;
 import basicapp.back.property.BasicApplicationCorePropertyIds;
 import basicapp.back.security.service.controller.ISecurityManagementControllerService;
 import basicapp.back.util.binding.Bindings;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import igloo.wicket.model.Detachables;
@@ -38,7 +37,7 @@ public class UserPasswordValidator implements IFormModelValidator {
   private static final long serialVersionUID = 5619802188558408589L;
 
   private static final List<String> RULES_CUSTOM_ERROR =
-      ImmutableList.of(LengthRule.ERROR_CODE_MIN, LengthRule.ERROR_CODE_MAX);
+      List.of(LengthRule.ERROR_CODE_MIN, LengthRule.ERROR_CODE_MAX);
 
   private static final String HISTORY_VIOLATION = "HISTORY_VIOLATION";
 

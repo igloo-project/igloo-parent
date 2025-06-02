@@ -1,7 +1,7 @@
 package org.iglooproject.wicket.more.link.descriptor.parameter.validator;
 
-import com.google.common.collect.ImmutableList;
 import java.util.Collection;
+import java.util.List;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.lang.Args;
@@ -17,7 +17,7 @@ public class SimpleMandatoryCollectionLinkParameterValidator implements ILinkPar
 
   public SimpleMandatoryCollectionLinkParameterValidator(
       String parameterName, IModel<? extends Collection> parameterModel) {
-    this(ImmutableList.of(parameterName), ImmutableList.of(parameterModel));
+    this(List.of(parameterName), List.of(parameterModel));
   }
 
   public SimpleMandatoryCollectionLinkParameterValidator(
@@ -25,8 +25,8 @@ public class SimpleMandatoryCollectionLinkParameterValidator implements ILinkPar
       Collection<? extends IModel<? extends Collection>> parameterModels) {
     Args.notNull(parameterNames, "parameterNames");
     Args.notNull(parameterModels, "parameterModels");
-    this.parameterNames = ImmutableList.copyOf(parameterNames);
-    this.parameterModels = ImmutableList.copyOf(parameterModels);
+    this.parameterNames = List.copyOf(parameterNames);
+    this.parameterModels = List.copyOf(parameterModels);
   }
 
   @Override

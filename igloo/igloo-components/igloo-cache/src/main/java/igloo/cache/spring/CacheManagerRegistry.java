@@ -1,6 +1,5 @@
 package igloo.cache.spring;
 
-import com.google.common.collect.ImmutableList;
 import igloo.cache.monitor.CacheManagerWrapper;
 import java.util.Collections;
 import java.util.List;
@@ -23,7 +22,7 @@ public class CacheManagerRegistry implements ICacheManagerRegistry {
             .map(e -> new CacheManagerWrapper(e.getKey(), e.getValue()))
             .collect(Collectors.toList());
     Collections.sort(cacheManagers, (a, b) -> a.getName().compareTo(b.getName()));
-    this.cacheManagers = ImmutableList.copyOf(cacheManagers);
+    this.cacheManagers = List.copyOf(cacheManagers);
   }
 
   @Override

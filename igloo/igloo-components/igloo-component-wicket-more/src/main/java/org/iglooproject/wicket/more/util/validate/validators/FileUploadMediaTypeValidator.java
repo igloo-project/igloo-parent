@@ -1,7 +1,6 @@
 package org.iglooproject.wicket.more.util.validate.validators;
 
 import com.google.common.base.Joiner;
-import com.google.common.collect.ImmutableList;
 import java.util.Collection;
 import java.util.List;
 import org.apache.commons.io.FilenameUtils;
@@ -21,7 +20,7 @@ public class FileUploadMediaTypeValidator implements IValidator<List<FileUpload>
   private String errorResourceKey;
 
   public FileUploadMediaTypeValidator(Collection<MediaType> mediaTypes) {
-    this.mediaTypes = ImmutableList.copyOf(Args.notNull(mediaTypes, "mediaTypes"));
+    this.mediaTypes = List.copyOf(Args.notNull(mediaTypes, "mediaTypes"));
   }
 
   @Override

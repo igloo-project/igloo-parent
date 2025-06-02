@@ -160,9 +160,7 @@ abstract class AbstractMainStateImpl<
   @Override
   public IAddedParameterMappingState<TSelf> map(ILinkParameterMappingEntry parameterMappingEntry) {
     Args.notNull(parameterMappingEntry, "parameterMappingEntry");
-    return doMap(
-        new ConstantLinkParameterMappingEntryFactory(parameterMappingEntry),
-        ImmutableList.<Integer>of());
+    return doMap(new ConstantLinkParameterMappingEntryFactory(parameterMappingEntry), List.of());
   }
 
   private static class ConstantLinkParameterMappingEntryFactory

@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import igloo.wicket.condition.Condition;
 import java.util.Collection;
+import java.util.List;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.validation.ValidationError;
@@ -40,7 +41,7 @@ public class ConditionalRequiredFormModelValidator implements IFormModelValidato
       Condition condition, Collection<FormComponent<?>> formComponents) {
     super();
     this.condition = condition;
-    this.formComponents = ImmutableList.copyOf(formComponents);
+    this.formComponents = List.copyOf(formComponents);
   }
 
   @Override

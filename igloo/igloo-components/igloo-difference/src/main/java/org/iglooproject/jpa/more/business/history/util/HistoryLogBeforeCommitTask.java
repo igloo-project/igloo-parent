@@ -1,7 +1,7 @@
 package org.iglooproject.jpa.more.business.history.util;
 
-import com.google.common.collect.ImmutableList;
 import java.time.Instant;
+import java.util.List;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.iglooproject.jpa.exception.SecurityServiceException;
@@ -63,8 +63,7 @@ public class HistoryLogBeforeCommitTask<
   }
 
   protected void logNow() throws ServiceException, SecurityServiceException {
-    getHistoryLogService()
-        .logNow(date, eventType, ImmutableList.<HD>of(), mainObject, additionalInformation);
+    getHistoryLogService().logNow(date, eventType, List.of(), mainObject, additionalInformation);
   }
 
   @Override

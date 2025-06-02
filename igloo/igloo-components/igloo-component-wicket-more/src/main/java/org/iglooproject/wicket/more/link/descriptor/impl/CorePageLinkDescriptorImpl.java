@@ -1,9 +1,9 @@
 package org.iglooproject.wicket.more.link.descriptor.impl;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import igloo.wicket.model.Models;
 import java.util.Collection;
+import java.util.List;
 import org.apache.wicket.Component;
 import org.apache.wicket.Page;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
@@ -201,12 +201,12 @@ public class CorePageLinkDescriptorImpl extends AbstractCoreExplicitelyParameter
     if (other instanceof IPageLinkGenerator) {
       return chain((IPageLinkGenerator) other);
     }
-    return new ChainedLinkGeneratorImpl(ImmutableList.of(this, other));
+    return new ChainedLinkGeneratorImpl(List.of(this, other));
   }
 
   @Override
   public IPageLinkGenerator chain(IPageLinkGenerator other) {
-    return new ChainedPageLinkGeneratorImpl(ImmutableList.of(this, other));
+    return new ChainedPageLinkGeneratorImpl(List.of(this, other));
   }
 
   @Override

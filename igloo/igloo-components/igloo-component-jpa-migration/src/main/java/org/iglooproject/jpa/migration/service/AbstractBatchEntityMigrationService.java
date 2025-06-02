@@ -1,6 +1,5 @@
 package org.iglooproject.jpa.migration.service;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import igloo.jpa.batch.executor.BatchExecutorCreator;
@@ -33,7 +32,7 @@ public abstract class AbstractBatchEntityMigrationService<T extends GenericEntit
 
   public void importAllEntities() {
     List<Long> entityIds =
-        ImmutableList.copyOf(
+        List.copyOf(
             getJdbcTemplate().queryForList(getMigrationInformation().getSqlAllIds(), Long.class));
 
     MultithreadedBatchExecutor executor = batchCreator.newMultithreadedBatchExecutor();

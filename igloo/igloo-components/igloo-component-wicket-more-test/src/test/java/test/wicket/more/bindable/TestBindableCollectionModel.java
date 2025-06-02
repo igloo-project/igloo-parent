@@ -6,8 +6,8 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import com.google.common.collect.ImmutableList;
 import java.util.Collection;
+import java.util.List;
 import org.iglooproject.functional.Suppliers2;
 import org.iglooproject.wicket.more.bindable.model.BindableModel;
 import org.iglooproject.wicket.more.bindable.model.IBindableCollectionModel;
@@ -67,9 +67,9 @@ class TestBindableCollectionModel extends AbstractTestBindableModel {
   @Test
   void simpleCacheUsage() {
     Collection<CollectionPropertyItemValue> firstExpectedValue =
-        ImmutableList.of(new CollectionPropertyItemValue());
+        List.of(new CollectionPropertyItemValue());
     Collection<CollectionPropertyItemValue> secondExpectedValue =
-        ImmutableList.of(new CollectionPropertyItemValue(), new CollectionPropertyItemValue());
+        List.of(new CollectionPropertyItemValue(), new CollectionPropertyItemValue());
     rootValue.setCollectionProperty(firstExpectedValue);
 
     doReturn(rootValue).when(rootModel).getObject();
@@ -94,7 +94,7 @@ class TestBindableCollectionModel extends AbstractTestBindableModel {
         .getCollectionProperty(); // Only the cache was touched, no the actual value
 
     Collection<CollectionPropertyItemValue> valueToSet =
-        ImmutableList.of(
+        List.of(
             new CollectionPropertyItemValue(),
             new CollectionPropertyItemValue(),
             new CollectionPropertyItemValue());
@@ -113,9 +113,9 @@ class TestBindableCollectionModel extends AbstractTestBindableModel {
   @Test
   void cacheUpdatePropagation() {
     Collection<CollectionPropertyItemValue> firstExpectedValue =
-        ImmutableList.of(new CollectionPropertyItemValue());
+        List.of(new CollectionPropertyItemValue());
     Collection<CollectionPropertyItemValue> secondExpectedValue =
-        ImmutableList.of(new CollectionPropertyItemValue(), new CollectionPropertyItemValue());
+        List.of(new CollectionPropertyItemValue(), new CollectionPropertyItemValue());
     rootValue.setCollectionProperty(firstExpectedValue);
 
     doReturn(rootValue).when(rootModel).getObject();
@@ -141,7 +141,7 @@ class TestBindableCollectionModel extends AbstractTestBindableModel {
     // actual value
 
     Collection<CollectionPropertyItemValue> valueToSet =
-        ImmutableList.of(
+        List.of(
             new CollectionPropertyItemValue(),
             new CollectionPropertyItemValue(),
             new CollectionPropertyItemValue());
@@ -162,7 +162,7 @@ class TestBindableCollectionModel extends AbstractTestBindableModel {
     CollectionPropertyItemValue firstItem = new CollectionPropertyItemValue();
     CollectionPropertyItemValue secondItem = new CollectionPropertyItemValue();
     CollectionPropertyItemValue thirdItem = new CollectionPropertyItemValue();
-    rootValue.setCollectionProperty(ImmutableList.of(firstItem, secondItem));
+    rootValue.setCollectionProperty(List.of(firstItem, secondItem));
 
     doReturn(rootValue).when(rootModel).getObject();
 
@@ -174,43 +174,37 @@ class TestBindableCollectionModel extends AbstractTestBindableModel {
             StubModel.<CollectionPropertyItemValue>factory());
 
     assertEquals(
-        propertyModel.getObject(),
-        ImmutableList.of(firstItem, secondItem)); // Cache was initialized
+        propertyModel.getObject(), List.of(firstItem, secondItem)); // Cache was initialized
 
     propertyModel.remove(secondItem);
-    assertEquals(ImmutableList.of(firstItem), propertyModel.getObject()); // The cache was updated
+    assertEquals(List.of(firstItem), propertyModel.getObject()); // The cache was updated
     assertEquals(
-        ImmutableList.of(firstItem, secondItem),
+        List.of(firstItem, secondItem),
         rootValue.getCollectionProperty()); // The actual value was *not* updated
     propertyModel.writeAll();
+    assertEquals(List.of(firstItem), propertyModel.getObject()); // The cache was *not* updated
     assertEquals(
-        ImmutableList.of(firstItem), propertyModel.getObject()); // The cache was *not* updated
-    assertEquals(
-        ImmutableList.of(firstItem),
-        rootValue.getCollectionProperty()); // The actual value was updated
+        List.of(firstItem), rootValue.getCollectionProperty()); // The actual value was updated
 
     propertyModel.add(thirdItem);
+    assertEquals(List.of(firstItem, thirdItem), propertyModel.getObject()); // The cache was updated
     assertEquals(
-        ImmutableList.of(firstItem, thirdItem), propertyModel.getObject()); // The cache was updated
-    assertEquals(
-        ImmutableList.of(firstItem),
+        List.of(firstItem),
         rootValue.getCollectionProperty()); // The actual value was *not* updated
     propertyModel.writeAll();
     assertEquals(
-        ImmutableList.of(firstItem, thirdItem),
-        propertyModel.getObject()); // The cache was *not* updated
+        List.of(firstItem, thirdItem), propertyModel.getObject()); // The cache was *not* updated
     assertEquals(
-        ImmutableList.of(firstItem, thirdItem),
+        List.of(firstItem, thirdItem),
         rootValue.getCollectionProperty()); // The actual value was updated
 
     propertyModel.clear();
-    assertEquals(ImmutableList.of(), propertyModel.getObject()); // The cache was updated
+    assertEquals(List.of(), propertyModel.getObject()); // The cache was updated
     assertEquals(
-        ImmutableList.of(firstItem, thirdItem),
+        List.of(firstItem, thirdItem),
         rootValue.getCollectionProperty()); // The actual value was *not* updated
     propertyModel.writeAll();
-    assertEquals(ImmutableList.of(), propertyModel.getObject()); // The cache was *not* updated
-    assertEquals(
-        ImmutableList.of(), rootValue.getCollectionProperty()); // The actual value was updated
+    assertEquals(List.of(), propertyModel.getObject()); // The cache was *not* updated
+    assertEquals(List.of(), rootValue.getCollectionProperty()); // The actual value was updated
   }
 }

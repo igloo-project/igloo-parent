@@ -3,6 +3,7 @@ package org.iglooproject.wicket.more.markup.html.template.component;
 import com.google.common.collect.ImmutableList;
 import igloo.wicket.condition.Condition;
 import java.util.List;
+import java.util.Objects;
 import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.IModel;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
@@ -103,7 +104,7 @@ public class HeadPageTitleBreadCrumbPanel extends GenericPanel<List<BreadCrumbEl
               .addAll(elements)
               .build();
 
-      return reverseModel.getObject() ? list.reverse() : list;
+      return Objects.equals(reverseModel.getObject(), Boolean.TRUE) ? list.reverse() : list;
     }
 
     @Override

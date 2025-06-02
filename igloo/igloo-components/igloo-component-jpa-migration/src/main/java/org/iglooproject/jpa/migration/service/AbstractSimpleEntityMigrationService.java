@@ -39,8 +39,7 @@ public abstract class AbstractSimpleEntityMigrationService extends AbstractMigra
   protected <T extends GenericEntity<Long, ?>> Callable<Void> getEntityMigrationTask(
       MutableInt totalItems, final ISimpleEntityMigrationInformation<T> entityInformation) {
     final List<Long> entityIds =
-        ImmutableList.copyOf(
-            getJdbcTemplate().queryForList(entityInformation.getSqlAllIds(), Long.class));
+        List.copyOf(getJdbcTemplate().queryForList(entityInformation.getSqlAllIds(), Long.class));
     return getEntityMigrationTask(totalItems, entityIds, entityInformation, null);
   }
 

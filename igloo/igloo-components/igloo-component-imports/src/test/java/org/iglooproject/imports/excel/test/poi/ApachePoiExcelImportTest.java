@@ -2,7 +2,6 @@ package org.iglooproject.imports.excel.test.poi;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.google.common.collect.ImmutableList;
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.Month;
@@ -22,7 +21,7 @@ class ApachePoiExcelImportTest {
         importer.doImport(stream, "wellFormattedFile.xlsx");
 
     List<Quartet<LocalDate, Boolean, String, Integer>> expectedResults =
-        ImmutableList.of(
+        List.of(
             newResult(LocalDate.of(2014, Month.FEBRUARY, 14), true, "String 3", 123),
             newResult(null, false, "string 4", 123),
             newResult(null, false, null, 9723),

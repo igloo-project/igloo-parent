@@ -14,14 +14,13 @@ public enum TaskStatus {
   CANCELLED;
 
   public static final List<TaskStatus> CONSUMABLE_TASK_STATUS =
-      ImmutableList.of(
-          TaskStatus.TO_RUN, TaskStatus.RUNNING, TaskStatus.FAILED, TaskStatus.INTERRUPTED);
+      List.of(TaskStatus.TO_RUN, TaskStatus.RUNNING, TaskStatus.FAILED, TaskStatus.INTERRUPTED);
 
   public static final List<TaskStatus> RELOADABLE_TASK_STATUS =
-      ImmutableList.of(TaskStatus.CANCELLED, TaskStatus.FAILED, TaskStatus.INTERRUPTED);
+      List.of(TaskStatus.CANCELLED, TaskStatus.FAILED, TaskStatus.INTERRUPTED);
 
   public static final List<TaskStatus> CANCELLABLE_TASK_STATUS =
-      ImmutableList.of(TaskStatus.FAILED, TaskStatus.INTERRUPTED);
+      List.of(TaskStatus.FAILED, TaskStatus.INTERRUPTED);
 
   public static List<String> getValuesAsStringList() {
     return Arrays.stream(values()).map(Object::toString).collect(ImmutableList.toImmutableList());
