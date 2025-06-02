@@ -14,7 +14,11 @@ public class EnvironmentContainerPanel extends Panel {
   private static final long serialVersionUID = 1L;
 
   private static final List<Environment> ENVIRONMENTS_SHOW =
-      List.of(Environment.development, Environment.testing, Environment.staging);
+      List.of(
+          Environment.development,
+          Environment.integration,
+          Environment.qualification,
+          Environment.preproduction);
 
   public EnvironmentContainerPanel(String id, IModel<Environment> environmentModel) {
     super(id);

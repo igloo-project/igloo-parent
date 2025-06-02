@@ -4,7 +4,7 @@ package basicapp.back.config.util;
 public enum Environment {
   development,
   integration,
-  testing,
-  staging,
+  qualification,
+  preproduction,
   production;
 }
