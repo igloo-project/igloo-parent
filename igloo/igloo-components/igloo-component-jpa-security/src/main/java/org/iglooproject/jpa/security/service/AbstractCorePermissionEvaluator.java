@@ -2,6 +2,7 @@ package org.iglooproject.jpa.security.service;
 
 import static java.util.Optional.ofNullable;
 
+import igloo.security.CoreUserDetails;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,6 +12,8 @@ import java.util.List;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.security.business.user.model.IUser;
 import org.iglooproject.jpa.security.business.user.service.ICoreUserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.acls.domain.PermissionFactory;
 import org.springframework.security.acls.model.Permission;
@@ -18,6 +21,9 @@ import org.springframework.security.core.Authentication;
 
 public abstract class AbstractCorePermissionEvaluator<U extends GenericEntity<Long, U> & IUser>
     implements ICorePermissionEvaluator {
+
+  public static final Logger LOGGER =
+      LoggerFactory.getLogger(AbstractCorePermissionEvaluator.class);
 
   @Autowired private PermissionFactory permissionFactory;
 
@@ -102,8 +108,14 @@ public abstract class AbstractCorePermissionEvaluator<U extends GenericEntity<Lo
   }
 
   protected Collection<Permission> getPermissions(Authentication authentication) {
-    // Before 6.0, this method get anonymous permissions if authentication not available.
-    return AuthenticationUtil.getPermissions();
+    if (authentication != null) {
+      Object userDetailsCandidate = authentication.getPrincipal();
+      if (userDetailsCandidate instanceof CoreUserDetails userDetails) {
+        return userDetails.getPermissions();
+      }
+    }
+    LOGGER.warn("No authentication principal found");
+    return List.of();
   }
 
   @Override
