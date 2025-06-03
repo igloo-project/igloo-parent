@@ -239,7 +239,7 @@ public class CoreSecurityServiceImpl implements ISecurityService {
 
     authentication =
         UsernamePasswordAuthenticationToken.authenticated(
-            additionalAuthorities, UserConstants.NO_CREDENTIALS, authorities);
+            userDetails, UserConstants.NO_CREDENTIALS, authorities);
     authentication.setDetails(userDetails);
     return authentication;
   }

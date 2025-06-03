@@ -109,8 +109,7 @@ public abstract class AbstractCorePermissionEvaluator<U extends GenericEntity<Lo
 
   protected Collection<Permission> getPermissions(Authentication authentication) {
     if (authentication != null) {
-      Object userDetailsCandidate = authentication.getPrincipal();
-      if (userDetailsCandidate instanceof CoreUserDetails userDetails) {
+      if (authentication.getPrincipal() instanceof CoreUserDetails userDetails) {
         return userDetails.getPermissions();
       }
     }
