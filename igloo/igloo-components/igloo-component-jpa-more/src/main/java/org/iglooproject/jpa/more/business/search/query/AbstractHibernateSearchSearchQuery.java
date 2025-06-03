@@ -35,7 +35,6 @@ public abstract class AbstractHibernateSearchSearchQuery<
   private void init() {
     this.session = Search.session(entityManager);
     this.pf = session.scope(mainClass).predicate();
-    addFilterBeforeCreateQuery();
   }
 
   protected SearchPredicateFactory predicateFactory() {
@@ -57,6 +56,7 @@ public abstract class AbstractHibernateSearchSearchQuery<
   }
 
   protected SearchPredicate topLevelPredicate() {
+    addFilterBeforeCreateQuery();
     return pf.bool()
         .with(
             b -> {
