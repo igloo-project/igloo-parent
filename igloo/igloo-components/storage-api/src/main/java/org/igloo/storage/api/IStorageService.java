@@ -30,6 +30,13 @@ public interface IStorageService {
   StorageUnit createStorageUnit(IStorageUnitType type, StorageUnitCheckType checkType);
 
   /**
+   * Creation of {@link StorageUnit} with an explicit path. If path is null, automatic path
+   * generation is used (based on storage.path property and unit name).
+   */
+  @Nonnull
+  StorageUnit createStorageUnit(IStorageUnitType type, StorageUnitCheckType checkType, String path);
+
+  /**
    * @see IStorageService#addFichier(String, IFichierType, InputStream, GenericEntity)
    *     <p>Fichier is associated with a null author.
    */

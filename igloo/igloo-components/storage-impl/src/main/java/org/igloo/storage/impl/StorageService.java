@@ -225,21 +225,32 @@ public class StorageService
   @Override
   @Nonnull
   public StorageUnit createStorageUnit(
-      @Nonnull IStorageUnitType type, @Nonnull StorageUnitCheckType checkType) {
+      @Nonnull IStorageUnitType type, @Nonnull StorageUnitCheckType checkType, String path) {
     StorageUnit unit = new StorageUnit();
     unit.setCreationDate(LocalDateTime.now());
     unit.setId(databaseOperations.generateStorageUnit());
     unit.setType(type);
     unit.setStatus(StorageUnitStatus.ALIVE);
     unit.setCheckType(checkType);
-    unit.setPath(
-        storageUnitPathSupplier
-            .get()
-            .toAbsolutePath()
-            .resolve(String.format("%s-%s", type.getPath(), unit.getId().toString()))
-            .toString());
+    if (path == null) {
+      unit.setPath(
+          storageUnitPathSupplier
+              .get()
+              .toAbsolutePath()
+              .resolve(String.format("%s-%s", type.getPath(), unit.getId().toString()))
+              .toString());
+    } else {
+      unit.setPath(path);
+    }
     databaseOperations.createStorageUnit(unit);
     return unit;
+  }
+
+  @Override
+  @Nonnull
+  public StorageUnit createStorageUnit(
+      @Nonnull IStorageUnitType type, @Nonnull StorageUnitCheckType checkType) {
+    return createStorageUnit(type, checkType, null);
   }
 
   @Override

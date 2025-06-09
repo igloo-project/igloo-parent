@@ -96,7 +96,7 @@ public class ArchivingCommand implements Callable<Integer> {
     StorageUnit storageUnit = fichierUtil.checkOrCreateStorageUnit(root, storageUnitType);
 
     // load ids
-    List<Long> fichierIds = fichierUtil.loadFichierIdsFromQuery(selectQuery, ids);
+    List<Long> fichierIds = fichierUtil.loadFichierIdsFromArgs(selectQuery, ids);
 
     fichierUtil.processMove(
         executor, dryRun ? RunMode.DRY_RUN : RunMode.REAL, storageUnit, fichierIds);

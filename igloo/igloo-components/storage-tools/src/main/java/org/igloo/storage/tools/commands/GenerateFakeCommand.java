@@ -4,8 +4,8 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.concurrent.Callable;
 import org.igloo.storage.tools.ConfigurationException;
-import org.igloo.storage.tools.EntityManagerHelper;
 import org.igloo.storage.tools.StorageToolsMain;
+import org.igloo.storage.tools.util.EntityManagerHelper;
 import org.igloo.storage.tools.util.FakeUtil;
 import org.igloo.storage.tools.util.FichierUtil;
 import org.slf4j.Logger;
@@ -61,7 +61,7 @@ public class GenerateFakeCommand implements Callable<Integer> {
     }
 
     // load ids
-    List<Long> fichierIds = fichierUtil.loadFichierIdsFromQuery(selectQuery, ids);
+    List<Long> fichierIds = fichierUtil.loadFichierIdsFromArgs(selectQuery, ids);
 
     // create hierarchy from ids
     FakeUtil.process(

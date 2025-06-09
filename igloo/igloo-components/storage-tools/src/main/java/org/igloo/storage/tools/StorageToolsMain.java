@@ -1,5 +1,6 @@
 package org.igloo.storage.tools;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Stopwatch;
 import igloo.jpa.batch.autoconfigure.JpaBatchAutoConfiguration;
 import jakarta.persistence.EntityManagerFactory;
@@ -14,7 +15,9 @@ import org.igloo.storage.model.Fichier;
 import org.igloo.storage.model.StorageUnit;
 import org.igloo.storage.tools.commands.ArchivingCommand;
 import org.igloo.storage.tools.commands.GenerateFakeCommand;
+import org.igloo.storage.tools.util.EntityManagerHelper;
 import org.igloo.storage.tools.util.FichierUtil;
+import org.igloo.storage.tools.util.FsUtil;
 import org.iglooproject.jpa.more.autoconfigure.JpaMoreModelAutoConfiguration;
 import org.iglooproject.jpa.security.autoconfigure.SecurityModelAutoConfiguration;
 import org.iglooproject.jpa.util.EntityManagerUtils;
@@ -68,6 +71,12 @@ public class StorageToolsMain {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(StorageToolsMain.class);
 
+  /**
+   * If set, context is managed by test. Do not init context locally, do not close context, do not
+   * {@link System#exit(int)}.
+   */
+  @VisibleForTesting public static ConfigurableApplicationContext APPLICATION_CONTEXT;
+
   private ConfigurableApplicationContext context;
 
   @Option(
@@ -85,11 +94,13 @@ public class StorageToolsMain {
       main.cleanup();
       LOGGER.info("Elapsed time: {} s.", .001 * sw.elapsed().toMillis());
     }
-    System.exit(rc);
+    if (APPLICATION_CONTEXT == null) {
+      System.exit(rc);
+    }
   }
 
   public void cleanup() {
-    if (context != null) {
+    if (APPLICATION_CONTEXT == null && context != null) {
       context.stop();
     }
   }
@@ -98,29 +109,34 @@ public class StorageToolsMain {
   public void prepare(Object command) {
     LOGGER.debug("Initializing spring...");
 
-    // load configuration for command line argument.
-    SpringApplication springApplication =
-        new SpringApplication(StorageToolsMain.class) {
-          @Override
-          protected void configureEnvironment(ConfigurableEnvironment environment, String[] args) {
-            try {
-              super.configureEnvironment(environment, args);
-              Properties properties = new Properties();
-              try (InputStream is = new FileInputStream(configFile.toFile())) {
-                properties.load(is);
+    if (APPLICATION_CONTEXT == null) {
+      // load configuration for command line argument.
+      SpringApplication springApplication =
+          new SpringApplication(StorageToolsMain.class) {
+            @Override
+            protected void configureEnvironment(
+                ConfigurableEnvironment environment, String[] args) {
+              try {
+                super.configureEnvironment(environment, args);
+                Properties properties = new Properties();
+                try (InputStream is = new FileInputStream(configFile.toFile())) {
+                  properties.load(is);
+                }
+                environment
+                    .getPropertySources()
+                    .addLast(new PropertiesPropertySource("cli", properties));
+              } catch (IOException e) {
+                throw new ConfigurationException(
+                    "Error loading configuration propertiers %s".formatted(configFile), e);
               }
-              environment
-                  .getPropertySources()
-                  .addLast(new PropertiesPropertySource("cli", properties));
-            } catch (IOException e) {
-              throw new ConfigurationException(
-                  "Error loading configuration propertiers %s".formatted(configFile), e);
             }
-          }
-        };
+          };
 
-    // start Spring context
-    context = springApplication.run();
+      // start Spring context
+      context = springApplication.run();
+    } else {
+      context = APPLICATION_CONTEXT;
+    }
     // inject @Autowired into picocli command
     context.getAutowireCapableBeanFactory().autowireBean(command);
     Objects.requireNonNull(context.getBeanProvider(EntityManagerFactory.class).getIfAvailable());
@@ -132,13 +148,14 @@ public class StorageToolsMain {
   @Bean
   public EntityManagerHelper entityManagerHelper(
       EntityManagerUtils entityManagerUtils,
-      PlatformTransactionManager platformTransactionManager) {
-    return new EntityManagerHelper(entityManagerUtils, platformTransactionManager);
+      PlatformTransactionManager platformTransactionManager,
+      DatabaseOperations databaseOperations) {
+    return new EntityManagerHelper(
+        entityManagerUtils, platformTransactionManager, databaseOperations);
   }
 
   @Bean
-  public FichierUtil fichierUtil(
-      EntityManagerHelper entityManagerHelper, DatabaseOperations databaseOperations) {
-    return new FichierUtil(entityManagerHelper, databaseOperations);
+  public FichierUtil fichierUtil(EntityManagerHelper entityManagerHelper) {
+    return new FichierUtil(entityManagerHelper, new FsUtil());
   }
 }

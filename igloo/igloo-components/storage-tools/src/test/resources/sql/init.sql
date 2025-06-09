@@ -1,0 +1,6 @@
+-- use a standard storage creation
+create table StorageUnit (id bigint not null, checkChecksumDelay numeric(21,0), checkDelay numeric(21,0), checkType varchar(255) not null check (checkType in ('NONE','LISTING_SIZE','LISTING_SIZE_CHECKSUM')), creationDate timestamp(6) not null, path varchar(255) not null unique, splitDuration numeric(21,0), splitSize bigint, status varchar(255) not null check (status in ('ALIVE','ARCHIVED')), type varchar(255) not null, primary key (id));
+create table Fichier (id bigint not null, checksum text not null, checksumType varchar(255) not null check (checksumType in ('SHA_256','NONE')), createdBy_id bigint, createdBy_type varchar(255), creationDate timestamp(6) not null, filename text not null, invalidationDate timestamp(6), mimetype text not null, relativePath text not null, size bigint not null, status varchar(255) not null check (status in ('TRANSIENT','ALIVE','INVALIDATED')), type varchar(255) not null, uuid uuid not null unique, validationDate timestamp(6), storageUnit_id bigint not null, primary key (id));
+alter table if exists Fichier add constraint FKpa97cl0evjqh8xllabrn674sw foreign key (storageUnit_id) references StorageUnit;
+create sequence Fichier_id_seq start 1 increment 1;
+create sequence StorageUnit_id_seq start 1 increment 1;

@@ -10,7 +10,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import org.apache.commons.io.FileUtils;
 import org.igloo.storage.model.Fichier;
-import org.igloo.storage.tools.EntityManagerHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
