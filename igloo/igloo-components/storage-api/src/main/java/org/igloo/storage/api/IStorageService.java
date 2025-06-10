@@ -88,12 +88,13 @@ public interface IStorageService {
 
   /**
    * Get file associated to {@link Fichier}. If File cannot be found on filesystem, or if Fichier
-   * status is {@link FichierStatus#INVALIDATED}, this method throws a {@link
-   * FileNotFoundException}. See {@link #getFile(Fichier, boolean, boolean)} to disable these
-   * checks.
+   * status is {@link FichierStatus#INVALIDATED} or {@link FichierStatus#UNAVAILABLE}, this method
+   * throws a {@link FileNotFoundException}. See {@link #getFile(Fichier, boolean, boolean)} to
+   * disable these checks.
    *
    * @throws FileNotFoundException if file cannot be found, is not readable or {@link
-   *     Fichier#getStatus()} is {@link FichierStatus#INVALIDATED}.
+   *     Fichier#getStatus()} is {@link FichierStatus#INVALIDATED} or {@link
+   *     FichierStatus#UNAVAILABLE}.
    */
   @Transactional(readOnly = true)
   @Nonnull
@@ -101,7 +102,7 @@ public interface IStorageService {
 
   @Transactional(readOnly = true)
   @Nonnull
-  File getFile(Fichier fichier, boolean checkTransient, boolean checkExists)
+  File getFile(Fichier fichier, boolean checkInvalidatedOrUnavailable, boolean checkExists)
       throws FileNotFoundException;
 
   /**

@@ -9,6 +9,7 @@ import org.igloo.storage.tools.ConfigurationException;
 import org.igloo.storage.tools.StorageToolsMain;
 import org.igloo.storage.tools.util.FichierUtil;
 import org.igloo.storage.tools.util.FichierUtil.RunMode;
+import org.igloo.storage.tools.util.FichierUtil.SwitchToUnavailable;
 import org.igloo.storage.tools.util.StorageUnitTypeConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import picocli.CommandLine.Command;
@@ -65,6 +66,13 @@ public class ArchivingCommand implements Callable<Integer> {
       negatable = true)
   private boolean dryRun;
 
+  @Option(
+      names = {"--no-switch-to-unavailable"},
+      negatable = true,
+      description = "Do not switch Fichier status to UNAVAILABLE.",
+      defaultValue = "true")
+  private boolean switchUnavailable;
+
   @Mixin private ExecutorMixin executor = new ExecutorMixin();
 
   @Parameters(
@@ -99,7 +107,11 @@ public class ArchivingCommand implements Callable<Integer> {
     List<Long> fichierIds = fichierUtil.loadFichierIdsFromArgs(selectQuery, ids);
 
     fichierUtil.processMove(
-        executor, dryRun ? RunMode.DRY_RUN : RunMode.REAL, storageUnit, fichierIds);
+        executor,
+        dryRun ? RunMode.DRY_RUN : RunMode.REAL,
+        switchUnavailable ? SwitchToUnavailable.YES : SwitchToUnavailable.NO,
+        storageUnit,
+        fichierIds);
 
     return 0;
   }

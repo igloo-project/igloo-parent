@@ -30,6 +30,7 @@ import org.igloo.storage.tools.util.FichierUtil;
 import org.igloo.storage.tools.util.FichierUtil.ExecutorCallback;
 import org.igloo.storage.tools.util.FichierUtil.MoveResult;
 import org.igloo.storage.tools.util.FichierUtil.RunMode;
+import org.igloo.storage.tools.util.FichierUtil.SwitchToUnavailable;
 import org.igloo.storage.tools.util.FsUtil;
 import org.igloo.storage.tools.util.action.DbCheckOrCreateStorageUnitAction;
 import org.igloo.storage.tools.util.action.DbListFichiersAction;
@@ -139,9 +140,15 @@ class TestFichierUtilDatabaseLess {
     ArgumentCaptor<List<Long>> captor = ArgumentCaptor.forClass(List.class);
     doNothing()
         .when(callback)
-        .processMovePartition(any(), eq(RunMode.REAL), eq(target), captor.capture());
+        .processMovePartition(
+            any(), eq(RunMode.REAL), eq(SwitchToUnavailable.YES), eq(target), captor.capture());
     fichierUtil.processMove(
-        executor, RunMode.REAL, target, rangeClosed(0l, 30l).boxed().toList(), callback);
+        executor,
+        RunMode.REAL,
+        SwitchToUnavailable.YES,
+        target,
+        rangeClosed(0l, 30l).boxed().toList(),
+        callback);
     Assertions.assertThat(captor.getAllValues())
         .contains(
             rangeClosed(0l, 9l).boxed().toList(),
@@ -190,7 +197,8 @@ class TestFichierUtilDatabaseLess {
       when(helper.doWithReadWriteTransaction(resultCaptor.capture())).thenReturn(true);
     }
 
-    fichierUtil.processMovePartition(progressMonitor, runMode, target, List.of(1l, 2l));
+    fichierUtil.processMovePartition(
+        progressMonitor, runMode, SwitchToUnavailable.YES, target, List.of(1l, 2l));
 
     verify(helper, times(1)).doWithReadOnlyTransaction(any(DbListFichiersAction.class));
     if (RunMode.DRY_RUN.equals(runMode)) {

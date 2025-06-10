@@ -131,7 +131,8 @@ public class ArchivingProgressMonitor {
     if (missing.get() != 0) {
       LOGGER.warn(
           "There is {} files missing. Some checks may be needed in missing.txt, "
-              + "but it should not be an archiving process issue.");
+              + "but it should not be an archiving process issue.",
+          missing.get());
     }
     if (databaseInconsistent.get() == 0 && moveFailed.get() == 0) {
       LOGGER.info("Archiving is successfull.");

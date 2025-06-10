@@ -12,15 +12,27 @@ import java.util.Map;
 import org.igloo.storage.impl.DatabaseOperations;
 import org.igloo.storage.model.Fichier;
 import org.igloo.storage.model.StorageUnit;
+import org.igloo.storage.model.atomic.FichierStatus;
 import org.igloo.storage.tools.util.FichierUtil.MoveResult;
+import org.igloo.storage.tools.util.FichierUtil.SwitchToUnavailable;
 import org.igloo.storage.tools.util.action.DbMoveFichiersAction;
 import org.junit.jupiter.api.Test;
 
 class TestDbMoveFichiersAction {
   /** Check correct database update for {@link MoveResult}. */
-  @SuppressWarnings("unchecked")
   @Test
-  void testDbMoveFichiersAction() {
+  void testDbMoveFichiersAction_switchToUnavailable() {
+    testDbMoveFichiersAction(SwitchToUnavailable.YES);
+  }
+
+  @Test
+  void testDbMoveFichiersAction_noSwitchToUnavailable() {
+    testDbMoveFichiersAction(SwitchToUnavailable.NO);
+  }
+
+  /** Check correct database update for {@link MoveResult}. */
+  @SuppressWarnings("unchecked")
+  void testDbMoveFichiersAction(SwitchToUnavailable switchToUnavailable) {
     StorageUnit detachedTarget = new StorageUnit();
     StorageUnit attachedTarget = new StorageUnit();
     EntityManager entityManager = mock(EntityManager.class);
@@ -37,6 +49,7 @@ class TestDbMoveFichiersAction {
     fichier5.setId(5l);
     DbMoveFichiersAction action =
         new DbMoveFichiersAction(
+            switchToUnavailable,
             detachedTarget,
             Map.of(
                 1l,
@@ -60,10 +73,21 @@ class TestDbMoveFichiersAction {
     action.perform(entityManager, databaseOperations);
     // untouched, move_failed -> no update
     assertThat(fichier3.getStorageUnit()).isNull();
+    assertThat(fichier3.getStatus()).isNull();
     assertThat(fichier5.getStorageUnit()).isNull();
+    assertThat(fichier5.getStatus()).isNull();
     // already-moved, missing, moved -> updated
     assertThat(fichier1.getStorageUnit()).isSameAs(attachedTarget);
     assertThat(fichier2.getStorageUnit()).isSameAs(attachedTarget);
     assertThat(fichier4.getStorageUnit()).isSameAs(attachedTarget);
+    if (SwitchToUnavailable.YES.equals(switchToUnavailable)) {
+      assertThat(fichier1.getStatus()).isEqualTo(FichierStatus.UNAVAILABLE);
+      assertThat(fichier2.getStatus()).isEqualTo(FichierStatus.UNAVAILABLE);
+      assertThat(fichier4.getStatus()).isEqualTo(FichierStatus.UNAVAILABLE);
+    } else {
+      assertThat(fichier1.getStatus()).isNull();
+      assertThat(fichier2.getStatus()).isNull();
+      assertThat(fichier4.getStatus()).isNull();
+    }
   }
 }

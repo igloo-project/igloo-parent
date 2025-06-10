@@ -12,6 +12,7 @@ import java.nio.file.Path;
 import org.igloo.storage.api.IStorageService;
 import org.igloo.storage.impl.DatabaseOperations;
 import org.igloo.storage.model.Fichier;
+import org.igloo.storage.model.atomic.FichierStatus;
 import org.igloo.storage.model.atomic.StorageUnitCheckType;
 import org.igloo.storage.tools.StorageToolsMain;
 import org.igloo.storage.tools.util.EntityManagerHelper;
@@ -119,13 +120,15 @@ class TestIntegration {
     // available files are updated
     fichier1 = storageService.getFichierById(fichier1.getId());
     assertThat(fichier1.getStorageUnit().getPath()).isEqualTo(targetFolder.toString());
-    assertThat(storageService.getFile(fichier1)).exists();
-    assertThat(storageService.getFile(fichier1).getPath()).contains("target");
+    assertThat(storageService.getFile(fichier1, false, false)).exists();
+    assertThat(storageService.getFile(fichier1, false, false).getPath()).contains("target");
+    assertThat(fichier1.getStatus()).isEqualTo(FichierStatus.UNAVAILABLE);
     assertThat(fichier1Original).doesNotExist();
     fichier4 = storageService.getFichierById(fichier4.getId());
     assertThat(fichier4.getStorageUnit().getPath()).isEqualTo(targetFolder.toString());
-    assertThat(storageService.getFile(fichier4)).exists();
-    assertThat(storageService.getFile(fichier4).getPath()).contains("target");
+    assertThat(storageService.getFile(fichier4, false, false)).exists();
+    assertThat(storageService.getFile(fichier4, false, false).getPath()).contains("target");
+    assertThat(fichier4.getStatus()).isEqualTo(FichierStatus.UNAVAILABLE);
     assertThat(fichier4Original).doesNotExist();
 
     // missing file are updated
@@ -134,19 +137,23 @@ class TestIntegration {
     assertThatCode(() -> storageService.getFile(fichier2))
         .isInstanceOf(FileNotFoundException.class);
     assertThat(storageService.getFile(fichier2, false, false).getPath()).contains("target");
+    assertThat(fichier2.getStatus()).isEqualTo(FichierStatus.UNAVAILABLE);
     assertThat(fichier2Original).doesNotExist();
 
     // already moved files are updated
     fichier3AlreadyMoved = storageService.getFichierById(fichier3AlreadyMoved.getId());
-    assertThat(storageService.getFile(fichier3AlreadyMoved)).exists();
-    assertThat(storageService.getFile(fichier3AlreadyMoved).getPath()).contains("target");
+    assertThat(storageService.getFile(fichier3AlreadyMoved, false, false)).exists();
+    assertThat(storageService.getFile(fichier3AlreadyMoved, false, false).getPath())
+        .contains("target");
+    assertThat(fichier3AlreadyMoved.getStatus()).isEqualTo(FichierStatus.UNAVAILABLE);
     assertThat(fichier3Original).doesNotExist();
 
     // ignored file remains untouched
     fichierIgnored = storageService.getFichierById(fichierIgnored.getId());
     assertThat(fichierIgnored.getStorageUnit().getPath()).isEqualTo(sourceFolder.toString());
-    assertThat(storageService.getFile(fichierIgnored)).exists();
-    assertThat(storageService.getFile(fichierIgnored).getPath()).contains("source");
+    assertThat(storageService.getFile(fichierIgnored, false, false)).exists();
+    assertThat(storageService.getFile(fichierIgnored, false, false).getPath()).contains("source");
+    assertThat(fichierIgnored.getStatus()).isEqualTo(FichierStatus.TRANSIENT);
     assertThat(fichierIgnoredOriginal).exists();
   }
 }

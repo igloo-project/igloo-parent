@@ -213,11 +213,16 @@ public class StorageService
 
   @Override
   @Nonnull
-  public File getFile(@Nonnull Fichier fichier, boolean checkInvalidated, boolean checkExists)
+  public File getFile(
+      @Nonnull Fichier fichier, boolean checkInvalidatedOrUnavailable, boolean checkExists)
       throws FileNotFoundException {
-    if (checkInvalidated && FichierStatus.INVALIDATED.equals(fichier.getStatus())) {
+    if (checkInvalidatedOrUnavailable
+        && List.of(FichierStatus.INVALIDATED, FichierStatus.UNAVAILABLE)
+            .contains(fichier.getStatus())) {
       throw new FileNotFoundException(
-          String.format("Fichier %d is INVALIDATED; access not available", fichier.getId()));
+          String.format(
+              "Fichier %d is %s; access not available",
+              fichier.getId(), fichier.getStatus().name()));
     }
     return storageOperations.getFile(getAbsolutePath(fichier), checkExists);
   }

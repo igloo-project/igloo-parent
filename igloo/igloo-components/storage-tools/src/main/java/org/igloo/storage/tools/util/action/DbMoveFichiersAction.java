@@ -8,18 +8,24 @@ import java.util.Map;
 import org.igloo.storage.impl.DatabaseOperations;
 import org.igloo.storage.model.Fichier;
 import org.igloo.storage.model.StorageUnit;
+import org.igloo.storage.model.atomic.FichierStatus;
 import org.igloo.storage.tools.util.FichierUtil.MoveResult;
+import org.igloo.storage.tools.util.FichierUtil.SwitchToUnavailable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class DbMoveFichiersAction implements IDbAction<Boolean> {
   private static final Logger LOGGER = LoggerFactory.getLogger(DbMoveFichiersAction.class);
 
+  private final SwitchToUnavailable switchToUnavailable;
   private final StorageUnit detachedTargetStorageUnit;
   private final Map<Long, MoveResult> results;
 
   public DbMoveFichiersAction(
-      StorageUnit detachedTargetStorageUnit, Map<Long, MoveResult> results) {
+      SwitchToUnavailable switchToUnavailable,
+      StorageUnit detachedTargetStorageUnit,
+      Map<Long, MoveResult> results) {
+    this.switchToUnavailable = switchToUnavailable;
     this.detachedTargetStorageUnit = detachedTargetStorageUnit;
     this.results = results;
   }
@@ -41,6 +47,9 @@ public class DbMoveFichiersAction implements IDbAction<Boolean> {
       switch (results.get(fichier.getId())) {
         case ALREADY_MOVED, MOVED, MISSING:
           fichier.setStorageUnit(freshStorageUnit);
+          if (SwitchToUnavailable.YES.equals(switchToUnavailable)) {
+            fichier.setStatus(FichierStatus.UNAVAILABLE);
+          }
           break;
         case MOVE_FAILED, UNTOUCHED:
           break;

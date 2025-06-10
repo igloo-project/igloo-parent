@@ -84,9 +84,16 @@ public class FichierUtil {
   public void processMove(
       ExecutorMixin executor,
       RunMode runMode,
+      SwitchToUnavailable switchToUnavailable,
       StorageUnit targetStorageUnit,
       List<Long> fichierIds) {
-    processMove(executor, runMode, targetStorageUnit, fichierIds, this::processMovePartition);
+    processMove(
+        executor,
+        runMode,
+        switchToUnavailable,
+        targetStorageUnit,
+        fichierIds,
+        this::processMovePartition);
   }
 
   /** Move files. */
@@ -94,6 +101,7 @@ public class FichierUtil {
   public void processMove(
       ExecutorMixin executor,
       RunMode runMode,
+      SwitchToUnavailable switchToUnavailable,
       StorageUnit targetStorageUnit,
       List<Long> fichierIds,
       ExecutorCallback callback) {
@@ -109,7 +117,9 @@ public class FichierUtil {
     List<List<Long>> partitions = Lists.partition(fichierIds, executor.batchSize);
     for (List<Long> partition : partitions) {
       executorService.submit(
-          () -> callback.processMovePartition(monitor, runMode, targetStorageUnit, partition));
+          () ->
+              callback.processMovePartition(
+                  monitor, runMode, switchToUnavailable, targetStorageUnit, partition));
     }
 
     try {
@@ -154,6 +164,7 @@ public class FichierUtil {
   public void processMovePartition(
       ArchivingProgressMonitor monitor,
       RunMode runMode,
+      SwitchToUnavailable switchToUnavailable,
       StorageUnit targetStorageUnit,
       List<Long> fichierIds) {
     try {
@@ -167,7 +178,8 @@ public class FichierUtil {
         results.put(fichier.getId(), fsUtil.move(monitor, runMode, targetStorageUnit, fichier));
       }
 
-      transactionalUpdateAndFeedback(monitor, runMode, targetStorageUnit, results);
+      transactionalUpdateAndFeedback(
+          monitor, runMode, switchToUnavailable, targetStorageUnit, results);
 
     } catch (RuntimeException e) {
       LOGGER.error("Error during batch processing.", e);
@@ -177,11 +189,13 @@ public class FichierUtil {
   protected void transactionalUpdateAndFeedback(
       ArchivingProgressMonitor monitor,
       RunMode runMode,
+      SwitchToUnavailable switchToUnavailable,
       StorageUnit targetStorageUnit,
       Map<Long, MoveResult> results) {
     // update database accordingly
     try {
-      DbMoveFichiersAction action = new DbMoveFichiersAction(targetStorageUnit, results);
+      DbMoveFichiersAction action =
+          new DbMoveFichiersAction(switchToUnavailable, targetStorageUnit, results);
       if (RunMode.REAL.equals(runMode)) {
         entityManagerHelper.doWithReadWriteTransaction(action);
       } else {
@@ -211,11 +225,17 @@ public class FichierUtil {
     DRY_RUN;
   }
 
+  public enum SwitchToUnavailable {
+    YES,
+    NO;
+  }
+
   @VisibleForTesting
   public interface ExecutorCallback {
     void processMovePartition(
         ArchivingProgressMonitor monitor,
         RunMode runMode,
+        SwitchToUnavailable switchToUnavailable,
         StorageUnit targetStorageUnit,
         List<Long> fichierIds);
   }

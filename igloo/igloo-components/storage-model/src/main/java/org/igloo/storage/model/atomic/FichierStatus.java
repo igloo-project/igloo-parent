@@ -17,5 +17,11 @@ public enum FichierStatus {
    * The deletion of {@link Fichier} has been asked. The entity and the associated file will soon be
    * deleted (configurable delay).
    */
-  INVALIDATED;
+  INVALIDATED,
+
+  /**
+   * Unavailable. Status for a file that is known not to be available. It is used for custom
+   * feedback when resource is downloaded.
+   */
+  UNAVAILABLE;
 }
