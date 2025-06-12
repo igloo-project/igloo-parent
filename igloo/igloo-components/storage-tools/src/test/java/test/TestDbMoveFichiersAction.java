@@ -9,6 +9,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import org.igloo.storage.impl.DatabaseOperations;
 import org.igloo.storage.model.Fichier;
 import org.igloo.storage.model.StorageUnit;
@@ -17,6 +18,8 @@ import org.igloo.storage.tools.util.FichierUtil.MoveResult;
 import org.igloo.storage.tools.util.FichierUtil.SwitchToUnavailable;
 import org.igloo.storage.tools.util.action.DbMoveFichiersAction;
 import org.junit.jupiter.api.Test;
+import test.model.FichierType;
+import test.model.StorageUnitType;
 
 class TestDbMoveFichiersAction {
   /** Check correct database update for {@link MoveResult}. */
@@ -34,19 +37,31 @@ class TestDbMoveFichiersAction {
   @SuppressWarnings("unchecked")
   void testDbMoveFichiersAction(SwitchToUnavailable switchToUnavailable) {
     StorageUnit detachedTarget = new StorageUnit();
+    detachedTarget.setType(StorageUnitType.TARGET);
     StorageUnit attachedTarget = new StorageUnit();
+    attachedTarget.setType(StorageUnitType.TARGET);
     EntityManager entityManager = mock(EntityManager.class);
     DatabaseOperations databaseOperations = mock(DatabaseOperations.class);
     Fichier fichier1 = new Fichier();
     fichier1.setId(1l);
+    fichier1.setUuid(UUID.randomUUID());
+    fichier1.setType(FichierType.TYPE1);
     Fichier fichier2 = new Fichier();
     fichier2.setId(2l);
+    fichier2.setUuid(UUID.randomUUID());
+    fichier2.setType(FichierType.TYPE1);
     Fichier fichier3 = new Fichier();
     fichier3.setId(3l);
+    fichier3.setUuid(UUID.randomUUID());
+    fichier3.setType(FichierType.TYPE1);
     Fichier fichier4 = new Fichier();
     fichier4.setId(4l);
+    fichier4.setUuid(UUID.randomUUID());
+    fichier4.setType(FichierType.TYPE1);
     Fichier fichier5 = new Fichier();
     fichier5.setId(5l);
+    fichier5.setUuid(UUID.randomUUID());
+    fichier5.setType(FichierType.TYPE2);
     DbMoveFichiersAction action =
         new DbMoveFichiersAction(
             switchToUnavailable,

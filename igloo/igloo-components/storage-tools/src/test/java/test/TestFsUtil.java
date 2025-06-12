@@ -38,6 +38,7 @@ class TestFsUtil {
     // fichier
     StorageUnit sourceStorageUnit = new StorageUnit();
     fichier = new Fichier();
+    fichier.setRelativePath("subfolder-source/fichier-source");
     fichier.setStorageUnit(sourceStorageUnit);
     IStorageUnitType sourceType = mock(IStorageUnitType.class);
     sourceStorageUnit.setType(sourceType);
@@ -49,7 +50,6 @@ class TestFsUtil {
     IStorageUnitType targetType = mock(IStorageUnitType.class);
     target.setType(targetType);
 
-    when(sourceType.getFichierPathStrategy()).thenReturn(f -> "subfolder-source/fichier-source");
     when(targetType.getFichierPathStrategy()).thenReturn(f -> "subfolder-target/fichier-target");
   }
 
@@ -85,6 +85,7 @@ class TestFsUtil {
   void testUntouched() throws IOException {
     FsUtil fsUtil = new FsUtil();
     fichier.setStorageUnit(target);
+    fichier.setRelativePath("subfolder-target/fichier-target");
     ArchivingProgressMonitor monitor = mock(ArchivingProgressMonitor.class);
     tempDir.resolve("target/subfolder-target/fichier-target").getParent().toFile().mkdirs();
     tempDir.resolve("target/subfolder-target/fichier-target").toFile().createNewFile();

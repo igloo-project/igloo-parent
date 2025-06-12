@@ -24,12 +24,14 @@ public class FakeUtil {
       Path root,
       int parallelism,
       int batchSize,
+      boolean useRelativePath,
       List<Long> fichierIds) {
     ExecutorService executorService = Executors.newFixedThreadPool(parallelism);
 
     List<List<Long>> partitions = Lists.partition(fichierIds, batchSize);
     for (List<Long> partition : partitions) {
-      executorService.submit(() -> FakeUtil.process(entityManagerHelper, root, partition));
+      executorService.submit(
+          () -> FakeUtil.process(entityManagerHelper, root, useRelativePath, partition));
     }
 
     try {
@@ -49,9 +51,14 @@ public class FakeUtil {
    * Create path in provided <code>root</code> directory. Ignore existing files. Caller is
    * responsible for <code>root</code> directory setup (creation, permission).
    */
-  protected static void generate(Path root, Fichier fichier) throws IOException {
-    String relativePath =
-        fichier.getStorageUnit().getType().getFichierPathStrategy().getPath(fichier);
+  protected static void generate(Path root, Fichier fichier, boolean useRelativePath)
+      throws IOException {
+    String relativePath;
+    if (useRelativePath) {
+      relativePath = fichier.getRelativePath();
+    } else {
+      relativePath = fichier.getStorageUnit().getType().getFichierPathStrategy().getPath(fichier);
+    }
     Path fullPath;
     if (root == null) {
       fullPath = Path.of(fichier.getStorageUnit().getPath(), relativePath);
@@ -67,7 +74,10 @@ public class FakeUtil {
 
   /** Process a work partition. */
   protected static Integer process(
-      EntityManagerHelper entityManagerHelper, Path root, List<Long> fichierIds) {
+      EntityManagerHelper entityManagerHelper,
+      Path root,
+      boolean useRelativePath,
+      List<Long> fichierIds) {
     int fichierCount = 0;
     try {
       List<Fichier> fichiers =
@@ -80,7 +90,7 @@ public class FakeUtil {
               });
       for (Fichier fichier : fichiers) {
         try {
-          generate(root, fichier);
+          generate(root, fichier, useRelativePath);
           fichierCount++;
         } catch (IOException e) {
           LOGGER.error("File {} cannot be created.", fichier, e);

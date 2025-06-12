@@ -47,6 +47,8 @@ public class DbMoveFichiersAction implements IDbAction<Boolean> {
       switch (results.get(fichier.getId())) {
         case ALREADY_MOVED, MOVED, MISSING:
           fichier.setStorageUnit(freshStorageUnit);
+          fichier.setRelativePath(
+              freshStorageUnit.getType().getFichierPathStrategy().getPath(fichier));
           if (SwitchToUnavailable.YES.equals(switchToUnavailable)) {
             fichier.setStatus(FichierStatus.UNAVAILABLE);
           }

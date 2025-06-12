@@ -23,8 +23,7 @@ public class FsUtil {
       StorageUnit targetStorageUnit,
       Fichier fichier) {
     StorageUnit sourceStorageUnit = fichier.getStorageUnit();
-    IFichierPathStrategy sourcePathStrategy = sourceStorageUnit.getType().getFichierPathStrategy();
-    Path source = Path.of(sourceStorageUnit.getPath(), sourcePathStrategy.getPath(fichier));
+    Path source = Path.of(sourceStorageUnit.getPath(), fichier.getRelativePath());
     IFichierPathStrategy targetPathStrategy = targetStorageUnit.getType().getFichierPathStrategy();
     Path target = Path.of(targetStorageUnit.getPath(), targetPathStrategy.getPath(fichier));
     // item is already archived (file may be missing !)

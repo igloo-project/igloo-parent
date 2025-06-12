@@ -43,6 +43,13 @@ public class GenerateFakeCommand implements Callable<Integer> {
   @Option(names = {"--target-folder"})
   private Path root;
 
+  @Option(
+      names = {"--no-relative-path"},
+      negatable = true,
+      defaultValue = "true",
+      description = "Use storage unit path strategy instead of Fichier.relativePath")
+  private boolean useRelativePath;
+
   @Mixin private ExecutorMixin executor = new ExecutorMixin();
 
   @Autowired private FichierUtil fichierUtil;
@@ -65,7 +72,12 @@ public class GenerateFakeCommand implements Callable<Integer> {
 
     // create hierarchy from ids
     FakeUtil.process(
-        entityManagerHelper, root, executor.parallelism, executor.batchSize, fichierIds);
+        entityManagerHelper,
+        root,
+        executor.parallelism,
+        executor.batchSize,
+        useRelativePath,
+        fichierIds);
 
     return 0;
   }

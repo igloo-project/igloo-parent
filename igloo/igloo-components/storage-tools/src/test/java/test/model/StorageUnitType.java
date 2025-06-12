@@ -2,12 +2,14 @@ package test.model;
 
 import java.util.Set;
 import org.igloo.storage.impl.FichierPathStrategy;
+import org.igloo.storage.impl.LegacyFichierPathStrategy;
 import org.igloo.storage.model.atomic.IFichierPathStrategy;
 import org.igloo.storage.model.atomic.IFichierType;
 import org.igloo.storage.model.atomic.IStorageUnitType;
 
 public enum StorageUnitType implements IStorageUnitType {
-  SOURCE("source", Set.of(FichierType.TYPE1, FichierType.TYPE2), new FichierPathStrategy(1)),
+  // use different strategy to ensure correct relativePath update
+  SOURCE("source", Set.of(FichierType.TYPE1, FichierType.TYPE2), new LegacyFichierPathStrategy(1)),
   TARGET("target", Set.of(), new FichierPathStrategy(1));
 
   private final String path;
