@@ -21,6 +21,7 @@ import org.iglooproject.jpa.exception.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/** File delivery web resource. This web resource is storage agnostic. */
 public abstract class AbstractFichierStoreWebResource extends AbstractResource {
 
   private static final long serialVersionUID = 6019366659520380200L;
@@ -124,8 +125,11 @@ public abstract class AbstractFichierStoreWebResource extends AbstractResource {
       }
 
       resourceResponseConsumer.accept(data);
-    } catch (RuntimeException | ServiceException | SecurityServiceException e) {
-      LOGGER.error("Unable to open the FileStoreResourceStream", e);
+    } catch (RuntimeException re) {
+      throw re;
+    } catch (ServiceException | SecurityServiceException e) {
+      throw new IllegalStateException(
+          "Unable to open the FileStoreResourceStream %s".formatted(attributes.getParameters()), e);
     }
 
     return data;
