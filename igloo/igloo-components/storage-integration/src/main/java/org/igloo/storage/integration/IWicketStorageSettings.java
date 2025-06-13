@@ -1,5 +1,7 @@
 package org.igloo.storage.integration;
 
+import org.apache.wicket.request.component.IRequestablePage;
+
 public interface IWicketStorageSettings {
 
   String getMountPath();
@@ -7,4 +9,6 @@ public interface IWicketStorageSettings {
   String getDownloadMountPath();
 
   boolean isSupervisionPagesEnabled();
+
+  Class<? extends IRequestablePage> getUnavailablePageClass();
 }

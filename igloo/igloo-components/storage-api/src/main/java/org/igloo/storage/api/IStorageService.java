@@ -30,6 +30,13 @@ public interface IStorageService {
   StorageUnit createStorageUnit(IStorageUnitType type, StorageUnitCheckType checkType);
 
   /**
+   * Creation of {@link StorageUnit} with an explicit path. If path is null, automatic path
+   * generation is used (based on storage.path property and unit name).
+   */
+  @Nonnull
+  StorageUnit createStorageUnit(IStorageUnitType type, StorageUnitCheckType checkType, String path);
+
+  /**
    * @see IStorageService#addFichier(String, IFichierType, InputStream, GenericEntity)
    *     <p>Fichier is associated with a null author.
    */
@@ -81,12 +88,13 @@ public interface IStorageService {
 
   /**
    * Get file associated to {@link Fichier}. If File cannot be found on filesystem, or if Fichier
-   * status is {@link FichierStatus#INVALIDATED}, this method throws a {@link
-   * FileNotFoundException}. See {@link #getFile(Fichier, boolean, boolean)} to disable these
-   * checks.
+   * status is {@link FichierStatus#INVALIDATED} or {@link FichierStatus#UNAVAILABLE}, this method
+   * throws a {@link FileNotFoundException}. See {@link #getFile(Fichier, boolean, boolean)} to
+   * disable these checks.
    *
    * @throws FileNotFoundException if file cannot be found, is not readable or {@link
-   *     Fichier#getStatus()} is {@link FichierStatus#INVALIDATED}.
+   *     Fichier#getStatus()} is {@link FichierStatus#INVALIDATED} or {@link
+   *     FichierStatus#UNAVAILABLE}.
    */
   @Transactional(readOnly = true)
   @Nonnull
@@ -94,7 +102,7 @@ public interface IStorageService {
 
   @Transactional(readOnly = true)
   @Nonnull
-  File getFile(Fichier fichier, boolean checkTransient, boolean checkExists)
+  File getFile(Fichier fichier, boolean checkInvalidatedOrUnavailable, boolean checkExists)
       throws FileNotFoundException;
 
   /**

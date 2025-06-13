@@ -434,7 +434,7 @@ class TestDatabaseOperations extends AbstractTest {
               });
       assertThat(fichiersUnit1).as("There is no Fichier in storage unit 1 in database").isEmpty();
       assertThat(fichiersUnit2)
-          .as("There is 1 Fichier associated with unit")
+          .as("There is 2 Fichier associated with unit")
           .hasSize(1)
           .contains(fichierAlive);
     }
@@ -446,6 +446,8 @@ class TestDatabaseOperations extends AbstractTest {
           createFichier(entityManagerFactory, storageUnit1, 3l, FichierStatus.INVALIDATED);
       Fichier fichierTransient =
           createFichier(entityManagerFactory, storageUnit1, 4l, FichierStatus.TRANSIENT);
+      Fichier fichierUnavailable =
+          createFichier(entityManagerFactory, storageUnit1, 5l, FichierStatus.UNAVAILABLE);
       Set<Fichier> fichiers =
           doInReadTransactionEntityManager(
               entityManagerFactory,
@@ -454,11 +456,12 @@ class TestDatabaseOperations extends AbstractTest {
                 return databaseOperations.listUnitAliveFichiers(unit);
               });
       assertThat(fichiers)
-          .as("There is 3 Fichier associated with unit, and only 2 are OK")
+          .as("There is 4 Fichier associated with unit, and only 2 are OK")
           .hasSize(2)
           .contains(fichierAlive)
           .contains(fichierTransient)
-          .doesNotContain(fichierInvalidated);
+          .doesNotContain(fichierInvalidated)
+          .doesNotContain(fichierUnavailable);
     }
   }
 

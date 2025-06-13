@@ -8,7 +8,10 @@ import java.io.Serializable;
 import java.time.Instant;
 import org.bindgen.Bindable;
 import org.hibernate.search.engine.backend.types.Sortable;
+import org.hibernate.search.mapper.pojo.automaticindexing.ReindexOnUpdate;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmbedded;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexingDependency;
 
 /**
  * An {@link Embeddable embeddable} for storing limited information about an event:
@@ -30,12 +33,20 @@ public class HistoryEventSummary implements Serializable {
 
   public static final String DATE = "date";
 
+  private static final String SUBJECT = "subject";
+  private static final String SUBJECT_EMBEDDED = SUBJECT + "Embedded";
+  public static final String SUBJECT_REFERENCE = SUBJECT_EMBEDDED + "." + HistoryValue.REFERENCE;
+
   @Basic(optional = true) // Might be defined as nullable in some places (using @AttributeOverride)
   @Column(nullable = false) // Non-nullable by default
   @GenericField(name = DATE, sortable = Sortable.YES)
   private Instant date;
 
   @Embedded
+  @IndexedEmbedded(
+      name = SUBJECT_EMBEDDED,
+      includePaths = {HistoryValue.REFERENCE})
+  @IndexingDependency(reindexOnUpdate = ReindexOnUpdate.SHALLOW)
   @SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
   private HistoryValue subject;
 

@@ -213,11 +213,16 @@ public class StorageService
 
   @Override
   @Nonnull
-  public File getFile(@Nonnull Fichier fichier, boolean checkInvalidated, boolean checkExists)
+  public File getFile(
+      @Nonnull Fichier fichier, boolean checkInvalidatedOrUnavailable, boolean checkExists)
       throws FileNotFoundException {
-    if (checkInvalidated && FichierStatus.INVALIDATED.equals(fichier.getStatus())) {
+    if (checkInvalidatedOrUnavailable
+        && List.of(FichierStatus.INVALIDATED, FichierStatus.UNAVAILABLE)
+            .contains(fichier.getStatus())) {
       throw new FileNotFoundException(
-          String.format("Fichier %d is INVALIDATED; access not available", fichier.getId()));
+          String.format(
+              "Fichier %d is %s; access not available",
+              fichier.getId(), fichier.getStatus().name()));
     }
     return storageOperations.getFile(getAbsolutePath(fichier), checkExists);
   }
@@ -225,21 +230,32 @@ public class StorageService
   @Override
   @Nonnull
   public StorageUnit createStorageUnit(
-      @Nonnull IStorageUnitType type, @Nonnull StorageUnitCheckType checkType) {
+      @Nonnull IStorageUnitType type, @Nonnull StorageUnitCheckType checkType, String path) {
     StorageUnit unit = new StorageUnit();
     unit.setCreationDate(LocalDateTime.now());
     unit.setId(databaseOperations.generateStorageUnit());
     unit.setType(type);
     unit.setStatus(StorageUnitStatus.ALIVE);
     unit.setCheckType(checkType);
-    unit.setPath(
-        storageUnitPathSupplier
-            .get()
-            .toAbsolutePath()
-            .resolve(String.format("%s-%s", type.getPath(), unit.getId().toString()))
-            .toString());
+    if (path == null) {
+      unit.setPath(
+          storageUnitPathSupplier
+              .get()
+              .toAbsolutePath()
+              .resolve(String.format("%s-%s", type.getPath(), unit.getId().toString()))
+              .toString());
+    } else {
+      unit.setPath(path);
+    }
     databaseOperations.createStorageUnit(unit);
     return unit;
+  }
+
+  @Override
+  @Nonnull
+  public StorageUnit createStorageUnit(
+      @Nonnull IStorageUnitType type, @Nonnull StorageUnitCheckType checkType) {
+    return createStorageUnit(type, checkType, null);
   }
 
   @Override

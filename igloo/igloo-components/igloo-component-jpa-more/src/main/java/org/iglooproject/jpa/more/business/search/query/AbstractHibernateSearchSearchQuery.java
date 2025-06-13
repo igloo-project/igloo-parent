@@ -23,7 +23,7 @@ public abstract class AbstractHibernateSearchSearchQuery<
 
   private SearchSession session;
   private SearchPredicateFactory pf;
-  private List<SearchPredicate> predicates = new ArrayList<>();
+  private final List<SearchPredicate> predicates = new ArrayList<>();
 
   @SafeVarargs
   protected AbstractHibernateSearchSearchQuery(Class<T> clazz, S... defaultSorts) {
@@ -35,7 +35,6 @@ public abstract class AbstractHibernateSearchSearchQuery<
   private void init() {
     this.session = Search.session(entityManager);
     this.pf = session.scope(mainClass).predicate();
-    addFilterBeforeCreateQuery();
   }
 
   protected SearchPredicateFactory predicateFactory() {
@@ -56,8 +55,10 @@ public abstract class AbstractHibernateSearchSearchQuery<
     // Nothing
   }
 
-  private SearchPredicate topLevelPredicate() {
-    return pf.bool(
+  protected SearchPredicate topLevelPredicate() {
+    addFilterBeforeCreateQuery();
+    return pf.bool()
+        .with(
             b -> {
               b.must(SearchPredicateFactory::matchAll);
               for (SearchPredicate predicate : predicates) {

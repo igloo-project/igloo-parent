@@ -3,8 +3,10 @@ package org.igloo.storage.integration;
 import org.apache.wicket.Application;
 import org.apache.wicket.MetaDataKey;
 import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.request.component.IRequestablePage;
 import org.igloo.monitoring.wicket.SpringBackedMonitoringResource;
 import org.igloo.storage.integration.wicket.FichierFileStorageWebResource;
+import org.igloo.storage.integration.wicket.WicketStorageExceptionRequestCycleListener;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +22,15 @@ public class WicketStorage {
 
   private WicketStorage() {} // NOSONAR
 
+  /** Install without a custom unavailable page. */
   public static void install(WebApplication app, IPropertyService propertyService) {
+    install(app, propertyService, null);
+  }
+
+  public static void install(
+      WebApplication app,
+      IPropertyService propertyService,
+      Class<? extends IRequestablePage> unavailablePageClass) {
     install(
         app,
         new WicketStorageSettings(
@@ -28,7 +38,8 @@ public class WicketStorage {
             propertyService.get(StoragePropertyIds.WEB_URL),
             propertyService.get(StoragePropertyIds.WEB_DOWNLOAD_URL),
             propertyService.get(StoragePropertyIds.MONITORING_ENABLED)
-                && propertyService.get(StoragePropertyIds.MONITORING_WICKET_ENABLED)));
+                && propertyService.get(StoragePropertyIds.MONITORING_WICKET_ENABLED),
+            unavailablePageClass));
   }
 
   public static void install(WebApplication app, IWicketStorageSettings settings) {
@@ -50,6 +61,10 @@ public class WicketStorage {
               e);
         }
       }
+
+      // install custom exception handling
+      app.getRequestCycleListeners()
+          .add(new WicketStorageExceptionRequestCycleListener(settings.getUnavailablePageClass()));
     }
   }
 

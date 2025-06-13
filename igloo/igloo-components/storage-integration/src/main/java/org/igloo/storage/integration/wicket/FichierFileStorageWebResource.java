@@ -1,8 +1,5 @@
 package org.igloo.storage.integration.wicket;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Optional;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.ContentDisposition;
@@ -27,7 +24,7 @@ import org.iglooproject.wicket.more.link.descriptor.parameter.validator.LinkPara
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationRuntimeException;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
 
-public class FichierFileStorageWebResource extends AbstractFichierStoreWebResource {
+public class FichierFileStorageWebResource extends AbstractFichierFileStorageWebResource {
 
   private static final long serialVersionUID = 4055986406247245615L;
   private static final FichierBinding FICHIER = new FichierBinding();
@@ -85,7 +82,7 @@ public class FichierFileStorageWebResource extends AbstractFichierStoreWebResour
   }
 
   @Override
-  protected FichierStoreResourceStream getFileStoreResourceStream(PageParameters parameters)
+  public Fichier getFichier(PageParameters parameters)
       throws ServiceException, SecurityServiceException {
     IModel<Fichier> fichierModel = new GenericEntityModel<>();
 
@@ -95,14 +92,7 @@ public class FichierFileStorageWebResource extends AbstractFichierStoreWebResour
       throw new LinkParameterValidationRuntimeException(e);
     }
 
-    Fichier fichier = fichierModel.getObject();
-    try {
-      File file = storageService.getFile(fichier);
-      return new FichierStoreResourceStream(
-          file, Optional.ofNullable(fichier.getFilename()).orElse(""));
-    } catch (FileNotFoundException e) {
-      throw new ServiceException(e);
-    }
+    return fichierModel.getObject();
   }
 
   public static final ResourceReference get() {

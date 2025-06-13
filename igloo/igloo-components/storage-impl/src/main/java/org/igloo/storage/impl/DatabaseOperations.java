@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.transform.Transformers;
 import org.hibernate.type.StandardBasicTypes;
@@ -168,10 +167,11 @@ public class DatabaseOperations {
     Objects.requireNonNull(unit, "unit cannot be null");
     return entityManager()
         .createQuery(
-            "SELECT f FROM Fichier f where f.storageUnit = :unit AND f.status != :invalidatedStatus ORDER BY f.id DESC",
+            "SELECT f FROM Fichier f where f.storageUnit = :unit AND not f.status in :invalidatedStatus ORDER BY f.id DESC",
             Fichier.class)
         .setParameter("unit", unit)
-        .setParameter("invalidatedStatus", FichierStatus.INVALIDATED)
+        .setParameter(
+            "invalidatedStatus", List.of(FichierStatus.INVALIDATED, FichierStatus.UNAVAILABLE))
         .getResultStream()
         .collect(Collectors.toUnmodifiableSet());
   }
@@ -414,9 +414,6 @@ public class DatabaseOperations {
 
   @SuppressWarnings({"unchecked", "deprecation"})
   public List<StorageCheckStatistic> getStorageCheckStatistics() {
-    if (!isPostgresqlBackend()) {
-      throw new IllegalStateException("getStorageCheckStatistics need postgresql backend");
-    }
     return ((NativeQuery<StorageCheckStatistic>)
             entityManager().createNativeQuery(lastCheckStatisticsQuery.get()))
         .addScalar(PARAMETER_STORAGE_UNIT_ID, StandardBasicTypes.LONG)
@@ -431,17 +428,6 @@ public class DatabaseOperations {
         // custom types
         .setResultTransformer(Transformers.aliasToBean(StorageCheckStatistic.class))
         .getResultList();
-  }
-
-  private boolean isPostgresqlBackend() {
-    return ((String)
-            entityManager()
-                .getEntityManagerFactory()
-                .unwrap(SessionFactory.class)
-                .getProperties()
-                .get("jakarta.persistence.jdbc.driver"))
-        .toLowerCase()
-        .contains("postgresql");
   }
 
   @Nonnull
