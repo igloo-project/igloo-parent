@@ -58,7 +58,7 @@ public abstract class AbstractFichierFileStorageWebResource
           "Fichier %s is unavailable.".formatted(fichier));
     } else if (FichierStatus.INVALIDATED.equals(fichier.getStatus())) {
       throw new WicketStorageFichierInvalidatedException(
-          "Fichier %s is unavailable.".formatted(fichier));
+          "Fichier %s is invalidated.".formatted(fichier));
     }
     try {
       File file = storageService.getFile(fichier);
