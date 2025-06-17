@@ -5,6 +5,7 @@ import com.google.common.collect.Iterables;
 import igloo.wicket.condition.Condition;
 import igloo.wicket.model.Models;
 import java.util.Collection;
+import java.util.List;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.model.IModel;
@@ -49,7 +50,7 @@ public class ConditionFormModelValidator implements IFormModelValidator {
       Collection<FormComponent<?>> formComponents) {
     this.errorMessageModel = errorMessageModel;
     this.condition = condition;
-    this.formComponents = ImmutableList.copyOf(formComponents);
+    this.formComponents = List.copyOf(formComponents);
   }
 
   @Override

@@ -2,7 +2,6 @@ package org.iglooproject.wicket.more.markup.html.form;
 
 import static org.iglooproject.spring.property.SpringPropertyIds.AVAILABLE_LOCALES;
 
-import com.google.common.collect.ImmutableList;
 import java.util.List;
 import java.util.Locale;
 import org.apache.wicket.Session;
@@ -60,7 +59,7 @@ public class LocaleDropDownChoice extends GenericSelect2DropDownSingleChoice<Loc
 
     @Override
     protected List<Locale> load() {
-      return ImmutableList.copyOf(propertyService.get(AVAILABLE_LOCALES));
+      return List.copyOf(propertyService.get(AVAILABLE_LOCALES));
     }
   }
 }

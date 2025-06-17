@@ -31,8 +31,7 @@ abstract class AbstractOneOrMoreMappableParameterMainStateImpl<
           previousState,
       LinkParameterTypeInformation<?> addedParameterType) {
     super(previousState);
-    this.dynamicParameterTypes =
-        ImmutableList.<LinkParameterTypeInformation<?>>of(addedParameterType);
+    this.dynamicParameterTypes = List.of(addedParameterType);
   }
 
   public AbstractOneOrMoreMappableParameterMainStateImpl(

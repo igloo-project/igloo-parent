@@ -2,7 +2,7 @@ package basicapp.back.business.user.difference.service;
 
 import basicapp.back.business.user.model.User;
 import basicapp.back.util.binding.Bindings;
-import com.google.common.collect.ImmutableList;
+import java.util.List;
 import org.bindgen.BindingRoot;
 import org.iglooproject.commons.util.binding.ICoreBinding;
 import org.iglooproject.jpa.more.business.difference.service.AbstractGenericEntityDifferenceServiceImpl;
@@ -16,13 +16,13 @@ public class UserDifferenceServiceImpl extends AbstractGenericEntityDifferenceSe
   protected Iterable<? extends ICoreBinding<? extends User, ?>>
       getSimpleInitializationFieldsBindings() {
     // not used at the moment, we only use the minimal difference fields.
-    return ImmutableList.of();
+    return List.of();
   }
 
   @Override
   protected Iterable<? extends BindingRoot<? super User, ?>> getMinimalDifferenceFieldsBindings() {
     // we don't use this at the moment: the usage of differences is commented.
-    return ImmutableList.of(
+    return List.of(
         Bindings.user().firstName(),
         Bindings.user().lastName(),
         Bindings.user().emailAddress(),

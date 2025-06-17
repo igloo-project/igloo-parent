@@ -1,6 +1,6 @@
 package org.iglooproject.wicket.more.link.descriptor.builder.impl.parameter.mapping;
 
-import com.google.common.collect.ImmutableList;
+import java.util.List;
 import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
@@ -81,8 +81,7 @@ public class SimpleLinkParameterMappingEntry<T> extends AbstractLinkParameterMap
 
   @Override
   public ILinkParameterValidator mandatoryValidator() {
-    return new SimpleMandatoryLinkParameterValidator(
-        ImmutableList.of(parameterName), ImmutableList.of(mappedModel));
+    return new SimpleMandatoryLinkParameterValidator(List.of(parameterName), List.of(mappedModel));
   }
 
   @Override

@@ -1,6 +1,5 @@
 package igloo.wicket.model;
 
-import com.google.common.collect.ImmutableList;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -31,7 +30,7 @@ public final class SequenceProviders {
 
     public ConstantCollectionModel(Collection<? extends M> models) {
       super();
-      this.models = ImmutableList.copyOf(models);
+      this.models = List.copyOf(models);
     }
 
     @Override

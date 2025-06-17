@@ -2,11 +2,11 @@ package org.iglooproject.jpa.more.business.difference.differ.strategy;
 
 import com.google.common.collect.ContiguousSet;
 import com.google.common.collect.DiscreteDomain;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Range;
 import de.danielbechler.diff.access.Accessor;
 import java.util.Collection;
+import java.util.List;
 import org.iglooproject.jpa.more.business.difference.access.CollectionItemByIndexAccessor;
 
 public final class CollectionDifferIndexStrategy<T>
@@ -29,7 +29,7 @@ public final class CollectionDifferIndexStrategy<T>
       return ContiguousSet.create(
           Range.closedOpen(filterSize, sourceSize), DiscreteDomain.integers());
     } else {
-      return ImmutableList.of();
+      return List.of();
     }
   }
 

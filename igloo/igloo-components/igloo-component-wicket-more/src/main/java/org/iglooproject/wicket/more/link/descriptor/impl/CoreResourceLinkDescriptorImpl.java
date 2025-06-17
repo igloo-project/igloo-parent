@@ -1,7 +1,7 @@
 package org.iglooproject.wicket.more.link.descriptor.impl;
 
-import com.google.common.collect.ImmutableList;
 import igloo.wicket.model.Models;
+import java.util.List;
 import org.apache.wicket.Application;
 import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
@@ -85,7 +85,7 @@ public class CoreResourceLinkDescriptorImpl
 
   @Override
   public ILinkGenerator chain(ILinkGenerator other) {
-    return new ChainedLinkGeneratorImpl(ImmutableList.of(this, other));
+    return new ChainedLinkGeneratorImpl(List.of(this, other));
   }
 
   @Override

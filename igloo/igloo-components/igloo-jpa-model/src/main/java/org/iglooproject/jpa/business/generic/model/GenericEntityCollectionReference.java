@@ -1,7 +1,6 @@
 package org.iglooproject.jpa.business.generic.model;
 
 import com.google.common.base.Verify;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -56,11 +55,11 @@ public class GenericEntityCollectionReference<
   }
 
   public GenericEntityCollectionReference(GenericEntityReference<K, E> reference) {
-    this(reference.getType(), ImmutableList.of(reference.getId()));
+    this(reference.getType(), List.of(reference.getId()));
   }
 
   public GenericEntityCollectionReference(Class<? extends E> entityClass) {
-    this(entityClass, ImmutableList.<K>of());
+    this(entityClass, List.of());
   }
 
   public GenericEntityCollectionReference(

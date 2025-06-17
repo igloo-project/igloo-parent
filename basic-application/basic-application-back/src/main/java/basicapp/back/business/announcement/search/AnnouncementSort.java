@@ -28,7 +28,7 @@ public enum AnnouncementSort implements ISort<OrderSpecifier<?>> {
 
     @Override
     public SortOrder getDefaultOrder() {
-      return SortOrder.ASC;
+      return SortOrder.DESC;
     }
   };
 }

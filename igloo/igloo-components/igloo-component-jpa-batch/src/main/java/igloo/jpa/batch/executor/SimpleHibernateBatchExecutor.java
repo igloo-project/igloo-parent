@@ -1,7 +1,6 @@
 package igloo.jpa.batch.executor;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import igloo.jpa.batch.runnable.IBatchRunnable;
 import igloo.jpa.batch.runnable.Writeability;
@@ -37,7 +36,7 @@ public class SimpleHibernateBatchExecutor
   private static final Logger LOGGER = LoggerFactory.getLogger(SimpleHibernateBatchExecutor.class);
 
   @Autowired(required = false)
-  private Collection<IBeforeClearListener> clearListeners = ImmutableList.of();
+  private Collection<IBeforeClearListener> clearListeners = List.of();
 
   private ExecutionStrategyFactory executionStrategyFactory =
       ExecutionStrategyFactory.COMMIT_ON_END;

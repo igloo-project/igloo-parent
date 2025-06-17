@@ -1,6 +1,5 @@
 package igloo.hibernatesearchv5;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Ints;
 import jakarta.annotation.PostConstruct;
@@ -198,7 +197,7 @@ public abstract class OldAbstractHibernateSearchSearchQuery<T, S extends ISort<S
   @SuppressWarnings("unchecked")
   public final List<T> list(long offset, long limit) {
     if (limit == 0) {
-      return ImmutableList.of();
+      return List.of();
     }
     return getFullTextQueryList(offset, limit).getResultList();
   }

@@ -1,8 +1,9 @@
 $static-root-url:										"../../../static" !default;
 
 $environment-colors: (
-	"development":	$success,
-	"testing":		$info,
-	"staging":		$warning,
-	"production":	$danger
+	"development":		$success,
+	"integration":		$dark,
+	"qualification":	$info,
+	"preproduction":	$warning,
+	"production":		$danger
 ) !default;

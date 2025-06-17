@@ -1,6 +1,5 @@
 package org.iglooproject.wicket.more.link.descriptor.builder.impl.parameter;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import igloo.wicket.factory.IDetachableFactory;
 import java.util.Collections;
@@ -98,8 +97,7 @@ public abstract class AbstractChosenParameterStateImpl<TSelf, TInitialState>
 
   @Override
   public TInitialState permission(String permissionName) {
-    return validator(
-        ConditionLinkParameterValidator.anyPermissionFactory(ImmutableList.of(permissionName)));
+    return validator(ConditionLinkParameterValidator.anyPermissionFactory(List.of(permissionName)));
   }
 
   @Override
@@ -160,6 +158,16 @@ public abstract class AbstractChosenParameterStateImpl<TSelf, TInitialState>
 
   public TSelf andFourth() {
     addDynamicParameter(3);
+    return thisAsTSelf();
+  }
+
+  public TSelf andFifth() {
+    addDynamicParameter(4);
+    return thisAsTSelf();
+  }
+
+  public TSelf andSixth() {
+    addDynamicParameter(5);
     return thisAsTSelf();
   }
 }

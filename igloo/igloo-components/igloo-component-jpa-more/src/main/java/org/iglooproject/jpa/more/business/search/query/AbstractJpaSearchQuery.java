@@ -1,6 +1,5 @@
 package org.iglooproject.jpa.more.business.search.query;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.core.QueryModifiers;
 import com.querydsl.core.types.CollectionExpression;
 import com.querydsl.core.types.EntityPath;
@@ -110,7 +109,7 @@ public abstract class AbstractJpaSearchQuery<T, S extends ISort<OrderSpecifier<?
   @Transactional(readOnly = true)
   public final List<T> list(long offset, long limit) {
     if (limit == 0) {
-      return ImmutableList.of();
+      return List.of();
     }
     return getQueryList(offset, limit).fetch();
   }

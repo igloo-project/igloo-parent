@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import igloo.wicket.condition.Condition;
 import igloo.wicket.model.CollectionCopyModel;
@@ -264,7 +263,7 @@ public abstract class AbstractAnyTargetTestLinkDescriptor extends AbstractTestLi
     IModel<List<Person>> model =
         CollectionCopyModel.custom(
             Suppliers2.<Person>arrayListAsList(), GenericEntityModel.<Person>factory());
-    model.setObject(ImmutableList.of(person1, person2));
+    model.setObject(List.of(person1, person2));
     ILinkDescriptor linkDescriptor =
         buildWithOneParameterTarget(
             LinkDescriptorBuilder.start()

@@ -30,7 +30,7 @@ public class EnumDropDownMultipleChoice<E extends Enum<E>>
     this(id, collectionModel, collectionSupplier, choicesModel, new EnumChoiceRenderer<E>());
   }
 
-  protected <C extends Collection<E>> EnumDropDownMultipleChoice(
+  public <C extends Collection<E>> EnumDropDownMultipleChoice(
       String id,
       IModel<C> collectionModel,
       SerializableSupplier2<? extends C> collectionSupplier,

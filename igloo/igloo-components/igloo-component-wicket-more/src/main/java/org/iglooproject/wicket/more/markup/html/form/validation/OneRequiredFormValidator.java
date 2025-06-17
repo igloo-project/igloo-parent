@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
 import java.util.Collection;
+import java.util.List;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.validation.AbstractFormValidator;
@@ -41,7 +42,7 @@ public class OneRequiredFormValidator extends AbstractFormValidator {
   }
 
   protected Iterable<? extends FormComponent<?>> getAdditionalDependentFormComponents() {
-    return ImmutableList.of();
+    return List.of();
   }
 
   @Override

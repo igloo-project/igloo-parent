@@ -3,11 +3,11 @@ package test.jpa.more.business;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import igloo.jpa.batch.executor.BatchExecutorCreator;
 import igloo.jpa.batch.runnable.ReadWriteBatchRunnable;
 import java.util.Collection;
+import java.util.List;
 import org.apache.commons.lang3.mutable.MutableObject;
 import org.iglooproject.jpa.business.generic.model.GenericEntityReference;
 import org.iglooproject.jpa.exception.SecurityServiceException;
@@ -253,7 +253,7 @@ class TestTransactionSynchronization extends AbstractJpaMoreTestCase {
         .batchSize(1)
         .run(
             TestEntity.class,
-            ImmutableList.of(entityId1, entityId2),
+            List.of(entityId1, entityId2),
             new ReadWriteBatchRunnable<TestEntity>() {
               @Override
               protected void executeUnit(TestEntity unit) {

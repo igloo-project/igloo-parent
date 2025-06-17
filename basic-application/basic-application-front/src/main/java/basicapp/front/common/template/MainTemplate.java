@@ -18,7 +18,6 @@ import basicapp.front.role.page.RoleListPage;
 import basicapp.front.security.password.page.SecurityPasswordExpirationPage;
 import basicapp.front.user.page.BasicUserListPage;
 import basicapp.front.user.page.TechnicalUserListPage;
-import com.google.common.collect.ImmutableList;
 import igloo.bootstrap.tooltip.BootstrapTooltipBehavior;
 import igloo.bootstrap.tooltip.BootstrapTooltipOptions;
 import igloo.bootstrap5.markup.html.template.js.bootstrap.Bootstrap5JavaScriptResourceReference;
@@ -108,7 +107,7 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
   }
 
   protected List<NavigationMenuItem> getMainNav() {
-    return ImmutableList.of(
+    return List.of(
         BasicApplicationApplication.get()
             .getHomePageLinkDescriptor()
             .navigationMenuItem(new ResourceModel("navigation.home"))

@@ -51,7 +51,7 @@ public abstract class DataTableRowsBuilder<T, S extends ISort<?>>
   public IDataTableRowsState<T, S> withClass(
       IDetachableFactory<? super IModel<? extends T>, ? extends IModel<? extends String>>
           valueModelFactory) {
-    return withClass(ImmutableList.of(Objects.requireNonNull(valueModelFactory)));
+    return withClass(List.of(Objects.requireNonNull(valueModelFactory)));
   }
 
   @Override
@@ -78,7 +78,7 @@ public abstract class DataTableRowsBuilder<T, S extends ISort<?>>
   @Override
   public IDataTableRowsState<T, S> add(
       IDetachableFactory<? super IModel<? extends T>, ? extends Behavior> rowsBehaviorFactory) {
-    return add(ImmutableList.of(Objects.requireNonNull(rowsBehaviorFactory)));
+    return add(List.of(Objects.requireNonNull(rowsBehaviorFactory)));
   }
 
   @Override

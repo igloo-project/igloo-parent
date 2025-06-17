@@ -1,6 +1,5 @@
 package org.iglooproject.jpa.migration.service;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
 import java.util.Collection;
@@ -88,7 +87,7 @@ public abstract class AbstractMigrationService {
     linkedEntityIdsParameterSource.addValue(partitionIdsParamName, partitionIds);
 
     List<Long> linkedEntitiesIds =
-        ImmutableList.copyOf(
+        List.copyOf(
             getNamedParameterJdbcTemplate()
                 .queryForList(queryForLinkedEntityIds, linkedEntityIdsParameterSource, Long.class));
 

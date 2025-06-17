@@ -1,7 +1,8 @@
 package org.iglooproject.wicket.more.bindable.form;
 
-import com.google.common.collect.ImmutableList;
 import igloo.wicket.model.Detachables;
+import java.util.Arrays;
+import java.util.List;
 import org.iglooproject.wicket.more.bindable.model.IBindableModel;
 import org.iglooproject.wicket.more.markup.html.form.ModelValidatingForm;
 
@@ -18,7 +19,7 @@ public class CacheWritingForm<E> extends ModelValidatingForm<E> {
 
   private final IBindableModel<E> mainRootModel;
 
-  private final ImmutableList<IBindableModel<?>> otherRootModels;
+  private final List<IBindableModel<?>> otherRootModels;
 
   public CacheWritingForm(String id, IBindableModel<E> mainRootModel) {
     this(id, mainRootModel, (IBindableModel<E>[]) null);
@@ -29,9 +30,7 @@ public class CacheWritingForm<E> extends ModelValidatingForm<E> {
     super(id, mainRootModel);
     this.mainRootModel = mainRootModel;
     this.otherRootModels =
-        otherRootModels == null
-            ? ImmutableList.<IBindableModel<?>>of()
-            : ImmutableList.copyOf(otherRootModels);
+        otherRootModels == null ? List.of() : List.copyOf(Arrays.asList(otherRootModels));
   }
 
   @Override

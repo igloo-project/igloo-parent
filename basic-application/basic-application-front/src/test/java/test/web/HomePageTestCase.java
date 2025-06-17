@@ -241,7 +241,7 @@ class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
 
     public static List<NavbarItem> submenu(NavbarItem parent) {
       if (parent == null) {
-        return ImmutableList.of();
+        return List.of();
       }
 
       return Arrays.stream(values())

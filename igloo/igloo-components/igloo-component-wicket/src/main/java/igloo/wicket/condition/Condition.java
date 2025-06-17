@@ -16,6 +16,7 @@ import igloo.wicket.model.Models;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
@@ -682,7 +683,7 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
   }
 
   public static Condition role(String role) {
-    return AnyRoleCondition.fromStrings(ImmutableList.of(role));
+    return AnyRoleCondition.fromStrings(List.of(role));
   }
 
   public static Condition anyRole(String role, String... otherRoles) {
@@ -690,7 +691,7 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
   }
 
   public static Condition role(IModel<String> roleModel) {
-    return AnyRoleCondition.fromModels(ImmutableList.of(roleModel));
+    return AnyRoleCondition.fromModels(List.of(roleModel));
   }
 
   @SafeVarargs
@@ -745,7 +746,7 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
   }
 
   public static Condition permission(String permissionName) {
-    return new AnyGlobalPermissionCondition(ImmutableList.of(permissionName));
+    return new AnyGlobalPermissionCondition(List.of(permissionName));
   }
 
   public static Condition anyPermission(String permissionName, String... otherPermissionNames) {
@@ -778,7 +779,7 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
     public AnyGlobalPermissionCondition(Permission permission) {
       super();
       Injector.get().inject(this);
-      this.permissions = ImmutableList.of(permission);
+      this.permissions = List.of(permission);
     }
 
     @Override
@@ -798,7 +799,7 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
   }
 
   public static Condition permission(IModel<?> securedObjectModel, String permissionName) {
-    return new AnyObjectPermissionCondition(securedObjectModel, ImmutableList.of(permissionName));
+    return new AnyObjectPermissionCondition(securedObjectModel, List.of(permissionName));
   }
 
   public static Condition anyPermission(
@@ -839,7 +840,7 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
       super();
       Injector.get().inject(this);
       this.securedObjectModel = securedObjectModel;
-      this.permissions = ImmutableList.of(permission);
+      this.permissions = List.of(permission);
     }
 
     @Override

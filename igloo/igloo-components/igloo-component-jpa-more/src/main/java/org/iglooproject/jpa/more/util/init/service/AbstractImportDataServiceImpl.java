@@ -2,7 +2,6 @@ package org.iglooproject.jpa.more.util.init.service;
 
 import static org.iglooproject.jpa.more.property.JpaMorePropertyIds.DATABASE_INITIALIZED;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import java.io.FileNotFoundException;
@@ -48,16 +47,16 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
   private static final Logger LOGGER = LoggerFactory.getLogger(AbstractImportDataServiceImpl.class);
 
   protected static final List<String> REFERENCE_DATA_FILE_NAMES =
-      ImmutableList.of("reference_data.xlsx", "reference_data.xls");
+      List.of("reference_data.xlsx", "reference_data.xls");
 
   protected static final List<String> BUSINESS_DATA_FILE_NAMES =
-      ImmutableList.of("business_data.xlsx", "business_data.xls");
+      List.of("business_data.xlsx", "business_data.xls");
 
   private static final String ID_FIELD_NAME = "id";
 
-  private static final String CREATION_DATE_FIELD_NAME = "creationDate";
+  private static final String CREATION_DATE_FIELD_NAME = "creation.date";
 
-  private static final String LAST_UPDATE_DATE_FIELD_NAME = "lastUpdateDate";
+  private static final String MODIFICATION_DATE_FIELD_NAME = "modification.date";
 
   private static final String PASSWORD_FIELD_NAME = "password";
 
@@ -260,11 +259,13 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
   protected <E extends GenericEntity<Long, ?>> void doFilterLine(
       Class<E> clazz, Map<String, Object> line) {
     Date creationDate = new Date();
+
     if (!line.containsKey(CREATION_DATE_FIELD_NAME)) {
       line.put(CREATION_DATE_FIELD_NAME, creationDate);
     }
-    if (!line.containsKey(LAST_UPDATE_DATE_FIELD_NAME)) {
-      line.put(LAST_UPDATE_DATE_FIELD_NAME, creationDate);
+
+    if (!line.containsKey(MODIFICATION_DATE_FIELD_NAME)) {
+      line.put(MODIFICATION_DATE_FIELD_NAME, creationDate);
     }
 
     if (line.containsKey(PASSWORD_FIELD_NAME)) {

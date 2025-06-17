@@ -1,6 +1,6 @@
 package org.iglooproject.wicket.more.markup.html.select2;
 
-import java.util.List;
+import java.util.Collection;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.string.AppendingStringBuffer;
@@ -18,7 +18,7 @@ public abstract class GenericSelect2GroupDropDownSingleChoice<T>
   protected GenericSelect2GroupDropDownSingleChoice(
       String id,
       IModel<T> model,
-      IModel<? extends List<? extends T>> choicesModel,
+      IModel<? extends Collection<? extends T>> choicesModel,
       IChoiceRenderer<? super T> renderer) {
     super(id, model, choicesModel, renderer);
   }

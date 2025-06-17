@@ -3,7 +3,6 @@ package basicapp.front.common.component;
 import basicapp.back.business.user.predicate.UserPredicates;
 import basicapp.back.config.util.Environment;
 import basicapp.front.BasicApplicationSession;
-import com.google.common.collect.ImmutableList;
 import igloo.wicket.behavior.ClassAttributeAppender;
 import igloo.wicket.markup.html.panel.GenericPanel;
 import java.util.List;
@@ -15,7 +14,11 @@ public class EnvironmentPanel extends GenericPanel<Environment> {
   private static final long serialVersionUID = -916735857360352450L;
 
   private static final List<Environment> VISIBLE_ALERTS =
-      ImmutableList.of(Environment.development, Environment.staging);
+      List.of(
+          Environment.development,
+          Environment.integration,
+          Environment.qualification,
+          Environment.preproduction);
 
   public EnvironmentPanel(String id) {
     this(id, BasicApplicationSession.get().getEnvironmentModel());

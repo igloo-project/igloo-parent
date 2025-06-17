@@ -1,6 +1,5 @@
 package org.iglooproject.wicket.more.markup.html.template.model;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import igloo.wicket.condition.Condition;
 import igloo.wicket.model.Detachables;
@@ -37,7 +36,7 @@ public class NavigationMenuItem implements IDetachable {
   }
 
   public NavigationMenuItem(IModel<String> labelModel, IPageLinkGenerator pageLinkGenerator) {
-    this(labelModel, pageLinkGenerator, ImmutableList.of());
+    this(labelModel, pageLinkGenerator, List.of());
   }
 
   public NavigationMenuItem(

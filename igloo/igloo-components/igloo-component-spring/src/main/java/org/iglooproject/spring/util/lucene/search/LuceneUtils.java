@@ -2,7 +2,6 @@ package org.iglooproject.spring.util.lucene.search;
 
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Splitter;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import java.util.Iterator;
@@ -42,7 +41,7 @@ public final class LuceneUtils {
   public static Query getAutocompleteQuery(
       String fieldName, Analyzer analyzer, String searchPattern, int enableWildcardMinChars) {
     return getAutocompleteQuery(
-        ImmutableList.of(fieldName), analyzer, searchPattern, enableWildcardMinChars);
+        List.of(fieldName), analyzer, searchPattern, enableWildcardMinChars);
   }
 
   public static Query getAutocompleteQuery(

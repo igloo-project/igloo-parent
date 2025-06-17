@@ -16,10 +16,10 @@ import basicapp.back.business.user.model.atomic.UserType;
 import basicapp.back.business.user.service.business.IUserService;
 import basicapp.back.security.model.SecurityOptions;
 import com.google.common.collect.EvictingQueue;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.iglooproject.jpa.exception.SecurityServiceException;
@@ -71,7 +71,7 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
       }
       historyQueue.offer(user.getPasswordHash());
 
-      user.getPasswordInformation().setHistory(ImmutableList.copyOf(historyQueue));
+      user.getPasswordInformation().setHistory(List.copyOf(historyQueue));
     }
 
     user.getPasswordRecoveryRequest().reset();

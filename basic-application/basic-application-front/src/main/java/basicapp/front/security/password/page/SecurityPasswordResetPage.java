@@ -57,8 +57,6 @@ public class SecurityPasswordResetPage extends SecurityPasswordTemplate {
             BasicApplicationApplication.get().getHomePageLinkDescriptor(),
             getString("common.error.unexpected"));
 
-    parameters.remove(CommonParameters.TOKEN);
-
     if (!tokenModel
         .getObject()
         .equals(userModel.getObject().getPasswordRecoveryRequest().getToken())) {

@@ -3,12 +3,12 @@ package basicapp.front.user.export;
 import basicapp.back.business.user.model.User;
 import basicapp.back.business.user.model.UserBinding;
 import basicapp.front.user.renderer.UserRenderer;
-import com.google.common.collect.ImmutableList;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import org.apache.poi.common.usermodel.HyperlinkType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -26,15 +26,15 @@ public class UserExcelTableExport extends AbstractSimpleExcelTableExport {
   private static final String SHEET_NAME_RESOURCE_KEY = "user.common.export.excel.sheetName";
 
   private final Collection<ColumnInformation> columns =
-      ImmutableList.of(
+      List.of(
           new ColumnInformation("business.user.username"),
           new ColumnInformation("business.user.lastName"),
           new ColumnInformation("business.user.firstName"),
           new ColumnInformation("business.user.emailAddress"),
           new ColumnInformation("business.user.enabled"),
           new ColumnInformation("business.user.roles"),
-          new ColumnInformation("business.user.creationDate"),
-          new ColumnInformation("business.user.lastUpdateDate"),
+          new ColumnInformation("business.user.creation"),
+          new ColumnInformation("business.user.modification"),
           new ColumnInformation("business.user.lastLoginDate"));
 
   public UserExcelTableExport(Component component) {
@@ -46,11 +46,9 @@ public class UserExcelTableExport extends AbstractSimpleExcelTableExport {
 
     int rowIndex = 0;
 
-    // Headers
     addHeadersToSheet(sheet, rowIndex, columns);
     ++rowIndex;
 
-    // Rows
     Iterator<? extends User> iterator = dataProvider.iterator(0, Integer.MAX_VALUE);
     while (iterator.hasNext()) {
       Row currentRow = sheet.createRow(rowIndex);
@@ -88,7 +86,7 @@ public class UserExcelTableExport extends AbstractSimpleExcelTableExport {
 
     addTextCell(row, columnIndex++, UserRenderer.roles().render(user, getLocale()));
 
-    Instant creationDate = binding.creationDate().getSafely();
+    Instant creationDate = binding.creation().date().getSafely();
     if (creationDate != null) {
       addLocalDateCell(
           row, columnIndex++, LocalDate.ofInstant(creationDate, ZoneId.systemDefault()));
@@ -96,10 +94,10 @@ public class UserExcelTableExport extends AbstractSimpleExcelTableExport {
       addTextCell(row, columnIndex++, "");
     }
 
-    Instant lastUpdateDate = binding.lastUpdateDate().getSafely();
-    if (lastUpdateDate != null) {
+    Instant modificationDate = binding.modification().date().getSafely();
+    if (modificationDate != null) {
       addLocalDateCell(
-          row, columnIndex++, LocalDate.ofInstant(lastUpdateDate, ZoneId.systemDefault()));
+          row, columnIndex++, LocalDate.ofInstant(modificationDate, ZoneId.systemDefault()));
     } else {
       addTextCell(row, columnIndex++, "");
     }
