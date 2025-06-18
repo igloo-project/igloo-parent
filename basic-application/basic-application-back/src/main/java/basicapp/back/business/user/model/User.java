@@ -11,6 +11,7 @@ import basicapp.back.business.user.model.embeddable.UserPasswordInformation;
 import basicapp.back.business.user.model.embeddable.UserPasswordRecoveryRequest;
 import basicapp.back.config.hibernate.search.bridge.EmailAddressValueBridge;
 import basicapp.back.util.binding.Bindings;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.base.MoreObjects.ToStringHelper;
 import com.google.common.collect.Sets;
 import igloo.hibernateconfig.api.HibernateSearchAnalyzer;
@@ -88,7 +89,7 @@ public class User extends GenericEntity<Long, User> implements IUser, INotificat
   @FullTextField(name = USERNAME_AUTOCOMPLETE, analyzer = HibernateSearchAnalyzer.TEXT)
   private String username;
 
-  @Basic private String passwordHash = EMPTY_PASSWORD_HASH;
+  @Basic @JsonIgnore private String passwordHash = EMPTY_PASSWORD_HASH;
 
   @Embedded private UserPasswordInformation passwordInformation;
 
