@@ -2,7 +2,7 @@ package org.iglooproject.jpa.security.service;
 
 import static java.util.Optional.ofNullable;
 
-import igloo.security.CoreUserDetails;
+import igloo.security.UserDetails;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -109,7 +109,7 @@ public abstract class AbstractCorePermissionEvaluator<U extends GenericEntity<Lo
 
   protected Collection<Permission> getPermissions(Authentication authentication) {
     if (authentication != null) {
-      if (authentication.getPrincipal() instanceof CoreUserDetails userDetails) {
+      if (authentication.getPrincipal() instanceof UserDetails userDetails) {
         return userDetails.getPermissions();
       }
     }
