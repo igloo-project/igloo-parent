@@ -4,7 +4,7 @@ import basicapp.back.business.user.model.User;
 import basicapp.back.business.user.model.UserBinding;
 import basicapp.front.user.renderer.UserRenderer;
 import java.time.Instant;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Collection;
 import java.util.Iterator;
@@ -88,24 +88,24 @@ public class UserExcelTableExport extends AbstractSimpleExcelTableExport {
 
     Instant creationDate = binding.creation().date().getSafely();
     if (creationDate != null) {
-      addLocalDateCell(
-          row, columnIndex++, LocalDate.ofInstant(creationDate, ZoneId.systemDefault()));
+      addLocalDateTimeCell(
+          row, columnIndex++, LocalDateTime.ofInstant(creationDate, ZoneId.systemDefault()));
     } else {
       addTextCell(row, columnIndex++, "");
     }
 
     Instant modificationDate = binding.modification().date().getSafely();
     if (modificationDate != null) {
-      addLocalDateCell(
-          row, columnIndex++, LocalDate.ofInstant(modificationDate, ZoneId.systemDefault()));
+      addLocalDateTimeCell(
+          row, columnIndex++, LocalDateTime.ofInstant(modificationDate, ZoneId.systemDefault()));
     } else {
       addTextCell(row, columnIndex++, "");
     }
 
     Instant lastLoginDate = binding.lastLoginDate().getSafely();
     if (lastLoginDate != null) {
-      addLocalDateCell(
-          row, columnIndex++, LocalDate.ofInstant(lastLoginDate, ZoneId.systemDefault()));
+      addLocalDateTimeCell(
+          row, columnIndex++, LocalDateTime.ofInstant(lastLoginDate, ZoneId.systemDefault()));
     } else {
       addTextCell(row, columnIndex++, "");
     }
