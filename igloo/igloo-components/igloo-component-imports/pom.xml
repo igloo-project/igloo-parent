@@ -76,6 +76,14 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+			<!-- fix upperBound commons-collection4 between poi (4.4) and open csv (4.5.0)-->
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-commons</artifactId>
+				<version>${igloo-maven.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 </project>

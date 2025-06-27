@@ -222,6 +222,15 @@
 	</suppress>
 	<suppress>
 		<notes><![CDATA[
+		file name: spring-core-5.3.39.jar
+		
+		Igloo 5 don't use disallowedFields patterns in DataBinder
+		]]></notes>
+		<packageUrl regex="true">^pkg:maven/org\.springframework/spring-.*$</packageUrl>
+		<cve>CVE-2025-22233</cve>
+	</suppress>
+	<suppress>
+		<notes><![CDATA[
 		file name: spring-security-crypto-5.8.16.jar
 		
 		Igloo check that password size is less than 72 bytes
@@ -237,5 +246,19 @@
    ]]></notes>
 		<packageUrl regex="true">^pkg:maven/org\.springframework/spring-webmvc@.*$</packageUrl>
 		<vulnerabilityName>CVE-2024-38816</vulnerabilityName>
+	</suppress>
+	<suppress>
+		<notes><![CDATA[
+		   file name: spring-web-5.3.39.jar
+		   
+		   This is a dependency version mismatch.
+		   Affected Spring Products and VersionsSpring Framework:
+		  *  6.2.0 - 6.2.7
+		  *  6.1.0 - 6.1.20
+		  *  6.0.5 - 6.0.28
+		  *  Older, unsupported versions are not affected
+   ]]></notes>
+		<packageUrl regex="true">^pkg:maven/org\.springframework/spring-web@.*$</packageUrl>
+		<vulnerabilityName>CVE-2025-41234</vulnerabilityName>
 	</suppress>
 </suppressions>
