@@ -24,7 +24,7 @@ public interface IFourParameterLinkDescriptorMapper<L, T1, T2, T3, T4>
    * {@inheritDoc}
    *
    * @deprecated Provided in order to implement {@link ILinkDescriptorMapper}. When you're using a
-   *     {@link IThreeParameterLinkDescriptorMapper}, please use {@link #map(IModel, IModel,
+   *     {@link IThreeParameterLinkDescriptorMapper}, please use {@link #map(IModel, IModel, IModel,
    *     IModel)} instead.
    */
   @Override

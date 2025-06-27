@@ -1,11 +1,14 @@
 package org.iglooproject.wicket.more.link.descriptor.builder.state.main;
 
+import java.util.Collection;
+import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.main.common.IMainState;
+import org.iglooproject.wicket.more.link.descriptor.builder.state.main.common.IMappableParameterDeclarationState;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.main.generic.IGenericFourMappableParameterMainState;
-import org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.choice.nonechosen.IFourOrMoreMappableParameterNoneChosenChoiceState;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.chosen.common.IChosenParameterState;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.terminal.ILateTargetDefinitionTerminalState;
 import org.iglooproject.wicket.more.link.descriptor.mapper.IFourParameterLinkDescriptorMapper;
+import org.springframework.core.convert.TypeDescriptor;
 
 /**
  * A builder state with four mappable parameters from which one may:
@@ -16,6 +19,7 @@ import org.iglooproject.wicket.more.link.descriptor.mapper.IFourParameterLinkDes
  *       parameters and then use any of the {@link IChosenParameterState} methods, allowing to
  *       reference these mappable parameters without them being entirely defined (no model was
  *       provided yet).
+ *   <li>add another mappable parameter by calling the {@link #model(Class)} method.
  *   <li>end the build with one of the {@link ILateTargetDefinitionTerminalState} methods.
  * </ul>
  */
@@ -50,4 +54,60 @@ public interface IFourMappableParameterMainState<
                 TParam2,
                 TParam3,
                 TParam4>>,
-        IFourOrMoreMappableParameterNoneChosenChoiceState {}
+        IMappableParameterDeclarationState {
+
+  @Override
+  <TParam5>
+      IFiveMappableParameterMainState<
+              TParam1,
+              TParam2,
+              TParam3,
+              TParam4,
+              TParam5,
+              TLateTargetDefinitionPageLinkDescriptor,
+              TLateTargetDefinitionResourceLinkDescriptor,
+              TLateTargetDefinitionImageResourceLinkDescriptor>
+          model(Class<TParam5> clazz);
+
+  @Override
+  <TParam5 extends Collection<TElement>, TElement>
+      IFiveMappableParameterMainState<
+              TParam1,
+              TParam2,
+              TParam3,
+              TParam4,
+              TParam5,
+              TLateTargetDefinitionPageLinkDescriptor,
+              TLateTargetDefinitionResourceLinkDescriptor,
+              TLateTargetDefinitionImageResourceLinkDescriptor>
+          model(Class<? super TParam5> clazz, Class<TElement> elementType);
+
+  @Override
+  <TParam5 extends Collection<?>>
+      IFiveMappableParameterMainState<
+              TParam1,
+              TParam2,
+              TParam3,
+              TParam4,
+              TParam5,
+              TLateTargetDefinitionPageLinkDescriptor,
+              TLateTargetDefinitionResourceLinkDescriptor,
+              TLateTargetDefinitionImageResourceLinkDescriptor>
+          model(Class<? super TParam5> clazz, TypeDescriptor elementTypeDescriptor);
+
+  @Override
+  <TParam5 extends Collection<?>>
+      IFiveMappableParameterMainState<
+              TParam1,
+              TParam2,
+              TParam3,
+              TParam4,
+              TParam5,
+              TLateTargetDefinitionPageLinkDescriptor,
+              TLateTargetDefinitionResourceLinkDescriptor,
+              TLateTargetDefinitionImageResourceLinkDescriptor>
+          model(
+              Class<? super TParam5> clazz,
+              TypeDescriptor elementTypeDescriptor,
+              SerializableSupplier2<? extends TParam5> emptyCollectionSupplier);
+}

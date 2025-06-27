@@ -1,6 +1,6 @@
 package org.iglooproject.wicket.more.markup.html.form;
 
-import java.util.List;
+import java.util.Collection;
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.wicket.Session;
 import org.apache.wicket.markup.html.form.EnumChoiceRenderer;
@@ -22,14 +22,14 @@ public class EnumDropDownSingleChoice<E extends Enum<E>>
   }
 
   public EnumDropDownSingleChoice(
-      String id, IModel<E> model, IModel<? extends List<? extends E>> choicesModel) {
+      String id, IModel<E> model, IModel<? extends Collection<? extends E>> choicesModel) {
     this(id, model, choicesModel, new ResourceKeyWithParameterEnumChoiceRenderer<E>());
   }
 
   public EnumDropDownSingleChoice(
       String id,
       IModel<E> model,
-      IModel<? extends List<? extends E>> choicesModel,
+      IModel<? extends Collection<? extends E>> choicesModel,
       IChoiceRenderer<? super E> renderer) {
     super(id, model, choicesModel, renderer);
   }

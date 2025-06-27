@@ -162,4 +162,14 @@ public abstract class AbstractChosenParameterStateImpl<TSelf, TInitialState>
     addDynamicParameter(3);
     return thisAsTSelf();
   }
+
+  public TSelf andFifth() {
+    addDynamicParameter(4);
+    return thisAsTSelf();
+  }
+
+  public TSelf andSixth() {
+    addDynamicParameter(5);
+    return thisAsTSelf();
+  }
 }
