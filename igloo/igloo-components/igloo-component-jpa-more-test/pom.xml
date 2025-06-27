@@ -32,16 +32,14 @@
 		</dependency>
 		
 		<dependency>
-			<groupId>com.querydsl</groupId>
+			 <groupId>io.github.openfeign.querydsl</groupId>
 			<artifactId>querydsl-jpa</artifactId>
-			<classifier>jakarta</classifier>
+			
 		</dependency>
 		<!-- Code generation only -->
 		<dependency>
-			<groupId>com.querydsl</groupId>
+			 <groupId>io.github.openfeign.querydsl</groupId>
 			<artifactId>querydsl-apt</artifactId>
-			<classifier>jakarta</classifier>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate.orm</groupId>

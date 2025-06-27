@@ -1,6 +1,6 @@
 package org.iglooproject.jpa.querydsl.group;
 
-import com.mysema.commons.lang.CloseableIterator;
+import com.querydsl.core.CloseableIterator;
 import com.querydsl.core.FetchableQuery;
 import com.querydsl.core.ResultTransformer;
 import com.querydsl.core.group.GroupCollector;
