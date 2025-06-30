@@ -23,6 +23,11 @@
 			<groupId>de.agilecoders.wicket.webjars</groupId>
 			<artifactId>wicket-webjars</artifactId>
 		</dependency>
+		<!--TODO remove when update wicket core (override wicket-core version for wicket-webjar)-->
+		<dependency>
+			<groupId>org.apache.wicket</groupId>
+			<artifactId>wicket-core</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

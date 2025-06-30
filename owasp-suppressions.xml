@@ -41,30 +41,12 @@
 	</suppress>
 	<suppress>
 		<notes><![CDATA[
-		file name: prometheus-metrics-core-1.2.1.jar
-
-		False positive with Prometheus monitoring system version
-		]]></notes>
-		<packageUrl regex="true">^pkg:maven/io\.prometheus/prometheus-metrics-.*$</packageUrl>
-		<cve>CVE-2019-3826</cve>
-	</suppress>
-	<suppress>
-		<notes><![CDATA[
 		file name: select2-bootstrap-5-theme-1.3.0.jar
 		
 		We use select2 4.0.13 ; issues relates to select2 <= 4.0.5.
 		]]></notes>
 		<packageUrl regex="true">^pkg:maven/org\.webjars\.npm/select2\-bootstrap\-5\-theme@.*$</packageUrl>
 		<cve>CVE-2016-10744</cve>
-	</suppress>
-	<suppress>
-		<notes><![CDATA[
-		file name: querydsl-jpa-5.1.0.jar
-		
-		Igloo 5 don't use QueryDSL with orderBy parameter in URL.
-		]]></notes>
-		<packageUrl regex="true">^pkg:maven/com\.querydsl/querydsl-jpa@.*$</packageUrl>
-		<vulnerabilityName>CVE-2024-49203</vulnerabilityName>
 	</suppress>
 
 </suppressions>
