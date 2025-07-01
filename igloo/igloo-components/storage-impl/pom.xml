@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.iglooproject.components</groupId>
 		<artifactId>igloo-components</artifactId>
-		<version>6.10.1</version>
+		<version>6.11.0</version>
 	</parent>
 
 	<artifactId>storage-impl</artifactId>
@@ -136,14 +136,24 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-enforcer-plugin</artifactId>
-				<configuration>
-					<rules self.combine="override">
-						<requireUpperBoundDeps>
-							<!-- hibernate/mockito conflict; let hibernate decides! -->
-							<excludes>net.bytebuddy:byte-buddy</excludes>
-						</requireUpperBoundDeps>
-					</rules>
-				</configuration>
+					<executions>
+					<execution>
+					<id>enforce</id>
+					<goals>
+						<goal>enforce</goal>
+					</goals>
+						<configuration>
+							<rules>
+								<requireUpperBoundDeps >
+									<!-- hibernate/mockito conflict; let hibernate decides! -->
+									<excludes combine.children="append">
+										<exclude>net.bytebuddy:byte-buddy</exclude>
+									</excludes>
+								</requireUpperBoundDeps>
+							</rules>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

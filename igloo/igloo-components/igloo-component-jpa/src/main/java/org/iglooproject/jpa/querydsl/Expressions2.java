@@ -37,20 +37,24 @@ public final class Expressions2 {
         .when(condition)
         .then(Expressions.ONE)
         .otherwise(Expressions.ZERO)
-        .sum();
+        .sumAggregate();
   }
 
   public static NumberExpression<Integer> sumIf(
       NumberExpression<Integer> expression, BooleanExpression condition) {
     if (condition == null) {
-      return expression.sum();
+      return expression.sumAggregate();
     } else {
       /**
        * We use Expressions.* rather than constants, in order to avoid introducing request
        * parameters. Otherwise, Hibernate would freak out because it can't guess the CASE expression
        * data type (which seems legitimate).
        */
-      return new CaseBuilder().when(condition).then(expression).otherwise(Expressions.ZERO).sum();
+      return new CaseBuilder()
+          .when(condition)
+          .then(expression)
+          .otherwise(Expressions.ZERO)
+          .sumAggregate();
     }
   }
 

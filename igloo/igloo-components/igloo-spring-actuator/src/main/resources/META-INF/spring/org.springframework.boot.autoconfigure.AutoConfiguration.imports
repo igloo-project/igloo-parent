@@ -1,1 +1,2 @@
 igloo.actuator.ActuatorAutoConfiguration
+igloo.actuator.IglooMetricsAspectsAutoConfiguration
