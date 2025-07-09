@@ -9,8 +9,10 @@ import org.iglooproject.commons.util.rendering.IRenderer;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.business.generic.model.GenericEntityReference;
 import org.iglooproject.jpa.business.generic.model.IReference;
-import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryEntityReference;
+import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryEventValue;
 import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryValue;
+import org.iglooproject.jpa.more.business.history.model.embeddable.IHistoryValue;
+import org.iglooproject.jpa.more.business.history.model.embeddable.IHistoryValueProvider;
 import org.iglooproject.jpa.more.rendering.service.IRendererService;
 import org.iglooproject.jpa.util.HibernateUtils;
 import org.iglooproject.spring.property.SpringPropertyIds;
@@ -25,6 +27,27 @@ public abstract class AbstractHistoryValueServiceImpl implements IHistoryValueSe
 
   @Autowired protected IPropertyService propertyService;
 
+  @Override
+  public final <T> HistoryValue createHistoryValue(T object) {
+    return create(object, HistoryValue::build);
+  }
+
+  @Override
+  public final <T> HistoryEventValue createHistoryEventValue(T object) {
+    return create(object, HistoryEventValue::build);
+  }
+
+  @Override
+  public final <T> HistoryValue createHistoryValue(T object, IRenderer<? super T> renderer) {
+    return create(object, renderer, HistoryValue::build);
+  }
+
+  @Override
+  public final <T> HistoryEventValue createHistoryEventValue(
+      T object, IRenderer<? super T> renderer) {
+    return create(object, renderer, HistoryEventValue::build);
+  }
+
   /*
    * Even if object.getClass() is a subtype of T (say T2), this will work.
    *
@@ -34,19 +57,18 @@ public abstract class AbstractHistoryValueServiceImpl implements IHistoryValueSe
    * just to get the right type, but it would seem a little dumb...
    */
   @SuppressWarnings("unchecked")
-  @Override
-  public final <T> HistoryValue create(T object) {
+  public final <T, H extends IHistoryValue> H create(T object, IHistoryValueProvider<H> supplier) {
     if (object == null) {
-      return new HistoryValue();
+      return supplier.build(null, null, null);
     } else {
       @SuppressWarnings("rawtypes")
       IRenderer renderer = rendererService.findRenderer(object.getClass());
-      return create(object, renderer);
+      return (H) this.<T, H>create(object, renderer, supplier);
     }
   }
 
-  @Override
-  public final <T> HistoryValue create(T value, IRenderer<? super T> renderer) {
+  public final <T, H extends IHistoryValue> H create(
+      T value, IRenderer<? super T> renderer, IHistoryValueProvider<H> supplier) {
     String label = renderer.render(value, propertyService.get(SpringPropertyIds.DEFAULT_LOCALE));
 
     if (value instanceof GenericEntity) {
@@ -55,12 +77,12 @@ public abstract class AbstractHistoryValueServiceImpl implements IHistoryValueSe
         @SuppressWarnings("unchecked")
         GenericEntityReference<Long, ?> reference =
             GenericEntityReference.of((GenericEntity<Long, ?>) entity);
-        return new HistoryValue(label, reference);
+        return supplier.build(label, null, reference);
       }
     }
 
     String serialized = serialize(value);
-    return new HistoryValue(label, serialized);
+    return supplier.build(label, serialized, null);
   }
 
   protected String serialize(Object value) {
@@ -75,12 +97,12 @@ public abstract class AbstractHistoryValueServiceImpl implements IHistoryValueSe
   }
 
   @Override
-  public final Object retrieve(HistoryValue value) {
+  public final Object retrieve(IHistoryValue value) {
     if (value == null) {
       return null;
     }
 
-    HistoryEntityReference reference = value.getReference();
+    GenericEntityReference<Long, GenericEntity<Long, ?>> reference = value.getReference();
     if (reference != null && reference.getType() != null && reference.getId() != null) {
       return getEntity(reference);
     }
@@ -95,7 +117,7 @@ public abstract class AbstractHistoryValueServiceImpl implements IHistoryValueSe
 
   @Override
   @SuppressWarnings({"rawtypes", "unchecked"})
-  public final String render(HistoryValue value, IRenderer renderer, Locale locale) {
+  public final String render(IHistoryValue value, IRenderer renderer, Locale locale) {
     if (value == null) {
       return null;
     }
@@ -112,7 +134,7 @@ public abstract class AbstractHistoryValueServiceImpl implements IHistoryValueSe
 
   @Override
   @SuppressWarnings({"unchecked", "rawtypes"})
-  public final String render(HistoryValue value, Locale locale) {
+  public final String render(IHistoryValue value, Locale locale) {
     if (value == null) {
       return null;
     }
@@ -127,7 +149,7 @@ public abstract class AbstractHistoryValueServiceImpl implements IHistoryValueSe
   }
 
   @Override
-  public Optional<Boolean> matches(HistoryValue historyValue, Object value) {
+  public Optional<Boolean> matches(IHistoryValue historyValue, Object value) {
     if (historyValue == null) {
       // We never return null from create(...). Thus a null HistoryValue does not match anything.
       return Optional.of(false);

@@ -48,7 +48,7 @@ public class HistoryEventSummary implements Serializable {
       includePaths = {HistoryValue.REFERENCE})
   @IndexingDependency(reindexOnUpdate = ReindexOnUpdate.SHALLOW)
   @SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
-  private HistoryValue subject;
+  private HistoryEventValue subject;
 
   public Instant getDate() {
     return date;
@@ -58,11 +58,15 @@ public class HistoryEventSummary implements Serializable {
     this.date = date;
   }
 
-  public HistoryValue getSubject() {
+  public IHistoryValue getSubject() {
     return subject;
   }
 
-  public void setSubject(HistoryValue subject) {
-    this.subject = subject;
+  public void setSubject(IHistoryValue subject) {
+    if (subject != null) {
+      this.subject = subject.<HistoryEventValue>toValue(HistoryEventValue::build);
+    } else {
+      this.subject = null;
+    }
   }
 }

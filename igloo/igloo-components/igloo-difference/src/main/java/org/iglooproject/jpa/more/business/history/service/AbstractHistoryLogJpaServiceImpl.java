@@ -70,16 +70,16 @@ public abstract class AbstractHistoryLogJpaServiceImpl<
           String.format("Too many arguments (%d, expected %d or less)", objects.length, 4));
     }
     if (objects.length >= 1) {
-      log.setObject1(valueService.create(objects[0]));
+      log.setObject1(valueService.createHistoryValue(objects[0]));
     }
     if (objects.length >= 2) {
-      log.setObject2(valueService.create(objects[1]));
+      log.setObject2(valueService.createHistoryValue(objects[1]));
     }
     if (objects.length >= 3) {
-      log.setObject3(valueService.create(objects[2]));
+      log.setObject3(valueService.createHistoryValue(objects[2]));
     }
     if (objects.length >= 4) {
-      log.setObject4(valueService.create(objects[3]));
+      log.setObject4(valueService.createHistoryValue(objects[3]));
     }
   }
 

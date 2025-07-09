@@ -137,14 +137,14 @@ class TestHistoryValueService
 
     HistoryValue expectedValue = new HistoryValue(expectedRendering);
 
-    assertEquals(expectedValue, historyValueService.create(null, renderer));
+    assertEquals(expectedValue, historyValueService.createHistoryValue(null, renderer));
   }
 
   @Test
   void createNullImplicitRenderer() {
     HistoryValue expectedValue = new HistoryValue();
 
-    assertEquals(expectedValue, historyValueService.create(null));
+    assertEquals(expectedValue, historyValueService.createHistoryValue(null));
   }
 
   @Test
@@ -158,7 +158,7 @@ class TestHistoryValueService
     HistoryValue expectedValue =
         new HistoryValue(expectedRendering, GenericEntityReference.of(originalValue));
 
-    assertEquals(expectedValue, historyValueService.create(originalValue, renderer));
+    assertEquals(expectedValue, historyValueService.createHistoryValue(originalValue, renderer));
   }
 
   @Test
@@ -175,7 +175,7 @@ class TestHistoryValueService
     HistoryValue expectedValue =
         new HistoryValue(expectedRendering, GenericEntityReference.of(originalValue));
 
-    assertEquals(expectedValue, historyValueService.create(originalValue));
+    assertEquals(expectedValue, historyValueService.createHistoryValue(originalValue));
   }
 
   @Test
@@ -187,7 +187,7 @@ class TestHistoryValueService
 
     HistoryValue expectedValue = new HistoryValue(expectedRendering);
 
-    assertEquals(expectedValue, historyValueService.create(originalValue, renderer));
+    assertEquals(expectedValue, historyValueService.createHistoryValue(originalValue, renderer));
   }
 
   @Test
@@ -202,6 +202,6 @@ class TestHistoryValueService
 
     HistoryValue expectedValue = new HistoryValue(expectedRendering);
 
-    assertEquals(expectedValue, historyValueService.create(originalValue));
+    assertEquals(expectedValue, historyValueService.createHistoryValue(originalValue));
   }
 }

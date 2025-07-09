@@ -28,7 +28,7 @@ public final class HistoryDifferencePathRenderer
   public String render(HistoryDifference difference, Locale locale) {
     FieldPath path = difference.getAbsolutePath();
     if (path.size() == 1 && path.isItem()) {
-      return HistoryValueRenderer.get().render(difference.getPath().getKey(), locale);
+      return IHistoryValueRenderer.get().render(difference.getPath().getKey(), locale);
     }
 
     String pathResourceKeyPart = getFieldPathKeyPart(path);

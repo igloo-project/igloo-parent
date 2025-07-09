@@ -18,6 +18,8 @@ public interface IGenericHistoryLogService<
     HD extends AbstractHistoryDifference<HD, HL>,
     HLAIB extends AbstractHistoryLogAdditionalInformationBean> {
 
+  HL getById(Long id);
+
   <T> void log(HET eventType, T mainObject, HLAIB additionalInformation)
       throws ServiceException, SecurityServiceException;
 

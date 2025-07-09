@@ -27,5 +27,6 @@ import test.jpa.more.business.JpaMoreTestBusinessPackage;
   EntityManagerExecutionListener.class
 })
 @TestPropertySource(properties = "igloo.profile=test")
+@TestPropertySource(locations = "/jpa-more-test.properties")
 @EntityScan(basePackageClasses = {JpaMoreTestBusinessPackage.class})
 public @interface SpringBootTestJpaMoreHistoryLog {}
