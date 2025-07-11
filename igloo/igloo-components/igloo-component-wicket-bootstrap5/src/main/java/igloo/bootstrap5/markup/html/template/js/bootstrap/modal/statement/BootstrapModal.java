@@ -27,7 +27,7 @@ public final class BootstrapModal implements ChainableStatement, Serializable, I
   private Boolean keyboard;
 
   /** Si false, désactive le focusTrap */
-  private Boolean focus = false;
+  private Boolean focus;
 
   public BootstrapModal() {
     super();
@@ -80,7 +80,7 @@ public final class BootstrapModal implements ChainableStatement, Serializable, I
   private JsStatement modalEvent(Component modal, String event) {
     return new JsStatement()
         .append(
-            "ModalMore.getOrCreateInstance(document.getElementById("
+            "bootstrap.Modal.getOrCreateInstance(document.getElementById("
                 + JsUtils.quotes(modal.getMarkupId())
                 + "))")
         .chain(event);
@@ -90,7 +90,7 @@ public final class BootstrapModal implements ChainableStatement, Serializable, I
   public JsStatement modal(Component modal) {
     return new JsStatement()
         .append(
-            "new ModalMore(document.getElementById("
+            "new bootstrap.Modal(document.getElementById("
                 + JsUtils.quotes(modal.getMarkupId())
                 + "), "
                 + getOptions().getJavaScriptOptions()

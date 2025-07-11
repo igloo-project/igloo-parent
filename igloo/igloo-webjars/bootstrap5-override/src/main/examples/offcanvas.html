@@ -1,0 +1,38 @@
+---
+title: Offcanvas
+---
+<div class="d-grid d-md-flex gap-2">
+	<button id="button1" class="btn btn-primary" type="button">
+		Open offcanvas (js)
+	</button>
+	<button id="button2" class="btn btn-outline-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+		Open offcanvas (data attributes)
+	</button>
+</div>
+<div id="offcanvasExample" class="offcanvas offcanvas-start" tabindex="-1" aria-labelledby="offcanvasExampleLabel">
+	<div class="offcanvas-header">
+		<div id="offcanvasExampleLabel" class="offcanvas-title fs-5">Offcanvas</div>
+		<button class="btn-close" type="button" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+	</div>
+	<div class="offcanvas-body">
+		<form>
+			<label for="state" class="form-label">State</label>
+			<select name="state" class="form-control js-example-basic-single">
+				<option value="AL">Alabama</option>
+				<option value="WY">Wyoming</option>
+			</select>
+			<div class="form-text">Select2 drop down input field should be focusable if BS focus trap is fixed.</div>
+		</form>
+	</div>
+</div>
+{{< partial "jquery.html" >}}
+{{< partial "select2.html" >}}
+<script>
+	const button1El = document.getElementById("button1")
+	button1El.addEventListener("click", e => {
+		new bootstrap.Offcanvas(document.getElementById('offcanvasExample')).show()
+	})
+	$(document).ready(function() {
+		$(".js-example-basic-single").select2();
+	});
+</script>

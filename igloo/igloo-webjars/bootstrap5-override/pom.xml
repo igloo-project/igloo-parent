@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.iglooproject.webjars</groupId>
 		<artifactId>igloo-webjars</artifactId>
-		<version>6.11.0</version>
+		<version>6.12.0</version>
 	</parent>
 
 	<artifactId>bootstrap5-override</artifactId>
@@ -22,14 +22,6 @@
 		<dependency>
 			<groupId>org.webjars.npm</groupId>
 			<artifactId>bootstrap</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.webjars.npm</groupId>
-			<artifactId>popperjs__core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.webjars.npm</groupId>
-			<artifactId>select2-bootstrap-5-theme</artifactId>
 		</dependency>
 	</dependencies>
 

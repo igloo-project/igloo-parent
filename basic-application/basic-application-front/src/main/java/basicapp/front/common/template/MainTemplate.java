@@ -18,9 +18,9 @@ import basicapp.front.role.page.RoleListPage;
 import basicapp.front.security.password.page.SecurityPasswordExpirationPage;
 import basicapp.front.user.page.BasicUserListPage;
 import basicapp.front.user.page.TechnicalUserListPage;
+import igloo.bootstrap.BootstrapRequestCycle;
 import igloo.bootstrap.tooltip.BootstrapTooltipBehavior;
 import igloo.bootstrap.tooltip.BootstrapTooltipOptions;
-import igloo.bootstrap5.markup.html.template.js.bootstrap.Bootstrap5JavaScriptResourceReference;
 import igloo.console.maintenance.search.page.ConsoleMaintenanceSearchPage;
 import igloo.wicket.behavior.ClassAttributeAppender;
 import igloo.wicket.condition.Condition;
@@ -28,7 +28,6 @@ import java.util.List;
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.head.IHeaderResponse;
-import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.TransparentWebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.model.IModel;
@@ -169,7 +168,7 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
   public void renderHead(IHeaderResponse response) {
     super.renderHead(response);
     getApplicationTheme().renderHead(response);
-    response.render(JavaScriptHeaderItem.forReference(Bootstrap5JavaScriptResourceReference.get()));
+    BootstrapRequestCycle.getSettings().renderHead(getPage(), response);
   }
 
   @Override

@@ -1,11 +1,8 @@
-'use strict'
-
-import * as bootstrap from "bootstrap"
+import Modal from "./modal-more.js"
 
 import BaseComponent from "bootstrap/js/src/base-component"
 import EventHandler from "bootstrap/js/src/dom/event-handler"
 import SelectorEngine from "bootstrap/js/src/dom/selector-engine"
-import Manipulator from "bootstrap/js/src/dom/manipulator"
 
 const NAME = 'confirm'
 const DATA_KEY = 'bs.confirm'
@@ -78,7 +75,7 @@ class Confirm extends BaseComponent {
         if (!this.modal) {
             const modalElement = this._createModalElement()
             document.body.append(modalElement)
-            this.modal = new bootstrap.Modal(modalElement)
+            this.modal = new Modal(modalElement)
             EventHandler.on(this.modal._element, "hidden.bs.modal", () => {
                 const element = this.modal._element
                 const modal = this.modal
