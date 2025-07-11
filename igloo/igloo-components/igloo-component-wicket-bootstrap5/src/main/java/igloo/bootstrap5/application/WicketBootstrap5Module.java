@@ -120,8 +120,9 @@ public class WicketBootstrap5Module implements IWicketModule, IBootstrapProvider
   public JsStatement confirmStatement(Component component) {
     return new JsStatement()
         .append(
-            "new Confirm(document.getElementById(" + JsUtils.quotes(component.getMarkupId()) + "))")
-        .append(";");
+            "new bootstrap.Confirm(document.getElementById("
+                + JsUtils.quotes(component.getMarkupId())
+                + "));");
   }
 
   private JsStatement getBindClickStatement(
