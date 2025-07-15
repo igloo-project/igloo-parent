@@ -1,5 +1,6 @@
 package org.iglooproject.wicket.more.model.search.query;
 
+import com.google.common.primitives.Ints;
 import igloo.wicket.model.Detachables;
 import java.util.List;
 import java.util.Objects;
@@ -44,8 +45,8 @@ public abstract class SearchQueryDataProvider<
         .list(
             dataModel.getObject(),
             getSortModel().getObject(),
-            Math.toIntExact(first),
-            Math.toIntExact(count))
+            Ints.saturatedCast(first),
+            Ints.saturatedCast(count))
         .stream()
         .toList();
   }

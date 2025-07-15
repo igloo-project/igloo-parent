@@ -12,6 +12,7 @@ import basicapp.back.business.referencedata.model.IReferenceDataBindingInterface
 import basicapp.back.business.referencedata.search.CitySearchQueryDataBinding;
 import basicapp.back.business.referencedata.search.IBasicReferenceDataSearchQueryDataBindingInterfaceBinding;
 import basicapp.back.business.role.model.RoleBinding;
+import basicapp.back.business.role.search.RoleSearchQueryDataBinding;
 import basicapp.back.business.user.model.UserBinding;
 import basicapp.back.business.user.search.UserSearchQueryDataBinding;
 
@@ -42,6 +43,9 @@ public final class Bindings {
   private static final HistoryLogSearchQueryDataBinding HISTORY_LOG_SEARCH_QUERY_DATA =
       new HistoryLogSearchQueryDataBinding();
   private static final HistoryDifferenceBinding HISTORY_DIFFERENCE = new HistoryDifferenceBinding();
+
+  private static final RoleSearchQueryDataBinding ROLE_SEARCH_QUERY_DATA =
+      new RoleSearchQueryDataBinding();
 
   public static EmailAddressBinding emailAddress() {
     return EMAIL_ADDRESS;
@@ -98,6 +102,10 @@ public final class Bindings {
 
   public static HistoryDifferenceBinding historyDifference() {
     return HISTORY_DIFFERENCE;
+  }
+
+  public static RoleSearchQueryDataBinding roleSearchQueryData() {
+    return ROLE_SEARCH_QUERY_DATA;
   }
 
   private Bindings() {}
