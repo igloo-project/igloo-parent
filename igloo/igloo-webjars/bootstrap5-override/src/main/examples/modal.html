@@ -8,6 +8,9 @@ title: Modal
 	<button id="button2" class="btn btn-outline-primary" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
 		Open modal (data attributes)
 	</button>
+	<button id="button3" class="btn btn-secondary" type="button" data-bs-toggle="tooltip" title="Tooltip">
+		Open modal (tooltip)
+	</button>
 </div>
 <div id="exampleModal" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
@@ -36,8 +39,11 @@ title: Modal
 {{< partial "jquery.html" >}}
 {{< partial "select2.html" >}}
 <script>
-	const button1El = document.getElementById("button1")
-	button1El.addEventListener("click", e => {
+	new bootstrap.Tooltip(document.body, {selector: '[title],[data-bs-original-title]', container: 'body', boundary: 'window'})
+	document.getElementById("button1").addEventListener("click", e => {
+		new bootstrap.Modal(document.getElementById('exampleModal')).show()
+	})
+	document.getElementById("button3").addEventListener("click", e => {
 		new bootstrap.Modal(document.getElementById('exampleModal')).show()
 	})
 	$(document).ready(function() {

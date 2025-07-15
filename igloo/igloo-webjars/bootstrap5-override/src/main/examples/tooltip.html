@@ -2,19 +2,15 @@
 title: Tooltip
 ---
 <div class="d-grid d-md-flex gap-2">
-	<button id="button1" class="btn btn-primary" type="button" data-toggle="tooltip" title="Tooltip">Show tooltip</button>
+	<button id="button1" class="btn btn-primary" type="button" data-bs-toggle="tooltip" title="Tooltip">Show tooltip</button>
 	<div id="parent" class="d-grid d-md-flex">
-		<button id="button2" class="btn btn-outline-primary" type="button" data-toggle="tooltip" title="Removed in 2s.">Show tooltip (remove)</button>
+		<button id="button2" class="btn btn-outline-primary" type="button" data-bs-toggle="tooltip" title="Removed in 2s.">Show tooltip (remove)</button>
 	</div>
 </div>
 <script>
-	const button1El = document.getElementById("button1")
-	const button2El = document.getElementById("button2")
-	new bootstrap.Tooltip(button1El)
-	new bootstrap.Tooltip(button2El)
-	const parent = document.getElementById("parent")
-	button2El.addEventListener("mouseover", e => {
+	new bootstrap.Tooltip(document.body, {selector: '[title],[data-bs-original-title]', container: 'body', boundary: 'window'})
+	document.getElementById("button2").addEventListener("mouseover", e => {
 		console.log("Removed in 2s.");
-		setInterval(() => { parent.remove() }, 2_000)
+		setInterval(() => { document.getElementById("parent").remove() }, 2_000)
 	})
 </script>
