@@ -28,8 +28,7 @@ title: Offcanvas
 {{< partial "jquery.html" >}}
 {{< partial "select2.html" >}}
 <script>
-	const button1El = document.getElementById("button1")
-	button1El.addEventListener("click", e => {
+	document.getElementById("button1").addEventListener("click", e => {
 		new bootstrap.Offcanvas(document.getElementById('offcanvasExample')).show()
 	})
 	$(document).ready(function() {

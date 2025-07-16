@@ -6,7 +6,7 @@
 	<parent>
 		<artifactId>basic-application</artifactId>
 		<groupId>org.iglooproject.archetype</groupId>
-		<version>6.12.1</version>
+		<version>6.12.2</version>
 	</parent>
 	
 	<artifactId>basic-application-back</artifactId>
