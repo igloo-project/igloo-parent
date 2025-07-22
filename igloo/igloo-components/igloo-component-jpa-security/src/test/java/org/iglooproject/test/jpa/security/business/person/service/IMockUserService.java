@@ -1,5 +1,7 @@
 package org.iglooproject.test.jpa.security.business.person.service;
 
+import org.iglooproject.jpa.exception.SecurityServiceException;
+import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
 import org.iglooproject.jpa.security.business.user.service.ICoreUserService;
 import org.iglooproject.test.jpa.security.business.person.model.MockUser;
@@ -17,4 +19,7 @@ public interface IMockUserService extends ICoreUserService<MockUser> {
   void protectedMethodRoleAnonymous();
 
   Long countEnabled();
+
+  void setPasswords(MockUser user, String rawPassword)
+      throws ServiceException, SecurityServiceException;
 }

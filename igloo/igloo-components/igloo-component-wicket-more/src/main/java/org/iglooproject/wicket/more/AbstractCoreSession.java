@@ -22,7 +22,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
 import org.iglooproject.jpa.security.business.user.model.IUser;
-import org.iglooproject.jpa.security.business.user.service.ICoreUserService;
+import org.iglooproject.jpa.security.business.user.service.ICoreUserSecurityService;
 import org.iglooproject.jpa.security.service.AuthenticationUtil;
 import org.iglooproject.jpa.security.service.IAuthenticationService;
 import org.iglooproject.spring.property.service.IPropertyService;
@@ -50,7 +50,7 @@ public abstract class AbstractCoreSession<U extends GenericEntity<Long, U> & IUs
   private static final long serialVersionUID = 2591467597835056981L;
 
   @SpringBean(name = "userService")
-  private ICoreUserService<U> userService;
+  private ICoreUserSecurityService<U> userService;
 
   @SpringBean(name = "authenticationService")
   protected IAuthenticationService authenticationService;
