@@ -2,7 +2,6 @@ package org.iglooproject.jpa.more.business.history.service;
 
 import java.time.Instant;
 import java.util.List;
-import org.iglooproject.jpa.business.generic.service.IGenericEntityService;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.more.business.difference.service.IDifferenceService;
@@ -14,11 +13,10 @@ import org.iglooproject.jpa.more.business.history.model.bean.AbstractHistoryLogA
 import org.iglooproject.jpa.more.business.history.util.IHistoryDifferenceHandler;
 
 public interface IGenericHistoryLogService<
-        HL extends AbstractHistoryLog<HL, HET, HD>,
-        HET extends Enum<HET>,
-        HD extends AbstractHistoryDifference<HD, HL>,
-        HLAIB extends AbstractHistoryLogAdditionalInformationBean>
-    extends IGenericEntityService<Long, HL> {
+    HL extends AbstractHistoryLog<HL, HET, HD>,
+    HET extends Enum<HET>,
+    HD extends AbstractHistoryDifference<HD, HL>,
+    HLAIB extends AbstractHistoryLogAdditionalInformationBean> {
 
   <T> void log(HET eventType, T mainObject, HLAIB additionalInformation)
       throws ServiceException, SecurityServiceException;

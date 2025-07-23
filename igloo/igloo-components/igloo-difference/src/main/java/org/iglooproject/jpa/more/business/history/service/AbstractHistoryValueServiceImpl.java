@@ -1,11 +1,14 @@
 package org.iglooproject.jpa.more.business.history.service;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Optional;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import java.util.Locale;
 import org.iglooproject.commons.util.rendering.IRenderer;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.business.generic.model.GenericEntityReference;
-import org.iglooproject.jpa.business.generic.service.IEntityService;
+import org.iglooproject.jpa.business.generic.model.IReference;
 import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryEntityReference;
 import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryValue;
 import org.iglooproject.jpa.more.rendering.service.IRendererService;
@@ -16,7 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class AbstractHistoryValueServiceImpl implements IHistoryValueService {
 
-  @Autowired protected IEntityService entityService;
+  @PersistenceContext private EntityManager entityManager;
 
   @Autowired protected IRendererService rendererService;
 
@@ -79,10 +82,15 @@ public abstract class AbstractHistoryValueServiceImpl implements IHistoryValueSe
 
     HistoryEntityReference reference = value.getReference();
     if (reference != null && reference.getType() != null && reference.getId() != null) {
-      return entityService.getEntity(reference);
+      return getEntity(reference);
     }
 
     return deserialize(value.getSerialized());
+  }
+
+  @VisibleForTesting
+  public <E extends GenericEntity<?, ?>> E getEntity(IReference<E> reference) {
+    return entityManager.find(reference.getType(), reference.getId());
   }
 
   @Override
