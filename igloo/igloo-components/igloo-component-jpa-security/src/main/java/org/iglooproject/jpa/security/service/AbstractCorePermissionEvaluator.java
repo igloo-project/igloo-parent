@@ -11,7 +11,7 @@ import java.util.Collections;
 import java.util.List;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.security.business.user.model.IUser;
-import org.iglooproject.jpa.security.business.user.service.ICoreUserService;
+import org.iglooproject.jpa.security.business.user.service.ICoreUserSecurityService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ public abstract class AbstractCorePermissionEvaluator<U extends GenericEntity<Lo
 
   @Autowired private PermissionFactory permissionFactory;
 
-  @Autowired private ICoreUserService<U> userService;
+  @Autowired private ICoreUserSecurityService<U> userService;
 
   @Autowired private ISecurityService securityService;
 

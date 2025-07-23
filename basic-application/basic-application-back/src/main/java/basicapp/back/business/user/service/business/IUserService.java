@@ -18,6 +18,9 @@ public interface IUserService extends ICoreUserService<User> {
 
   void onSignInFail(User user) throws ServiceException, SecurityServiceException;
 
+  void setPasswords(User user, String rawPassword)
+      throws ServiceException, SecurityServiceException;
+
   void initPasswordRecoveryRequest(EmailAddress emailAddress)
       throws SecurityServiceException, ServiceException;
 

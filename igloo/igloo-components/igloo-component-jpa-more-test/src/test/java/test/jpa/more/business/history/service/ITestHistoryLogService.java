@@ -1,5 +1,6 @@
 package test.jpa.more.business.history.service;
 
+import org.iglooproject.jpa.business.generic.service.IGenericEntityService;
 import org.iglooproject.jpa.more.business.history.service.IGenericHistoryLogService;
 import test.jpa.more.business.history.model.TestHistoryDifference;
 import test.jpa.more.business.history.model.TestHistoryLog;
@@ -8,7 +9,8 @@ import test.jpa.more.business.history.model.bean.TestHistoryLogAdditionalInforma
 
 public interface ITestHistoryLogService
     extends IGenericHistoryLogService<
-        TestHistoryLog,
-        TestHistoryEventType,
-        TestHistoryDifference,
-        TestHistoryLogAdditionalInformationBean> {}
+            TestHistoryLog,
+            TestHistoryEventType,
+            TestHistoryDifference,
+            TestHistoryLogAdditionalInformationBean>,
+        IGenericEntityService<Long, TestHistoryLog> {}

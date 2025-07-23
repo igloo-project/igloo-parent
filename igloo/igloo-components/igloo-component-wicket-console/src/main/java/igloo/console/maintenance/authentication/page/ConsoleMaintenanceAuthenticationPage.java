@@ -12,7 +12,7 @@ import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.jpa.security.business.user.model.IUser;
-import org.iglooproject.jpa.security.business.user.service.ICoreUserService;
+import org.iglooproject.jpa.security.business.user.service.ICoreUserSecurityService;
 import org.iglooproject.spring.util.StringUtils;
 import org.iglooproject.wicket.more.AbstractCoreSession;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
@@ -26,7 +26,7 @@ public class ConsoleMaintenanceAuthenticationPage extends ConsoleMaintenanceTemp
 
   private static final long serialVersionUID = 3401416708867386953L;
 
-  @SpringBean private ICoreUserService<?> userService;
+  @SpringBean private ICoreUserSecurityService<?> userService;
 
   public static final IPageLinkDescriptor linkDescriptor() {
     return LinkDescriptorBuilder.start().page(ConsoleMaintenanceAuthenticationPage.class);
