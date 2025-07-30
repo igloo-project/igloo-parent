@@ -1,5 +1,6 @@
 package igloo.console.template;
 
+import igloo.bootstrap.BootstrapRequestCycle;
 import igloo.bootstrap.tooltip.BootstrapTooltipBehavior;
 import igloo.bootstrap.tooltip.BootstrapTooltipOptions;
 import igloo.wicket.component.CoreLabel;
@@ -94,6 +95,7 @@ public abstract class ConsoleAccessTemplate extends AbstractWebPageTemplate {
   @Override
   public void renderHead(IHeaderResponse response) {
     super.renderHead(response);
+    BootstrapRequestCycle.getSettings().renderHead(getPage(), response);
     for (ResourceReference cssResourceReference :
         ConsoleConfiguration.get().getConsoleAccessCssResourcesReferences()) {
       response.render(CssHeaderItem.forReference(cssResourceReference));
