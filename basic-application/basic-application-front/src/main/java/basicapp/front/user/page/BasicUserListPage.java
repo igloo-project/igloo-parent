@@ -3,7 +3,7 @@ package basicapp.front.user.page;
 import static basicapp.back.security.model.BasicApplicationPermissionConstants.GLOBAL_USER_READ;
 import static basicapp.front.common.util.CssClassConstants.CELL_DISPLAY_2XL;
 import static basicapp.front.common.util.CssClassConstants.TABLE_ROW_DISABLED;
-import static basicapp.front.property.BasicApplicationWebappPropertyIds.PORTFOLIO_ITEMS_PER_PAGE;
+import static basicapp.front.property.BasicApplicationFrontPropertyIds.PORTFOLIO_ITEMS_PER_PAGE;
 
 import basicapp.back.business.user.model.User;
 import basicapp.back.business.user.model.atomic.UserType;

@@ -1,4 +1,4 @@
-package basicapp.front.config.spring;
+package basicapp.front.config;
 
 import static org.springframework.security.web.util.matcher.RegexRequestMatcher.regexMatcher;
 
@@ -19,7 +19,7 @@ import org.springframework.security.web.authentication.LoginUrlAuthenticationEnt
 
 @Configuration
 @EnableWebSecurity
-public class BasicApplicationSecurityConfiguration {
+public class BasicApplicationFrontSecurityConfiguration {
 
   @Bean
   @Order(1)

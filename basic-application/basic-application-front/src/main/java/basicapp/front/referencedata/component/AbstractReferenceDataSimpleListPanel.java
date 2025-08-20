@@ -1,7 +1,7 @@
 package basicapp.front.referencedata.component;
 
 import static basicapp.front.common.util.CssClassConstants.TABLE_ROW_DISABLED;
-import static basicapp.front.property.BasicApplicationWebappPropertyIds.PORTFOLIO_ITEMS_PER_PAGE;
+import static basicapp.front.property.BasicApplicationFrontPropertyIds.PORTFOLIO_ITEMS_PER_PAGE;
 
 import basicapp.back.business.referencedata.model.ReferenceData;
 import igloo.wicket.model.Detachables;

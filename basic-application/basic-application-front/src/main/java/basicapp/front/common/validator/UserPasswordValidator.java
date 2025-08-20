@@ -4,7 +4,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import basicapp.back.business.user.model.User;
 import basicapp.back.business.user.model.atomic.UserType;
-import basicapp.back.property.BasicApplicationCorePropertyIds;
+import basicapp.back.property.BasicApplicationBackPropertyIds;
 import basicapp.back.security.service.controller.ISecurityManagementControllerService;
 import basicapp.back.util.binding.Bindings;
 import com.google.common.collect.Iterables;
@@ -74,7 +74,7 @@ public class UserPasswordValidator implements IFormModelValidator {
 
     if (Boolean.FALSE.equals(
             propertyService.get(
-                BasicApplicationCorePropertyIds.SECURITY_PASSWORD_VALIDATOR_ENABLED))
+                BasicApplicationBackPropertyIds.SECURITY_PASSWORD_VALIDATOR_ENABLED))
         || !StringUtils.hasText(password)) {
       return;
     }

@@ -1,6 +1,6 @@
 package basicapp.front.common.template.theme.advanced;
 
-import basicapp.back.property.BasicApplicationCorePropertyIds;
+import basicapp.back.property.BasicApplicationBackPropertyIds;
 import basicapp.back.util.time.DateTimePattern;
 import igloo.wicket.component.CoreLabel;
 import igloo.wicket.condition.Condition;
@@ -28,12 +28,12 @@ public class SidebarFooterPanel extends Panel {
                         ApplicationPropertyModel.of(SpringPropertyIds.VERSION),
                         Condition.modelNotNull(
                                 ApplicationPropertyModel.of(
-                                    BasicApplicationCorePropertyIds.BUILD_DATE))
+                                    BasicApplicationBackPropertyIds.BUILD_DATE))
                             .then(
                                 Renderer.fromDateTimePattern(DateTimePattern.SHORT_DATE)
                                     .asModel(
                                         ApplicationPropertyModel.of(
-                                            BasicApplicationCorePropertyIds.BUILD_DATE)))
+                                            BasicApplicationBackPropertyIds.BUILD_DATE)))
                             .otherwise(
                                 new ResourceModel("common.application.version.date.placeholder"))))
             .add(
@@ -46,8 +46,8 @@ public class SidebarFooterPanel extends Panel {
         new CoreLabel(
                 "sha",
                 Condition.hasText(
-                        ApplicationPropertyModel.of(BasicApplicationCorePropertyIds.BUILD_SHA))
-                    .then(ApplicationPropertyModel.of(BasicApplicationCorePropertyIds.BUILD_SHA))
+                        ApplicationPropertyModel.of(BasicApplicationBackPropertyIds.BUILD_SHA))
+                    .then(ApplicationPropertyModel.of(BasicApplicationBackPropertyIds.BUILD_SHA))
                     .otherwise(new ResourceModel("common.application.build.sha.placeholder")))
             .hideIfEmpty()
             .add(Condition.role(CoreAuthorityConstants.ROLE_ADMIN).thenShow()));

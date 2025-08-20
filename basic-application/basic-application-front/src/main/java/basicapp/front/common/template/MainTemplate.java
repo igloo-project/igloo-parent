@@ -1,7 +1,7 @@
 package basicapp.front.common.template;
 
-import static basicapp.front.property.BasicApplicationWebappPropertyIds.APPLICATION_THEME;
-import static basicapp.front.property.BasicApplicationWebappPropertyIds.MAINTENANCE_URL;
+import static basicapp.front.property.BasicApplicationFrontPropertyIds.APPLICATION_THEME;
+import static basicapp.front.property.BasicApplicationFrontPropertyIds.MAINTENANCE_URL;
 import static org.iglooproject.jpa.more.property.JpaMorePropertyIds.MAINTENANCE;
 
 import basicapp.back.security.model.BasicApplicationAuthorityConstants;

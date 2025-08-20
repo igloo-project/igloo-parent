@@ -15,10 +15,10 @@ import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.wicket.more.markup.repeater.sequence.SequenceGridView;
 import org.iglooproject.wicket.more.markup.repeater.table.column.CoreLabelLinkColumnPanel;
 import org.junit.jupiter.api.Test;
-import test.web.config.spring.SpringBootTestBasicApplicationWebapp;
+import test.web.config.BasicApplicationFrontSpringBootTest;
 
-@SpringBootTestBasicApplicationWebapp
-class BasicUserListPageTestCase extends AbstractBasicApplicationWebappTestCase {
+@BasicApplicationFrontSpringBootTest
+class BasicUserListPageTestCase extends AbstractBasicApplicationFrontTestCase {
 
   @Test
   void initPage() throws ServiceException, SecurityServiceException {

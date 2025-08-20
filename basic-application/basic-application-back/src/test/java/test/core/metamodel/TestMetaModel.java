@@ -6,9 +6,9 @@ import basicapp.back.business.common.model.PostalCode;
 import java.util.Locale;
 import org.junit.jupiter.api.Test;
 import test.core.AbstractBasicApplicationTestCase;
-import test.core.config.spring.SpringBootTestBasicApplication;
+import test.core.config.spring.BasicApplicationBackSpringBootTest;
 
-@SpringBootTestBasicApplication
+@BasicApplicationBackSpringBootTest
 class TestMetaModel extends AbstractBasicApplicationTestCase {
 
   @Test

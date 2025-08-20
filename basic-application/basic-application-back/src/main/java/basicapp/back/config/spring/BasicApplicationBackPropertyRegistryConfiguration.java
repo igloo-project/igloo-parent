@@ -1,12 +1,12 @@
 package basicapp.back.config.spring;
 
-import static basicapp.back.property.BasicApplicationCorePropertyIds.BUILD_DATE;
-import static basicapp.back.property.BasicApplicationCorePropertyIds.BUILD_SHA;
-import static basicapp.back.property.BasicApplicationCorePropertyIds.ENVIRONMENT;
-import static basicapp.back.property.BasicApplicationCorePropertyIds.SECURITY_PASSWORD_LENGTH_MAX;
-import static basicapp.back.property.BasicApplicationCorePropertyIds.SECURITY_PASSWORD_LENGTH_MIN;
-import static basicapp.back.property.BasicApplicationCorePropertyIds.SECURITY_PASSWORD_USER_FORBIDDEN_PASSWORDS;
-import static basicapp.back.property.BasicApplicationCorePropertyIds.SECURITY_PASSWORD_VALIDATOR_ENABLED;
+import static basicapp.back.property.BasicApplicationBackPropertyIds.BUILD_DATE;
+import static basicapp.back.property.BasicApplicationBackPropertyIds.BUILD_SHA;
+import static basicapp.back.property.BasicApplicationBackPropertyIds.ENVIRONMENT;
+import static basicapp.back.property.BasicApplicationBackPropertyIds.SECURITY_PASSWORD_LENGTH_MAX;
+import static basicapp.back.property.BasicApplicationBackPropertyIds.SECURITY_PASSWORD_LENGTH_MIN;
+import static basicapp.back.property.BasicApplicationBackPropertyIds.SECURITY_PASSWORD_USER_FORBIDDEN_PASSWORDS;
+import static basicapp.back.property.BasicApplicationBackPropertyIds.SECURITY_PASSWORD_VALIDATOR_ENABLED;
 
 import basicapp.back.config.util.Environment;
 import com.google.common.base.Converter;
@@ -20,7 +20,7 @@ import org.iglooproject.spring.property.service.IPropertyRegistry;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class BasicApplicationCoreApplicationPropertyConfig implements IPropertyRegistryConfig {
+public class BasicApplicationBackPropertyRegistryConfiguration implements IPropertyRegistryConfig {
 
   @Override
   public void register(IPropertyRegistry registry) {

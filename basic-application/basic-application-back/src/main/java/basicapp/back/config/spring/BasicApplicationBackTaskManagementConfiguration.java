@@ -7,7 +7,7 @@ import org.iglooproject.jpa.more.config.spring.TaskManagementConfigurer;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class BasicApplicationCoreTaskManagementConfig {
+public class BasicApplicationBackTaskManagementConfiguration {
 
   @Configuration
   public static class ApplicationTaskManagementConfigurer implements TaskManagementConfigurer {

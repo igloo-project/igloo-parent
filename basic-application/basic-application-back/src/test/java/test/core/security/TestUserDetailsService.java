@@ -22,9 +22,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import test.core.AbstractBasicApplicationTestCase;
-import test.core.config.spring.SpringBootTestBasicApplication;
+import test.core.config.spring.BasicApplicationBackSpringBootTest;
 
-@SpringBootTestBasicApplication
+@BasicApplicationBackSpringBootTest
 public class TestUserDetailsService extends AbstractBasicApplicationTestCase {
 
   @Autowired private ICoreUserDetailsService userDetailsService;

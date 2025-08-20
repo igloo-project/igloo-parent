@@ -1,6 +1,6 @@
 package basicapp.back.config.spring;
 
-import basicapp.back.business.BasicApplicationCoreCommonBusinessPackage;
+import basicapp.back.business.BasicApplicationBackCommonBusinessPackage;
 import basicapp.back.business.common.model.EmailAddress;
 import basicapp.back.business.common.model.PhoneNumber;
 import basicapp.back.business.common.model.PostalCode;
@@ -12,10 +12,12 @@ import org.hibernate.boot.spi.MetadataBuilderContributor;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 @Configuration
-@EntityScan(basePackageClasses = BasicApplicationCoreCommonBusinessPackage.class)
-public class BasicApplicationJpaModelConfiguration {
+@Import(BasicApplicationBackManifestConfiguration.class)
+@EntityScan(basePackageClasses = BasicApplicationBackCommonBusinessPackage.class)
+public class BasicApplicationBackJpaModelConfiguration {
 
   @Bean
   public MetadataBuilderContributor basicApplicationMetadataBuilderContributor() {

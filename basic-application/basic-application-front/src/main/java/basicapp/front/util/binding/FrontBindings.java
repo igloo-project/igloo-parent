@@ -2,7 +2,7 @@ package basicapp.front.util.binding;
 
 import igloo.wicket.model.IBindableDataProviderBinding;
 
-public final class WebappBindings {
+public final class FrontBindings {
 
   private static final IBindableDataProviderBinding IBINDABLE_DATA_PROVIDER =
       new IBindableDataProviderBinding();
@@ -11,5 +11,5 @@ public final class WebappBindings {
     return IBINDABLE_DATA_PROVIDER;
   }
 
-  private WebappBindings() {}
+  private FrontBindings() {}
 }

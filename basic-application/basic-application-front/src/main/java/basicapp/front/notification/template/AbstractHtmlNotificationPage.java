@@ -1,7 +1,7 @@
 package basicapp.front.notification.template;
 
 import basicapp.back.config.util.Environment;
-import basicapp.back.property.BasicApplicationCorePropertyIds;
+import basicapp.back.property.BasicApplicationBackPropertyIds;
 import basicapp.front.BasicApplicationApplication;
 import basicapp.front.common.template.resources.styles.notification.email.NotificationEmailScssResourceReference;
 import basicapp.front.common.template.resources.styles.notification.head.NotificationHeadScssResourceReference;
@@ -50,7 +50,7 @@ public abstract class AbstractHtmlNotificationPage<T> extends CoreWebPage {
 
     this.localeModel = Objects.requireNonNull(localeModel);
     IModel<Environment> environmentModel =
-        Model.of(propertyService.get(BasicApplicationCorePropertyIds.ENVIRONMENT));
+        Model.of(propertyService.get(BasicApplicationBackPropertyIds.ENVIRONMENT));
 
     add(
         new TransparentWebMarkupContainer("htmlElement")

@@ -10,10 +10,10 @@ import org.apache.wicket.util.tester.FormTester;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.junit.jupiter.api.Test;
-import test.web.config.spring.SpringBootTestBasicApplicationWebapp;
+import test.web.config.BasicApplicationFrontSpringBootTest;
 
-@SpringBootTestBasicApplicationWebapp
-class LoginPageTestCase extends AbstractBasicApplicationWebappTestCase {
+@BasicApplicationFrontSpringBootTest
+class LoginPageTestCase extends AbstractBasicApplicationFrontTestCase {
 
   @Test
   void initPage() {

@@ -1,4 +1,4 @@
-package test.web.config.spring;
+package test.web.config;
 
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
@@ -17,10 +17,10 @@ import org.springframework.test.context.TestPropertySource;
 @Target(TYPE)
 @SpringBootTest
 @ContextConfiguration(
-    classes = BasicApplicationWebappTestCommonConfig.class,
+    classes = BasicApplicationFrontSpringBootTestConfiguration.class,
     initializers = ExtendedApplicationContextInitializer.class)
 @TestPropertySource(properties = "igloo.profile=test")
 @TestExecutionListeners(
     listeners = EntityManagerExecutionListener.class,
     mergeMode = MergeMode.MERGE_WITH_DEFAULTS)
-public @interface SpringBootTestBasicApplicationWebapp {}
+public @interface BasicApplicationFrontSpringBootTest {}

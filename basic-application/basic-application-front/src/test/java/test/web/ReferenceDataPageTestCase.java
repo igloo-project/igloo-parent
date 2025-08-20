@@ -8,10 +8,10 @@ import org.apache.wicket.authorization.UnauthorizedInstantiationException;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.junit.jupiter.api.Test;
-import test.web.config.spring.SpringBootTestBasicApplicationWebapp;
+import test.web.config.BasicApplicationFrontSpringBootTest;
 
-@SpringBootTestBasicApplicationWebapp
-class ReferenceDataPageTestCase extends AbstractBasicApplicationWebappTestCase {
+@BasicApplicationFrontSpringBootTest
+class ReferenceDataPageTestCase extends AbstractBasicApplicationFrontTestCase {
 
   @Test
   void initPage() throws ServiceException, SecurityServiceException {

@@ -20,7 +20,7 @@
 	
 	<properties>
 		<igloo-maven.version>6.15.0-SNAPSHOT</igloo-maven.version>
-		<start-class>basicapp.app.SpringBootMain</start-class>
+		<start-class>basicapp.app.BasicApplicationApplicationMain</start-class>
 	</properties>
 	
 	<dependencies>

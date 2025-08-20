@@ -21,7 +21,7 @@ import test.core.TestEntityDatabaseHelper;
 
 @Sql(scripts = "/scripts/init-data-wicket-test.sql")
 @SqlMergeMode(SqlMergeMode.MergeMode.MERGE)
-public abstract class AbstractBasicApplicationWebappTestCase
+public abstract class AbstractBasicApplicationFrontTestCase
     extends AbstractWicketTestCase<BasicApplicationWicketTester> {
 
   protected static final String USER_PASSWORD = "USER_PASSWORD";

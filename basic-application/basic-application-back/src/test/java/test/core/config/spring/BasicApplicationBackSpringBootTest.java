@@ -15,10 +15,10 @@ import org.springframework.test.context.TestPropertySource;
 
 @Retention(RUNTIME)
 @Target(TYPE)
-@SpringBootTest(classes = BasicApplicationCoreTestCommonConfig.class)
+@SpringBootTest(classes = BasicApplicationBackSpringBootTestConfiguration.class)
 @ContextConfiguration(initializers = ExtendedApplicationContextInitializer.class)
 @TestExecutionListeners(
     listeners = EntityManagerExecutionListener.class,
     mergeMode = MergeMode.MERGE_WITH_DEFAULTS)
 @TestPropertySource(properties = {"igloo.profile=test"})
-public @interface SpringBootTestBasicApplication {}
+public @interface BasicApplicationBackSpringBootTest {}

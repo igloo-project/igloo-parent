@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean;
 
 @Configuration
-public class BasicApplicationCoreNotificationConfig {
+public class BasicApplicationBackNotificationConfiguration {
 
   @Bean
   public FreeMarkerConfigurationFactoryBean freemarkerMailConfiguration() {

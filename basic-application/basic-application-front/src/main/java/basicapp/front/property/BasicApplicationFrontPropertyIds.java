@@ -5,7 +5,7 @@ import org.iglooproject.spring.property.model.AbstractPropertyIds;
 import org.iglooproject.spring.property.model.ImmutablePropertyId;
 import org.iglooproject.spring.property.model.MutablePropertyId;
 
-public final class BasicApplicationWebappPropertyIds extends AbstractPropertyIds {
+public final class BasicApplicationFrontPropertyIds extends AbstractPropertyIds {
 
   /*
    * Mutable Properties

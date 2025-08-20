@@ -2,7 +2,7 @@ package basicapp.front.role.page;
 
 import static basicapp.back.security.model.BasicApplicationPermissionConstants.GLOBAL_ROLE_READ;
 import static basicapp.back.security.model.BasicApplicationPermissionConstants.GLOBAL_ROLE_WRITE;
-import static basicapp.front.property.BasicApplicationWebappPropertyIds.PORTFOLIO_ITEMS_PER_PAGE;
+import static basicapp.front.property.BasicApplicationFrontPropertyIds.PORTFOLIO_ITEMS_PER_PAGE;
 
 import basicapp.back.util.binding.Bindings;
 import basicapp.front.role.model.RoleDataProvider;

@@ -1,9 +1,9 @@
-package basicapp.front.config.spring;
+package basicapp.front.config;
 
-import static basicapp.front.property.BasicApplicationWebappPropertyIds.APPLICATION_THEME;
-import static basicapp.front.property.BasicApplicationWebappPropertyIds.MAINTENANCE_URL;
-import static basicapp.front.property.BasicApplicationWebappPropertyIds.PORTFOLIO_ITEMS_PER_PAGE;
-import static basicapp.front.property.BasicApplicationWebappPropertyIds.PORTFOLIO_ITEMS_PER_PAGE_DESCRIPTION;
+import static basicapp.front.property.BasicApplicationFrontPropertyIds.APPLICATION_THEME;
+import static basicapp.front.property.BasicApplicationFrontPropertyIds.MAINTENANCE_URL;
+import static basicapp.front.property.BasicApplicationFrontPropertyIds.PORTFOLIO_ITEMS_PER_PAGE;
+import static basicapp.front.property.BasicApplicationFrontPropertyIds.PORTFOLIO_ITEMS_PER_PAGE_DESCRIPTION;
 
 import basicapp.front.common.template.theme.BasicApplicationApplicationTheme;
 import org.iglooproject.spring.config.spring.IPropertyRegistryConfig;
@@ -11,8 +11,7 @@ import org.iglooproject.spring.property.service.IPropertyRegistry;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class BasicApplicationWebappApplicationPropertyRegistryConfiguration
-    implements IPropertyRegistryConfig {
+public class BasicApplicationFrontPropertyRegistryConfiguration implements IPropertyRegistryConfig {
 
   @Override
   public void register(IPropertyRegistry registry) {

@@ -1,6 +1,6 @@
 package basicapp.front;
 
-import static basicapp.back.property.BasicApplicationCorePropertyIds.ENVIRONMENT;
+import static basicapp.back.property.BasicApplicationBackPropertyIds.ENVIRONMENT;
 
 import basicapp.back.business.user.model.User;
 import basicapp.back.business.user.service.business.IUserService;

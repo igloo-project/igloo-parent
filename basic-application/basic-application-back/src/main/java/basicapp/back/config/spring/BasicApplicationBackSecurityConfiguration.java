@@ -1,8 +1,8 @@
 package basicapp.back.config.spring;
 
-import static basicapp.back.property.BasicApplicationCorePropertyIds.SECURITY_PASSWORD_LENGTH_MAX;
-import static basicapp.back.property.BasicApplicationCorePropertyIds.SECURITY_PASSWORD_LENGTH_MIN;
-import static basicapp.back.property.BasicApplicationCorePropertyIds.SECURITY_PASSWORD_USER_FORBIDDEN_PASSWORDS;
+import static basicapp.back.property.BasicApplicationBackPropertyIds.SECURITY_PASSWORD_LENGTH_MAX;
+import static basicapp.back.property.BasicApplicationBackPropertyIds.SECURITY_PASSWORD_LENGTH_MIN;
+import static basicapp.back.property.BasicApplicationBackPropertyIds.SECURITY_PASSWORD_USER_FORBIDDEN_PASSWORDS;
 
 import basicapp.back.business.user.model.atomic.UserType;
 import basicapp.back.security.model.BasicApplicationPermission;
@@ -29,7 +29,7 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.security.acls.domain.PermissionFactory;
 
 @Configuration
-public class BasicApplicationCoreSecurityConfig {
+public class BasicApplicationBackSecurityConfiguration {
 
   @Bean
   @Scope(proxyMode = ScopedProxyMode.INTERFACES)

@@ -26,9 +26,9 @@ import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.jdbc.Sql;
 import test.core.AbstractBasicApplicationTestCase;
-import test.core.config.spring.SpringBootTestBasicApplication;
+import test.core.config.spring.BasicApplicationBackSpringBootTest;
 
-@SpringBootTestBasicApplication
+@BasicApplicationBackSpringBootTest
 class TestUserService extends AbstractBasicApplicationTestCase {
 
   @Autowired private IUserControllerService userControllerService;
