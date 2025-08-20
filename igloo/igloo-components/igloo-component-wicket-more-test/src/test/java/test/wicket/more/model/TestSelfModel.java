@@ -8,7 +8,7 @@ import org.apache.wicket.model.Model;
 import org.bindgen.java.lang.StringBinding;
 import org.junit.jupiter.api.Test;
 import test.wicket.more.AbstractWicketMoreTestCase;
-import test.wicket.more.config.spring.SpringBootTestWicketSimple;
+import test.wicket.more.config.SpringBootTestWicketSimple;
 
 @SpringBootTestWicketSimple
 public class TestSelfModel extends AbstractWicketMoreTestCase {

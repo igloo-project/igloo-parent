@@ -13,10 +13,10 @@ import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.junit.jupiter.api.Test;
 import org.wicketstuff.wiquery.core.events.MouseEvent;
-import test.web.config.spring.SpringBootTestBasicApplicationWebapp;
+import test.web.config.BasicApplicationFrontSpringBootTest;
 
-@SpringBootTestBasicApplicationWebapp
-class ProfilePageTestCase extends AbstractBasicApplicationWebappTestCase {
+@BasicApplicationFrontSpringBootTest
+class ProfilePageTestCase extends AbstractBasicApplicationFrontTestCase {
 
   @Test
   void initPage() throws ServiceException, SecurityServiceException {

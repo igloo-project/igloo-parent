@@ -25,10 +25,10 @@ import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
 import org.iglooproject.wicket.more.markup.html.template.model.NavigationMenuItem;
 import org.junit.jupiter.api.Test;
-import test.web.config.spring.SpringBootTestBasicApplicationWebapp;
+import test.web.config.BasicApplicationFrontSpringBootTest;
 
-@SpringBootTestBasicApplicationWebapp
-class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
+@BasicApplicationFrontSpringBootTest
+class HomePageTestCase extends AbstractBasicApplicationFrontTestCase {
 
   @Test
   void initPage() {

@@ -12,7 +12,7 @@ import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.test.AbstractJpaCoreTestCase;
 import org.iglooproject.test.business.nullables.model.EntityNullable;
 import org.iglooproject.test.business.nullables.service.IEntityNullableService;
-import org.iglooproject.test.config.spring.SpringBootTestJpaOnly;
+import org.iglooproject.test.config.SpringBootTestJpaOnly;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;

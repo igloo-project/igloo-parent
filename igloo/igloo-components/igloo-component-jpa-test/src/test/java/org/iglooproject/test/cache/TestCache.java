@@ -9,7 +9,7 @@ import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.test.AbstractJpaCoreTestCase;
 import org.iglooproject.test.business.company.model.Company;
 import org.iglooproject.test.business.person.model.Person;
-import org.iglooproject.test.config.spring.SpringBootTestJpaCache;
+import org.iglooproject.test.config.SpringBootTestJpaCache;
 import org.junit.jupiter.api.Test;
 
 @SpringBootTestJpaCache

@@ -10,7 +10,7 @@
   <packaging>war</packaging>
   <name>Basic Application - Spring Application</name>
   <properties>
-    <start-class>basicapp.app.SpringBootMain</start-class>
+    <start-class>basicapp.app.BasicApplicationApplicationMain</start-class>
   </properties>
   <dependencyManagement>
     <dependencies>

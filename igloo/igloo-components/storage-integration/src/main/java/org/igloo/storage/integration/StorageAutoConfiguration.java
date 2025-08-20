@@ -54,7 +54,7 @@ import org.igloo.storage.micrometer.MicrometerConfig;
 import org.igloo.storage.model.Fichier;
 import org.igloo.storage.model.atomic.IStorageUnitType;
 import org.igloo.storage.model.atomic.StorageFailureStatus;
-import org.iglooproject.spring.config.spring.IPropertyRegistryConfig;
+import org.iglooproject.spring.config.IPropertyRegistryConfiguration;
 import org.iglooproject.spring.property.model.ImmutablePropertyId;
 import org.iglooproject.spring.property.service.IPropertyRegistry;
 import org.iglooproject.spring.property.service.IPropertyService;
@@ -82,7 +82,7 @@ import org.springframework.transaction.PlatformTransactionManager;
     havingValue = "false",
     matchIfMissing = true)
 @EntityScan(basePackageClasses = Fichier.class)
-public class StorageAutoConfiguration implements IPropertyRegistryConfig {
+public class StorageAutoConfiguration implements IPropertyRegistryConfiguration {
 
   /** Beware that this names are differents from micrometer ids. */
   public static final String HEALTH_FAILURES = "storage.failures";

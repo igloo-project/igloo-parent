@@ -2,7 +2,7 @@ package org.iglooproject.test.jpa.batch;
 
 import igloo.jpa.batch.executor.BatchExecutorCreator;
 import igloo.jpa.batch.executor.SimpleHibernateBatchExecutor;
-import org.iglooproject.test.config.spring.SpringBootTestJpaBatchSearch;
+import org.iglooproject.test.config.SpringBootTestJpaBatchSearch;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @SpringBootTestJpaBatchSearch

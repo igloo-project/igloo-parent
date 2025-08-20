@@ -15,7 +15,7 @@ import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.functional.Suppliers2;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import test.wicket.more.config.spring.SpringBootTestWicketSimple;
+import test.wicket.more.config.SpringBootTestWicketSimple;
 import test.wicket.more.model.TestSerializableCollectionCopyModel.ValueEnum;
 
 @SpringBootTestWicketSimple

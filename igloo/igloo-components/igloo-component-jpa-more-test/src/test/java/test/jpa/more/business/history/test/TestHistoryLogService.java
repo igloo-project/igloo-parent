@@ -53,7 +53,7 @@ import test.jpa.more.business.history.model.TestHistoryLog;
 import test.jpa.more.business.history.model.atomic.TestHistoryEventType;
 import test.jpa.more.business.history.model.bean.TestHistoryLogAdditionalInformationBean;
 import test.jpa.more.business.history.service.ITestHistoryLogService;
-import test.jpa.more.config.spring.SpringBootTestJpaMoreHistoryLog;
+import test.jpa.more.config.SpringBootTestJpaMoreHistoryLog;
 
 @SpringBootTestJpaMoreHistoryLog
 @ExtendWith(MockitoExtension.class)

@@ -16,10 +16,10 @@ import org.iglooproject.wicket.more.markup.html.template.component.LinkGenerator
 import org.iglooproject.wicket.more.markup.html.template.component.SimpleBreadCrumbElementPanel;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
 import org.junit.jupiter.api.Test;
-import test.web.config.spring.SpringBootTestBasicApplicationWebapp;
+import test.web.config.BasicApplicationFrontSpringBootTest;
 
-@SpringBootTestBasicApplicationWebapp
-class BasicUserDetailPageTestCase extends AbstractBasicApplicationWebappTestCase {
+@BasicApplicationFrontSpringBootTest
+class BasicUserDetailPageTestCase extends AbstractBasicApplicationFrontTestCase {
 
   @Test
   void initPage() throws ServiceException, SecurityServiceException {

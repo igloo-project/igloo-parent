@@ -11,10 +11,10 @@ import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.wicket.more.markup.html.form.LocaleDropDownChoice;
 import org.junit.jupiter.api.Test;
 import org.wicketstuff.wiquery.core.events.MouseEvent;
-import test.web.config.spring.SpringBootTestBasicApplicationWebapp;
+import test.web.config.BasicApplicationFrontSpringBootTest;
 
-@SpringBootTestBasicApplicationWebapp
-class ValidatorTestCase extends AbstractBasicApplicationWebappTestCase {
+@BasicApplicationFrontSpringBootTest
+class ValidatorTestCase extends AbstractBasicApplicationFrontTestCase {
 
   /** Test the UserPasswordValidator when username = password which shouldn't be allowed */
   @Test

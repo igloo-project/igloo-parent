@@ -1,6 +1,6 @@
 package basicapp.front.user.popup;
 
-import static basicapp.back.property.BasicApplicationCorePropertyIds.SECURITY_PASSWORD_LENGTH_MIN;
+import static basicapp.back.property.BasicApplicationBackPropertyIds.SECURITY_PASSWORD_LENGTH_MIN;
 
 import basicapp.back.business.user.model.User;
 import basicapp.back.business.user.model.atomic.UserType;

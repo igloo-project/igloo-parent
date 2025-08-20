@@ -2,7 +2,7 @@ package org.iglooproject.test.spring.notification.spring.config;
 
 import org.iglooproject.config.bootstrap.spring.annotations.IglooPropertySourcePriority;
 import org.iglooproject.spring.autoconfigure.SpringPropertyRegistryAutoConfiguration;
-import org.iglooproject.spring.config.spring.IPropertyRegistryConfig;
+import org.iglooproject.spring.config.IPropertyRegistryConfiguration;
 import org.iglooproject.spring.property.dao.IImmutablePropertyDao;
 import org.iglooproject.spring.property.dao.IMutablePropertyDao;
 import org.iglooproject.spring.property.dao.ImmutablePropertyDaoImpl;
@@ -38,7 +38,7 @@ public class TestConfig {
   }
 
   @Bean
-  public IPropertyRegistryConfig propertyRegistryConfig() {
+  public IPropertyRegistryConfiguration propertyRegistryConfig() {
     return new SpringPropertyRegistryAutoConfiguration();
   }
 }

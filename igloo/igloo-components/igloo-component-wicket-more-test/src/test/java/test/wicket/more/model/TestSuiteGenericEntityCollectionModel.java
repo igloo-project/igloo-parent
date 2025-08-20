@@ -20,7 +20,7 @@ import org.junit.platform.suite.api.SelectClasses;
 import org.junit.platform.suite.api.Suite;
 import test.wicket.more.business.person.model.Person;
 import test.wicket.more.business.person.model.PersonComparator;
-import test.wicket.more.config.spring.SpringBootTestWicketSimple;
+import test.wicket.more.config.SpringBootTestWicketSimple;
 import test.wicket.more.model.TestSuiteGenericEntityCollectionModel.TestGenericEntityCollectionModel;
 import test.wicket.more.model.TestSuiteGenericEntityCollectionModel.TestSessionThreadSafeGenericEntityArrayListModel;
 import test.wicket.more.model.TestSuiteGenericEntityCollectionModel.TestSessionThreadSafeGenericEntityHashSetModel;

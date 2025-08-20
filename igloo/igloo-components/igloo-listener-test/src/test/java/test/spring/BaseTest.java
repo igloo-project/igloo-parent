@@ -1,10 +1,9 @@
 package test.spring;
 
-import static java.lang.annotation.ElementType.TYPE;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
-
 import igloo.test.listener.IglooTestExecutionListener;
+import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.TestExecutionListeners;
@@ -13,6 +12,8 @@ import org.springframework.test.context.event.ApplicationEventsTestExecutionList
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
 @ExtendWith(SpringExtension.class)
 @TestExecutionListeners({
   // enable dependency injection and events
@@ -32,6 +33,4 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 // use memory for lucene indexes when hsearch is used
 @TestPropertySource(
     properties = "spring.jpa.properties.hibernate.search.backend.directory.type=local-heap")
-@Retention(RUNTIME)
-@Target(TYPE)
 public @interface BaseTest {}

@@ -7,7 +7,7 @@ import com.querydsl.jpa.impl.JPAQuery;
 import org.iglooproject.test.AbstractJpaCoreTestCase;
 import org.iglooproject.test.business.person.model.Person;
 import org.iglooproject.test.business.person.model.QPerson;
-import org.iglooproject.test.config.spring.SpringBootTestJpaOnly;
+import org.iglooproject.test.config.SpringBootTestJpaOnly;
 import org.junit.jupiter.api.Test;
 
 @SpringBootTestJpaOnly

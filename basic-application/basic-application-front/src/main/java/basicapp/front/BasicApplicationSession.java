@@ -1,10 +1,10 @@
 package basicapp.front;
 
-import static basicapp.back.property.BasicApplicationCorePropertyIds.ENVIRONMENT;
+import static basicapp.back.property.BasicApplicationBackPropertyIds.ENVIRONMENT;
 
 import basicapp.back.business.user.model.User;
 import basicapp.back.business.user.service.business.IUserService;
-import basicapp.back.config.util.Environment;
+import basicapp.back.util.Environment;
 import java.util.Locale;
 import org.apache.wicket.Session;
 import org.apache.wicket.model.IModel;

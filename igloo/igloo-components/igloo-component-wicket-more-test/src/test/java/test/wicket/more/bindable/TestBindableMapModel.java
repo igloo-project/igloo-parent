@@ -13,7 +13,7 @@ import org.iglooproject.wicket.more.bindable.model.BindableModel;
 import org.iglooproject.wicket.more.bindable.model.IBindableMapModel;
 import org.iglooproject.wicket.more.bindable.model.IBindableModel;
 import org.junit.jupiter.api.Test;
-import test.wicket.more.config.spring.SpringBootTestWicketSimple;
+import test.wicket.more.config.SpringBootTestWicketSimple;
 
 @SpringBootTestWicketSimple
 class TestBindableMapModel extends AbstractTestBindableModel {

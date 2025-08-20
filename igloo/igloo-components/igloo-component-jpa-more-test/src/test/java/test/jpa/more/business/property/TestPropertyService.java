@@ -8,7 +8,7 @@ import static org.mockito.Mockito.when;
 import java.util.Collections;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.spring.config.spring.IPropertyRegistryConfig;
+import org.iglooproject.spring.config.IPropertyRegistryConfiguration;
 import org.iglooproject.spring.property.dao.IImmutablePropertyDao;
 import org.iglooproject.spring.property.dao.IMutablePropertyDao;
 import org.iglooproject.spring.property.exception.PropertyServiceDuplicateRegistrationException;
@@ -57,7 +57,7 @@ class TestPropertyService {
     static final ImmutablePropertyId<Long> IMMUTABLE_LONG = immutable("immutable.property.long");
   }
 
-  private void initPropertyService(IPropertyRegistryConfig registrationCallback) {
+  private void initPropertyService(IPropertyRegistryConfiguration registrationCallback) {
     propertyService.setPlatformTransactionManager(platformTransactionManager);
     propertyService.init(Collections.singleton(registrationCallback));
   }
@@ -65,7 +65,7 @@ class TestPropertyService {
   @Test
   void mutablePropertyGet() throws ServiceException, SecurityServiceException {
     initPropertyService(
-        new IPropertyRegistryConfig() {
+        new IPropertyRegistryConfiguration() {
           @Override
           public void register(IPropertyRegistry propertyService) {
             propertyService.registerString(PropertyIds.MUTABLE_STRING);
@@ -88,7 +88,7 @@ class TestPropertyService {
   @Test
   void mutablePropertySet() throws ServiceException, SecurityServiceException {
     initPropertyService(
-        new IPropertyRegistryConfig() {
+        new IPropertyRegistryConfiguration() {
           @Override
           public void register(IPropertyRegistry propertyService) {
             propertyService.registerString(PropertyIds.MUTABLE_STRING);
@@ -110,7 +110,7 @@ class TestPropertyService {
   @Test
   void mutablePropertySetAll() throws ServiceException, SecurityServiceException {
     initPropertyService(
-        new IPropertyRegistryConfig() {
+        new IPropertyRegistryConfiguration() {
           @Override
           public void register(IPropertyRegistry propertyService) {
             propertyService.registerString(PropertyIds.MUTABLE_STRING);
@@ -139,7 +139,7 @@ class TestPropertyService {
         PropertyServiceIncompleteRegistrationException.class,
         () ->
             initPropertyService(
-                new IPropertyRegistryConfig() {
+                new IPropertyRegistryConfiguration() {
                   @Override
                   public void register(IPropertyRegistry propertyService) {
                     propertyService.registerString(PropertyIds.MUTABLE_STRING);
@@ -164,7 +164,7 @@ class TestPropertyService {
   @Test
   void immutablePropertyGet() {
     initPropertyService(
-        new IPropertyRegistryConfig() {
+        new IPropertyRegistryConfiguration() {
           @Override
           public void register(IPropertyRegistry propertyService) {
             propertyService.registerString(ImmutablePropertyIds.IMMUTABLE_STRING);
@@ -202,7 +202,7 @@ class TestPropertyService {
         PropertyServiceDuplicateRegistrationException.class,
         () ->
             initPropertyService(
-                new IPropertyRegistryConfig() {
+                new IPropertyRegistryConfiguration() {
                   @Override
                   public void register(IPropertyRegistry propertyService) {
                     propertyService.registerString(ImmutablePropertyIds.IMMUTABLE_STRING);
@@ -213,7 +213,7 @@ class TestPropertyService {
 
   public void propertiesMutableImmutableWithSameKey() {
     initPropertyService(
-        new IPropertyRegistryConfig() {
+        new IPropertyRegistryConfiguration() {
           @Override
           public void register(IPropertyRegistry propertyService) {
             propertyService.registerString(DuplicatePropertyIds.IMMUTABLE_STRING);

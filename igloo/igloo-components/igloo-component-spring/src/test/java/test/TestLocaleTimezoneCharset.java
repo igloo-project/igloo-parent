@@ -4,7 +4,7 @@ import java.nio.charset.Charset;
 import java.util.Locale;
 import java.util.TimeZone;
 import org.assertj.core.api.Assertions;
-import org.iglooproject.spring.config.util.LocaleTimeZoneCharsetCheckerListener;
+import org.iglooproject.spring.util.LocaleTimeZoneCharsetCheckerListener;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.env.MockEnvironment;
 

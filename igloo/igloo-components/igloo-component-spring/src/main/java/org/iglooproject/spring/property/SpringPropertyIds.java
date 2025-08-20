@@ -4,10 +4,10 @@ import java.io.File;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-import org.iglooproject.spring.config.util.MailSenderBehavior;
 import org.iglooproject.spring.notification.util.NotificationSendMode;
 import org.iglooproject.spring.property.model.AbstractPropertyIds;
 import org.iglooproject.spring.property.model.ImmutablePropertyId;
+import org.iglooproject.spring.util.notification.MailSenderBehavior;
 
 public final class SpringPropertyIds extends AbstractPropertyIds {
 

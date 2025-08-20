@@ -2,10 +2,10 @@ package org.iglooproject.jpa.more.property;
 
 import java.util.Objects;
 import org.iglooproject.jpa.more.business.task.model.IQueueId;
-import org.iglooproject.spring.config.util.TaskQueueStartMode;
 import org.iglooproject.spring.property.model.AbstractPropertyIds;
 import org.iglooproject.spring.property.model.ImmutablePropertyId;
 import org.iglooproject.spring.property.model.ImmutablePropertyIdTemplate;
+import org.iglooproject.spring.util.task.TaskQueueStartMode;
 
 public final class JpaMoreTaskPropertyIds extends AbstractPropertyIds {
 

@@ -2,7 +2,7 @@ package basicapp.front.announcement.page;
 
 import static basicapp.front.common.util.CssClassConstants.BTN_TABLE_ROW_ACTION;
 import static basicapp.front.common.util.CssClassConstants.TABLE_ROW_DISABLED;
-import static basicapp.front.property.BasicApplicationWebappPropertyIds.PORTFOLIO_ITEMS_PER_PAGE;
+import static basicapp.front.property.BasicApplicationFrontPropertyIds.PORTFOLIO_ITEMS_PER_PAGE;
 
 import basicapp.back.business.announcement.model.Announcement;
 import basicapp.back.business.announcement.predicate.AnnouncementPredicates;

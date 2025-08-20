@@ -33,7 +33,7 @@ import org.iglooproject.test.business.person.model.Person;
 import org.iglooproject.test.business.person.model.PersonSubTypeA;
 import org.iglooproject.test.business.person.model.PersonSubTypeB;
 import org.iglooproject.test.business.person.service.IPersonService;
-import org.iglooproject.test.config.spring.SpringBootTestJpaOnly;
+import org.iglooproject.test.config.SpringBootTestJpaOnly;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

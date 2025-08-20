@@ -1,6 +1,6 @@
 package basicapp.front.notification.component;
 
-import basicapp.back.config.util.Environment;
+import basicapp.back.util.Environment;
 import igloo.wicket.behavior.ClassAttributeAppender;
 import igloo.wicket.condition.Condition;
 import java.util.List;

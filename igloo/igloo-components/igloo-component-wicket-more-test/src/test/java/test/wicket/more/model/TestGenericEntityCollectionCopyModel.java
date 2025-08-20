@@ -13,7 +13,7 @@ import org.iglooproject.wicket.more.model.GenericEntityModel;
 import org.junit.jupiter.params.provider.Arguments;
 import test.wicket.more.business.person.model.Person;
 import test.wicket.more.business.person.model.PersonComparator;
-import test.wicket.more.config.spring.SpringBootTestWicketSimple;
+import test.wicket.more.config.SpringBootTestWicketSimple;
 
 @SpringBootTestWicketSimple
 class TestGenericEntityCollectionCopyModel<C extends Collection<Person>>

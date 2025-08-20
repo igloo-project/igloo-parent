@@ -5,7 +5,7 @@ import org.iglooproject.jpa.business.generic.dao.JpaDaoSupport;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.springframework.stereotype.Repository;
 
-@Repository("importDataDao")
+@Repository
 public class ImportDataDaoImpl extends JpaDaoSupport implements IImportDataDao {
 
   public ImportDataDaoImpl() {}
