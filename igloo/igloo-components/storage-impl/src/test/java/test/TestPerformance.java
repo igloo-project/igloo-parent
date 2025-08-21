@@ -28,7 +28,7 @@ import org.apache.logging.log4j.core.config.Configurator;
 import org.assertj.core.api.Assumptions;
 import org.assertj.core.api.AutoCloseableSoftAssertions;
 import org.assertj.core.api.Condition;
-import org.igloo.jpa.test.EntityManagerFactoryExtension;
+import org.igloo.jpa.test.SpringEntityManagerExtension;
 import org.igloo.storage.impl.DatabaseOperations;
 import org.igloo.storage.impl.StorageOperations;
 import org.igloo.storage.model.Fichier;
@@ -38,23 +38,28 @@ import org.igloo.storage.model.StorageUnit;
 import org.igloo.storage.model.atomic.StorageFailureType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.RegisterExtension;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.io.TempDir;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.orm.jpa.EntityManagerFactoryUtils;
+import org.springframework.test.context.TestExecutionListeners;
 import test.model.FichierType1;
 
 /** This test needs environment <code>PERFORMANCE=true</code> to be launched. */
+@SpringBootTest(classes = TestConfiguration.class)
+@ExtendWith(SpringEntityManagerExtension.class)
+@TestExecutionListeners(mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS)
 class TestPerformance extends AbstractTest {
-
-  @RegisterExtension
-  EntityManagerFactoryExtension extension = AbstractTest.initEntityManagerExtension();
 
   private StorageOperations storageOperations;
   private DatabaseOperations databaseOperations;
   private StorageUnit unit;
 
+  @Autowired private EntityManagerFactory entityManagerFactory;
+
   @BeforeEach
-  void init(EntityManagerFactory entityManagerFactory, @TempDir Path tempDir) {
+  void init(@TempDir Path tempDir) {
     storageOperations = new StorageOperations();
     databaseOperations =
         new DatabaseOperations(entityManagerFactory, "fichier_id_seq", "storageunit_id_seq");
@@ -63,7 +68,7 @@ class TestPerformance extends AbstractTest {
   }
 
   @Test
-  void testPerformance(EntityManagerFactory entityManagerFactory) {
+  void testPerformance() {
     Assumptions.assumeThat(Boolean.parseBoolean(System.getenv("PERFORMANCE")))
         .as("Set PERFORMANCE=true to launch performance test")
         .isTrue();

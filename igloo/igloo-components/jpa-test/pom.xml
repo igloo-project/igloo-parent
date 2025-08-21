@@ -38,6 +38,18 @@
 			<groupId>org.assertj</groupId>
 			<artifactId>assertj-core</artifactId>
 		</dependency>
+		<!-- only for EntityManagerExtension -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<optional>true</optional>
+		</dependency>
+		
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
@@ -69,6 +81,13 @@
 			<dependency>
 				<groupId>org.iglooproject</groupId>
 				<artifactId>dependencies-hibernate</artifactId>
+				<version>${igloo-maven.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-spring</artifactId>
 				<version>${igloo-maven.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
