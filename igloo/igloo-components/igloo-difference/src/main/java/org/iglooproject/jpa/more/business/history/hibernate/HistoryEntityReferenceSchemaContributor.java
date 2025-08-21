@@ -19,6 +19,8 @@ public class HistoryEntityReferenceSchemaContributor extends BaseSchemaContribut
   private static final Logger LOGGER =
       LoggerFactory.getLogger(HistoryEntityReferenceSchemaContributor.class);
 
+  private static final String TYPE_VARCHAR = "varchar";
+
   protected HistoryEntityReferenceSchemaContributor() {
     super(HistoryEntityReferenceSchemaContributor.class.getSimpleName());
   }
@@ -39,22 +41,23 @@ public class HistoryEntityReferenceSchemaContributor extends BaseSchemaContribut
       // create or alter enum type
       boolean typeExists = typeExists(em, typeName, defaultSchema);
       if (typeExists && action.equals(Action.update)) {
-        sqlForAlterType(sb, typeInSchemaName, entities, em);
+        sqlForAlterType(sb, typeName, typeInSchemaName, entities, em);
       } else {
-        sb.append(sqlForCreateType(typeInSchemaName, entities));
+        sb.append(sqlForCreateType(typeName, entities));
       }
 
       // create cast to historylog_reference_type if it does not exists
-      boolean castToTypeExists = castExists(em, "pg_catalog", "varchar", defaultSchema, typeName);
+      boolean castToTypeExists =
+          castExists(em, "pg_catalog", TYPE_VARCHAR, defaultSchema, typeName);
       if (!castToTypeExists || action.equals(Action.create)) {
-        sb.append(sqlForCreateCast("pg_catalog", "varchar", defaultSchema, typeName));
+        sb.append(sqlForCreateCast(TYPE_VARCHAR, typeName));
       }
 
       // create cast to varchar if it does not exists
       boolean castToVarcharExists =
-          castExists(em, defaultSchema, typeName, "pg_catalog", "varchar");
+          castExists(em, defaultSchema, typeName, "pg_catalog", TYPE_VARCHAR);
       if (!castToVarcharExists || action.equals(Action.create)) {
-        sb.append(sqlForCreateCast(defaultSchema, typeName, "pg_catalog", "varchar"));
+        sb.append(sqlForCreateCast(typeName, TYPE_VARCHAR));
       }
     } catch (RuntimeException e) {
       throw new IllegalStateException("Error calculating historylog_reference_type declaration", e);
@@ -67,7 +70,11 @@ public class HistoryEntityReferenceSchemaContributor extends BaseSchemaContribut
    * to synchronize current enum state.
    */
   protected void sqlForAlterType(
-      StringBuilder sb, String typeInSchemaName, List<String> entities, EntityManager em) {
+      StringBuilder sb,
+      String typeInSchemaName,
+      String typeName,
+      List<String> entities,
+      EntityManager em) {
     List<String> values = listCurrentEnumValues(em, typeInSchemaName);
     String previousExisting = null;
     for (String entity : entities) {
@@ -80,29 +87,27 @@ public class HistoryEntityReferenceSchemaContributor extends BaseSchemaContribut
             "historylog_reference_type: add {} before {}", entity, values.get(0)); // NOSONAR
         sb.append(
             "ALTER TYPE %s ADD VALUE '%s' BEFORE '%s';%n"
-                .formatted(typeInSchemaName, entity, values.get(0)));
+                .formatted(typeName, entity, values.get(0)));
       } else {
         LOGGER.debug("historylog_reference_type: add {} after {}", entity, previousExisting);
         sb.append(
             "ALTER TYPE %s ADD VALUE '%s' AFTER '%s';%n"
-                .formatted(typeInSchemaName, entity, previousExisting));
+                .formatted(typeName, entity, previousExisting));
       }
     }
   }
 
   /** Generate SQL for enum type generation. */
-  protected String sqlForCreateType(String typeInSchemaName, List<String> entities) {
+  protected String sqlForCreateType(String typeName, List<String> entities) {
     return "CREATE TYPE %s AS ENUM (%n\t%s);%n"
         .formatted(
-            typeInSchemaName,
+            typeName,
             entities.stream().map(s -> "'" + s + "'").collect(Collectors.joining(",\n\t")));
   }
 
   /** Generate SQL for implicit cast. */
-  protected String sqlForCreateCast(
-      String type1Schema, String type1, String type2Schema, String type2) {
-    return "create cast (%s.%s as %s.%s) with inout as implicit;%n"
-        .formatted(type1Schema, type1, type2Schema, type2);
+  protected String sqlForCreateCast(String type1, String type2) {
+    return "create cast (%s as %s) with inout as implicit;%n".formatted(type1, type2);
   }
 
   /** Generate sorted entity simple names. */
