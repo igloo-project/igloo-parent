@@ -35,19 +35,8 @@ maven-build:
   tags:
     - docker
   services:
-    - name: postgres:14
-      alias: postgresql
     - name: docker:dind
   variables:
-    POSTGRES_USER: igloo_test
-    POSTGRES_PASSWORD: igloo_test
-    TEST_DB_USER: igloo_test
-    TEST_DB_PASSWORD: igloo_test
-    TEST_DB_SCHEMA: public
-    TEST_DB_NAME: igloo_test
-    TEST_DB_TYPE: postgresql
-    TEST_DB_HOST: postgresql
-    TEST_DB_PORT: 5432
     # Instruct Testcontainers to use the daemon of DinD, use port 2375 for non-tls connections.
     DOCKER_HOST: "tcp://docker:2375"
     # Instruct Docker not to start over TLS.

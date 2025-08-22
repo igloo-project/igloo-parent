@@ -9,36 +9,40 @@ import org.hibernate.testing.transaction.TransactionUtil;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.event.ApplicationEventsTestExecutionListener;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import test.model.DummyEntity;
+import test.spring.BaseJpaConfiguration;
 
 /**
  * Check that jpa + hibernate-search setup invokes index cleaning listener.
  *
  * @see HsearchUtil
  */
+@ExtendWith(SpringExtension.class)
+@TestExecutionListeners({
+  // enable dependency injection and events
+  ApplicationEventsTestExecutionListener.class,
+  DependencyInjectionTestExecutionListener.class,
+})
 @TestPropertySource(
     properties = {
+      "testContainer.database.dockerImageName=postgres:alpine",
+      "testContainer.database.exposedPorts=5432",
+      "testContainer.database.name=test_database",
+      "testContainer.database.userName=test_database",
+      "testContainer.database.password=test_database",
+    })
+@TestPropertySource(
+    properties = {
+      "spring.jpa.hibernate.ddl-auto=create",
       "spring.jpa.properties.hibernate.search.enabled=true",
       "spring.jpa.properties.hibernate.search.backend.directory.type=local-heap"
     })
-@ExtendWith(SpringExtension.class)
-@TestExecutionListeners({
-  DependencyInjectionTestExecutionListener.class,
-})
-@ContextConfiguration(
-    classes = {
-      DataSourceAutoConfiguration.class,
-      HibernateJpaAutoConfiguration.class,
-    })
-@EntityScan(basePackageClasses = TestIglooTestExecutionListener.class)
+@BaseJpaConfiguration
 class TestHsearchUtil {
   @Autowired EntityManagerFactory entityManagerFactory;
 

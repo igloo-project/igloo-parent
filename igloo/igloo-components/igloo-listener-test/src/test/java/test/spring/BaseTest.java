@@ -21,6 +21,14 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
   // inject our listener
   IglooTestExecutionListener.class
 })
+@TestPropertySource(
+    properties = {
+      "testContainer.database.dockerImageName=postgres:alpine",
+      "testContainer.database.exposedPorts=5432",
+      "testContainer.database.name=test_database",
+      "testContainer.database.userName=test_database",
+      "testContainer.database.password=test_database",
+    })
 // use memory for lucene indexes when hsearch is used
 @TestPropertySource(
     properties = "spring.jpa.properties.hibernate.search.backend.directory.type=local-heap")
