@@ -26,9 +26,6 @@
 		<module>igloo-component-spring-bootstrap-config</module>
 		<module>igloo-component-lucene-analyzers</module>
 		
-		<module>igloo-component-web-test</module>
-		<module>igloo-component-web-jpa-test</module>
-		
 		<module>igloo-component-hibernate-configurator-api</module>
 		<module>igloo-component-hibernate-configurator-lucene</module>
 		<module>igloo-hibernate</module>
