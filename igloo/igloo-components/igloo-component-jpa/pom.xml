@@ -220,6 +220,7 @@
 		<dependency>
 			 <groupId>io.github.openfeign.querydsl</groupId>
 			<artifactId>querydsl-apt</artifactId>
+			<classifier>jakarta</classifier>
 		</dependency>
 		
 		<!-- Database dependencies -->
