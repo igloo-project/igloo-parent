@@ -8,10 +8,10 @@ variables:
 stages:
   # build includes tests
   - build
-  - dependencies
   - deploy
   - analyze
   - init
+  - dependency-check
 
 maven-build:
   stage: build
@@ -27,9 +27,9 @@ maven-build:
       junit:
         - "**/target/surefire-reports/TEST-*.xml"
   rules:
-    - if: $CHECK_DEPENDENCIES
+    - if: $CI_COMMIT_BRANCH == "owasp"
       when: never
-    - if: $CI_PIPELINE_SOURCE == 'api'
+    - if: $CI_PIPELINE_SOURCE == "api"
       when: never
     - when: on_success
   tags:
@@ -43,19 +43,6 @@ maven-build:
     DOCKER_TLS_CERTDIR: ""
     # Improve performance with overlayfs.
     DOCKER_DRIVER: overlay2
-
-maven-dependencies:
-  stage: dependencies
-  environment: staging
-  script:
-    - "source gitlab-ci.build.conf"
-    - "./ci/maven-dependencies.sh"
-  rules:
-    - if: $CI_PIPELINE_SOURCE == 'api'
-      when: never
-    - if: $CHECK_DEPENDENCIES == "true"
-  tags:
-    - docker
 
 # test project initialisation from basic-app
 # Generate project named basic-application
@@ -83,9 +70,7 @@ test-init:
     basic-application org.iglooproject.archetype CURRENT_IGLOO_VERSION basicapp
     BasicApplication basicApplication "Basic Application" basic_application
   rules:
-    - if: $CHECK_DEPENDENCIES
-      when: never
-    - if: $CI_PIPELINE_SOURCE == 'api'
+    - if: $CI_PIPELINE_SOURCE == "api"
       when: never
     - if: $CI_COMMIT_BRANCH == "dev"
     - if: $CI_COMMIT_BRANCH == "master"
@@ -116,7 +101,7 @@ basic-application-init:
     "$ARTIFACT_ID" "$GROUP_ID" "$VERSION" "$PACKAGE"
     "$ARCHETYPE_APPLICATION_NAME_PREFIX" "$ARCHETYPE_SPRING_ANNOTATION_VALUE_PREFIX" "$ARCHETYPE_FULL_APPLICTION_NAME" "$ARCHETYPE_DATABASE_PREFIX"
   rules:
-    - if: $CI_PIPELINE_SOURCE == 'api'
+    - if: $CI_PIPELINE_SOURCE == "api"
   tags:
     - docker
 
@@ -126,9 +111,7 @@ maven-deploy:
   script:
     - "mvn -U deploy -DperformRelease -Ddistribution=igloo-release -DskipTests"
   rules:
-    - if: $CI_PIPELINE_SOURCE == 'api'
-      when: never
-    - if: $CHECK_DEPENDENCIES
+    - if: $CI_PIPELINE_SOURCE == "api"
       when: never
     - if: $CI_COMMIT_BRANCH == "main"
     - if: $CI_COMMIT_BRANCH == "master"
@@ -151,10 +134,41 @@ sonar-analyze:
       -DskipTests
       -Dsonar.host.url="https://sonar.tools.kobalt.fr"
   rules:
-    - if: $CI_PIPELINE_SOURCE == 'api'
+    - if: $CI_PIPELINE_SOURCE == "api"
       when: never
-    - if: $CHECK_DEPENDENCIES
+    - if: $CI_COMMIT_BRANCH == "owasp"
       when: never
     - when: on_success
   tags:
     - docker
+
+igloo-dependency-check:
+  allow_failure: true
+  stage: dependency-check
+  script:
+    - 'cd basic-application && mvn clean package -DskipTests org.owasp:dependency-check-maven:check -U 
+      -DnodeAnalyzerEnabled=false -DyarnAuditAnalyzerEnabled=false -DassemblyAnalyzerEnabled=false 
+      -DsuppressionFiles=../owasp-suppressions.xml
+      -DnvdApiKey=$OWASP_API_KEY
+      -Dformats=HTML,JUNIT -DfailBuildOnCVSS=0 -DjunitFailOnCVSS=0'
+  artifacts:
+    when: always
+    paths:
+      - '*/target/dependency-check-junit.xml'
+      - '*/target/dependency-check-report.html'
+    reports:
+      junit:
+        - '*/target/dependency-check-junit.xml'
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "api"
+      when: never
+    - if: $CI_COMMIT_BRANCH == "dev"
+    - if: $CI_COMMIT_BRANCH == "igloo-boot-dev"
+    - if: $CI_COMMIT_BRANCH =~ /^hf-.*$/
+    - if: $CI_COMMIT_BRANCH =~ /^igloo-boot-hf-.*$/
+    - if: $CI_COMMIT_BRANCH =~ /^ft-.*-deploy$/
+    - if: $CI_COMMIT_BRANCH == "master"
+    - if: $CI_COMMIT_BRANCH == "igloo-boot"
+    - if: $CI_COMMIT_BRANCH == "main"
+    - if: $CI_COMMIT_BRANCH == "owasp"
+    - if: $CI_COMMIT_TAG
