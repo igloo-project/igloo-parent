@@ -11,6 +11,7 @@ stages:
   - deploy
   - analyze
   - init
+  - owasp-reset-master
   - dependency-check
 
 maven-build:
@@ -163,12 +164,29 @@ igloo-dependency-check:
     - if: $CI_PIPELINE_SOURCE == "api"
       when: never
     - if: $CI_COMMIT_BRANCH == "dev"
+      when: manual
     - if: $CI_COMMIT_BRANCH == "igloo-boot-dev"
+      when: manual
     - if: $CI_COMMIT_BRANCH =~ /^hf-.*$/
+      when: manual
     - if: $CI_COMMIT_BRANCH =~ /^igloo-boot-hf-.*$/
+      when: manual
     - if: $CI_COMMIT_BRANCH =~ /^ft-.*-deploy$/
+      when: manual
     - if: $CI_COMMIT_BRANCH == "master"
     - if: $CI_COMMIT_BRANCH == "igloo-boot"
     - if: $CI_COMMIT_BRANCH == "main"
-    - if: $CI_COMMIT_BRANCH == "owasp"
-    - if: $CI_COMMIT_TAG
+    - if: $CI_COMMIT_BRANCH == "owasp" && $CI_PIPELINE_SOURCE == "schedule"
+
+# owasp branch reset hard from master after new release
+igloo-owasp-reset-master:
+  allow_failure: true
+  stage: owasp-reset-master
+  script:
+    - git fetch && git checkout owasp
+    - git config user.name "kobalt-admin"
+    - git config user.email "infra@kobalt.fr"
+    - git reset --hard origin/$CI_COMMIT_BRANCH
+    - git push --force -u origin owasp
+  rules:
+    - if: $CI_COMMIT_BRANCH == "igloo-boot"
