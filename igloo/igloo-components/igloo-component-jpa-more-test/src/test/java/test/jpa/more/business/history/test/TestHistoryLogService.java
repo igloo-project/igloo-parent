@@ -244,7 +244,7 @@ class TestHistoryLogService extends AbstractJpaMoreTestCase {
                   TestHistoryLogAdditionalInformationBean.of(secondaryObjectReloaded),
                   differenceGeneratorMock,
                   historyDifferenceGeneratorMock);
-            } catch (ServiceException | SecurityServiceException e) {
+            } catch (Exception e) {
               throw new IllegalStateException(e);
             }
           }
@@ -332,7 +332,7 @@ class TestHistoryLogService extends AbstractJpaMoreTestCase {
               transactionSynchronizationService.beforeClear();
               entityService.clear();
 
-            } catch (ServiceException | SecurityServiceException e) {
+            } catch (Exception e) {
               throw new IllegalStateException(e);
             }
           }

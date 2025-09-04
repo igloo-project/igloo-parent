@@ -84,8 +84,7 @@ public abstract class AbstractHistoryLogServiceImpl<
   }
 
   @Override
-  public <T> void log(HET eventType, T mainObject, HLAIB additionalInformation)
-      throws ServiceException, SecurityServiceException {
+  public <T> void log(HET eventType, T mainObject, HLAIB additionalInformation) {
     transactionSynchronizationTaskManagerService.push(
         new HistoryLogBeforeCommitTask<T, HLAIB, HL, HET, HD>(
             Instant.now(), eventType, mainObject, additionalInformation));
@@ -96,8 +95,7 @@ public abstract class AbstractHistoryLogServiceImpl<
       HET eventType,
       T mainObject,
       HLAIB additionalInformation,
-      IDifferenceService<T> differenceService)
-      throws ServiceException, SecurityServiceException {
+      IDifferenceService<T> differenceService) {
     logWithDifferences(
         eventType,
         mainObject,
@@ -113,8 +111,7 @@ public abstract class AbstractHistoryLogServiceImpl<
       T mainObject,
       HLAIB additionalInformation,
       IDifferenceService<T> differenceService,
-      IHistoryDifferenceHandler<? super T, ? super HL>... differenceHandlers)
-      throws ServiceException, SecurityServiceException {
+      IHistoryDifferenceHandler<? super T, ? super HL>... differenceHandlers) {
     logWithDifferences(
         eventType,
         mainObject,
@@ -132,8 +129,7 @@ public abstract class AbstractHistoryLogServiceImpl<
       HLAIB additionalInformation,
       IDifferenceFromReferenceGenerator<T> differenceGenerator,
       IHistoryDifferenceGenerator<T> historyDifferenceGenerator,
-      IHistoryDifferenceHandler<? super T, ? super HL>... differenceHandlers)
-      throws ServiceException, SecurityServiceException {
+      IHistoryDifferenceHandler<? super T, ? super HL>... differenceHandlers) {
     transactionSynchronizationTaskManagerService.push(
         new HistoryLogBeforeCommitWithDifferencesTask<T, HLAIB, HL, HET, HD>(
             Instant.now(),

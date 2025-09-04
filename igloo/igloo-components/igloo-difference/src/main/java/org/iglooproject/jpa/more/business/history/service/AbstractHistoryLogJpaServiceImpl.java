@@ -3,8 +3,6 @@ package org.iglooproject.jpa.more.business.history.service;
 import java.time.Instant;
 import java.util.List;
 import org.iglooproject.functional.Supplier2;
-import org.iglooproject.jpa.exception.SecurityServiceException;
-import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.more.business.difference.service.IDifferenceService;
 import org.iglooproject.jpa.more.business.difference.util.IDifferenceFromReferenceGenerator;
 import org.iglooproject.jpa.more.business.difference.util.IHistoryDifferenceGenerator;
@@ -36,10 +34,13 @@ public abstract class AbstractHistoryLogJpaServiceImpl<
   @Autowired protected IHistoryValueService valueService;
 
   @Override
-  @Transactional(rollbackFor = {ServiceException.class, SecurityServiceException.class})
+  @Transactional
   public <T> HL logNow(
-      Instant date, HET eventType, List<HD> differences, T mainObject, HLAIB additionalInformation)
-      throws ServiceException, SecurityServiceException {
+      Instant date,
+      HET eventType,
+      List<HD> differences,
+      T mainObject,
+      HLAIB additionalInformation) {
     HL log = newHistoryLog(date, eventType, differences, mainObject, additionalInformation);
 
     log.setDifferences(differences);
@@ -53,8 +54,7 @@ public abstract class AbstractHistoryLogJpaServiceImpl<
   protected abstract <T> HL newHistoryLog(
       Instant date, HET eventType, List<HD> differences, T mainObject, HLAIB additionalInformation);
 
-  protected abstract <T> void saveHistoryLog(HL historyLog)
-      throws ServiceException, SecurityServiceException;
+  protected abstract <T> void saveHistoryLog(HL historyLog);
 
   protected abstract Supplier2<HD> newHistoryDifferenceSupplier();
 
@@ -84,9 +84,8 @@ public abstract class AbstractHistoryLogJpaServiceImpl<
   }
 
   @Override
-  @Transactional(rollbackFor = {ServiceException.class, SecurityServiceException.class})
-  public <T> void log(HET eventType, T mainObject, HLAIB additionalInformation)
-      throws ServiceException, SecurityServiceException {
+  @Transactional
+  public <T> void log(HET eventType, T mainObject, HLAIB additionalInformation) {
     transactionSynchronizationTaskManagerService.push(
         new HistoryLogBeforeCommitTask<T, HLAIB, HL, HET, HD>(
             Instant.now(), eventType, mainObject, additionalInformation));
@@ -97,8 +96,7 @@ public abstract class AbstractHistoryLogJpaServiceImpl<
       HET eventType,
       T mainObject,
       HLAIB additionalInformation,
-      IDifferenceService<T> differenceService)
-      throws ServiceException, SecurityServiceException {
+      IDifferenceService<T> differenceService) {
     logWithDifferences(
         eventType,
         mainObject,
@@ -114,8 +112,7 @@ public abstract class AbstractHistoryLogJpaServiceImpl<
       T mainObject,
       HLAIB additionalInformation,
       IDifferenceService<T> differenceService,
-      IHistoryDifferenceHandler<? super T, ? super HL>... differenceHandlers)
-      throws ServiceException, SecurityServiceException {
+      IHistoryDifferenceHandler<? super T, ? super HL>... differenceHandlers) {
     logWithDifferences(
         eventType,
         mainObject,
@@ -133,8 +130,7 @@ public abstract class AbstractHistoryLogJpaServiceImpl<
       HLAIB additionalInformation,
       IDifferenceFromReferenceGenerator<T> differenceGenerator,
       IHistoryDifferenceGenerator<T> historyDifferenceGenerator,
-      IHistoryDifferenceHandler<? super T, ? super HL>... differenceHandlers)
-      throws ServiceException, SecurityServiceException {
+      IHistoryDifferenceHandler<? super T, ? super HL>... differenceHandlers) {
     transactionSynchronizationTaskManagerService.push(
         new HistoryLogBeforeCommitWithDifferencesTask<T, HLAIB, HL, HET, HD>(
             Instant.now(),

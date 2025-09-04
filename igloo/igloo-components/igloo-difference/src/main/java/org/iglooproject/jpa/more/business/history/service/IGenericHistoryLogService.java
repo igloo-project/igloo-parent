@@ -20,15 +20,13 @@ public interface IGenericHistoryLogService<
 
   HL getById(Long id);
 
-  <T> void log(HET eventType, T mainObject, HLAIB additionalInformation)
-      throws ServiceException, SecurityServiceException;
+  <T> void log(HET eventType, T mainObject, HLAIB additionalInformation);
 
   <T> void logWithDifferences(
       HET eventType,
       T mainObject,
       HLAIB additionalInformation,
-      IDifferenceService<T> differenceService)
-      throws ServiceException, SecurityServiceException;
+      IDifferenceService<T> differenceService);
 
   @SuppressWarnings("unchecked")
   <T> void logWithDifferences(
@@ -36,8 +34,7 @@ public interface IGenericHistoryLogService<
       T mainObject,
       HLAIB additionalInformation,
       IDifferenceService<T> differenceService,
-      IHistoryDifferenceHandler<? super T, ? super HL>... differenceHandlers)
-      throws ServiceException, SecurityServiceException;
+      IHistoryDifferenceHandler<? super T, ? super HL>... differenceHandlers);
 
   /*
    * Using interfaces more generic than IDifferenceService here allows the caller to use
@@ -51,8 +48,7 @@ public interface IGenericHistoryLogService<
       HLAIB additionalInformation,
       IDifferenceFromReferenceGenerator<T> differenceGenerator,
       IHistoryDifferenceGenerator<T> historyDifferenceGenerator,
-      IHistoryDifferenceHandler<? super T, ? super HL>... differenceHandlers)
-      throws ServiceException, SecurityServiceException;
+      IHistoryDifferenceHandler<? super T, ? super HL>... differenceHandlers);
 
   <T> HL logNow(
       Instant date, HET eventType, List<HD> differences, T mainObject, HLAIB additionalInformation)
