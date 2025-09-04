@@ -155,11 +155,11 @@ igloo-dependency-check:
   artifacts:
     when: always
     paths:
-      - '*/target/dependency-check-junit.xml'
-      - '*/target/dependency-check-report.html'
+      - '*/basic-application-app/target/dependency-check-junit.xml'
+      - '*/basic-application-app/target/dependency-check-report.html'
     reports:
       junit:
-        - '*/target/dependency-check-junit.xml'
+        - '*/basic-application-app/target/dependency-check-junit.xml'
   rules:
     - if: $CI_PIPELINE_SOURCE == "api"
       when: never
