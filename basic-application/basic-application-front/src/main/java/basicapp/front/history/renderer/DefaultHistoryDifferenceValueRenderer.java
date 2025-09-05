@@ -38,7 +38,7 @@ public final class DefaultHistoryDifferenceValueRenderer
 
   private DefaultHistoryDifferenceValueRenderer(
       SerializableFunction2<HistoryDifference, HistoryValue> valueFunction) {
-    this.valueRenderer = HistoryValueRenderer.get().onResultOf(valueFunction).orBlank();
+    this.valueRenderer = IHistoryValueRenderer.get().onResultOf(valueFunction).orBlank();
   }
 
   @Override

@@ -25,6 +25,7 @@ import org.apache.wicket.markup.html.form.RadioGroup;
 import org.apache.wicket.markup.repeater.RefreshingView;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.util.visit.IVisitor;
+import org.iglooproject.wicket.more.markup.html.form.IVueComponent;
 import org.wicketstuff.wiquery.core.javascript.JsStatement;
 import org.wicketstuff.wiquery.core.javascript.JsUtils;
 
@@ -181,7 +182,7 @@ public final class FormInvalidDecoratorListener {
    */
   private static final IComponentOnBeforeRenderListener POST_ON_BEFORE_RENDER_LISTENER =
       component -> {
-        if (!(component instanceof FormComponent)) {
+        if (!(component instanceof FormComponent) || component instanceof IVueComponent) {
           return;
         }
 
@@ -225,10 +226,20 @@ public final class FormInvalidDecoratorListener {
                   FormComponent.class,
                   (IVisitor<FormComponent<?>, Void>)
                       (formComponent, visit) -> {
+                        if (formComponent instanceof IVueComponent) {
+                          if (isInvalid(formComponent)) {
+                            ((IVueComponent) formComponent)
+                                .appendCssClass(target, IS_INVALID_CSS_CLASS);
+
+                          } else {
+                            ((IVueComponent) formComponent)
+                                .removeCssClass(target, IS_INVALID_CSS_CLASS);
+                          }
+                          return;
+                        }
                         if (!isInvalid(formComponent)) {
                           return;
                         }
-
                         Form<?> formToRefresh =
                             FormProcessedListener.findProcessedForm(formComponent);
                         if (formToRefresh != null) {

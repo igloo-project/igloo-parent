@@ -25,7 +25,7 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import org.apache.commons.io.IOUtils;
-import org.igloo.jpa.test.EntityManagerFactoryExtension;
+import org.igloo.jpa.test.SpringEntityManagerExtension;
 import org.igloo.storage.impl.DatabaseOperations;
 import org.igloo.storage.impl.StorageOperations;
 import org.igloo.storage.model.Fichier;
@@ -34,23 +34,26 @@ import org.igloo.storage.model.atomic.FichierStatus;
 import org.igloo.storage.model.atomic.StorageUnitStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.RegisterExtension;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.AdditionalAnswers;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.orm.jpa.EntityManagerFactoryUtils;
+import org.springframework.test.context.TestExecutionListeners;
 import test.model.FichierType1;
 
+@SpringBootTest(classes = TestConfiguration.class)
+@ExtendWith(SpringEntityManagerExtension.class)
+@TestExecutionListeners(mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS)
 class TestService extends AbstractTest {
-
-  @RegisterExtension
-  EntityManagerFactoryExtension extension = AbstractTest.initEntityManagerExtension();
 
   protected StorageOperations storageOperations = mock(StorageOperations.class);
 
-  //	protected DatabseOperations databaseOperations = mock(DatabaseOperations.class);
+  @Autowired EntityManagerFactory entityManagerFactory;
 
   @BeforeEach
-  void init(EntityManagerFactory entityManagerFactory) {
+  void init() {
     Path fakeRootPath = Path.of("/fakepath");
     super.init(
         entityManagerFactory,
@@ -230,7 +233,7 @@ class TestService extends AbstractTest {
   }
 
   @Test
-  void testRemoveFichier_Rollback(EntityManagerFactory entityManagerFactory) throws IOException {
+  void testRemoveFichier_Rollback() throws IOException {
     Runnable action =
         () -> {
           Fichier fichier =
@@ -344,14 +347,15 @@ class TestService extends AbstractTest {
   }
 
   @Test
-  void testSplitStorageUnit(EntityManagerFactory entityManagerFactory) {
+  void testSplitStorageUnit() {
     StorageUnit original =
         transactionTemplate.execute(
             (t) -> {
               EntityManager em =
                   EntityManagerFactoryUtils.getTransactionalEntityManager(entityManagerFactory);
               // created by init
-              return em.find(StorageUnit.class, 1l);
+              return em.createQuery("SELECT s FROM StorageUnit s", StorageUnit.class)
+                  .getSingleResult();
             });
     StorageUnit newUnit =
         transactionTemplate.execute((t) -> storageService.splitStorageUnit(original));
@@ -360,8 +364,10 @@ class TestService extends AbstractTest {
             (t) -> {
               EntityManager em =
                   EntityManagerFactoryUtils.getTransactionalEntityManager(entityManagerFactory);
-              // created by init
-              return em.find(StorageUnit.class, 1l);
+              // created by split
+              return em.createQuery("SELECT s FROM StorageUnit s ORDER BY s.id", StorageUnit.class)
+                  .getResultList()
+                  .get(0);
             });
     assertThat(updated.getStatus()).isEqualTo(StorageUnitStatus.ARCHIVED);
     assertThat(newUnit.getStatus()).isEqualTo(StorageUnitStatus.ALIVE);

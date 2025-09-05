@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.iglooproject.components</groupId>
 		<artifactId>igloo-components</artifactId>
-		<version>6.13.0</version>
+		<version>6.14.1</version>
 	</parent>
 
 	<artifactId>storage-impl</artifactId>
@@ -66,7 +66,34 @@
 			<artifactId>igloo-hibernate</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-jpa</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 		
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-listener-test</artifactId>
+			<version>${project.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<!-- group le script d'update du modèle -->
+			<groupId>info.picocli</groupId>
+			<artifactId>picocli</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-autoconfigure</artifactId>
+			<scope>test</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>jpa-test</artifactId>
@@ -116,12 +143,6 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>jcl-over-slf4j</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<version>2.2.224</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>

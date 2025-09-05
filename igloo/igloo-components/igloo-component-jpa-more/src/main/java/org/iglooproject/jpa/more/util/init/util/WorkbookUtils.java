@@ -1,5 +1,6 @@
 package org.iglooproject.jpa.more.util.init.util;
 
+import com.google.common.base.Objects;
 import com.google.common.collect.Sets;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -65,6 +67,10 @@ public final class WorkbookUtils {
               cell.getColumnIndex(), String.format("%s", getCellValue(formulaEvaluator, cell)));
         }
       } else {
+        if (!hasContent(row)) {
+          break;
+        }
+
         Map<String, Object> line = new HashMap<>();
         for (Cell cell : row) {
           Object cellValue = getCellValue(formulaEvaluator, cell);
@@ -76,6 +82,39 @@ public final class WorkbookUtils {
       }
     }
     return content;
+  }
+
+  public static boolean hasContent(Row row) {
+    if (row == null) {
+      return false;
+    }
+
+    // Use cellIterator() instead of iterator() in order to only consider the cells that are
+    // actually defined
+    Iterator<Cell> iterator = row.cellIterator();
+    while (iterator.hasNext()) {
+      if (hasContent(iterator.next())) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  public static boolean hasContent(Cell cell) {
+    switch (Objects.equal(cell.getCellType(), CellType.FORMULA)
+        ? cell.getCachedFormulaResultType()
+        : cell.getCellType()) {
+      case BLANK:
+        return false;
+      case STRING:
+        return StringUtils.hasText(cell.getStringCellValue());
+      default:
+        // In other cases we cannot detect whether the cell is actually empty in the
+        // underlying file, or at least not without relying on low-level APIs.
+        // Just give up.
+        return true;
+    }
   }
 
   private static Object getCellValue(FormulaEvaluator formulaEvaluator, Cell cell) {

@@ -25,4 +25,5 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
   EntityManagerExecutionListener.class
 })
 @TestPropertySource(properties = "igloo.profile=test")
+@TestPropertySource(locations = "/jpa-more-test.properties")
 public @interface SpringBootTestJpaMore {}

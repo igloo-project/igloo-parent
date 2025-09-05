@@ -1,6 +1,6 @@
 @mixin text-break($important: false) {
-	overflow-wrap: break-word important($important);
-	word-wrap: break-word important($important);
+	word-wrap: break-word important($important); // Same as Bootstrap instead of overflow-wrap for wider support.
+	word-break: break-word important($important); // Same as Bootstrap for issues with flex containers.
 }
 
 @mixin flex-item-text-break($important: false) {

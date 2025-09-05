@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.iglooproject.parents</groupId>
 		<artifactId>igloo-parent-maven-configuration-core</artifactId>
-		<version>6.13.0</version>
+		<version>6.14.1</version>
 		<relativePath>../igloo-parents/igloo-parent-maven-configuration-core/pom.xml</relativePath>
 	</parent>
 	
@@ -25,9 +25,6 @@
 		<module>igloo-component-spring</module>
 		<module>igloo-component-spring-bootstrap-config</module>
 		<module>igloo-component-lucene-analyzers</module>
-		
-		<module>igloo-component-web-test</module>
-		<module>igloo-component-web-jpa-test</module>
 		
 		<module>igloo-component-hibernate-configurator-api</module>
 		<module>igloo-component-hibernate-configurator-lucene</module>

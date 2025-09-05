@@ -36,7 +36,8 @@ public class TestHistoryLogServiceImpl
       List<TestHistoryDifference> differences,
       T mainObject,
       TestHistoryLogAdditionalInformationBean additionalInformation) {
-    TestHistoryLog log = new TestHistoryLog(date, eventType, valueService.create(mainObject));
+    TestHistoryLog log =
+        new TestHistoryLog(date, eventType, valueService.createHistoryValue(mainObject));
 
     // Don't set any subject here (we don't have a IUserService)
 

@@ -14,8 +14,10 @@ import java.nio.file.Path;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
+import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.schema.SourceType;
 import org.hibernate.tool.schema.TargetType;
 import org.hibernate.tool.schema.internal.DefaultSchemaFilter;
@@ -57,7 +59,12 @@ public class SqlRunner {
     var schemaTool = serviceRegistry.getService(SchemaManagementTool.class);
     StringWriter writer = new StringWriter();
     generateSql(action, schemaTool, writer);
-    writeResult(output, writer.toString());
+    writeResult(
+        action,
+        output,
+        writer.toString(),
+        IglooSchemaIntegrator.extractSchemaTool(entityManagerFactory.unwrap(ServiceRegistry.class))
+            .freezeContributors());
   }
 
   private void generateSql(
@@ -125,14 +132,31 @@ public class SqlRunner {
     }
   }
 
-  private void writeResult(Path output, String content) {
+  private void writeResult(
+      Action action, Path output, String content, Set<SchemaContributor> contributors) {
     try (PrintWriter pw = writer(output)) { // NOSONAR
+      for (SchemaContributor contributor : contributors) {
+        String before = contributor.getBeforeScript(entityManagerFactory, action);
+        if (before != null) {
+          pw.println("-- Migration from %s%n".formatted(contributor.getName()));
+          pw.println(before);
+          pw.println("-- /Migration from %s%n".formatted(contributor.getName()));
+        }
+      }
       if (StringUtils.hasLength(content)) {
         pw.println("-- Hibernate hbm2ddl script");
         pw.println(content);
         pw.println("-- Hibernate hbm2ddl script (end)");
       } else {
         pw.println("-- Hibernate hbm2ddl script is empty");
+      }
+      for (SchemaContributor contributor : contributors) {
+        String after = contributor.getAfterScript(entityManagerFactory, action);
+        if (after != null) {
+          pw.println("-- Migration from %s%n".formatted(contributor.getName()));
+          pw.println(after);
+          pw.println("-- /Migration from %s%n".formatted(contributor.getName()));
+        }
       }
     } catch (IOException e) {
       throw new RuntimeException(String.format("Error writing SQL to %s", output)); // NOSONAR

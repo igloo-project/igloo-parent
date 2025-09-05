@@ -26,7 +26,7 @@ public abstract class AbstractHistoryEventSummaryServiceImpl<U>
   @Override
   public void refresh(HistoryEventSummary evenement, Instant date, U subject) {
     evenement.setDate(date);
-    evenement.setSubject(valueService.create(HibernateUtils.unwrap(subject)));
+    evenement.setSubject(valueService.createHistoryEventValue(HibernateUtils.unwrap(subject)));
   }
 
   @Override

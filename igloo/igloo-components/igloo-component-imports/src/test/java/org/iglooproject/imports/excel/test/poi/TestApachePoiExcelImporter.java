@@ -72,6 +72,10 @@ public class TestApachePoiExcelImporter {
             assertFalse(sheetContext.column(COLUMNS.missingColumn).exists());
 
             for (Columns.RowContext rowContext : Iterables.skip(sheetContext, 1)) {
+              if (!rowContext.hasContent()) {
+                break;
+              }
+
               Quartet<LocalDate, Boolean, String, Integer> result =
                   Quartet.with(
                       rowContext.cell(COLUMNS.dateColumn).get(),

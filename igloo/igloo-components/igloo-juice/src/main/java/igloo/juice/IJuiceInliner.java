@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpClient.Redirect;
+import java.net.http.HttpClient.Version;
 import java.net.http.HttpRequest;
 import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpRequest.Builder;
@@ -58,7 +59,10 @@ public interface IJuiceInliner {
    */
   @Value.Default
   default HttpClient httpClient() {
-    return HttpClient.newBuilder().followRedirects(Redirect.NORMAL).build();
+    return HttpClient.newBuilder()
+        .version(Version.HTTP_1_1)
+        .followRedirects(Redirect.NORMAL)
+        .build();
   }
 
   /**

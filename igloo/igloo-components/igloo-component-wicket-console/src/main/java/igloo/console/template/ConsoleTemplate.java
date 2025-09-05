@@ -3,9 +3,9 @@ package igloo.console.template;
 import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.CONSOLE_GLOBAL_FEEDBACK_AUTOHIDE_DELAY_UNIT;
 import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.CONSOLE_GLOBAL_FEEDBACK_AUTOHIDE_DELAY_VALUE;
 
+import igloo.bootstrap.BootstrapRequestCycle;
 import igloo.bootstrap.tooltip.BootstrapTooltipBehavior;
 import igloo.bootstrap.tooltip.BootstrapTooltipOptions;
-import igloo.bootstrap5.markup.html.template.js.bootstrap.Bootstrap5OverrideJavaScriptResourceReference;
 import igloo.bootstrap5.markup.html.template.js.bootstrap.dropdown.BootstrapDropdownBehavior;
 import igloo.wicket.behavior.ClassAttributeAppender;
 import igloo.wicket.component.CoreLabel;
@@ -18,7 +18,6 @@ import org.apache.wicket.Component;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
-import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.TransparentWebMarkupContainer;
 import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -226,12 +225,11 @@ public abstract class ConsoleTemplate extends AbstractWebPageTemplate {
   @Override
   public void renderHead(IHeaderResponse response) {
     super.renderHead(response);
+    BootstrapRequestCycle.getSettings().renderHead(getPage(), response);
     for (ResourceReference cssResourceReference :
         ConsoleConfiguration.get().getCssResourcesReferences()) {
       response.render(CssHeaderItem.forReference(cssResourceReference));
     }
-    response.render(
-        JavaScriptHeaderItem.forReference(Bootstrap5OverrideJavaScriptResourceReference.get()));
   }
 
   @Override

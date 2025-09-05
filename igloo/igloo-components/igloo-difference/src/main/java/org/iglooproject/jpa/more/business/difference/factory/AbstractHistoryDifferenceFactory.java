@@ -67,7 +67,7 @@ public abstract class AbstractHistoryDifferenceFactory<T> implements IHistoryDif
     if (key != null) {
       @SuppressWarnings("rawtypes")
       IRenderer renderer = rendererService.findRenderer(parentNode.getValueType(), key.getClass());
-      return historyValueService.create(key, renderer);
+      return historyValueService.createHistoryValue(key, renderer);
     } else {
       return null;
     }
@@ -104,6 +104,6 @@ public abstract class AbstractHistoryDifferenceFactory<T> implements IHistoryDif
   @SuppressWarnings({"rawtypes", "unchecked"})
   protected final HistoryValue newHistoryValue(T root, DiffNode node, IRenderer renderer) {
     Object value = node.canonicalGet(root);
-    return historyValueService.create(value, renderer);
+    return historyValueService.createHistoryValue(value, renderer);
   }
 }

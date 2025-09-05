@@ -1,0 +1,32 @@
+package basicapp.front.history.renderer;
+
+import igloo.wicket.renderer.Renderer;
+import java.util.Locale;
+import org.apache.wicket.injection.Injector;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.iglooproject.jpa.more.business.history.model.embeddable.IHistoryValue;
+import org.iglooproject.jpa.more.business.history.service.IHistoryValueService;
+
+public final class IHistoryValueRenderer extends Renderer<IHistoryValue> {
+
+  private static final long serialVersionUID = 4206395563932015847L;
+
+  private boolean initialized = false;
+
+  @SpringBean private IHistoryValueService historyValueService;
+
+  public static IHistoryValueRenderer get() {
+    return new IHistoryValueRenderer();
+  }
+
+  private IHistoryValueRenderer() {}
+
+  @Override
+  public String render(IHistoryValue value, Locale locale) {
+    if (!initialized) {
+      Injector.get().inject(this);
+      initialized = true;
+    }
+    return historyValueService.render(value, locale);
+  }
+}

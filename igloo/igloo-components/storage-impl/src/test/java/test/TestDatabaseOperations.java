@@ -7,11 +7,11 @@ import static org.assertj.core.api.Assertions.atIndex;
 import static org.assertj.core.api.Assertions.byLessThan;
 import static test.StorageAssertions.assertThat;
 
-import com.google.common.base.Strings;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.PersistenceException;
+import jakarta.persistence.PersistenceUnit;
 import jakarta.persistence.Tuple;
 import java.nio.file.Path;
 import java.sql.PreparedStatement;
@@ -22,7 +22,6 @@ import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
@@ -34,10 +33,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import org.assertj.core.api.Assertions;
-import org.assertj.core.api.Assumptions;
 import org.hibernate.Session;
-import org.igloo.jpa.test.EntityManagerFactoryExtension;
-import org.igloo.jpa.test.JdbcDriver;
+import org.igloo.jpa.test.SpringEntityManagerExtension;
 import org.igloo.storage.impl.DatabaseOperations;
 import org.igloo.storage.model.Fichier;
 import org.igloo.storage.model.StorageConsistencyCheck;
@@ -59,30 +56,33 @@ import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.business.generic.model.LongEntityReference;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.RegisterExtension;
-import org.postgresql.Driver;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestExecutionListeners;
 import test.model.FichierType1;
 import test.model.FichierType2;
 import test.model.StorageUnitType;
 
+@SpringBootTest(classes = TestConfiguration.class)
+@ExtendWith(SpringEntityManagerExtension.class)
+@TestExecutionListeners(mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS)
 class TestDatabaseOperations extends AbstractTest {
 
   private static final String SELECT_STORAGE_FAILURE_ID_ASC =
       "SELECT f FROM StorageFailure f ORDER BY f.id ASC";
 
-  @RegisterExtension
-  EntityManagerFactoryExtension extension = AbstractTest.initEntityManagerExtension();
-
   private DatabaseOperations databaseOperations;
 
+  @PersistenceUnit private EntityManagerFactory entityManagerFactory;
+
   @BeforeEach
-  void init(EntityManagerFactory entityManagerFactory) {
+  void init() {
     databaseOperations =
         new DatabaseOperations(entityManagerFactory, "fichier_id_seq", "storageunit_id_seq");
   }
 
   @Test
-  void testGetFichierById_NotFound(EntityManagerFactory entityManagerFactory) {
+  void testGetFichierById_NotFound() {
     doInReadTransactionEntityManager(
         entityManagerFactory,
         em -> {
@@ -93,7 +93,7 @@ class TestDatabaseOperations extends AbstractTest {
   }
 
   @Test
-  void testGetFichierById_Ok(EntityManagerFactory entityManagerFactory) {
+  void testGetFichierById_Ok() {
     StorageUnit storageUnit =
         createStorageUnit(
             entityManagerFactory, 1l, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
@@ -210,7 +210,7 @@ class TestDatabaseOperations extends AbstractTest {
   /** Check {@link Fichier#uuid} unicity */
   @Test
   void testFichierUuidUnicityPersist(
-      EntityManager entityManager, EntityTransaction transaction, @JdbcDriver Class<?> jdbcDriver) {
+      EntityManager entityManager, EntityTransaction entityTransaction) {
     StorageUnit storageUnit = new StorageUnit();
     storageUnit.setId(1l);
     storageUnit.setType(StorageUnitType.TYPE_1);
@@ -252,11 +252,7 @@ class TestDatabaseOperations extends AbstractTest {
     entityManager.persist(fichier2);
     assertThatThrownBy(() -> entityManager.flush())
         .isInstanceOf(PersistenceException.class)
-        .hasMessageContaining(
-            jdbcDriver.equals(Driver.class)
-                ? "duplicate key value violates"
-                : // postgresql
-                "Unique index or primary key violation"); // h2
+        .hasMessageContaining("duplicate key value violates");
   }
 
   /** Persist {@link StorageUnit} and {@link StorageUnitStatistics} */
@@ -278,12 +274,11 @@ class TestDatabaseOperations extends AbstractTest {
   }
 
   @Test
-  void testGenerateStorageId(EntityManagerFactory entityManagerFactory)
-      throws InterruptedException, ExecutionException {
+  void testGenerateStorageId() throws InterruptedException, ExecutionException {
     long id1 =
-        doInReadTransaction(entityManagerFactory, () -> databaseOperations.generateStorageUnit());
+        doInWriteTransaction(entityManagerFactory, () -> databaseOperations.generateStorageUnit());
     assertThat(
-            doInReadTransaction(
+            doInWriteTransaction(
                 entityManagerFactory, () -> databaseOperations.generateStorageUnit()))
         .isEqualTo(id1 + 1);
 
@@ -295,7 +290,7 @@ class TestDatabaseOperations extends AbstractTest {
     Future<Long> id3 =
         executor.submit(
             () ->
-                doInReadTransaction(
+                doInWriteTransaction(
                     entityManagerFactory,
                     () -> {
                       // wait for id4 generation
@@ -312,7 +307,7 @@ class TestDatabaseOperations extends AbstractTest {
     Future<Long> id4 =
         executor.submit(
             () ->
-                doInReadTransaction(
+                doInWriteTransaction(
                     entityManagerFactory,
                     () -> {
                       // generate
@@ -336,12 +331,11 @@ class TestDatabaseOperations extends AbstractTest {
   }
 
   @Test
-  void testGenerateFichierId(EntityManagerFactory entityManagerFactory)
-      throws InterruptedException, ExecutionException {
+  void testGenerateFichierId() throws InterruptedException, ExecutionException {
     long id1 =
-        doInReadTransaction(entityManagerFactory, () -> databaseOperations.generateFichier());
+        doInWriteTransaction(entityManagerFactory, () -> databaseOperations.generateFichier());
     assertThat(
-            doInReadTransaction(entityManagerFactory, () -> databaseOperations.generateFichier()))
+            doInWriteTransaction(entityManagerFactory, () -> databaseOperations.generateFichier()))
         .isEqualTo(id1 + 1);
 
     // test concurrency : ids are distinct event for simultaneous transaction
@@ -352,7 +346,7 @@ class TestDatabaseOperations extends AbstractTest {
     Future<Long> id3 =
         executor.submit(
             () ->
-                doInReadTransaction(
+                doInWriteTransaction(
                     entityManagerFactory,
                     () -> {
                       // wait for id4 generation
@@ -369,7 +363,7 @@ class TestDatabaseOperations extends AbstractTest {
     Future<Long> id4 =
         executor.submit(
             () ->
-                doInReadTransaction(
+                doInWriteTransaction(
                     entityManagerFactory,
                     () -> {
                       // generate
@@ -393,7 +387,7 @@ class TestDatabaseOperations extends AbstractTest {
   }
 
   @Test
-  void testListUnitAliveFichiers(EntityManagerFactory entityManagerFactory) {
+  void testListUnitAliveFichiers() {
     StorageUnit storageUnit1 =
         createStorageUnit(
             entityManagerFactory, 1l, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
@@ -466,7 +460,7 @@ class TestDatabaseOperations extends AbstractTest {
   }
 
   @Test
-  void testLoadAliveStorageUnitNoUnit(EntityManagerFactory entityManagerFactory) {
+  void testLoadAliveStorageUnitNoUnit() {
     assertThatCode(
             () ->
                 doInReadTransaction(
@@ -479,7 +473,7 @@ class TestDatabaseOperations extends AbstractTest {
   }
 
   @Test
-  void testLoadAliveStorageUnitNoAliveUnit(EntityManagerFactory entityManagerFactory) {
+  void testLoadAliveStorageUnitNoAliveUnit() {
     createStorageUnit(entityManagerFactory, 1, StorageUnitType.TYPE_1, StorageUnitStatus.ARCHIVED);
     assertThatCode(
             () ->
@@ -493,7 +487,7 @@ class TestDatabaseOperations extends AbstractTest {
   }
 
   @Test
-  void testLoadAliveStorageUnitNoTypeUnit(EntityManagerFactory entityManagerFactory) {
+  void testLoadAliveStorageUnitNoTypeUnit() {
     createStorageUnit(entityManagerFactory, 1, StorageUnitType.TYPE_2, StorageUnitStatus.ALIVE);
     assertThatCode(
             () ->
@@ -507,7 +501,7 @@ class TestDatabaseOperations extends AbstractTest {
   }
 
   @Test
-  void testLoadAliveStorageUnitAvailable(EntityManagerFactory entityManagerFactory) {
+  void testLoadAliveStorageUnitAvailable() {
     StorageUnit storageUnit =
         createStorageUnit(entityManagerFactory, 1, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
     assertThat(
@@ -521,7 +515,7 @@ class TestDatabaseOperations extends AbstractTest {
   }
 
   @Test
-  void testLoadAliveStorageUnitMultipleAvailable(EntityManagerFactory entityManagerFactory) {
+  void testLoadAliveStorageUnitMultipleAvailable() {
     StorageUnit storageUnit2 =
         createStorageUnit(entityManagerFactory, 2, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
     createStorageUnit(entityManagerFactory, 1, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
@@ -536,7 +530,7 @@ class TestDatabaseOperations extends AbstractTest {
   }
 
   @Test
-  void testTriggerFailure(EntityManagerFactory entityManagerFactory) {
+  void testTriggerFailure() {
     StorageUnit unit1 =
         createStorageUnit(entityManagerFactory, 1, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
     StorageConsistencyCheck check =
@@ -567,7 +561,7 @@ class TestDatabaseOperations extends AbstractTest {
   }
 
   @Test
-  void testTriggerFailureAlreadyExistingAlive(EntityManagerFactory entityManagerFactory) {
+  void testTriggerFailureAlreadyExistingAlive() {
     StorageUnit unit1 =
         createStorageUnit(entityManagerFactory, 1, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
     StorageConsistencyCheck check1 =
@@ -605,7 +599,7 @@ class TestDatabaseOperations extends AbstractTest {
   }
 
   @Test
-  void testTriggerFailureAlreadyExistingFixed(EntityManagerFactory entityManagerFactory) {
+  void testTriggerFailureAlreadyExistingFixed() {
     StorageUnit unit1 =
         createStorageUnit(entityManagerFactory, 1, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
     StorageConsistencyCheck check1 =
@@ -649,7 +643,7 @@ class TestDatabaseOperations extends AbstractTest {
   }
 
   @Test
-  void testTriggerFailureAlreadyExistingAcknowledged(EntityManagerFactory entityManagerFactory) {
+  void testTriggerFailureAlreadyExistingAcknowledged() {
     StorageUnit unit1 =
         createStorageUnit(entityManagerFactory, 1, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
     StorageConsistencyCheck check1 =
@@ -694,8 +688,7 @@ class TestDatabaseOperations extends AbstractTest {
   }
 
   @Test
-  void testTriggerFailureAlreadyExistingAcknowledgedChangeType(
-      EntityManagerFactory entityManagerFactory) {
+  void testTriggerFailureAlreadyExistingAcknowledgedChangeType() {
     StorageUnit unit1 =
         createStorageUnit(entityManagerFactory, 1, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
     StorageConsistencyCheck check1 =
@@ -740,7 +733,7 @@ class TestDatabaseOperations extends AbstractTest {
   }
 
   @Test
-  void testCleanFailures(EntityManagerFactory entityManagerFactory) {
+  void testCleanFailures() {
     StorageUnit unit1 =
         createStorageUnit(entityManagerFactory, 1, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
     StorageConsistencyCheck check1 =
@@ -911,7 +904,7 @@ class TestDatabaseOperations extends AbstractTest {
   }
 
   @Test
-  void testCreateRemoveFichier(EntityManagerFactory entityManagerFactory) {
+  void testCreateRemoveFichier() {
     StorageUnit storageUnit =
         createStorageUnit(entityManagerFactory, 1, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
     doInWriteTransactionEntityManager(
@@ -955,7 +948,7 @@ class TestDatabaseOperations extends AbstractTest {
   }
 
   @Test
-  void testGetStorageUnit(EntityManagerFactory entityManagerFactory) {
+  void testGetStorageUnit() {
     StorageUnit storageUnit =
         createStorageUnit(entityManagerFactory, 1, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
     doInReadTransactionEntityManager(
@@ -967,7 +960,7 @@ class TestDatabaseOperations extends AbstractTest {
   }
 
   @Test
-  void testGetStorageUnitEmpty(EntityManagerFactory entityManagerFactory) {
+  void testGetStorageUnitEmpty() {
     doInReadTransactionEntityManager(
         entityManagerFactory,
         em -> {
@@ -977,7 +970,7 @@ class TestDatabaseOperations extends AbstractTest {
   }
 
   @Test
-  void testListStorageUnit(EntityManagerFactory entityManagerFactory) {
+  void testListStorageUnit() {
     StorageUnit storageUnit1 =
         createStorageUnit(entityManagerFactory, 2, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
     StorageUnit storageUnit2 =
@@ -992,7 +985,7 @@ class TestDatabaseOperations extends AbstractTest {
   }
 
   @Test
-  void testGetLastCheckEmpty(EntityManagerFactory entityManagerFactory) {
+  void testGetLastCheckEmpty() {
     StorageUnit unit1 =
         createStorageUnit(
             entityManagerFactory, 1l, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
@@ -1005,7 +998,7 @@ class TestDatabaseOperations extends AbstractTest {
   }
 
   @Test
-  void testGetLastCheckFilterUnit(EntityManagerFactory entityManagerFactory) {
+  void testGetLastCheckFilterUnit() {
     StorageUnit unit1 =
         createStorageUnit(
             entityManagerFactory, 1l, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
@@ -1035,7 +1028,7 @@ class TestDatabaseOperations extends AbstractTest {
   }
 
   @Test
-  void testGetLastCheckOrder(EntityManagerFactory entityManagerFactory) {
+  void testGetLastCheckOrder() {
     StorageUnit unit1 =
         createStorageUnit(
             entityManagerFactory, 1l, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
@@ -1062,7 +1055,7 @@ class TestDatabaseOperations extends AbstractTest {
   }
 
   @Test
-  void testGetLastCheckAnyType(EntityManagerFactory entityManagerFactory) {
+  void testGetLastCheckAnyType() {
     StorageUnit unit1 =
         createStorageUnit(
             entityManagerFactory, 1l, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
@@ -1089,7 +1082,7 @@ class TestDatabaseOperations extends AbstractTest {
   }
 
   @Test
-  void testGetLastCheckChecksumEmpty(EntityManagerFactory entityManagerFactory) {
+  void testGetLastCheckChecksumEmpty() {
     StorageUnit unit1 =
         createStorageUnit(
             entityManagerFactory, 1l, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
@@ -1102,7 +1095,7 @@ class TestDatabaseOperations extends AbstractTest {
   }
 
   @Test
-  void testGetLastCheckChecksumFilterUnit(EntityManagerFactory entityManagerFactory) {
+  void testGetLastCheckChecksumFilterUnit() {
     StorageUnit unit1 =
         createStorageUnit(
             entityManagerFactory, 1l, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
@@ -1132,7 +1125,7 @@ class TestDatabaseOperations extends AbstractTest {
   }
 
   @Test
-  void testGetLastCheckChecksumOrder(EntityManagerFactory entityManagerFactory) {
+  void testGetLastCheckChecksumOrder() {
     StorageUnit unit1 =
         createStorageUnit(
             entityManagerFactory, 1l, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
@@ -1159,7 +1152,7 @@ class TestDatabaseOperations extends AbstractTest {
   }
 
   @Test
-  void testGetLastCheckChecksumFilterType(EntityManagerFactory entityManagerFactory) {
+  void testGetLastCheckChecksumFilterType() {
     StorageUnit unit1 =
         createStorageUnit(
             entityManagerFactory, 1l, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
@@ -1187,7 +1180,7 @@ class TestDatabaseOperations extends AbstractTest {
   }
 
   @Test
-  void testCreateConsistencyCheck(EntityManagerFactory entityManagerFactory) {
+  void testCreateConsistencyCheck() {
     StorageUnit storageUnit =
         createStorageUnit(entityManagerFactory, 1, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
     StorageConsistencyCheck check =
@@ -1214,7 +1207,7 @@ class TestDatabaseOperations extends AbstractTest {
   }
 
   @Test
-  void testGetStorageStatistics(EntityManagerFactory entityManagerFactory) {
+  void testGetStorageStatistics() {
     StorageUnit storageUnit1 =
         createStorageUnit(entityManagerFactory, 1, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
     createFichier(
@@ -1270,7 +1263,7 @@ class TestDatabaseOperations extends AbstractTest {
   }
 
   @Test
-  void testGetStorageFailureStatistics(EntityManagerFactory entityManagerFactory) {
+  void testGetStorageFailureStatistics() {
     StorageUnit storageUnit1 =
         createStorageUnit(entityManagerFactory, 1, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
     Fichier fichier11 =
@@ -1430,7 +1423,7 @@ class TestDatabaseOperations extends AbstractTest {
   }
 
   @Test
-  void testGetStorageOrphanStatistics(EntityManagerFactory entityManagerFactory) {
+  void testGetStorageOrphanStatistics() {
     StorageUnit storageUnit1 =
         createStorageUnit(entityManagerFactory, 1, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
     Fichier fichier11 =
@@ -1521,20 +1514,13 @@ class TestDatabaseOperations extends AbstractTest {
   }
 
   @Test
-  void testGetStorageCheckStatistics(EntityManagerFactory entityManagerFactory) {
+  void testGetStorageCheckStatistics() {
     // statistic precision is limited to second
     ZonedDateTime now = ZonedDateTime.now().truncatedTo(ChronoUnit.SECONDS);
     StorageUnit unit1 =
         createStorageUnit(entityManagerFactory, 1, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
     StorageUnit unit2 =
         createStorageUnit(entityManagerFactory, 2, StorageUnitType.TYPE_2, StorageUnitStatus.ALIVE);
-    // only run with postgresql
-    Assumptions.assumeThat(
-            Optional.ofNullable(System.getenv("TEST_DB_TYPE"))
-                .filter(Predicate.not(Strings::isNullOrEmpty))
-                .filter("postgresql"::equals))
-        .as("testGetStorageCheckStatistics only available with postgresql")
-        .isNotEmpty();
 
     assertThat(getStorageCheckStatistics(entityManagerFactory))
         .hasSize(2)
@@ -1724,25 +1710,9 @@ class TestDatabaseOperations extends AbstractTest {
             atIndex(1));
   }
 
-  @Test
-  void testGetStorageCheckStatisticsNotSupported(
-      EntityManagerFactory entityManagerFactory, @JdbcDriver Class<?> driver) {
-    // only run without postgresql
-    Assumptions.assumeThat(driver.equals(Driver.class))
-        .as("testGetStorageCheckStatistics only available with postgresql")
-        .isFalse();
-    assertThatCode(
-            () -> {
-              getStorageCheckStatistics(entityManagerFactory);
-            })
-        .as("Exception explaining that method is not supported without postgresql")
-        .isInstanceOf(IllegalStateException.class)
-        .hasMessageContaining("postgresql");
-  }
-
   @SuppressWarnings("unchecked")
   @Test
-  void testFichierCreatedBy(EntityManagerFactory entityManagerFactory) {
+  void testFichierCreatedBy() {
     StorageUnit unit =
         createStorageUnit(
             entityManagerFactory, 1l, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
@@ -1775,7 +1745,7 @@ class TestDatabaseOperations extends AbstractTest {
   }
 
   @Test
-  void testListInvalidated(EntityManagerFactory entityManagerFactory) {
+  void testListInvalidated() {
     StorageUnit unit =
         createStorageUnit(
             entityManagerFactory, 1l, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
@@ -1796,7 +1766,7 @@ class TestDatabaseOperations extends AbstractTest {
   }
 
   @Test
-  void testListTransient(EntityManagerFactory entityManagerFactory) {
+  void testListTransient() {
     LocalDateTime oneDayOld = LocalDateTime.now().minusDays(1);
     StorageUnit unit =
         createStorageUnit(
@@ -1825,7 +1795,7 @@ class TestDatabaseOperations extends AbstractTest {
   }
 
   @Test
-  void testRemove(EntityManagerFactory entityManagerFactory) {
+  void testRemove() {
     StorageUnit unit =
         createStorageUnit(
             entityManagerFactory, 1l, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
@@ -1848,7 +1818,7 @@ class TestDatabaseOperations extends AbstractTest {
   }
 
   @Test
-  void testListStorageUnitsToSplit(EntityManagerFactory entityManagerFactory) {
+  void testListStorageUnitsToSplit() {
     StorageUnit unit =
         createStorageUnit(
             entityManagerFactory, 1l, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
@@ -1862,7 +1832,7 @@ class TestDatabaseOperations extends AbstractTest {
   }
 
   @Test
-  void testListStorageUnitsToSplitNoSizeOverflow(EntityManagerFactory entityManagerFactory) {
+  void testListStorageUnitsToSplitNoSizeOverflow() {
     StorageUnit unit =
         createStorageUnit(
             entityManagerFactory,
@@ -1882,7 +1852,7 @@ class TestDatabaseOperations extends AbstractTest {
   }
 
   @Test
-  void testListStorageUnitsToSplitSizeOverflow(EntityManagerFactory entityManagerFactory) {
+  void testListStorageUnitsToSplitSizeOverflow() {
     StorageUnit unit =
         createStorageUnit(
             entityManagerFactory,
@@ -1902,7 +1872,7 @@ class TestDatabaseOperations extends AbstractTest {
   }
 
   @Test
-  void testListStorageUnitsToSplitSizeOverflowOnlyOne(EntityManagerFactory entityManagerFactory) {
+  void testListStorageUnitsToSplitSizeOverflowOnlyOne() {
     // split only this storage unit
     StorageUnit unit1 =
         createStorageUnit(
@@ -1936,7 +1906,7 @@ class TestDatabaseOperations extends AbstractTest {
   }
 
   @Test
-  void testListStorageUnitsToSplitDurationNoOverflow(EntityManagerFactory entityManagerFactory) {
+  void testListStorageUnitsToSplitDurationNoOverflow() {
     StorageUnit unit =
         createStorageUnit(
             entityManagerFactory,
@@ -1956,7 +1926,7 @@ class TestDatabaseOperations extends AbstractTest {
   }
 
   @Test
-  void testListStorageUnitsToSplitDurationOverflow(EntityManagerFactory entityManagerFactory) {
+  void testListStorageUnitsToSplitDurationOverflow() {
     StorageUnit unit =
         createStorageUnit(
             entityManagerFactory,
@@ -1976,8 +1946,7 @@ class TestDatabaseOperations extends AbstractTest {
   }
 
   @Test
-  void testListStorageUnitsToSplit_durationOverflow_sizeNoOverflow(
-      EntityManagerFactory entityManagerFactory) {
+  void testListStorageUnitsToSplit_durationOverflow_sizeNoOverflow() {
     StorageUnit unit =
         createStorageUnit(
             entityManagerFactory,
@@ -1997,8 +1966,7 @@ class TestDatabaseOperations extends AbstractTest {
   }
 
   @Test
-  void testListStorageUnitsToSplit_bothDurationSizeOverflow(
-      EntityManagerFactory entityManagerFactory) {
+  void testListStorageUnitsToSplit_bothDurationSizeOverflow() {
     StorageUnit unit =
         createStorageUnit(
             entityManagerFactory,
@@ -2018,7 +1986,7 @@ class TestDatabaseOperations extends AbstractTest {
   }
 
   @Test
-  void testSplitStorageUnit(EntityManagerFactory entityManagerFactory) {
+  void testSplitStorageUnit() {
     StorageUnit unit =
         createStorageUnit(
             entityManagerFactory,
@@ -2059,7 +2027,7 @@ class TestDatabaseOperations extends AbstractTest {
   }
 
   @Test
-  void testSplitStorageUnitWrongStatus(EntityManagerFactory entityManagerFactory) {
+  void testSplitStorageUnitWrongStatus() {
     StorageUnit unit =
         createStorageUnit(
             entityManagerFactory, 1l, StorageUnitType.TYPE_1, StorageUnitStatus.ARCHIVED);

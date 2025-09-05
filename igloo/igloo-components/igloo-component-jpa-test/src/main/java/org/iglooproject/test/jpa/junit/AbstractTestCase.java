@@ -238,24 +238,35 @@ public abstract class AbstractTestCase {
       }
     }
 
-    Enumerated enumerated =
-        attribute
-            .getJavaMember()
-            .getDeclaringClass()
-            .getDeclaredField(attribute.getName())
-            .getAnnotation(Enumerated.class);
-    MapKeyEnumerated mapKeyEnumerated =
-        attribute
-            .getJavaMember()
-            .getDeclaringClass()
-            .getDeclaredField(attribute.getName())
-            .getAnnotation(MapKeyEnumerated.class);
-    MapKey mapKey =
-        attribute
-            .getJavaMember()
-            .getDeclaringClass()
-            .getDeclaredField(attribute.getName())
-            .getAnnotation(MapKey.class);
+    Enumerated enumerated;
+    MapKeyEnumerated mapKeyEnumerated;
+    MapKey mapKey;
+    if (attribute.getJavaMember() != null) {
+      enumerated =
+          attribute
+              .getJavaMember()
+              .getDeclaringClass()
+              .getDeclaredField(attribute.getName())
+              .getAnnotation(Enumerated.class);
+      mapKeyEnumerated =
+          attribute
+              .getJavaMember()
+              .getDeclaringClass()
+              .getDeclaredField(attribute.getName())
+              .getAnnotation(MapKeyEnumerated.class);
+      mapKey =
+          attribute
+              .getJavaMember()
+              .getDeclaringClass()
+              .getDeclaredField(attribute.getName())
+              .getAnnotation(MapKey.class);
+    } else {
+      // java member may be null
+      // example : historylog.reference.id because historylog.reference is a composite type
+      enumerated = null;
+      mapKeyEnumerated = null;
+      mapKey = null;
+    }
 
     // cas des embeddable et des collectionOfElements d'embeddable
     if (attribute.getPersistentAttributeType().equals(PersistentAttributeType.ELEMENT_COLLECTION)

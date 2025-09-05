@@ -70,22 +70,21 @@ public abstract class AbstractHistoryLogServiceImpl<
           String.format("Too many arguments (%d, expected %d or less)", objects.length, 4));
     }
     if (objects.length >= 1) {
-      log.setObject1(valueService.create(objects[0]));
+      log.setObject1(valueService.createHistoryValue(objects[0]));
     }
     if (objects.length >= 2) {
-      log.setObject2(valueService.create(objects[1]));
+      log.setObject2(valueService.createHistoryValue(objects[1]));
     }
     if (objects.length >= 3) {
-      log.setObject3(valueService.create(objects[2]));
+      log.setObject3(valueService.createHistoryValue(objects[2]));
     }
     if (objects.length >= 4) {
-      log.setObject4(valueService.create(objects[3]));
+      log.setObject4(valueService.createHistoryValue(objects[3]));
     }
   }
 
   @Override
-  public <T> void log(HET eventType, T mainObject, HLAIB additionalInformation)
-      throws ServiceException, SecurityServiceException {
+  public <T> void log(HET eventType, T mainObject, HLAIB additionalInformation) {
     transactionSynchronizationTaskManagerService.push(
         new HistoryLogBeforeCommitTask<T, HLAIB, HL, HET, HD>(
             Instant.now(), eventType, mainObject, additionalInformation));
@@ -96,8 +95,7 @@ public abstract class AbstractHistoryLogServiceImpl<
       HET eventType,
       T mainObject,
       HLAIB additionalInformation,
-      IDifferenceService<T> differenceService)
-      throws ServiceException, SecurityServiceException {
+      IDifferenceService<T> differenceService) {
     logWithDifferences(
         eventType,
         mainObject,
@@ -113,8 +111,7 @@ public abstract class AbstractHistoryLogServiceImpl<
       T mainObject,
       HLAIB additionalInformation,
       IDifferenceService<T> differenceService,
-      IHistoryDifferenceHandler<? super T, ? super HL>... differenceHandlers)
-      throws ServiceException, SecurityServiceException {
+      IHistoryDifferenceHandler<? super T, ? super HL>... differenceHandlers) {
     logWithDifferences(
         eventType,
         mainObject,
@@ -132,8 +129,7 @@ public abstract class AbstractHistoryLogServiceImpl<
       HLAIB additionalInformation,
       IDifferenceFromReferenceGenerator<T> differenceGenerator,
       IHistoryDifferenceGenerator<T> historyDifferenceGenerator,
-      IHistoryDifferenceHandler<? super T, ? super HL>... differenceHandlers)
-      throws ServiceException, SecurityServiceException {
+      IHistoryDifferenceHandler<? super T, ? super HL>... differenceHandlers) {
     transactionSynchronizationTaskManagerService.push(
         new HistoryLogBeforeCommitWithDifferencesTask<T, HLAIB, HL, HET, HD>(
             Instant.now(),

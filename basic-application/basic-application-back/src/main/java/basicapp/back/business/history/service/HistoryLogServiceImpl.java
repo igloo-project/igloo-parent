@@ -37,10 +37,10 @@ public class HistoryLogServiceImpl
       List<HistoryDifference> differences,
       T mainObject,
       HistoryLogAdditionalInformationBean additionalInformation) {
-    HistoryLog log = new HistoryLog(date, eventType, valueService.create(mainObject));
+    HistoryLog log = new HistoryLog(date, eventType, valueService.createHistoryValue(mainObject));
 
     User subject = userService.getAuthenticatedUser();
-    log.setSubject(valueService.create(subject));
+    log.setSubject(valueService.createHistoryValue(subject));
 
     if (additionalInformation != null) {
       setAdditionalInformation(log, additionalInformation);

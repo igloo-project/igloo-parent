@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.iglooproject.components</groupId>
 		<artifactId>igloo-components</artifactId>
-		<version>6.13.0</version>
+		<version>6.14.1</version>
 	</parent>
 	
 	<artifactId>igloo-jpa-model</artifactId>
@@ -78,6 +78,7 @@
 		<dependency>
 			 <groupId>io.github.openfeign.querydsl</groupId>
 			<artifactId>querydsl-apt</artifactId>
+			<classifier>jakarta</classifier>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate.orm</groupId>
@@ -114,12 +115,6 @@
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>jpa-test</artifactId>
 			<version>${project.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<version>2.2.224</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

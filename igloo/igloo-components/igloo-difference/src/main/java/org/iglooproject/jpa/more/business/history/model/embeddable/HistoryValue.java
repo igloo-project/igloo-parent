@@ -13,13 +13,21 @@ import org.bindgen.Bindable;
 import org.hibernate.Length;
 import org.hibernate.search.mapper.pojo.bridge.mapping.annotation.ValueBridgeRef;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
+import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.business.generic.model.GenericEntityReference;
+import org.iglooproject.jpa.more.business.history.model.AbstractHistoryDifference;
+import org.iglooproject.jpa.more.business.history.model.AbstractHistoryLog;
 import org.iglooproject.jpa.search.bridge.GenericEntityReferenceIdBridge;
 
+/**
+ * {@link AbstractHistoryLog} / {@link AbstractHistoryDifference} version of {@link IHistoryValue}.
+ *
+ * @see IHistoryValue
+ */
 @Embeddable
 @Bindable
 @Access(AccessType.FIELD)
-public class HistoryValue implements Serializable {
+public class HistoryValue implements IHistoryValue, Serializable {
 
   private static final long serialVersionUID = 1251495816635000683L;
 
@@ -60,21 +68,28 @@ public class HistoryValue implements Serializable {
 
   private HistoryValue(
       String label, String serialized, GenericEntityReference<Long, ?> entityValueReference) {
+    this(label, serialized, HistoryEntityReference.from(entityValueReference));
+  }
+
+  public HistoryValue(String label, String serialized, HistoryEntityReference reference) {
     super();
     this.label = label;
     this.serialized = serialized;
-    this.reference = HistoryEntityReference.from(entityValueReference);
+    this.reference = reference;
   }
 
+  @Override
   public String getLabel() {
     return label;
   }
 
+  @Override
   public String getSerialized() {
     return serialized;
   }
 
-  public HistoryEntityReference getReference() {
+  @Override
+  public GenericEntityReference<Long, GenericEntity<Long, ?>> getReference() {
     return reference;
   }
 
@@ -107,5 +122,10 @@ public class HistoryValue implements Serializable {
         .append(getSerialized())
         .append(getReference())
         .build();
+  }
+
+  public static final HistoryValue build(
+      String label, String serialized, GenericEntityReference<Long, ?> reference) {
+    return new HistoryValue(label, serialized, reference);
   }
 }

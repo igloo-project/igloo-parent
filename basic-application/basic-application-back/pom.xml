@@ -6,7 +6,7 @@
 	<parent>
 		<artifactId>basic-application</artifactId>
 		<groupId>org.iglooproject.archetype</groupId>
-		<version>6.13.0</version>
+		<version>6.14.1</version>
 	</parent>
 	
 	<artifactId>basic-application-back</artifactId>
@@ -162,6 +162,7 @@
 		<dependency>
 			 <groupId>io.github.openfeign.querydsl</groupId>
 			<artifactId>querydsl-apt</artifactId>
+			<classifier>jakarta</classifier>
 		</dependency>
 		<dependency>
 			 <groupId>io.github.openfeign.querydsl</groupId>
@@ -256,6 +257,13 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.owasp</groupId>
+				<artifactId>dependency-check-maven</artifactId>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

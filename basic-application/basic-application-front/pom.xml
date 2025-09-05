@@ -6,7 +6,7 @@
 	<parent>
 		<artifactId>basic-application</artifactId>
 		<groupId>org.iglooproject.archetype</groupId>
-		<version>6.13.0</version>
+		<version>6.14.1</version>
 	</parent>
 	
 	<packaging>jar</packaging>
@@ -203,6 +203,13 @@
 				<artifactId>maven-processor-plugin</artifactId>
 				<configuration>
 					<processors>${igloo.processor.bindgen}</processors>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.owasp</groupId>
+				<artifactId>dependency-check-maven</artifactId>
+				<configuration>
+					<skip>true</skip>
 				</configuration>
 			</plugin>
 			<plugin>

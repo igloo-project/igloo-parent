@@ -5,17 +5,31 @@ import igloo.bootstrap.js.statement.IJsLiteral;
 import igloo.bootstrap.js.statement.IJsNumber;
 import igloo.bootstrap.js.statement.IJsStatement;
 import igloo.bootstrap.js.statement.IJsString;
+import igloo.bootstrap.js.statement.IJsVariable;
 import igloo.bootstrap.js.statement.JsBoolean;
 import igloo.bootstrap.js.statement.JsFunction;
 import igloo.bootstrap.js.statement.JsLiteral;
+import igloo.bootstrap.js.statement.JsLocalDateModel;
+import igloo.bootstrap.js.statement.JsLocalDatePairModel;
+import igloo.bootstrap.js.statement.JsLocalDateTimeModel;
+import igloo.bootstrap.js.statement.JsLocalDateTimePairModel;
+import igloo.bootstrap.js.statement.JsLocalTimeModel;
 import igloo.bootstrap.js.statement.JsMapping;
 import igloo.bootstrap.js.statement.JsNumber;
 import igloo.bootstrap.js.statement.JsSequence;
 import igloo.bootstrap.js.statement.JsString;
+import igloo.bootstrap.js.statement.JsVariable;
+import igloo.bootstrap.js.statement.JsYearModel;
+import igloo.bootstrap.js.statement.JsYearMonthModel;
 import igloo.bootstrap.js.type.JsAnyType;
 import igloo.bootstrap.woption.IWOptionDetachable;
 import igloo.bootstrap.woption.IWOptionModel;
 import igloo.wicket.factory.IComponentFactory;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.Year;
+import java.time.YearMonth;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
@@ -23,6 +37,7 @@ import org.apache.wicket.Component;
 import org.apache.wicket.model.IComponentAssignedModel;
 import org.apache.wicket.model.IDetachable;
 import org.apache.wicket.model.IModel;
+import org.javatuples.Pair;
 
 public class JsHelpers {
 
@@ -40,8 +55,41 @@ public class JsHelpers {
     return JsNumber.of(value);
   }
 
+  public static IJsStatement ofLocalDateModel(IModel<LocalDate> localDate) {
+    return JsLocalDateModel.of(localDate);
+  }
+
+  public static IJsStatement ofYearMonthModel(IModel<YearMonth> yearMonthModel) {
+    return JsYearMonthModel.of(yearMonthModel);
+  }
+
+  public static IJsStatement ofYearModel(IModel<Year> yearModel) {
+    return JsYearModel.of(yearModel);
+  }
+
+  public static IJsStatement ofLocalDateTimeModel(IModel<LocalDateTime> localDateTime) {
+    return JsLocalDateTimeModel.of(localDateTime);
+  }
+
+  public static IJsStatement ofLocalTimeModel(IModel<LocalTime> localTimeModel) {
+    return JsLocalTimeModel.of(localTimeModel);
+  }
+
+  public static IJsStatement ofLocalDatePair(IModel<Pair<LocalDate, LocalDate>> value) {
+    return JsLocalDatePairModel.of(value);
+  }
+
+  public static IJsStatement ofLocalDateTimePair(IModel<Pair<LocalDateTime, LocalDateTime>> value) {
+    return JsLocalDateTimePairModel.of(value);
+  }
+
   public static IJsLiteral ofLiteral(String value) {
     return JsLiteral.of(value);
+  }
+
+  /** Create a variable type to distinct a string value from a variable declaration */
+  public static IJsVariable ofJsVariable(String value) {
+    return JsVariable.of(value);
   }
 
   public static IJsFunction ofFunction(String value) {

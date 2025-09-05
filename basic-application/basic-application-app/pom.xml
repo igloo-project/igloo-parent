@@ -5,21 +5,21 @@
 	<parent>
 		<groupId>org.iglooproject</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>6.13.0</version>
+		<version>6.14.1</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	
 	<groupId>org.iglooproject.archetype</groupId>
 	<artifactId>basic-application-app</artifactId>
 	
-	<version>6.13.0</version>
+	<version>6.14.1</version>
 	
 	<packaging>war</packaging>
 	
 	<name>Basic Application - Spring Application</name>
 	
 	<properties>
-		<igloo-maven.version>6.13.0</igloo-maven.version>
+		<igloo-maven.version>6.14.1</igloo-maven.version>
 		<start-class>basicapp.app.SpringBootMain</start-class>
 	</properties>
 	
@@ -108,11 +108,17 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
 			</plugin>
+			<plugin>
+				<groupId>org.owasp</groupId>
+				<artifactId>dependency-check-maven</artifactId>
+				<configuration>
+					<skip>false</skip>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 	
 	<repositories>
-		
 		<repository>
 			<id>nexus-igloo-releases</id>
 			<name>Nexus Igloo Releases</name>

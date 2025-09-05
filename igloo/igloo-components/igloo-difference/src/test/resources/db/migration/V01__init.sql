@@ -1,0 +1,1 @@
+create type historylog_reference_type as enum ('TestData', 'TestUser');
