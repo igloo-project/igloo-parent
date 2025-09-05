@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.iglooproject</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>6.14.0-SNAPSHOT</version>
+		<version>6.14.1</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	
@@ -19,7 +19,7 @@
 	<name>Basic Application - Spring Application</name>
 	
 	<properties>
-		<igloo-maven.version>6.14.0-SNAPSHOT</igloo-maven.version>
+		<igloo-maven.version>6.14.1</igloo-maven.version>
 		<start-class>basicapp.app.SpringBootMain</start-class>
 	</properties>
 	
