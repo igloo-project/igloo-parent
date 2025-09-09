@@ -21,6 +21,7 @@
 		<module>igloo-component-config-test</module>
 		
 		<module>igloo-component-jul-to-slf4j</module>
+		<module>igloo-login-mdc</module>
 		
 		<module>igloo-component-spring</module>
 		<module>igloo-component-spring-bootstrap-config</module>
