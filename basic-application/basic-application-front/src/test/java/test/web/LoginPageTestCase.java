@@ -7,8 +7,6 @@ import basicapp.front.security.login.page.SignInPage;
 import basicapp.front.security.password.page.SecurityPasswordRecoveryRequestCreationPage;
 import basicapp.front.security.password.page.SecurityPasswordRecoveryRequestResetPage;
 import org.apache.wicket.util.tester.FormTester;
-import org.iglooproject.jpa.exception.SecurityServiceException;
-import org.iglooproject.jpa.exception.ServiceException;
 import org.junit.jupiter.api.Test;
 import test.web.config.spring.SpringBootTestBasicApplicationWebapp;
 
@@ -47,7 +45,7 @@ class LoginPageTestCase extends AbstractBasicApplicationWebappTestCase {
   }
 
   @Test
-  void formSubmitSuccess() throws ServiceException, SecurityServiceException {
+  void formSubmitSuccess() {
     tester.startPage(SignInPage.class);
     tester.assertRenderedPage(SignInPage.class);
 
@@ -66,7 +64,7 @@ class LoginPageTestCase extends AbstractBasicApplicationWebappTestCase {
   }
 
   @Test
-  void formSubmitFail() throws ServiceException, SecurityServiceException {
+  void formSubmitFail() {
     tester.startPage(SignInPage.class);
     tester.assertRenderedPage(SignInPage.class);
 

@@ -22,7 +22,6 @@ import java.util.Collections;
 import java.util.EnumSet;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.protocol.http.WicketFilter;
-import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.more.rendering.service.IRendererService;
 import org.iglooproject.jpa.security.business.user.service.ICoreUserSecurityService;
 import org.iglooproject.wicket.more.notification.service.IHtmlNotificationCssService;
@@ -72,7 +71,7 @@ public class BasicApplicationWebappConfig {
 
   /** Override parent bean declaration so that we add our custom styles. */
   @Bean
-  public IHtmlNotificationCssService htmlNotificationCssService() throws ServiceException {
+  public IHtmlNotificationCssService htmlNotificationCssService() {
     IHtmlNotificationCssService service = new PhlocCssHtmlNotificationCssServiceImpl();
     //    service.registerDefaultStyles(NotificationEmailScssResourceReference.get());
     return service;

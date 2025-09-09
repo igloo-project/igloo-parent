@@ -1,10 +1,8 @@
 package test.core;
 
 import basicapp.back.business.user.model.User;
-import basicapp.back.business.user.service.business.IUserService;
+import basicapp.back.business.user.repository.IUserRepository;
 import java.util.Set;
-import org.iglooproject.jpa.exception.SecurityServiceException;
-import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.test.jpa.junit.AbstractTestCase;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,26 +21,25 @@ public abstract class AbstractBasicApplicationTestCase extends AbstractTestCase 
 
   @Autowired protected TestEntityDatabaseHelper entityDatabaseHelper;
 
-  @Autowired protected IUserService userService;
+  @Autowired protected IUserRepository userRepository;
 
   @BeforeEach
   @Override
-  public void init() throws ServiceException, SecurityServiceException {
+  public void init() {
     // Database cleaning performed by IglooTestExecutionListener
     // nothing to do
   }
 
   @AfterEach
   @Override
-  public void close() throws ServiceException, SecurityServiceException {
+  public void close() {
     // Database cleaning performed by IglooTestExecutionListener
     // nothing to do
   }
 
-  protected User addPermissions(User user, String... permissions)
-      throws ServiceException, SecurityServiceException {
+  protected User addPermissions(User user, String... permissions) {
     user.addRole(entityDatabaseHelper.createRole(r -> r.setPermissions(Set.of(permissions)), true));
-    userService.update(user);
+    userRepository.save(user);
     return user;
   }
 }

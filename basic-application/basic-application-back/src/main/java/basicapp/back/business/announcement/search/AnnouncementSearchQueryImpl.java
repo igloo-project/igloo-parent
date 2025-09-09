@@ -1,24 +1,30 @@
 package basicapp.back.business.announcement.search;
 
+import static org.iglooproject.jpa.more.util.jparepository.JpaRepositoryUtils.createPageRequest;
+
 import basicapp.back.business.announcement.model.Announcement;
-import basicapp.back.business.announcement.model.QAnnouncement;
-import com.querydsl.jpa.impl.JPAQuery;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
+import basicapp.back.business.announcement.repository.IAnnouncementRepository;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import org.iglooproject.jpa.jparepository.SpecificationBuilder;
 import org.iglooproject.jpa.more.business.sort.ISort.SortOrder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AnnouncementSearchQueryImpl implements IAnnouncementSearchQuery {
 
-  private static final QAnnouncement qAnnouncement = QAnnouncement.announcement;
+  private final IAnnouncementRepository announcementRepository;
 
-  @PersistenceContext private EntityManager entityManager;
+  @Autowired
+  public AnnouncementSearchQueryImpl(IAnnouncementRepository announcementRepository) {
+    this.announcementRepository = announcementRepository;
+  }
 
   @Override
-  public List<Announcement> list(
+  public Collection<Announcement> list(
       AnnouncementSearchQueryData data,
       Map<AnnouncementSort, SortOrder> sorts,
       Integer offset,
@@ -27,31 +33,18 @@ public class AnnouncementSearchQueryImpl implements IAnnouncementSearchQuery {
       return List.of();
     }
 
-    JPAQuery<Announcement> query =
-        new JPAQuery<>(entityManager).select(qAnnouncement).from(qAnnouncement);
-
-    predicateContributor(query, data);
-    sortContributor(query, sorts);
-    hitsContributor(query, offset, limit);
-
-    return query.fetch();
+    return announcementRepository
+        .findAll(predicateContributor(data), createPageRequest(sorts, offset, limit))
+        .getContent();
   }
 
   @Override
   public long size(AnnouncementSearchQueryData data) {
-    JPAQuery<Announcement> query =
-        new JPAQuery<>(entityManager).select(qAnnouncement).from(qAnnouncement);
-
-    predicateContributor(query, data);
-
-    @SuppressWarnings("deprecation")
-    long size = query.fetchCount();
-
-    return size;
+    return announcementRepository.count(predicateContributor(data));
   }
 
-  private void predicateContributor(
-      JPAQuery<Announcement> query, AnnouncementSearchQueryData data) {
-    // nothing to do
+  private Specification<Announcement> predicateContributor(
+      AnnouncementSearchQueryData data) { // NOSONAR
+    return new SpecificationBuilder<Announcement>().build();
   }
 }

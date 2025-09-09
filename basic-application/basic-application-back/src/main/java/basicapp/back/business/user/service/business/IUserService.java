@@ -1,46 +1,45 @@
 package basicapp.back.business.user.service.business;
 
 import basicapp.back.business.common.model.EmailAddress;
+import basicapp.back.business.notification.service.exception.NotificationException;
 import basicapp.back.business.user.model.User;
 import java.util.Locale;
-import org.iglooproject.jpa.business.generic.service.IGenericEntityService;
 import org.iglooproject.jpa.exception.SecurityServiceException;
-import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.security.business.user.service.ICoreUserSecurityService;
 
-public interface IUserService
-    extends ICoreUserSecurityService<User>, IGenericEntityService<Long, User> {
+public interface IUserService extends ICoreUserSecurityService<User> {
 
-  void saveBasicUser(User user, String password) throws SecurityServiceException, ServiceException;
+  void saveBasicUser(User user, String password)
+      throws SecurityServiceException, NotificationException;
 
   void saveTechnicalUser(User user, String password)
-      throws SecurityServiceException, ServiceException;
+      throws SecurityServiceException, NotificationException;
 
-  void onSignIn(User user) throws ServiceException, SecurityServiceException;
+  void saveUser(User user);
 
-  void onSignInFail(User user) throws ServiceException, SecurityServiceException;
+  void onSignIn(User user);
 
-  void setPasswords(User user, String rawPassword)
-      throws ServiceException, SecurityServiceException;
+  void onSignInFail(User user);
 
-  void initPasswordRecoveryRequest(EmailAddress emailAddress)
-      throws SecurityServiceException, ServiceException;
+  void setPasswords(User user, String rawPassword) throws SecurityServiceException;
 
-  void enable(User user) throws ServiceException, SecurityServiceException;
+  void initPasswordRecoveryRequest(EmailAddress emailAddress) throws NotificationException;
 
-  void disable(User user) throws ServiceException, SecurityServiceException;
+  void enable(User user);
 
-  void updateLastLoginDate(User user) throws ServiceException, SecurityServiceException;
+  void disable(User user);
 
-  void updateLocale(User user, Locale locale) throws ServiceException, SecurityServiceException;
+  void updateLastLoginDate(User user);
 
-  void updateRoles(User user) throws SecurityServiceException, ServiceException;
+  void updateLocale(User user, Locale locale);
 
-  void openAnnouncement(User user) throws ServiceException, SecurityServiceException;
+  void openAnnouncement(User user);
 
-  void closeAnnouncement(User user) throws ServiceException, SecurityServiceException;
+  void closeAnnouncement(User user);
 
   User getByEmailAddressCaseInsensitive(EmailAddress emailAddress);
 
   User getAuthenticatedUser();
+
+  long count();
 }

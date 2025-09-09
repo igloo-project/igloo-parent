@@ -3,8 +3,6 @@ package basicapp.back.business.announcement.service.controller;
 import basicapp.back.business.announcement.model.Announcement;
 import basicapp.back.business.announcement.service.business.IAnnouncementService;
 import java.util.List;
-import org.iglooproject.jpa.exception.SecurityServiceException;
-import org.iglooproject.jpa.exception.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,14 +17,12 @@ public class AnnouncementControllerServiceImpl implements IAnnouncementControlle
   }
 
   @Override
-  public void saveAnnouncement(Announcement announcement)
-      throws ServiceException, SecurityServiceException {
+  public void saveAnnouncement(Announcement announcement) {
     announcementService.saveAnnouncement(announcement);
   }
 
   @Override
-  public void deleteAnnouncement(Announcement announcement)
-      throws SecurityServiceException, ServiceException {
+  public void deleteAnnouncement(Announcement announcement) {
     announcementService.deleteAnnouncement(announcement);
   }
 

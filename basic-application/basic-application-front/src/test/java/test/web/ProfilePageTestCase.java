@@ -9,8 +9,6 @@ import org.apache.wicket.Component;
 import org.apache.wicket.feedback.ExactLevelFeedbackMessageFilter;
 import org.apache.wicket.feedback.FeedbackMessage;
 import org.apache.wicket.util.tester.FormTester;
-import org.iglooproject.jpa.exception.SecurityServiceException;
-import org.iglooproject.jpa.exception.ServiceException;
 import org.junit.jupiter.api.Test;
 import org.wicketstuff.wiquery.core.events.MouseEvent;
 import test.web.config.spring.SpringBootTestBasicApplicationWebapp;
@@ -19,7 +17,7 @@ import test.web.config.spring.SpringBootTestBasicApplicationWebapp;
 class ProfilePageTestCase extends AbstractBasicApplicationWebappTestCase {
 
   @Test
-  void initPage() throws ServiceException, SecurityServiceException {
+  void initPage() {
     authenticateUser(basicUser);
 
     tester.startPage(ProfilePage.class);
@@ -27,7 +25,7 @@ class ProfilePageTestCase extends AbstractBasicApplicationWebappTestCase {
   }
 
   @Test
-  void updatePasswordPanelComponents() throws ServiceException, SecurityServiceException {
+  void updatePasswordPanelComponents() {
     authenticateUser(basicUser);
 
     tester.startPage(ProfilePage.class);
@@ -64,7 +62,7 @@ class ProfilePageTestCase extends AbstractBasicApplicationWebappTestCase {
   }
 
   @Test
-  void updatePasswordFormMissingRequiredFields() throws ServiceException, SecurityServiceException {
+  void updatePasswordFormMissingRequiredFields() {
     authenticateUser(basicUser);
 
     tester.startPage(ProfilePage.class);
@@ -84,7 +82,7 @@ class ProfilePageTestCase extends AbstractBasicApplicationWebappTestCase {
   }
 
   @Test
-  void updatePasswordFormSuccess() throws ServiceException, SecurityServiceException {
+  void updatePasswordFormSuccess() {
     authenticateUser(basicUser);
 
     tester.startPage(ProfilePage.class);

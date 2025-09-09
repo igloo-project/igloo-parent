@@ -1,9 +1,8 @@
 package basicapp.back.business.upgrade.service;
 
-import org.iglooproject.jpa.exception.SecurityServiceException;
-import org.iglooproject.jpa.exception.ServiceException;
+import basicapp.back.business.upgrade.exception.DataUpgradeServiceException;
 
 public interface IDataUpgradeManager {
 
-  void autoPerformDataUpgrades() throws ServiceException, SecurityServiceException;
+  void autoPerformDataUpgrades() throws DataUpgradeServiceException;
 }

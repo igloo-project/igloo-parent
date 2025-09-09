@@ -8,15 +8,13 @@ import static org.iglooproject.jpa.security.business.authority.util.CoreAuthorit
 import static org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants.ROLE_ANONYMOUS;
 import static org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants.ROLE_AUTHENTICATED;
 
-import basicapp.back.business.role.service.IRoleService;
+import basicapp.back.business.role.service.business.IRoleService;
 import basicapp.back.business.user.model.atomic.UserType;
 import com.google.common.collect.ImmutableSortedSet;
 import igloo.security.ICoreUserDetailsService;
 import igloo.security.UserDetails;
 import java.util.List;
 import org.assertj.core.api.Assertions;
-import org.iglooproject.jpa.exception.SecurityServiceException;
-import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.security.model.NamedPermission;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +30,7 @@ public class TestUserDetailsService extends AbstractBasicApplicationTestCase {
   @Autowired private IRoleService roleService;
 
   @Test
-  void testGetAuthoritiesAndPermissions_technicalUser()
-      throws SecurityServiceException, ServiceException {
+  void testGetAuthoritiesAndPermissions_technicalUser() {
 
     UserDetails userDetails = userDetailsService.loadUserByUsername(ADMIN_USERNAME);
     Assertions.assertThat(userDetails).isNotNull();
@@ -50,14 +47,13 @@ public class TestUserDetailsService extends AbstractBasicApplicationTestCase {
 
     Assertions.assertThat(permissions)
         .containsExactlyInAnyOrder(
-            roleService.list().stream()
+            roleService.findAll().stream()
                 .flatMap(role -> role.getPermissions().stream())
                 .toArray(String[]::new));
   }
 
   @Test
-  void testGetAuthoritiesAndPermissions_basicUser()
-      throws SecurityServiceException, ServiceException {
+  void testGetAuthoritiesAndPermissions_basicUser() {
     entityDatabaseHelper.createRole(
         r ->
             r.setPermissions(

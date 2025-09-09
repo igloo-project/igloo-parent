@@ -6,8 +6,6 @@ import basicapp.front.profile.page.ProfilePage;
 import basicapp.front.user.page.TechnicalUserListPage;
 import org.apache.wicket.Component;
 import org.apache.wicket.util.tester.FormTester;
-import org.iglooproject.jpa.exception.SecurityServiceException;
-import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.wicket.more.markup.html.form.LocaleDropDownChoice;
 import org.junit.jupiter.api.Test;
 import org.wicketstuff.wiquery.core.events.MouseEvent;
@@ -18,7 +16,7 @@ class ValidatorTestCase extends AbstractBasicApplicationWebappTestCase {
 
   /** Test the UserPasswordValidator when username = password which shouldn't be allowed */
   @Test
-  void technicalUserPasswordValidator() throws ServiceException, SecurityServiceException {
+  void technicalUserPasswordValidator() {
     addPermissions(administrator, GLOBAL_USER_READ);
 
     authenticateUser(administrator);
@@ -51,7 +49,7 @@ class ValidatorTestCase extends AbstractBasicApplicationWebappTestCase {
   }
 
   @Test
-  void basicUserPasswordValidator() throws ServiceException, SecurityServiceException {
+  void basicUserPasswordValidator() {
     authenticateUser(basicUser);
 
     tester.startPage(ProfilePage.class);

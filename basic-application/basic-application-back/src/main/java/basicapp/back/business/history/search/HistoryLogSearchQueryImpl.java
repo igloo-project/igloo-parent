@@ -1,28 +1,31 @@
 package basicapp.back.business.history.search;
 
+import static org.iglooproject.jpa.more.util.jparepository.JpaRepositoryUtils.createPageRequest;
+
 import basicapp.back.business.history.model.HistoryLog;
-import basicapp.back.business.history.model.QHistoryDifference;
-import basicapp.back.business.history.model.QHistoryLog;
 import basicapp.back.business.history.model.atomic.HistoryEventType;
-import com.querydsl.core.BooleanBuilder;
-import com.querydsl.jpa.impl.JPAQuery;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
+import basicapp.back.business.history.repository.HistoryLogSpecifications;
+import basicapp.back.business.history.repository.IHistoryLogRepository;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.EnumUtils;
-import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryEntityReference;
+import org.iglooproject.jpa.jparepository.SpecificationBuilder;
 import org.iglooproject.jpa.more.business.sort.ISort;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 @Service
 public class HistoryLogSearchQueryImpl implements IHistoryLogSearchQuery {
 
-  private static final QHistoryLog qHistoryLog = QHistoryLog.historyLog;
-  private static final QHistoryDifference qHistoryDifference = QHistoryDifference.historyDifference;
+  private final IHistoryLogRepository historyLogRepository;
 
-  @PersistenceContext private EntityManager entityManager;
+  @Autowired
+  public HistoryLogSearchQueryImpl(IHistoryLogRepository historyLogRepository) {
+    this.historyLogRepository = historyLogRepository;
+  }
 
   @Override
   public Collection<HistoryLog> list(
@@ -34,81 +37,58 @@ public class HistoryLogSearchQueryImpl implements IHistoryLogSearchQuery {
       return List.of();
     }
 
-    JPAQuery<HistoryLog> query =
-        new JPAQuery<>(entityManager).select(qHistoryLog).from(qHistoryLog);
-
-    joinContributor(query, data);
-    predicateContributor(query, data);
-    sortContributor(query, sorts);
-    hitsContributor(query, offset, limit);
-
-    return query.distinct().fetch();
+    return historyLogRepository
+        .findAll(predicateContributor(data), createPageRequest(sorts, offset, limit))
+        .getContent();
   }
 
   @Override
   public long size(HistoryLogSearchQueryData data) {
-    JPAQuery<HistoryLog> query =
-        new JPAQuery<>(entityManager).select(qHistoryLog).from(qHistoryLog);
-
-    joinContributor(query, data);
-    predicateContributor(query, data);
-
-    @SuppressWarnings("deprecation")
-    long size = query.distinct().fetchCount();
-
-    return size;
+    return historyLogRepository.count(predicateContributor(data));
   }
 
-  private void joinContributor(JPAQuery<?> query, HistoryLogSearchQueryData data) {
-    if (data.getMandatoryDifferencesEventTypes() != null
-        && !data.getMandatoryDifferencesEventTypes().isEmpty()) {
-      query.leftJoin(qHistoryLog.differences, qHistoryDifference);
-    }
-  }
-
-  private void predicateContributor(JPAQuery<?> query, HistoryLogSearchQueryData data) {
+  private Specification<HistoryLog> predicateContributor(HistoryLogSearchQueryData data) {
+    SpecificationBuilder<HistoryLog> builder = new SpecificationBuilder<>();
     if (data.getDateMin() != null || data.getDateMax() != null) {
-      query.where(qHistoryLog.date.between(data.getDateMin(), data.getDateMax()));
+      builder.and(HistoryLogSpecifications.date(data.getDateMin(), data.getDateMax()));
     }
-    if (data.getEventTypes() != null && !data.getEventTypes().isEmpty()) {
-      query.where(qHistoryLog.eventType.in(data.getEventTypes()));
+    if (CollectionUtils.isNotEmpty(data.getEventTypes())) {
+      builder.and(HistoryLogSpecifications.eventType(data.getEventTypes()));
     }
     if (data.getSubject() != null) {
-      query.where(qHistoryLog.subject.reference.eq(new HistoryEntityReference(data.getSubject())));
+      builder.and(HistoryLogSpecifications.subject(data.getSubject()));
     }
     if (data.getAllObjects() != null) {
-      BooleanBuilder condition = new BooleanBuilder();
-      condition.or(qHistoryLog.mainObject.reference.eq(data.getAllObjects()));
-      condition.or(qHistoryLog.object1.reference.eq(data.getAllObjects()));
-      condition.or(qHistoryLog.object2.reference.eq(data.getAllObjects()));
-      condition.or(qHistoryLog.object3.reference.eq(data.getAllObjects()));
-      condition.or(qHistoryLog.object4.reference.eq(data.getAllObjects()));
-      query.where(condition);
+      builder.and(
+          HistoryLogSpecifications.mainObject(data.getAllObjects())
+              .or(HistoryLogSpecifications.object1(data.getAllObjects()))
+              .or(HistoryLogSpecifications.object2(data.getAllObjects()))
+              .or(HistoryLogSpecifications.object3(data.getAllObjects()))
+              .or(HistoryLogSpecifications.object4(data.getAllObjects())));
     }
     if (data.getMainObject() != null) {
-      query.where(qHistoryLog.mainObject.reference.eq(data.getMainObject()));
+      builder.and(HistoryLogSpecifications.mainObject(data.getAllObjects()));
     }
     if (data.getObject1() != null) {
-      query.where(qHistoryLog.object1.reference.eq(data.getObject1()));
+      builder.and(HistoryLogSpecifications.object1(data.getAllObjects()));
     }
     if (data.getObject2() != null) {
-      query.where(qHistoryLog.object2.reference.eq(data.getObject2()));
+      builder.and(HistoryLogSpecifications.object2(data.getAllObjects()));
     }
     if (data.getObject3() != null) {
-      query.where(qHistoryLog.object3.reference.eq(data.getObject3()));
+      builder.and(HistoryLogSpecifications.object3(data.getAllObjects()));
     }
     if (data.getObject4() != null) {
-      query.where(qHistoryLog.object4.reference.eq(data.getObject4()));
+      builder.and(HistoryLogSpecifications.object4(data.getAllObjects()));
     }
-    if (data.getMandatoryDifferencesEventTypes() != null
-        && !data.getMandatoryDifferencesEventTypes().isEmpty()) {
+    if (CollectionUtils.isNotEmpty(data.getMandatoryDifferencesEventTypes())) {
       Collection<HistoryEventType> allowedWithoutDifferencesEventTypes =
           EnumUtils.getEnumList(HistoryEventType.class);
       allowedWithoutDifferencesEventTypes.removeAll(data.getMandatoryDifferencesEventTypes());
-      BooleanBuilder condition = new BooleanBuilder();
-      condition.or(qHistoryLog.eventType.in(allowedWithoutDifferencesEventTypes));
-      condition.or(qHistoryDifference.isNotNull());
-      query.where(condition);
+      builder.and(
+          HistoryLogSpecifications.eventType(allowedWithoutDifferencesEventTypes)
+              .or(HistoryLogSpecifications.hasHistoryDifference()));
     }
+    return builder.build();
   }
 }

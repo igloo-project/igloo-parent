@@ -1,7 +1,5 @@
 package basicapp.back.business.upgrade.model;
 
-import org.iglooproject.jpa.exception.SecurityServiceException;
-import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.more.business.upgrade.model.IDataUpgrade;
 import org.iglooproject.jpa.more.util.init.service.IImportDataService;
 import org.iglooproject.jpa.search.service.IHibernateSearchService;
@@ -27,7 +25,7 @@ public class DataUpgrade_InitDataFromExcel implements IDataUpgrade {
   }
 
   @Override
-  public void perform() throws ServiceException, SecurityServiceException {
+  public void perform() {
     LOGGER.info("Performing MigrationTest upgrade");
 
     try {

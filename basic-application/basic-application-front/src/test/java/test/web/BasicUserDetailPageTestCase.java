@@ -9,8 +9,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import basicapp.front.user.page.BasicUserDetailPage;
 import basicapp.front.user.page.BasicUserListPage;
 import org.apache.wicket.markup.html.link.Link;
-import org.iglooproject.jpa.exception.SecurityServiceException;
-import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.wicket.more.markup.html.template.component.BreadCrumbListView;
 import org.iglooproject.wicket.more.markup.html.template.component.LinkGeneratorBreadCrumbElementPanel;
 import org.iglooproject.wicket.more.markup.html.template.component.SimpleBreadCrumbElementPanel;
@@ -22,7 +20,7 @@ import test.web.config.spring.SpringBootTestBasicApplicationWebapp;
 class BasicUserDetailPageTestCase extends AbstractBasicApplicationWebappTestCase {
 
   @Test
-  void initPage() throws ServiceException, SecurityServiceException {
+  void initPage() {
     addPermissions(administrator, GLOBAL_USER_READ);
 
     authenticateUser(administrator);
@@ -35,7 +33,7 @@ class BasicUserDetailPageTestCase extends AbstractBasicApplicationWebappTestCase
   }
 
   @Test
-  void breadcrumb() throws ServiceException, SecurityServiceException {
+  void breadcrumb() {
     addPermissions(administrator, GLOBAL_USER_READ);
 
     authenticateUser(administrator);
@@ -70,7 +68,7 @@ class BasicUserDetailPageTestCase extends AbstractBasicApplicationWebappTestCase
   }
 
   @Test
-  void desactivateUser() throws ServiceException, SecurityServiceException {
+  void desactivateUser() {
     addPermissions(administrator, GLOBAL_USER_READ, GLOBAL_USER_WRITE);
 
     authenticateUser(administrator);

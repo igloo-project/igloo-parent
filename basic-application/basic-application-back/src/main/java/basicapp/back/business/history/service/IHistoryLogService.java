@@ -4,10 +4,8 @@ import basicapp.back.business.history.model.HistoryDifference;
 import basicapp.back.business.history.model.HistoryLog;
 import basicapp.back.business.history.model.atomic.HistoryEventType;
 import basicapp.back.business.history.model.bean.HistoryLogAdditionalInformationBean;
-import org.iglooproject.jpa.business.generic.service.IGenericEntityService;
 import org.iglooproject.jpa.more.business.history.service.IGenericHistoryLogService;
 
 public interface IHistoryLogService
     extends IGenericHistoryLogService<
-            HistoryLog, HistoryEventType, HistoryDifference, HistoryLogAdditionalInformationBean>,
-        IGenericEntityService<Long, HistoryLog> {}
+        HistoryLog, HistoryEventType, HistoryDifference, HistoryLogAdditionalInformationBean> {}

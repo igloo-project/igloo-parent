@@ -1,17 +1,18 @@
 package test.core.business.announcement;
 
-import basicapp.back.business.announcement.dao.IAnnouncementDao;
+import static org.mockito.Mockito.never;
+
 import basicapp.back.business.announcement.model.Announcement;
 import basicapp.back.business.announcement.model.atomic.AnnouncementType;
+import basicapp.back.business.announcement.repository.IAnnouncementRepository;
 import basicapp.back.business.announcement.service.business.AnnouncementServiceImpl;
+import basicapp.back.business.history.service.IHistoryEventSummaryService;
 import basicapp.back.business.user.model.User;
 import basicapp.back.business.user.service.business.IUserService;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import org.assertj.core.api.Assertions;
-import org.iglooproject.jpa.exception.SecurityServiceException;
-import org.iglooproject.jpa.exception.ServiceException;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,7 +27,8 @@ public class TestAnnouncementServiceMock {
 
   @InjectMocks @Spy private AnnouncementServiceImpl announcementService;
   @Mock private IUserService userService;
-  @Mock private IAnnouncementDao announcementDao;
+  @Mock private IAnnouncementRepository announcementRepository;
+  @Mock private IHistoryEventSummaryService historyEventSummaryService;
 
   @Nested
   class TestSaveAnnouncement {
@@ -43,33 +45,40 @@ public class TestAnnouncementServiceMock {
     }
 
     @Test
-    void testSaveAnnouncement_new_callCreate() throws SecurityServiceException, ServiceException {
+    void testSaveAnnouncement_new_callCreate() {
       Announcement announcement = new Announcement();
       announcement.setType(AnnouncementType.SERVICE_INTERRUPTION);
       Mockito.doNothing().when(announcementService).cleanAnnouncement(announcement);
-      Mockito.doNothing().when(announcementService).create(announcement);
+      Mockito.doNothing().when(historyEventSummaryService).refresh(announcement.getCreation());
+      Mockito.doNothing().when(historyEventSummaryService).refresh(announcement.getModification());
+      Mockito.doReturn(announcement).when(announcementRepository).save(announcement);
 
       Assertions.assertThatCode(() -> announcementService.saveAnnouncement(announcement))
           .doesNotThrowAnyException();
 
       Mockito.verify(announcementService).cleanAnnouncement(announcement);
-      Mockito.verify(announcementService).create(announcement);
+      Mockito.verify(historyEventSummaryService).refresh(announcement.getCreation());
+      Mockito.verify(historyEventSummaryService).refresh(announcement.getModification());
+      Mockito.verify(announcementRepository).save(announcement);
     }
 
     @Test
-    void testSaveAnnouncement_notNew_callUpdate()
-        throws SecurityServiceException, ServiceException {
+    void testSaveAnnouncement_notNew_callUpdate() {
+
       Announcement announcement = new Announcement();
       announcement.setType(AnnouncementType.SERVICE_INTERRUPTION);
       announcement.setId(-1L);
       Mockito.doNothing().when(announcementService).cleanAnnouncement(announcement);
-      Mockito.doNothing().when(announcementService).update(announcement);
+      Mockito.doNothing().when(historyEventSummaryService).refresh(announcement.getModification());
+      Mockito.doReturn(announcement).when(announcementRepository).save(announcement);
 
       Assertions.assertThatCode(() -> announcementService.saveAnnouncement(announcement))
           .doesNotThrowAnyException();
 
       Mockito.verify(announcementService).cleanAnnouncement(announcement);
-      Mockito.verify(announcementService).update(announcement);
+      Mockito.verify(historyEventSummaryService, never()).refresh(announcement.getCreation());
+      Mockito.verify(historyEventSummaryService).refresh(announcement.getModification());
+      Mockito.verify(announcementRepository).save(announcement);
     }
   }
 
@@ -79,7 +88,7 @@ public class TestAnnouncementServiceMock {
     void cleanWithoutSaving_announcementNull_doNothing() {
       Assertions.assertThatCode(() -> announcementService.cleanWithoutSaving(null))
           .doesNotThrowAnyException();
-      Mockito.verify(announcementService, Mockito.never())
+      Mockito.verify(announcementService, never())
           .cleanAnnouncement(Mockito.any(Announcement.class));
     }
 
@@ -87,7 +96,7 @@ public class TestAnnouncementServiceMock {
     void cleanWithoutSaving_typeNull_doNothing() {
       Assertions.assertThatCode(() -> announcementService.cleanWithoutSaving(new Announcement()))
           .doesNotThrowAnyException();
-      Mockito.verify(announcementService, Mockito.never())
+      Mockito.verify(announcementService, never())
           .cleanAnnouncement(Mockito.any(Announcement.class));
     }
 
@@ -171,7 +180,7 @@ public class TestAnnouncementServiceMock {
           .setLastActionDate(
               LocalDate.of(2024, 1, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
       Mockito.when(userService.getAuthenticatedUser()).thenReturn(user);
-      Mockito.when(announcementDao.getMostRecentPublicationStartDate())
+      Mockito.when(announcementRepository.getMostRecentPublicationStartDate())
           .thenReturn(LocalDateTime.of(2024, 2, 1, 10, 0));
       Assertions.assertThat(announcementService.isOpen()).isTrue();
     }
@@ -184,7 +193,7 @@ public class TestAnnouncementServiceMock {
           .setLastActionDate(
               LocalDate.of(2024, 2, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
       Mockito.when(userService.getAuthenticatedUser()).thenReturn(user);
-      Mockito.when(announcementDao.getMostRecentPublicationStartDate())
+      Mockito.when(announcementRepository.getMostRecentPublicationStartDate())
           .thenReturn(LocalDateTime.of(2024, 1, 1, 10, 0));
       Assertions.assertThat(announcementService.isOpen()).isFalse();
     }
@@ -197,7 +206,7 @@ public class TestAnnouncementServiceMock {
           .setLastActionDate(
               LocalDate.of(2024, 2, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
       Mockito.when(userService.getAuthenticatedUser()).thenReturn(user);
-      Mockito.when(announcementDao.getMostRecentPublicationStartDate())
+      Mockito.when(announcementRepository.getMostRecentPublicationStartDate())
           .thenReturn(LocalDateTime.of(2024, 1, 1, 10, 0));
       Assertions.assertThat(announcementService.isOpen()).isTrue();
     }

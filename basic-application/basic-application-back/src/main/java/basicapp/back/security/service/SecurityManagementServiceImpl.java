@@ -9,6 +9,7 @@ import basicapp.back.business.history.model.atomic.HistoryEventType;
 import basicapp.back.business.history.model.bean.HistoryLogAdditionalInformationBean;
 import basicapp.back.business.history.service.IHistoryLogService;
 import basicapp.back.business.notification.service.INotificationService;
+import basicapp.back.business.notification.service.exception.NotificationException;
 import basicapp.back.business.user.model.User;
 import basicapp.back.business.user.model.atomic.UserPasswordRecoveryRequestInitiator;
 import basicapp.back.business.user.model.atomic.UserPasswordRecoveryRequestType;
@@ -23,11 +24,11 @@ import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.iglooproject.jpa.exception.SecurityServiceException;
-import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.spring.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 
 public class SecurityManagementServiceImpl implements ISecurityManagementService {
 
@@ -53,8 +54,9 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
   }
 
   @Override
+  @Transactional(rollbackFor = SecurityServiceException.class)
   public void updatePassword(User user, String password, User author)
-      throws ServiceException, SecurityServiceException {
+      throws SecurityServiceException {
     if (user == null || !StringUtils.hasText(password)) {
       return;
     }
@@ -75,28 +77,30 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
     }
 
     user.getPasswordRecoveryRequest().reset();
-    userService.update(user);
+    userService.saveUser(user);
 
     historyLogService.log(
         HistoryEventType.PASSWORD_UPDATE, user, HistoryLogAdditionalInformationBean.empty());
   }
 
   @Override
+  @Transactional(rollbackFor = NotificationException.class)
   public void initiatePasswordRecoveryRequest(
       User user,
       UserPasswordRecoveryRequestType type,
       UserPasswordRecoveryRequestInitiator initiator)
-      throws ServiceException, SecurityServiceException {
+      throws NotificationException {
     initiatePasswordRecoveryRequest(user, type, initiator, user);
   }
 
   @Override
+  @Transactional(rollbackFor = NotificationException.class)
   public void initiatePasswordRecoveryRequest(
       User user,
       UserPasswordRecoveryRequestType type,
       UserPasswordRecoveryRequestInitiator initiator,
       User author)
-      throws ServiceException, SecurityServiceException {
+      throws NotificationException {
     user.getPasswordRecoveryRequest()
         .setToken(
             RandomStringUtils.secure()
@@ -105,7 +109,7 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
     user.getPasswordRecoveryRequest().setType(type);
     user.getPasswordRecoveryRequest().setInitiator(initiator);
 
-    userService.update(user);
+    userService.saveUser(user);
 
     notificationService.sendUserPasswordRecoveryRequest(user);
 
@@ -128,12 +132,13 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
   }
 
   @Override
-  public boolean checkPassword(String password, User user)
-      throws ServiceException, SecurityServiceException {
+  @Transactional(readOnly = true)
+  public boolean checkPassword(String password, User user) {
     return passwordEncoder.matches(password, user.getPasswordHash());
   }
 
   @Override
+  @Transactional(readOnly = true)
   public boolean isPasswordExpired(User user) {
     if (user == null
         || user.getPasswordInformation().getLastUpdateDate() == null
@@ -151,6 +156,7 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
   }
 
   @Override
+  @Transactional(readOnly = true)
   public boolean isPasswordRecoveryRequestExpired(User user) {
     if (user == null
         || user.getPasswordRecoveryRequest().getToken() == null
@@ -170,11 +176,13 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
   }
 
   @Override
+  @Transactional(readOnly = true)
   public SecurityOptions getSecurityOptionsDefault() {
     return securityOptionsDefault;
   }
 
   @Override
+  @Transactional(readOnly = true)
   public SecurityOptions getSecurityOptions(UserType userType) {
     if (securityOptionsUsers.containsKey(userType)) {
       return securityOptionsUsers.get(userType);
@@ -183,6 +191,7 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
   }
 
   @Override
+  @Transactional(readOnly = true)
   public SecurityOptions getSecurityOptions(User user) {
     if (user == null) {
       return getSecurityOptionsDefault();

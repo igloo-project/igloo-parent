@@ -5,11 +5,12 @@ import basicapp.back.business.history.model.atomic.HistoryEventType;
 import basicapp.back.business.history.model.bean.HistoryLogAdditionalInformationBean;
 import basicapp.back.business.history.service.IHistoryEventSummaryService;
 import basicapp.back.business.history.service.IHistoryLogService;
-import basicapp.back.business.user.dao.IUserDao;
+import basicapp.back.business.notification.service.exception.NotificationException;
 import basicapp.back.business.user.model.User;
 import basicapp.back.business.user.model.atomic.UserPasswordRecoveryRequestInitiator;
 import basicapp.back.business.user.model.atomic.UserPasswordRecoveryRequestType;
 import basicapp.back.business.user.model.atomic.UserType;
+import basicapp.back.business.user.repository.IUserRepository;
 import basicapp.back.security.service.IBasicApplicationAuthenticationService;
 import basicapp.back.security.service.ISecurityManagementService;
 import com.google.common.base.Preconditions;
@@ -18,9 +19,7 @@ import java.time.Instant;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
-import org.iglooproject.jpa.business.generic.service.GenericEntityServiceImpl;
 import org.iglooproject.jpa.exception.SecurityServiceException;
-import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.util.HibernateUtils;
 import org.iglooproject.spring.property.SpringPropertyIds;
 import org.iglooproject.spring.property.service.IPropertyService;
@@ -29,29 +28,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service("userService")
-public class UserServiceImpl extends GenericEntityServiceImpl<Long, User> implements IUserService {
+public class UserServiceImpl implements IUserService {
 
-  private final IUserDao dao;
+  private final IUserRepository userRepository;
   private final IBasicApplicationAuthenticationService authenticationService;
   private final IHistoryLogService historyLogService;
-  private IHistoryEventSummaryService historyEventSummaryService;
+  private final IHistoryEventSummaryService historyEventSummaryService;
   private final IPropertyService propertyService;
   private final ISecurityManagementService securityManagementService;
   private final PasswordEncoder passwordEncoder;
 
   @Autowired
   public UserServiceImpl(
-      IUserDao dao,
+      IUserRepository userRepository,
       @Lazy IBasicApplicationAuthenticationService authenticationService,
       @Lazy IHistoryLogService historyLogService,
       @Lazy IHistoryEventSummaryService historyEventSummaryService,
       IPropertyService propertyService,
       @Lazy ISecurityManagementService securityManagementService,
       PasswordEncoder passwordEncoder) {
-    super(dao);
-    this.dao = dao;
+    this.userRepository = userRepository;
     this.authenticationService = authenticationService;
     this.historyLogService = historyLogService;
     this.historyEventSummaryService = historyEventSummaryService;
@@ -61,46 +60,31 @@ public class UserServiceImpl extends GenericEntityServiceImpl<Long, User> implem
   }
 
   @Override
-  protected void createEntity(User user) throws ServiceException, SecurityServiceException {
-    historyEventSummaryService.refresh(user.getCreation());
-    historyEventSummaryService.refresh(user.getModification());
-    super.createEntity(user);
-  }
-
-  @Override
-  protected void updateEntity(User user) throws ServiceException, SecurityServiceException {
-    historyEventSummaryService.refresh(user.getModification());
-    super.updateEntity(user);
-  }
-
-  @Override
+  @Transactional(rollbackFor = {SecurityServiceException.class, NotificationException.class})
   public void saveBasicUser(User user, String password)
-      throws SecurityServiceException, ServiceException {
+      throws SecurityServiceException, NotificationException {
     user.setType(UserType.BASIC);
     User author = getAuthenticatedUser();
     saveUser(user, author, password);
   }
 
   @Override
+  @Transactional(rollbackFor = {SecurityServiceException.class, NotificationException.class})
   public void saveTechnicalUser(User user, String password)
-      throws SecurityServiceException, ServiceException {
+      throws SecurityServiceException, NotificationException {
     user.setType(UserType.TECHNICAL);
     User author = getAuthenticatedUser();
     saveUser(user, author, password);
   }
 
   private void saveUser(User user, User author, String password)
-      throws SecurityServiceException, ServiceException {
+      throws NotificationException, SecurityServiceException {
     Objects.requireNonNull(user);
 
-    if (user.getLocale() == null) {
-      user.setLocale(propertyService.get(SpringPropertyIds.DEFAULT_LOCALE));
-    }
+    boolean isNew = user.isNew();
+    saveUser(user);
 
-    if (user.isNew()) {
-      create(user);
-      historyLogService.log(
-          HistoryEventType.CREATE, user, HistoryLogAdditionalInformationBean.empty());
+    if (isNew) {
       if (StringUtils.hasText(password)) {
         securityManagementService.updatePassword(user, password, author);
       } else {
@@ -110,9 +94,26 @@ public class UserServiceImpl extends GenericEntityServiceImpl<Long, User> implem
             UserPasswordRecoveryRequestInitiator.ADMIN,
             author);
       }
-    } else {
-      update(user);
     }
+  }
+
+  @Transactional
+  @Override
+  public void saveUser(User user) {
+    Objects.requireNonNull(user);
+
+    if (user.getLocale() == null) {
+      user.setLocale(propertyService.get(SpringPropertyIds.DEFAULT_LOCALE));
+    }
+
+    if (user.isNew()) {
+      historyEventSummaryService.refresh(user.getCreation());
+      historyLogService.log(
+          HistoryEventType.CREATE, user, HistoryLogAdditionalInformationBean.empty());
+    }
+
+    historyEventSummaryService.refresh(user.getModification());
+    userRepository.save(user);
   }
 
   /**
@@ -124,20 +125,22 @@ public class UserServiceImpl extends GenericEntityServiceImpl<Long, User> implem
    * @see org.springframework.security.crypto.bcrypt.BCrypt#hashpw(byte[], String, boolean)
    */
   @Override
-  public void onSignIn(User user) throws ServiceException, SecurityServiceException {
+  @Transactional
+  public void onSignIn(User user) {
     historyLogService.log(
         HistoryEventType.SIGN_IN, user, HistoryLogAdditionalInformationBean.empty());
   }
 
   @Override
-  public void onSignInFail(User user) throws ServiceException, SecurityServiceException {
+  @Transactional
+  public void onSignInFail(User user) {
     historyLogService.log(
         HistoryEventType.SIGN_IN_FAIL, user, HistoryLogAdditionalInformationBean.empty());
   }
 
   @Override
-  public void setPasswords(User user, String rawPassword)
-      throws ServiceException, SecurityServiceException {
+  @Transactional(rollbackFor = SecurityServiceException.class)
+  public void setPasswords(User user, String rawPassword) throws SecurityServiceException {
     Preconditions.checkArgument(StringUtils.hasText(rawPassword));
 
     if (rawPassword.getBytes(StandardCharsets.UTF_8).length > 72) {
@@ -145,12 +148,12 @@ public class UserServiceImpl extends GenericEntityServiceImpl<Long, User> implem
     }
 
     user.setPasswordHash(passwordEncoder.encode(rawPassword));
-    update(user);
+    userRepository.save(user);
   }
 
   @Override
-  public void initPasswordRecoveryRequest(EmailAddress emailAddress)
-      throws SecurityServiceException, ServiceException {
+  @Transactional(rollbackFor = NotificationException.class)
+  public void initPasswordRecoveryRequest(EmailAddress emailAddress) throws NotificationException {
     User user = getByEmailAddressCaseInsensitive(emailAddress);
 
     if (user != null && user.isEnabled() && user.isNotificationEnabled()) {
@@ -164,88 +167,96 @@ public class UserServiceImpl extends GenericEntityServiceImpl<Long, User> implem
   }
 
   @Override
-  public void enable(User user) throws ServiceException, SecurityServiceException {
+  @Transactional
+  public void enable(User user) {
     Objects.requireNonNull(user);
     Preconditions.checkArgument(!user.isEnabled());
     user.setEnabled(true);
-    update(user);
+    saveUser(user);
     historyLogService.log(
         HistoryEventType.ENABLE, user, HistoryLogAdditionalInformationBean.empty());
   }
 
   @Override
-  public void disable(User user) throws ServiceException, SecurityServiceException {
+  @Transactional
+  public void disable(User user) {
     Objects.requireNonNull(user);
     Preconditions.checkArgument(user.isEnabled());
     user.setEnabled(false);
-    update(user);
+    saveUser(user);
     historyLogService.log(
         HistoryEventType.DISABLE, user, HistoryLogAdditionalInformationBean.empty());
   }
 
   @Override
-  public void updateLastLoginDate(User user) throws ServiceException, SecurityServiceException {
+  @Transactional
+  public void updateLastLoginDate(User user) {
     user.setLastLoginDate(Instant.now());
-    updateEntity(user);
+    saveUser(user);
   }
 
   @Override
-  public void updateLocale(User user, Locale locale)
-      throws ServiceException, SecurityServiceException {
+  @Transactional
+  public void updateLocale(User user, Locale locale) {
     user.setLocale(locale);
-    updateEntity(user);
+    saveUser(user);
   }
 
   @Override
-  public void updateRoles(User user) throws SecurityServiceException, ServiceException {
-    Objects.requireNonNull(user);
-    update(user);
-  }
-
-  @Override
-  public void openAnnouncement(User user) throws ServiceException, SecurityServiceException {
+  @Transactional
+  public void openAnnouncement(User user) {
     Objects.requireNonNull(user);
     user.getAnnouncementInformation().setLastActionDate(Instant.now());
     user.getAnnouncementInformation().setOpen(true);
-    update(user);
+    saveUser(user);
   }
 
   @Override
-  public void closeAnnouncement(User user) throws ServiceException, SecurityServiceException {
+  @Transactional
+  public void closeAnnouncement(User user) {
     Objects.requireNonNull(user);
     user.getAnnouncementInformation().setLastActionDate(Instant.now());
     user.getAnnouncementInformation().setOpen(false);
-    update(user);
+    saveUser(user);
   }
 
   @Override
+  @Transactional(readOnly = true)
   public User getByUsername(String username) {
     if (!StringUtils.hasText(username)) {
       return null;
     }
-    return getByNaturalId(username);
+    return userRepository.findByNaturalId(username).orElse(null);
   }
 
   @Override
+  @Transactional(readOnly = true)
   public User getByUsernameCaseInsensitive(String username) {
     if (!StringUtils.hasText(username)) {
       return null;
     }
-    return dao.getByUsernameCaseInsensitive(username);
+    return userRepository.findByUsernameIgnoreCase(username).orElse(null);
   }
 
   @Override
+  @Transactional(readOnly = true)
   public User getByEmailAddressCaseInsensitive(EmailAddress emailAddress) {
     if (emailAddress == null || !StringUtils.hasText(emailAddress.getValue())) {
       return null;
     }
-    return dao.getByEmailCaseInsensitive(emailAddress);
+    return userRepository.findByEmailAddressIgnoreCase(emailAddress).orElse(null);
   }
 
   @Override
+  @Transactional(readOnly = true)
   public User getAuthenticatedUser() {
     return Optional.ofNullable(authenticationService.getUsername())
         .map(username -> HibernateUtils.unwrap(getByUsername(username)))
         .orElse(null);
+  }
+
+  @Override
+  public long count() {
+    return userRepository.count();
   }
 }

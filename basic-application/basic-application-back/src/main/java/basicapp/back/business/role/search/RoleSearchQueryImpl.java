@@ -1,22 +1,37 @@
 package basicapp.back.business.role.search;
 
-import basicapp.back.business.role.model.QRole;
+import static org.iglooproject.jpa.more.util.jparepository.JpaRepositoryUtils.createCriteriaOrders;
+import static org.iglooproject.jpa.more.util.jparepository.JpaRepositoryUtils.createPageRequest;
+
 import basicapp.back.business.role.model.Role;
-import com.querydsl.jpa.impl.JPAQuery;
+import basicapp.back.business.role.model.Role_;
+import basicapp.back.business.role.repository.IRoleRepository;
+import basicapp.back.business.role.repository.RoleSpecifications;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import org.iglooproject.jpa.jparepository.SpecificationBuilder;
 import org.iglooproject.jpa.more.business.sort.ISort.SortOrder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 @Service
 public class RoleSearchQueryImpl implements IRoleSearchQuery {
 
-  private static final QRole qRole = QRole.role;
+  private final IRoleRepository roleRepository;
+  private final EntityManager entityManager;
 
-  @PersistenceContext private EntityManager entityManager;
+  @Autowired
+  public RoleSearchQueryImpl(IRoleRepository roleRepository, EntityManager entityManager) {
+    this.roleRepository = roleRepository;
+    this.entityManager = entityManager;
+  }
 
   @Override
   public List<Role> list(
@@ -25,40 +40,37 @@ public class RoleSearchQueryImpl implements IRoleSearchQuery {
       return List.of();
     }
 
-    JPAQuery<Role> query = new JPAQuery<>(entityManager).select(qRole).from(qRole);
-
-    predicateContributor(query, data);
-    sortContributor(query, sorts);
-    hitsContributor(query, offset, limit);
-
-    return query.fetch();
+    return roleRepository
+        .findAll(predicateContributor(data), createPageRequest(sorts, offset, limit))
+        .getContent();
   }
 
   @Override
   public long size(RoleSearchQueryData data) {
-    JPAQuery<Role> query = new JPAQuery<>(entityManager).select(qRole).from(qRole);
-
-    predicateContributor(query, data);
-
-    @SuppressWarnings("deprecation")
-    long size = query.fetchCount();
-
-    return size;
+    return roleRepository.count(predicateContributor(data));
   }
 
   @Override
   public Collection<Long> listIds(RoleSearchQueryData data, Map<RoleSort, SortOrder> sorts) {
-    JPAQuery<Long> query = new JPAQuery<>(entityManager).select(qRole.id).from(qRole);
+    CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+    CriteriaQuery<Long> query = cb.createQuery(Long.class);
+    Root<Role> root = query.from(Role.class);
 
-    predicateContributor(query, data);
-    sortContributor(query, sorts);
+    CriteriaQuery<Long> select =
+        query.select(root.get(Role_.ID)).orderBy(createCriteriaOrders(sorts, cb, root));
 
-    return query.fetch();
+    Optional.ofNullable(predicateContributor(data))
+        .map(spec -> spec.toPredicate(root, query, cb))
+        .ifPresent(select::where);
+
+    return entityManager.createQuery(query).getResultList();
   }
 
-  private void predicateContributor(JPAQuery<?> query, RoleSearchQueryData data) {
+  private Specification<Role> predicateContributor(RoleSearchQueryData data) {
+    SpecificationBuilder<Role> specificationBuilder = new SpecificationBuilder<>();
     if (data.getUser() != null) {
-      query.where(qRole.users.any().eq(data.getUser()));
+      specificationBuilder.and(RoleSpecifications.user(data.getUser()));
     }
+    return specificationBuilder.build();
   }
 }

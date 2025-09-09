@@ -20,7 +20,7 @@ public class HistoryLogSearchQueryData implements ISearchQueryData<HistoryLog> {
 
   private Instant dateMax;
 
-  private Set<HistoryEventType> eventTypes = EnumSet.noneOf(HistoryEventType.class);
+  private final Set<HistoryEventType> eventTypes = EnumSet.noneOf(HistoryEventType.class);
 
   private User subject;
 
@@ -36,7 +36,7 @@ public class HistoryLogSearchQueryData implements ISearchQueryData<HistoryLog> {
 
   private HistoryEntityReference object4;
 
-  private Collection<HistoryEventType> mandatoryDifferencesEventTypes =
+  private final Collection<HistoryEventType> mandatoryDifferencesEventTypes =
       EnumSet.noneOf(HistoryEventType.class);
 
   public Instant getDateMin() {

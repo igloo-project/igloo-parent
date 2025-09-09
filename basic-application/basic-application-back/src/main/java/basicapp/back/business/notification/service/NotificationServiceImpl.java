@@ -1,5 +1,6 @@
 package basicapp.back.business.notification.service;
 
+import basicapp.back.business.notification.service.exception.NotificationException;
 import basicapp.back.business.user.model.User;
 import java.time.Instant;
 import java.util.Date;
@@ -15,12 +16,19 @@ public class NotificationServiceImpl extends AbstractNotificationServiceImpl
   private static final String ERROR_EXCEPTION_MESSAGE =
       "Error during send mail process (to: %s, subject: %s)";
 
-  @Autowired private IBasicApplicationNotificationUrlBuilderService notificationUrlBuilderService;
+  private final IBasicApplicationNotificationUrlBuilderService notificationUrlBuilderService;
+  private final IBasicApplicationNotificationContentDescriptorFactory contentDescriptorFactory;
 
-  @Autowired private IBasicApplicationNotificationContentDescriptorFactory contentDescriptorFactory;
+  @Autowired
+  public NotificationServiceImpl(
+      IBasicApplicationNotificationUrlBuilderService notificationUrlBuilderService,
+      IBasicApplicationNotificationContentDescriptorFactory contentDescriptorFactory) {
+    this.notificationUrlBuilderService = notificationUrlBuilderService;
+    this.contentDescriptorFactory = contentDescriptorFactory;
+  }
 
   @Override
-  public void sendExampleNotification(User user) throws ServiceException {
+  public void sendExampleNotification(User user) throws NotificationException {
     try {
       Instant instant = Instant.now();
       String url = notificationUrlBuilderService.getUserDescriptionUrl(user);
@@ -34,12 +42,12 @@ public class NotificationServiceImpl extends AbstractNotificationServiceImpl
           .variable("url", url)
           .send();
     } catch (RuntimeException | ServiceException e) {
-      throw new ServiceException(ERROR_EXCEPTION_MESSAGE, e);
+      throw new NotificationException(ERROR_EXCEPTION_MESSAGE, e);
     }
   }
 
   @Override
-  public void sendUserPasswordRecoveryRequest(User user) throws ServiceException {
+  public void sendUserPasswordRecoveryRequest(User user) throws NotificationException {
     try {
       Instant instant = Instant.now();
 
@@ -48,7 +56,7 @@ public class NotificationServiceImpl extends AbstractNotificationServiceImpl
           .content(contentDescriptorFactory.userPasswordRecoveryRequest(user, instant))
           .send();
     } catch (RuntimeException | ServiceException e) {
-      throw new ServiceException(ERROR_EXCEPTION_MESSAGE, e);
+      throw new NotificationException(ERROR_EXCEPTION_MESSAGE, e);
     }
   }
 }

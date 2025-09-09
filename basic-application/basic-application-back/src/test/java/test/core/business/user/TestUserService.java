@@ -6,6 +6,7 @@ import static basicapp.back.security.model.BasicApplicationPermissionConstants.G
 import static basicapp.back.security.model.BasicApplicationPermissionConstants.GLOBAL_ROLE_WRITE;
 import static basicapp.back.security.model.BasicApplicationPermissionConstants.USER_EDIT_PASSWORD;
 
+import basicapp.back.business.notification.service.exception.NotificationException;
 import basicapp.back.business.role.model.Role;
 import basicapp.back.business.user.model.User;
 import basicapp.back.business.user.model.atomic.UserType;
@@ -17,7 +18,6 @@ import java.util.Locale;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.util.DateUtil;
 import org.iglooproject.jpa.exception.SecurityServiceException;
-import org.iglooproject.jpa.exception.ServiceException;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +37,7 @@ class TestUserService extends AbstractBasicApplicationTestCase {
   class saveUser {
     @WithUserDetails(value = ADMIN_USERNAME, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     @Test
-    void testSaveTechnicalUser() throws SecurityServiceException, ServiceException {
+    void testSaveTechnicalUser() throws SecurityServiceException, NotificationException {
       User user =
           entityDatabaseHelper.createUser(
               u -> {
@@ -49,7 +49,7 @@ class TestUserService extends AbstractBasicApplicationTestCase {
 
       userControllerService.saveTechnicalUser(user, USER_EDIT_PASSWORD);
       entityManagerReset();
-      User userBdd = userService.getById(user.getId());
+      User userBdd = userRepository.getReferenceById(user.getId());
       Assertions.assertThat(userBdd.getUsername()).isEqualTo("test");
       Assertions.assertThat(userBdd.getFirstName()).isEqualTo("firstname");
       Assertions.assertThat(userBdd.getLastName()).isEqualTo("lastname");
@@ -67,7 +67,7 @@ class TestUserService extends AbstractBasicApplicationTestCase {
         value = BASIC_USERNAME_WITH_PERMISSIONS,
         setupBefore = TestExecutionEvent.TEST_EXECUTION)
     @Test
-    void testSaveBasicUser() throws SecurityServiceException, ServiceException {
+    void testSaveBasicUser() throws SecurityServiceException, NotificationException {
       User user =
           entityDatabaseHelper.createUser(
               u -> {
@@ -80,7 +80,7 @@ class TestUserService extends AbstractBasicApplicationTestCase {
 
       userControllerService.saveBasicUser(user, USER_EDIT_PASSWORD);
       entityManagerReset();
-      User userBdd = userService.getById(user.getId());
+      User userBdd = userRepository.getReferenceById(user.getId());
       Assertions.assertThat(userBdd.getUsername()).isEqualTo("test");
       Assertions.assertThat(userBdd.getFirstName()).isEqualTo("firstname");
       Assertions.assertThat(userBdd.getLastName()).isEqualTo("lastname");
@@ -97,14 +97,14 @@ class TestUserService extends AbstractBasicApplicationTestCase {
     @WithUserDetails(value = ADMIN_USERNAME, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     @Sql(scripts = {"/scripts/user-test.sql"})
     @Test
-    void testUpdateUser() throws SecurityServiceException, ServiceException {
+    void testUpdateUser() throws SecurityServiceException, NotificationException {
       entityManagerReset();
-      User user = userService.getById(-4L);
+      User user = userRepository.getReferenceById(-4L);
       user.setFirstName("updatedFirstname");
       user.setLastName("updatedFirstname");
       userControllerService.saveTechnicalUser(user, "newPassword");
       entityManagerReset();
-      User userBdd = userService.getById(user.getId());
+      User userBdd = userRepository.getReferenceById(user.getId());
       Assertions.assertThat(userBdd.getUsername()).isEqualTo("test");
       Assertions.assertThat(userBdd.getFirstName()).isEqualTo("updatedFirstname");
       Assertions.assertThat(userBdd.getLastName()).isEqualTo("updatedFirstname");
@@ -153,7 +153,7 @@ class TestUserService extends AbstractBasicApplicationTestCase {
   }
 
   @Test
-  void testListUser() throws ServiceException, SecurityServiceException {
+  void testListUser() {
     Role role1 =
         entityDatabaseHelper.createRole(
             r ->
@@ -178,10 +178,10 @@ class TestUserService extends AbstractBasicApplicationTestCase {
             true);
 
     entityManagerReset();
-    List<User> userList = userService.list();
+    List<User> userList = userRepository.findAll();
 
     Assertions.assertThat(userList).size().isEqualTo(4);
-    User userBdd = userService.getById(user.getId());
+    User userBdd = userRepository.getReferenceById(user.getId());
     Assertions.assertThat(userBdd.getUsername()).isEqualTo("test");
     Assertions.assertThat(userBdd.getFirstName()).isEqualTo("firstname");
     Assertions.assertThat(userBdd.getLastName()).isEqualTo("lastname");

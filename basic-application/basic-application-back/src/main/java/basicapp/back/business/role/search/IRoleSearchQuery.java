@@ -4,9 +4,9 @@ import basicapp.back.business.role.model.Role;
 import java.util.Collection;
 import java.util.Map;
 import org.iglooproject.jpa.more.business.sort.ISort;
-import org.iglooproject.jpa.more.search.query.IJpaSearchQuery;
+import org.iglooproject.jpa.more.search.query.ISearchQuery;
 
-public interface IRoleSearchQuery extends IJpaSearchQuery<Role, RoleSort, RoleSearchQueryData> {
+public interface IRoleSearchQuery extends ISearchQuery<Role, RoleSort, RoleSearchQueryData> {
 
   Collection<Long> listIds(RoleSearchQueryData data, Map<RoleSort, ISort.SortOrder> sorts);
 }

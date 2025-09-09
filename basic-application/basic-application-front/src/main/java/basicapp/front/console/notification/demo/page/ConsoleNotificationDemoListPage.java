@@ -1,6 +1,7 @@
 package basicapp.front.console.notification.demo.page;
 
 import basicapp.back.business.notification.service.INotificationService;
+import basicapp.back.business.notification.service.exception.NotificationException;
 import basicapp.back.business.user.model.User;
 import basicapp.back.business.user.model.atomic.UserPasswordRecoveryRequestInitiator;
 import basicapp.back.business.user.model.atomic.UserPasswordRecoveryRequestType;
@@ -18,7 +19,6 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.spring.notification.model.INotificationContentDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
@@ -51,7 +51,7 @@ public class ConsoleNotificationDemoListPage extends ConsoleNotificationDemoTemp
             try {
               notificationService.sendExampleNotification(BasicApplicationSession.get().getUser());
               Session.get().success(getString("common.success"));
-            } catch (ServiceException e) {
+            } catch (NotificationException e) {
               LOGGER.error("Error while sending example notification", e);
               Session.get().error(getString("common.error.unexpected"));
             }

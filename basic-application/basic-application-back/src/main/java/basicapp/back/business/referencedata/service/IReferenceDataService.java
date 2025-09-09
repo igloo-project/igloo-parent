@@ -1,3 +1,7 @@
 package basicapp.back.business.referencedata.service;
 
-public interface IReferenceDataService extends IReferenceDataSubService {}
+import basicapp.back.business.referencedata.model.ReferenceData;
+
+public interface IReferenceDataService<T extends ReferenceData<?>> {
+  void saveReferenceData(T referenceData);
+}

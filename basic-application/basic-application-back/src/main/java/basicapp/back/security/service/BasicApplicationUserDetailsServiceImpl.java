@@ -1,7 +1,7 @@
 package basicapp.back.security.service;
 
 import basicapp.back.business.role.model.Role;
-import basicapp.back.business.role.service.IRoleService;
+import basicapp.back.business.role.service.business.IRoleService;
 import basicapp.back.business.user.model.User;
 import basicapp.back.business.user.predicate.UserPredicates;
 import com.google.common.collect.Sets;
@@ -47,7 +47,7 @@ public class BasicApplicationUserDetailsServiceImpl extends CoreJpaUserDetailsSe
     // Chargement des Permission Spring ACL
     Set<Role> roles =
         UserPredicates.technical().apply(user)
-            ? Sets.newHashSet(roleService.list())
+            ? Sets.newHashSet(roleService.findAll())
             : user.getRoles();
     Set<Permission> permissions =
         roles.stream()

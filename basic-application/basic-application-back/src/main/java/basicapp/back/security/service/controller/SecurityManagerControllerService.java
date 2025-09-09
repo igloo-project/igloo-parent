@@ -1,5 +1,6 @@
 package basicapp.back.security.service.controller;
 
+import basicapp.back.business.notification.service.exception.NotificationException;
 import basicapp.back.business.user.model.User;
 import basicapp.back.business.user.model.atomic.UserPasswordRecoveryRequestInitiator;
 import basicapp.back.business.user.model.atomic.UserPasswordRecoveryRequestType;
@@ -7,7 +8,6 @@ import basicapp.back.business.user.model.atomic.UserType;
 import basicapp.back.security.model.SecurityOptions;
 import basicapp.back.security.service.ISecurityManagementService;
 import org.iglooproject.jpa.exception.SecurityServiceException;
-import org.iglooproject.jpa.exception.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,8 +22,7 @@ public class SecurityManagerControllerService implements ISecurityManagementCont
   }
 
   @Override
-  public void updatePassword(User user, String password)
-      throws ServiceException, SecurityServiceException {
+  public void updatePassword(User user, String password) throws SecurityServiceException {
     securityManagementService.updatePassword(user, password, user);
   }
 
@@ -32,13 +31,13 @@ public class SecurityManagerControllerService implements ISecurityManagementCont
       User user,
       UserPasswordRecoveryRequestType type,
       UserPasswordRecoveryRequestInitiator initiator)
-      throws ServiceException, SecurityServiceException {
+      throws NotificationException {
     securityManagementService.initiatePasswordRecoveryRequest(user, type, initiator, user);
   }
 
   @Override
   public void updatePassword(User user, String password, User author)
-      throws ServiceException, SecurityServiceException {
+      throws SecurityServiceException {
     securityManagementService.updatePassword(user, password, author);
   }
 
@@ -48,13 +47,12 @@ public class SecurityManagerControllerService implements ISecurityManagementCont
       UserPasswordRecoveryRequestType type,
       UserPasswordRecoveryRequestInitiator initiator,
       User author)
-      throws ServiceException, SecurityServiceException {
+      throws NotificationException {
     securityManagementService.initiatePasswordRecoveryRequest(user, type, initiator, author);
   }
 
   @Override
-  public boolean checkPassword(String password, User user)
-      throws ServiceException, SecurityServiceException {
+  public boolean checkPassword(String password, User user) {
     return securityManagementService.checkPassword(password, user);
   }
 

@@ -4,7 +4,7 @@ import static basicapp.back.security.model.BasicApplicationPermissionConstants.R
 import static basicapp.back.security.model.BasicApplicationPermissionConstants.ROLE_WRITE;
 
 import basicapp.back.business.role.model.Role;
-import basicapp.back.business.role.service.IRoleService;
+import basicapp.back.business.role.service.business.IRoleService;
 import basicapp.back.security.model.BasicApplicationPermissionCategoryEnum;
 import basicapp.back.security.model.BasicApplicationPermissionUtils;
 import basicapp.back.util.binding.Bindings;

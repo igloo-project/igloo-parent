@@ -7,8 +7,6 @@ import java.util.Set;
 import org.apache.wicket.Localizer;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.protocol.http.WebApplication;
-import org.iglooproject.jpa.exception.SecurityServiceException;
-import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.test.wicket.core.AbstractWicketTestCase;
 import org.iglooproject.wicket.more.AbstractCoreSession;
 import org.junit.jupiter.api.AfterEach;
@@ -42,7 +40,7 @@ public abstract class AbstractBasicApplicationWebappTestCase
 
   @BeforeEach
   @Override
-  public void init() throws ServiceException, SecurityServiceException {
+  public void init() {
     setWicketTester(new BasicApplicationWicketTester(application));
     initUsers();
   }
@@ -54,7 +52,7 @@ public abstract class AbstractBasicApplicationWebappTestCase
   }
 
   @Override
-  protected void cleanAll() throws ServiceException, SecurityServiceException {
+  protected void cleanAll() {
     authenticationService.signOut();
   }
 
@@ -63,13 +61,12 @@ public abstract class AbstractBasicApplicationWebappTestCase
     administrator = userService.getByUsername("technicalUser");
   }
 
-  protected void addPermissions(User user, String... permissions)
-      throws ServiceException, SecurityServiceException {
+  protected void addPermissions(User user, String... permissions) {
     user.addRole(entityDatabaseHelper.createRole(r -> r.setPermissions(Set.of(permissions)), true));
-    userService.update(user);
+    userService.saveUser(user);
   }
 
-  protected void authenticateUser(User user) throws ServiceException, SecurityServiceException {
+  protected void authenticateUser(User user) {
     if (AuthenticatedWebSession.exists()) {
       AuthenticatedWebSession.get().invalidate();
     }

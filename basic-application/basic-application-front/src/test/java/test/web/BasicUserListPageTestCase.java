@@ -10,8 +10,6 @@ import basicapp.front.user.page.BasicUserListPage;
 import basicapp.front.user.page.TechnicalUserListPage;
 import igloo.wicket.component.CountLabel;
 import org.apache.wicket.util.tester.FormTester;
-import org.iglooproject.jpa.exception.SecurityServiceException;
-import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.wicket.more.markup.repeater.sequence.SequenceGridView;
 import org.iglooproject.wicket.more.markup.repeater.table.column.CoreLabelLinkColumnPanel;
 import org.junit.jupiter.api.Test;
@@ -21,7 +19,7 @@ import test.web.config.spring.SpringBootTestBasicApplicationWebapp;
 class BasicUserListPageTestCase extends AbstractBasicApplicationWebappTestCase {
 
   @Test
-  void initPage() throws ServiceException, SecurityServiceException {
+  void initPage() {
     addPermissions(administrator, GLOBAL_USER_READ);
 
     authenticateUser(administrator);
@@ -31,7 +29,7 @@ class BasicUserListPageTestCase extends AbstractBasicApplicationWebappTestCase {
   }
 
   @Test
-  void dataTableBuilderCountZero() throws ServiceException, SecurityServiceException {
+  void dataTableBuilderCountZero() {
     addPermissions(administrator, GLOBAL_USER_READ);
 
     authenticateUser(administrator);
@@ -50,7 +48,7 @@ class BasicUserListPageTestCase extends AbstractBasicApplicationWebappTestCase {
   }
 
   @Test
-  void dataTableBuilderCountOne() throws ServiceException, SecurityServiceException {
+  void dataTableBuilderCountOne() {
     addPermissions(administrator, GLOBAL_USER_READ);
 
     authenticateUser(administrator);
@@ -65,7 +63,7 @@ class BasicUserListPageTestCase extends AbstractBasicApplicationWebappTestCase {
   }
 
   @Test
-  void dataTableBuilderCountMultiple() throws ServiceException, SecurityServiceException {
+  void dataTableBuilderCountMultiple() {
     addPermissions(administrator, GLOBAL_USER_READ);
 
     authenticateUser(administrator);
@@ -80,7 +78,7 @@ class BasicUserListPageTestCase extends AbstractBasicApplicationWebappTestCase {
   }
 
   @Test
-  void accessToDetail() throws ServiceException, SecurityServiceException {
+  void accessToDetail() {
     addPermissions(administrator, GLOBAL_USER_READ);
 
     authenticateUser(administrator);
@@ -110,7 +108,7 @@ class BasicUserListPageTestCase extends AbstractBasicApplicationWebappTestCase {
   }
 
   @Test
-  void excelButtonTootilp() throws ServiceException, SecurityServiceException {
+  void excelButtonTootilp() {
     addPermissions(administrator, GLOBAL_USER_READ);
 
     authenticateUser(administrator);

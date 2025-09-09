@@ -2,14 +2,13 @@ package test.core.business.announcement;
 
 import basicapp.back.business.announcement.model.Announcement;
 import basicapp.back.business.announcement.model.atomic.AnnouncementType;
+import basicapp.back.business.announcement.repository.IAnnouncementRepository;
 import basicapp.back.business.announcement.service.business.IAnnouncementService;
 import basicapp.back.business.announcement.service.controller.IAnnouncementControllerService;
 import java.time.LocalDateTime;
 import java.util.Date;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.util.DateUtil;
-import org.iglooproject.jpa.exception.SecurityServiceException;
-import org.iglooproject.jpa.exception.ServiceException;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +24,9 @@ public class TestAnnouncementService extends AbstractBasicApplicationTestCase {
 
   @Autowired private IAnnouncementControllerService announcementControllerService;
 
-  @Autowired protected IAnnouncementService announcementService;
+  @Autowired private IAnnouncementService announcementService;
+
+  @Autowired private IAnnouncementRepository announcementRepository;
 
   @WithUserDetails(
       value = BASIC_USERNAME_WITH_PERMISSIONS,
@@ -33,7 +34,7 @@ public class TestAnnouncementService extends AbstractBasicApplicationTestCase {
   @Nested
   class SaveAnnouncement {
     @Test
-    void saveAnnouncement_new() throws SecurityServiceException, ServiceException {
+    void saveAnnouncement_new() {
       Announcement announcement =
           entityDatabaseHelper.createAnnouncement(
               a -> {
@@ -44,7 +45,8 @@ public class TestAnnouncementService extends AbstractBasicApplicationTestCase {
 
       announcementControllerService.saveAnnouncement(announcement);
       entityManagerReset();
-      Announcement announcementBdd = announcementService.getById(announcement.getId());
+      Announcement announcementBdd =
+          announcementRepository.findById(announcement.getId()).orElse(null);
       Assertions.assertThat(announcementBdd).isNotNull();
       Assertions.assertThat(announcementBdd.getType())
           .isEqualTo(AnnouncementType.SERVICE_INTERRUPTION);
@@ -65,13 +67,14 @@ public class TestAnnouncementService extends AbstractBasicApplicationTestCase {
 
     @Test
     @Sql(scripts = {"/scripts/announcement-test.sql"})
-    void saveNewAnnouncement_update() throws SecurityServiceException, ServiceException {
-      Announcement announcement = announcementService.getById(-1L);
+    void saveNewAnnouncement_update() {
+      Announcement announcement = announcementRepository.findById(-1L).orElseThrow();
       announcement.setType(AnnouncementType.OTHER);
-      announcementService.saveAnnouncement(announcementService.getById(announcement.getId()));
+      announcementService.saveAnnouncement(announcement);
       entityManagerReset();
 
-      Announcement announcementBdd = announcementService.getById(announcement.getId());
+      Announcement announcementBdd =
+          announcementRepository.findById(announcement.getId()).orElse(null);
       Assertions.assertThat(announcementBdd).isNotNull();
       Assertions.assertThat(announcementBdd.getType()).isEqualTo(AnnouncementType.OTHER);
       Assertions.assertThat(announcementBdd.getTitle().getFr()).isEqualTo("testTitre");
@@ -120,11 +123,12 @@ public class TestAnnouncementService extends AbstractBasicApplicationTestCase {
         value = BASIC_USERNAME_WITH_PERMISSIONS,
         setupBefore = TestExecutionEvent.TEST_EXECUTION)
     @Test
-    void testDeleteAnnoucement() throws SecurityServiceException, ServiceException {
-      Assertions.assertThat(announcementService.list()).size().isEqualTo(1);
-      announcementControllerService.deleteAnnouncement(announcementService.getById(-1L));
+    void testDeleteAnnoucement() {
+      Assertions.assertThat(announcementRepository.findAll()).size().isEqualTo(1);
+      announcementControllerService.deleteAnnouncement(
+          announcementRepository.findById(-1L).orElseThrow());
       entityManagerReset();
-      Assertions.assertThat(announcementService.list()).isEmpty();
+      Assertions.assertThat(announcementRepository.findAll()).isEmpty();
     }
 
     @WithUserDetails(value = ADMIN_USERNAME, setupBefore = TestExecutionEvent.TEST_EXECUTION)
@@ -155,18 +159,19 @@ public class TestAnnouncementService extends AbstractBasicApplicationTestCase {
       value = BASIC_USERNAME_WITH_PERMISSIONS,
       setupBefore = TestExecutionEvent.TEST_EXECUTION)
   @Test
-  void cleanWithoutSaving() throws SecurityServiceException, ServiceException {
+  void cleanWithoutSaving() {
     Announcement announcement = entityDatabaseHelper.createAnnouncement(null, true);
     announcement.setType(AnnouncementType.OTHER);
     announcementControllerService.cleanWithoutSaving(announcement);
     entityManagerReset();
-    Announcement announcementBdd = announcementService.getById(announcement.getId());
+    Announcement announcementBdd =
+        announcementRepository.findById(announcement.getId()).orElseThrow();
     Assertions.assertThat(announcementBdd.getType())
         .isEqualTo(AnnouncementType.SERVICE_INTERRUPTION);
   }
 
   @Test
-  void listEnable() throws SecurityServiceException, ServiceException {
+  void listEnable() {
     // not in list
     // start after today
     entityDatabaseHelper.createAnnouncement(

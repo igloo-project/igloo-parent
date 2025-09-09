@@ -20,8 +20,6 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.util.tester.TagTester;
 import org.apache.wicket.util.visit.IVisitor;
 import org.iglooproject.functional.Predicates2;
-import org.iglooproject.jpa.exception.SecurityServiceException;
-import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
 import org.iglooproject.wicket.more.markup.html.template.model.NavigationMenuItem;
 import org.junit.jupiter.api.Test;
@@ -44,7 +42,7 @@ class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
   }
 
   @Test
-  void initPageUserAuthenticated() throws ServiceException, SecurityServiceException {
+  void initPageUserAuthenticated() {
     authenticateUser(basicUser);
 
     tester.startPage(HomePage.class);
@@ -57,7 +55,7 @@ class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
   }
 
   @Test
-  void checkImageAlt() throws ServiceException, SecurityServiceException {
+  void checkImageAlt() {
     authenticateUser(basicUser);
 
     tester.startPage(HomePage.class);
@@ -70,7 +68,7 @@ class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
   }
 
   @Test
-  void sidebarMenuUserAuthenticated() throws ServiceException, SecurityServiceException {
+  void sidebarMenuUserAuthenticated() {
     authenticateUser(basicUser);
 
     tester.startPage(HomePage.class);
@@ -80,7 +78,7 @@ class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
   }
 
   @Test
-  void sidebarMenuUserAdmin() throws ServiceException, SecurityServiceException {
+  void sidebarMenuUserAdmin() {
     addPermissions(
         administrator,
         GLOBAL_REFERENCE_DATA_READ,

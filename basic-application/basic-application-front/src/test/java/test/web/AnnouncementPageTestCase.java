@@ -4,8 +4,6 @@ import static basicapp.back.security.model.BasicApplicationPermissionConstants.G
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import basicapp.front.announcement.page.AnnouncementListPage;
-import org.iglooproject.jpa.exception.SecurityServiceException;
-import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.wicket.more.link.descriptor.LinkInvalidTargetRuntimeException;
 import org.junit.jupiter.api.Test;
 import test.web.config.spring.SpringBootTestBasicApplicationWebapp;
@@ -14,7 +12,7 @@ import test.web.config.spring.SpringBootTestBasicApplicationWebapp;
 class AnnouncementPageTestCase extends AbstractBasicApplicationWebappTestCase {
 
   @Test
-  void initPage() throws ServiceException, SecurityServiceException {
+  void initPage() {
     addPermissions(administrator, GLOBAL_ANNOUNCEMENT_READ);
 
     authenticateUser(administrator);
@@ -24,7 +22,7 @@ class AnnouncementPageTestCase extends AbstractBasicApplicationWebappTestCase {
   }
 
   @Test
-  void accessUnauthorizedLinkDescriptor() throws ServiceException, SecurityServiceException {
+  void accessUnauthorizedLinkDescriptor() {
     authenticateUser(basicUser);
     assertThrows(
         LinkInvalidTargetRuntimeException.class,

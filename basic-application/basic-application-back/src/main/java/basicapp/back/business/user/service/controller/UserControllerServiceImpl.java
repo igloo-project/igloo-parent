@@ -1,10 +1,10 @@
 package basicapp.back.business.user.service.controller;
 
 import basicapp.back.business.common.model.EmailAddress;
+import basicapp.back.business.notification.service.exception.NotificationException;
 import basicapp.back.business.user.model.User;
 import basicapp.back.business.user.service.business.IUserService;
 import org.iglooproject.jpa.exception.SecurityServiceException;
-import org.iglooproject.jpa.exception.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,54 +20,53 @@ public class UserControllerServiceImpl implements IUserControllerService {
 
   @Override
   public void saveBasicUser(User user, String password)
-      throws SecurityServiceException, ServiceException {
+      throws SecurityServiceException, NotificationException {
     userService.saveBasicUser(user, password);
   }
 
   @Override
   public void saveTechnicalUser(User user, String password)
-      throws SecurityServiceException, ServiceException {
+      throws SecurityServiceException, NotificationException {
     userService.saveTechnicalUser(user, password);
   }
 
   @Override
-  public void updateRoles(User user) throws SecurityServiceException, ServiceException {
-    userService.updateRoles(user);
+  public void updateRoles(User user) {
+    userService.saveUser(user);
   }
 
   @Override
-  public void enable(User user) throws SecurityServiceException, ServiceException {
+  public void enable(User user) {
     userService.enable(user);
   }
 
   @Override
-  public void disable(User user) throws SecurityServiceException, ServiceException {
+  public void disable(User user) {
     userService.disable(user);
   }
 
   @Override
-  public void openAnnouncement(User user) throws ServiceException, SecurityServiceException {
+  public void openAnnouncement(User user) {
     userService.openAnnouncement(user);
   }
 
   @Override
-  public void closeAnnouncement(User user) throws ServiceException, SecurityServiceException {
+  public void closeAnnouncement(User user) {
     userService.closeAnnouncement(user);
   }
 
   @Override
-  public void initPasswordRecoveryRequest(EmailAddress emailAddress)
-      throws SecurityServiceException, ServiceException {
+  public void initPasswordRecoveryRequest(EmailAddress emailAddress) throws NotificationException {
     userService.initPasswordRecoveryRequest(emailAddress);
   }
 
   @Override
-  public void onSignIn(User user) throws ServiceException, SecurityServiceException {
+  public void onSignIn(User user) {
     userService.onSignIn(user);
   }
 
   @Override
-  public void onSignInFail(User user) throws ServiceException, SecurityServiceException {
+  public void onSignInFail(User user) {
     userService.onSignInFail(user);
   }
 

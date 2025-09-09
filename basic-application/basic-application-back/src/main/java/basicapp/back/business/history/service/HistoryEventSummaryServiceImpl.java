@@ -10,7 +10,12 @@ import org.springframework.stereotype.Service;
 public class HistoryEventSummaryServiceImpl extends AbstractHistoryEventSummaryServiceImpl<User>
     implements IHistoryEventSummaryService {
 
-  @Autowired private IUserService userService;
+  private final IUserService userService;
+
+  @Autowired
+  public HistoryEventSummaryServiceImpl(IUserService userService) {
+    this.userService = userService;
+  }
 
   @Override
   protected User getDefaultSubject() {

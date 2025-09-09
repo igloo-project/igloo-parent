@@ -1,16 +1,18 @@
 package basicapp.back.business.announcement.search;
 
-import basicapp.back.business.announcement.model.QAnnouncement;
-import com.querydsl.core.types.OrderSpecifier;
+import basicapp.back.business.announcement.model.Announcement_;
+import basicapp.back.business.announcement.model.embeddable.AnnouncementDate_;
 import java.util.List;
 import org.iglooproject.jpa.more.business.sort.ISort;
-import org.iglooproject.jpa.more.business.sort.SortUtils;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
 
-public enum AnnouncementSort implements ISort<OrderSpecifier<?>> {
+public enum AnnouncementSort implements ISort<Order> {
   ID {
     @Override
-    public List<OrderSpecifier<?>> getSortFields(SortOrder sortOrder) {
-      return List.of(SortUtils.orderSpecifier(this, sortOrder, QAnnouncement.announcement.id));
+    public List<Order> getSortFields(SortOrder sortOrder) {
+      return List.of(
+          Order.by(Announcement_.ID).with(Sort.Direction.fromString(sortOrder.toString())));
     }
 
     @Override
@@ -20,10 +22,10 @@ public enum AnnouncementSort implements ISort<OrderSpecifier<?>> {
   },
   PUBLICATION_START_DATE_TIME {
     @Override
-    public List<OrderSpecifier<?>> getSortFields(SortOrder sortOrder) {
+    public List<Order> getSortFields(SortOrder sortOrder) {
       return List.of(
-          SortUtils.orderSpecifier(
-              this, sortOrder, QAnnouncement.announcement.publication.startDateTime));
+          Order.by(Announcement_.PUBLICATION + "." + AnnouncementDate_.START_DATE_TIME)
+              .with(Sort.Direction.fromString(sortOrder.toString())));
     }
 
     @Override

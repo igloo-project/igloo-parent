@@ -2,14 +2,10 @@ package basicapp.back.business.announcement.service.business;
 
 import basicapp.back.business.announcement.model.Announcement;
 import java.util.List;
-import org.iglooproject.jpa.business.generic.service.IGenericEntityService;
-import org.iglooproject.jpa.exception.SecurityServiceException;
-import org.iglooproject.jpa.exception.ServiceException;
 
-public interface IAnnouncementService extends IGenericEntityService<Long, Announcement> {
+public interface IAnnouncementService {
 
-  void saveAnnouncement(Announcement announcement)
-      throws ServiceException, SecurityServiceException;
+  void saveAnnouncement(Announcement announcement);
 
   void cleanWithoutSaving(Announcement announcement);
 
@@ -17,6 +13,5 @@ public interface IAnnouncementService extends IGenericEntityService<Long, Announ
 
   boolean isOpen();
 
-  void deleteAnnouncement(Announcement announcement)
-      throws ServiceException, SecurityServiceException;
+  void deleteAnnouncement(Announcement announcement);
 }

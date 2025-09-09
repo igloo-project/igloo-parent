@@ -2,20 +2,20 @@ package test.core;
 
 import basicapp.back.business.announcement.model.Announcement;
 import basicapp.back.business.announcement.model.atomic.AnnouncementType;
-import basicapp.back.business.announcement.service.business.IAnnouncementService;
+import basicapp.back.business.announcement.repository.IAnnouncementRepository;
 import basicapp.back.business.common.model.EmailAddress;
+import basicapp.back.business.history.service.IHistoryEventSummaryService;
 import basicapp.back.business.role.model.Role;
-import basicapp.back.business.role.service.IRoleService;
+import basicapp.back.business.role.repository.IRoleRepository;
 import basicapp.back.business.user.model.User;
 import basicapp.back.business.user.model.atomic.UserType;
-import basicapp.back.business.user.service.business.IUserService;
+import basicapp.back.business.user.repository.IUserRepository;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.function.Consumer;
-import org.iglooproject.jpa.exception.SecurityServiceException;
-import org.iglooproject.jpa.exception.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * This common class is intended to be used to set up the test data in the case of using BDD.<br>
@@ -43,23 +43,25 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  *
  * <i>Note : methods are sorted in alphabetical order</i>
  */
+@Transactional
 public class TestEntityDatabaseHelper {
 
   public static final String USER_PASSWORD = "USER_PASSWORD";
 
-  @Autowired private IAnnouncementService announcementService;
+  @Autowired private IAnnouncementRepository announcementService;
 
-  @Autowired private IUserService userService;
+  @Autowired private IUserRepository userRepository;
 
-  @Autowired private IRoleService roleService;
+  @Autowired private IRoleRepository roleRepository;
 
   @Autowired protected PasswordEncoder passwordEncoder;
+
+  @Autowired protected IHistoryEventSummaryService historyEventSummaryService;
 
   private static int uniqueToken = 0;
 
   public Announcement createAnnouncement(
-      Consumer<Announcement> announcementConsumer, boolean database)
-      throws ServiceException, SecurityServiceException {
+      Consumer<Announcement> announcementConsumer, boolean database) {
 
     Announcement announcement = new Announcement();
     announcement.setType(AnnouncementType.SERVICE_INTERRUPTION);
@@ -71,14 +73,15 @@ public class TestEntityDatabaseHelper {
     Optional.ofNullable(announcementConsumer).ifPresent(consumer -> consumer.accept(announcement));
 
     if (database) {
-      announcementService.create(announcement);
+      historyEventSummaryService.refresh(announcement.getCreation());
+      historyEventSummaryService.refresh(announcement.getModification());
+      announcementService.save(announcement);
     }
 
     return announcement;
   }
 
-  public Role createRole(Consumer<Role> roleConsumer, boolean database)
-      throws ServiceException, SecurityServiceException {
+  public Role createRole(Consumer<Role> roleConsumer, boolean database) {
 
     Role role = new Role();
     role.setTitle("role" + (++uniqueToken));
@@ -86,14 +89,13 @@ public class TestEntityDatabaseHelper {
     Optional.ofNullable(roleConsumer).ifPresent(consumer -> consumer.accept(role));
 
     if (database) {
-      roleService.create(role);
+      roleRepository.save(role);
     }
 
     return role;
   }
 
-  public User createUser(Consumer<User> userConsumer, boolean database)
-      throws ServiceException, SecurityServiceException {
+  public User createUser(Consumer<User> userConsumer, boolean database) {
 
     User user = new User();
     user.setType(UserType.TECHNICAL);
@@ -108,7 +110,9 @@ public class TestEntityDatabaseHelper {
     Optional.ofNullable(userConsumer).ifPresent(consumer -> consumer.accept(user));
 
     if (database) {
-      userService.create(user);
+      historyEventSummaryService.refresh(user.getCreation());
+      historyEventSummaryService.refresh(user.getModification());
+      userRepository.save(user);
     }
 
     return user;

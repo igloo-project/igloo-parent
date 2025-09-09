@@ -5,8 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import basicapp.front.referencedata.page.ReferenceDataPage;
 import org.apache.wicket.authorization.UnauthorizedInstantiationException;
-import org.iglooproject.jpa.exception.SecurityServiceException;
-import org.iglooproject.jpa.exception.ServiceException;
 import org.junit.jupiter.api.Test;
 import test.web.config.spring.SpringBootTestBasicApplicationWebapp;
 
@@ -14,7 +12,7 @@ import test.web.config.spring.SpringBootTestBasicApplicationWebapp;
 class ReferenceDataPageTestCase extends AbstractBasicApplicationWebappTestCase {
 
   @Test
-  void initPage() throws ServiceException, SecurityServiceException {
+  void initPage() {
     addPermissions(administrator, GLOBAL_REFERENCE_DATA_READ);
 
     authenticateUser(administrator);
@@ -28,7 +26,7 @@ class ReferenceDataPageTestCase extends AbstractBasicApplicationWebappTestCase {
    * except when we use an @AuthorizeInstantiation annotation (for example on ReferenceDataTemplate)
    */
   @Test
-  void accessUserUnauthorized() throws ServiceException, SecurityServiceException {
+  void accessUserUnauthorized() {
     authenticateUser(basicUser);
 
     assertThrows(

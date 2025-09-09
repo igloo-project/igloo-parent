@@ -10,6 +10,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
@@ -45,6 +46,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
     excludeFilters = @Filter(Configuration.class))
 // fonctionnement de l'annotation @Transactional
 @EnableTransactionManagement(order = BasicApplicationAdviceOrder.TRANSACTION)
+@EnableJpaRepositories(basePackageClasses = {BasicApplicationCorePackage.class})
 public class BasicApplicationCoreCommonConfiguration { // NOSONAR
 
   public static final String APPLICATION_NAME = "basic-application";

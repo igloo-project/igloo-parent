@@ -1,5 +1,6 @@
 package basicapp.back.business.upgrade.service;
 
+import basicapp.back.business.upgrade.exception.DataUpgradeServiceException;
 import basicapp.back.business.upgrade.model.DataUpgradePackage;
 import basicapp.back.business.upgrade.model.DataUpgrade_InitDataFromExcel;
 import java.lang.reflect.InvocationTargetException;
@@ -36,7 +37,7 @@ public class DataUpgradeManagerImpl extends AbstractDataUpgradeServiceImpl
   }
 
   @Override
-  public void autoPerformDataUpgrades() throws ServiceException, SecurityServiceException {
+  public void autoPerformDataUpgrades() throws DataUpgradeServiceException {
     List<DataUpgradeRecord> records = dataUpgradeRecordService.listAutoPerform();
 
     if (!records.isEmpty()) {
@@ -60,7 +61,7 @@ public class DataUpgradeManagerImpl extends AbstractDataUpgradeServiceImpl
   }
 
   private boolean performDataUpgradeRecord(DataUpgradeRecord record)
-      throws ServiceException, SecurityServiceException {
+      throws DataUpgradeServiceException {
     String dataUpdateClassName =
         DataUpgradePackage.class.getPackage().getName() + "." + record.getName();
 
@@ -68,14 +69,14 @@ public class DataUpgradeManagerImpl extends AbstractDataUpgradeServiceImpl
     try {
       upgrade = (IDataUpgrade) Class.forName(dataUpdateClassName).getConstructor().newInstance();
     } catch (ClassNotFoundException e) {
-      throw new ServiceException(
+      throw new DataUpgradeServiceException(
           String.format("Upgrade class %s not found", dataUpdateClassName), e);
     } catch (InstantiationException
         | IllegalAccessException
         | IllegalArgumentException
         | InvocationTargetException
         | NoSuchMethodException e) {
-      throw new ServiceException(
+      throw new DataUpgradeServiceException(
           String.format("Upgrade class %s cannot be instantiated", dataUpdateClassName), e);
     }
 
@@ -88,8 +89,12 @@ public class DataUpgradeManagerImpl extends AbstractDataUpgradeServiceImpl
 
     if (result != null) {
       LOGGER.error("Erreur lors de l'exécution automatique d'un data upgrade", result);
-      dataUpgradeRecordService.markAsToDo(upgrade);
-      dataUpgradeRecordService.disableAutoPerform(upgrade);
+      try {
+        dataUpgradeRecordService.markAsToDo(upgrade);
+        dataUpgradeRecordService.disableAutoPerform(upgrade);
+      } catch (ServiceException | SecurityServiceException e) {
+        throw new DataUpgradeServiceException(e);
+      }
       return false;
     } else {
       return true;
@@ -103,7 +108,7 @@ public class DataUpgradeManagerImpl extends AbstractDataUpgradeServiceImpl
   private Throwable performUpgrade(IDataUpgrade upgrade, TransactionStatus transactionStatus) {
     try {
       executeDataUpgrade(upgrade);
-    } catch (RuntimeException | ServiceException | SecurityServiceException e) {
+    } catch (Exception e) {
       transactionStatus.setRollbackOnly();
       return e;
     }
