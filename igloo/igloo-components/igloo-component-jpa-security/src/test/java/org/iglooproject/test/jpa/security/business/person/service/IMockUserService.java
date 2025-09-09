@@ -8,7 +8,8 @@ import org.iglooproject.jpa.security.business.user.service.ICoreUserSecurityServ
 import org.iglooproject.test.jpa.security.business.person.model.MockUser;
 import org.springframework.security.access.annotation.Secured;
 
-public interface IMockUserService extends ICoreUserSecurityService<MockUser>, IGenericEntityService<Long, MockUser> {
+public interface IMockUserService
+    extends ICoreUserSecurityService<MockUser>, IGenericEntityService<Long, MockUser> {
 
   @Secured(CoreAuthorityConstants.ROLE_ADMIN)
   void protectedMethodRoleAdmin();
