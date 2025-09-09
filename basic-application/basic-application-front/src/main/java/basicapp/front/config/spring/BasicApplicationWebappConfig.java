@@ -10,7 +10,9 @@ import basicapp.front.notification.service.BasicApplicationNotificationUrlBuilde
 import basicapp.front.user.renderer.UserRenderer;
 import igloo.julhelper.servlet.JakartaJulLoggingListener;
 import igloo.log4j2jmx.servlet.JakartaLog4j2LoggingManagerListener;
-import igloo.wicket.servlet.filter.Log4jUrlFilter;
+import igloo.loginmdc.servlet.filter.Log4jHostNameFilter;
+import igloo.loginmdc.servlet.filter.Log4jUrlFilter;
+import igloo.loginmdc.servlet.filter.Log4jUserIdFilter;
 import jakarta.servlet.DispatcherType;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
@@ -22,6 +24,7 @@ import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.protocol.http.WicketFilter;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.more.rendering.service.IRendererService;
+import org.iglooproject.jpa.security.business.user.service.ICoreUserSecurityService;
 import org.iglooproject.wicket.more.notification.service.IHtmlNotificationCssService;
 import org.iglooproject.wicket.more.notification.service.IWicketContextProvider;
 import org.iglooproject.wicket.more.notification.service.PhlocCssHtmlNotificationCssServiceImpl;
@@ -89,6 +92,25 @@ public class BasicApplicationWebappConfig {
     public FilterRegistrationBean<Log4jUrlFilter> log4jUrlFilter() {
       FilterRegistrationBean<Log4jUrlFilter> bean = new FilterRegistrationBean<>();
       bean.setFilter(new Log4jUrlFilter());
+      bean.setOrder(log4jUrlFilterPrecedence);
+      bean.setDispatcherTypes(allDispatcherTypes);
+      return bean;
+    }
+
+    @Bean
+    public FilterRegistrationBean<Log4jUserIdFilter> log4jUserIdFilter(
+        ICoreUserSecurityService<User> userSecurityService) {
+      FilterRegistrationBean<Log4jUserIdFilter> bean = new FilterRegistrationBean<>();
+      bean.setFilter(new Log4jUserIdFilter(userSecurityService));
+      bean.setOrder(log4jUrlFilterPrecedence);
+      bean.setDispatcherTypes(allDispatcherTypes);
+      return bean;
+    }
+
+    @Bean
+    public FilterRegistrationBean<Log4jHostNameFilter> log4jHostNameFilter() {
+      FilterRegistrationBean<Log4jHostNameFilter> bean = new FilterRegistrationBean<>();
+      bean.setFilter(new Log4jHostNameFilter());
       bean.setOrder(log4jUrlFilterPrecedence);
       bean.setDispatcherTypes(allDispatcherTypes);
       return bean;
