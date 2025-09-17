@@ -74,7 +74,8 @@ import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.resource.loader.ClassStringResourceLoader;
-import org.iglooproject.jpa.more.business.history.model.embeddable.IHistoryValue;
+import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryEventValue;
+import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryValue;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.more.application.CoreWicketAuthenticatedApplication;
 import org.iglooproject.wicket.more.console.common.model.ConsoleMenuSection;
@@ -158,7 +159,8 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
     converterLocator.set(User.class, UserRenderer.get());
     converterLocator.set(Role.class, RoleRenderer.get());
 
-    converterLocator.set(IHistoryValue.class, IHistoryValueRenderer.get());
+    converterLocator.set(HistoryValue.class, IHistoryValueRenderer.get());
+    converterLocator.set(HistoryEventValue.class, IHistoryValueRenderer.get());
     converterLocator.set(HistoryEventType.class, EnumRenderer.get());
 
     return new EnumClassAwareConverterLocator(
