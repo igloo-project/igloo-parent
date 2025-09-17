@@ -309,7 +309,12 @@ public class QueuedTaskHolderManagerImpl
                   LOGGER.warn("Reloaded tasks: {}", Joiner.on(",").join(taskIds));
 
                   // Initialize and submit the task to the queue
-                  tasks.forEach(t -> queueOffer(queue, t));
+                  tasks.forEach(
+                      t -> {
+                        t.setStatus(TaskStatus.TO_RUN);
+                        t.resetExecutionInformation();
+                        queueOffer(queue, t.getId());
+                      });
                 }
 
               } catch (RuntimeException | ServiceException | SecurityServiceException e) {
@@ -358,7 +363,7 @@ public class QueuedTaskHolderManagerImpl
     return newQueuedTaskHolder;
   }
 
-  protected void doSubmit(String queueId, Long newQueuedTaskHolderId) throws ServiceException {
+  protected void doSubmit(String queueId, Long newQueuedTaskHolderId) {
     if (active.get()) {
       TaskQueue selectedQueue = getQueue(queueId);
       queueOffer(selectedQueue, newQueuedTaskHolderId);
@@ -368,11 +373,29 @@ public class QueuedTaskHolderManagerImpl
   @Override
   public void reload(Long queuedTaskHolderId) throws ServiceException, SecurityServiceException {
     QueuedTaskHolder queuedTaskHolder = queuedTaskHolderService.getById(queuedTaskHolderId);
-    if (queuedTaskHolder != null) {
-      TaskQueue queue = getQueue(queuedTaskHolder.getQueueId());
-      if (active.get()) {
-        queueOffer(queue, queuedTaskHolder);
-      }
+
+    if (queuedTaskHolder == null) {
+      return;
+    }
+
+    queuedTaskHolder.setStatus(TaskStatus.TO_RUN);
+    queuedTaskHolder.resetExecutionInformation();
+
+    String queueId = queuedTaskHolder.getQueueId();
+
+    synchronizationManager.push(
+        new ITransactionSynchronizationAfterCommitTask() {
+          @Override
+          public void run() throws Exception {
+            doReload(queueId, queuedTaskHolderId);
+          }
+        });
+  }
+
+  protected void doReload(String queueId, Long queuedTaskHolderId) {
+    if (active.get()) {
+      TaskQueue selectedQueue = getQueue(queueId);
+      queueOffer(selectedQueue, queuedTaskHolderId);
     }
   }
 
@@ -495,20 +518,6 @@ public class QueuedTaskHolderManagerImpl
       LOGGER.error("Unable to offer the task " + taskId + " to the queue");
     }
     return status;
-  }
-
-  /**
-   * Cluster-safe offer a task in a queue ; if task is already loaded on the cluster, we don't load
-   * it. Reinit the task information before doing it
-   *
-   * @param queue
-   * @param task
-   * @return
-   */
-  private boolean queueOffer(TaskQueue queue, QueuedTaskHolder task) {
-    task.setStatus(TaskStatus.TO_RUN);
-    task.resetExecutionInformation();
-    return queueOffer(queue, task.getId());
   }
 
   @Override
