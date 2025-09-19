@@ -58,7 +58,8 @@ test-init:
   - apt-get update
   # add hatch and xmllint
   - apt-get install -y python3 pipx libxml2-utils
-  - pipx install hatch
+  # hatch workaround: https://github.com/pypa/hatch/issues/2050
+  - pipx install --preinstall "click!=8.3.0" hatch
   - cd tools/igloo-project-init
   - /root/.local/bin/hatch fmt
   - /root/.local/bin/hatch run types:check
