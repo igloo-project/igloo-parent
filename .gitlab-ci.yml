@@ -1,5 +1,5 @@
 image:
-  name: maven:3.9-eclipse-temurin-17
+  name: igloo-containers.tools.kobalt.fr/containers/maven-igloo:3.9-eclipse-temurin-17
 
 variables:
   MAVEN_OPTS: "-Xmx1536m"
@@ -56,17 +56,14 @@ test-init:
   needs: ['maven-deploy']
   script:
   - apt-get update
-  # add hatch and xmllint
-  - apt-get install -y python3 pipx libxml2-utils
-  # hatch workaround: https://github.com/pypa/hatch/issues/2050
-  - pipx install --preinstall "click!=8.3.0" hatch
+  - apt-get install -y libxml2-utils
   - cd tools/igloo-project-init
-  - /root/.local/bin/hatch fmt
-  - /root/.local/bin/hatch run types:check
+  - hatch fmt
+  - hatch run types:check
   # check forbidden logger name in log4j2 properties
   - grep -qEr '.*basicapp.*=' --include log4j2*properties --exclude-dir target && { echo "Do not use basicapp in logger name (incompatible with project init)"; exit 1; }
   - >
-    /root/.local/bin/hatch run igloo-project-init
+    hatch run igloo-project-init
     -v --debug --check-diff --check-build
     --igloo-url "$CI_PROJECT_DIR"
     basic-application org.iglooproject.archetype CURRENT_IGLOO_VERSION basicapp
@@ -87,15 +84,13 @@ basic-application-init:
   stage: build
   script:
   - apt-get update
-  # add hatch and xmllint
-  - apt-get install -y python3 pipx libxml2-utils
-  - pipx install hatch
+  - apt-get install -y libxml2-utils
   - cd tools/igloo-project-init
   - export GIT_USER="token"
   - export GIT_PASSWORD="$GIT_ACCESS_TOKEN"
   - '[ "$DRY_RUN" == "true" ] && DRY_RUN_ARGS=--dry-run || DRY_RUN_ARGS=""'
   - >
-    /root/.local/bin/hatch run igloo-project-init
+    hatch run igloo-project-init
     -v --debug --check-build
     --igloo-url "$CI_PROJECT_DIR" $DRY_RUN_ARGS
     --target-url "$GIT_HTTPS_REPO_PROJECT" --target-branch ${TARGET_BRANCH:-main}
