@@ -1,8 +1,7 @@
-package igloo.wicket.servlet.filter;
+package igloo.loginmdc.servlet.filter;
 
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
-import jakarta.servlet.FilterConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
@@ -15,13 +14,9 @@ public class Log4jUrlFilter implements Filter {
   private static final String LOG4J_URL_FILTER_MAP_KEY = "ow-url";
 
   @Override
-  public void init(FilterConfig filterConfig) throws ServletException {}
-
-  @Override
   public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
       throws IOException, ServletException {
-    if (request instanceof HttpServletRequest) {
-      HttpServletRequest httpRequest = (HttpServletRequest) request;
+    if (request instanceof HttpServletRequest httpRequest) {
       StringBuilder builder = new StringBuilder();
       builder.append(httpRequest.getRequestURI());
       if (httpRequest.getQueryString() != null) {
@@ -36,7 +31,4 @@ public class Log4jUrlFilter implements Filter {
       MDC.remove(LOG4J_URL_FILTER_MAP_KEY);
     }
   }
-
-  @Override
-  public void destroy() {}
 }

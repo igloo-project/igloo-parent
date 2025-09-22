@@ -6,7 +6,7 @@
 	<parent>
 		<artifactId>basic-application</artifactId>
 		<groupId>org.iglooproject.archetype</groupId>
-		<version>6.14.1</version>
+		<version>6.15.0</version>
 	</parent>
 	
 	<packaging>jar</packaging>
@@ -70,6 +70,11 @@
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-spring-actuator</artifactId>
+			<version>${igloo.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-login-mdc</artifactId>
 			<version>${igloo.version}</version>
 		</dependency>
 		<dependency>

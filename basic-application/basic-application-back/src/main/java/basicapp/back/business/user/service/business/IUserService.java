@@ -3,11 +3,13 @@ package basicapp.back.business.user.service.business;
 import basicapp.back.business.common.model.EmailAddress;
 import basicapp.back.business.user.model.User;
 import java.util.Locale;
+import org.iglooproject.jpa.business.generic.service.IGenericEntityService;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.jpa.security.business.user.service.ICoreUserService;
+import org.iglooproject.jpa.security.business.user.service.ICoreUserSecurityService;
 
-public interface IUserService extends ICoreUserService<User> {
+public interface IUserService
+    extends ICoreUserSecurityService<User>, IGenericEntityService<Long, User> {
 
   void saveBasicUser(User user, String password) throws SecurityServiceException, ServiceException;
 
