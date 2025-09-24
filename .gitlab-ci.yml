@@ -143,9 +143,14 @@ igloo-dependency-check:
   allow_failure: true
   stage: dependency-check
   script:
+    - if [ $CI_COMMIT_BRANCH == "owasp" && $CI_PIPELINE_SOURCE == "schedule"]; then
+      SUPPRESSION_FILES=../owasp-suppressions.xml,../owasp-suppressions-pending.xml;
+      else
+      SUPPRESSION_FILES=../owasp-suppressions.xml;
+      fi
     - 'cd basic-application && mvn clean package -DskipTests org.owasp:dependency-check-maven:check -U 
       -DnodeAnalyzerEnabled=false -DyarnAuditAnalyzerEnabled=false -DassemblyAnalyzerEnabled=false 
-      -DsuppressionFiles=../owasp-suppressions.xml
+      DsuppressionFiles=$SUPPRESSION_FILES
       -DnvdApiKey=$OWASP_API_KEY
       -Dformats=HTML,JUNIT -DfailBuildOnCVSS=0 -DjunitFailOnCVSS=0'
   artifacts:
