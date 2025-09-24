@@ -10,13 +10,4 @@
         <packageUrl regex="true">^pkg:javascript/bootstrap@.*$</packageUrl>
         <vulnerabilityName>CVE-2024-6531</vulnerabilityName>
     </suppress>
-    <suppress>
-        <notes><![CDATA[
-          file name: tomcat-embed-core-10.1.39.jar
-    
-          We don't integrate the jar into the product deliverable (optional=true, spring repackage skipped)
-      ]]></notes>
-        <packageUrl regex="true">^pkg:maven/org\.apache\.tomcat\.embed/tomcat-embed-.*$</packageUrl>
-        <vulnerabilityName regex="true">.*</vulnerabilityName>
-    </suppress>
 </suppressions>

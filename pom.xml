@@ -23,7 +23,7 @@
 		<maven-site-plugin.version>4.0.0-M16</maven-site-plugin.version>
 		<igloo.wagon-ssh-external-plugin.version>3.4.1</igloo.wagon-ssh-external-plugin.version>
 		<maven-project-info-reports-plugin.version>3.9.0</maven-project-info-reports-plugin.version>
-		<igloo.owasp-maven-plugin.version>12.1.3</igloo.owasp-maven-plugin.version>
+		<igloo.owasp-maven-plugin.version>12.1.6</igloo.owasp-maven-plugin.version>
 		<igloo.versions-maven-plugin.version>2.18.0</igloo.versions-maven-plugin.version>
 	</properties>
 	
@@ -92,6 +92,9 @@
 							<suppressionFiles>
 								<suppressionFile>owasp-suppressions.xml</suppressionFile>
 							</suppressionFiles>
+                            <nodeAnalyzerEnabled>false</nodeAnalyzerEnabled>
+                            <yarnAuditAnalyzerEnabled>false</yarnAuditAnalyzerEnabled>
+                            <assemblyAnalyzerEnabled>false</assemblyAnalyzerEnabled>
 						</configuration>
 						<reportSets>
 							<reportSet>
@@ -192,6 +195,7 @@
 					<groupId>org.owasp</groupId>
 					<artifactId>dependency-check-maven</artifactId>
 					<version>${igloo.owasp-maven-plugin.version}</version>
+                    
 				</plugin>
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
