@@ -50,7 +50,7 @@ public abstract class AbstractTestSimpleHibernateBatchExecutor
         new ReadWriteBatchRunnable<Person>() {
           @Override
           public void executeUnit(Person unit) {
-            LOGGER.warn("Executing: " + unit);
+            LOGGER.info("Executing: " + unit);
             unit.setLastName(NEW_LASTNAME_VALUE);
             try {
               personService.update(unit);
@@ -90,7 +90,7 @@ public abstract class AbstractTestSimpleHibernateBatchExecutor
         new ReadOnlyBatchRunnable<Person>() {
           @Override
           public void executeUnit(Person unit) {
-            LOGGER.warn("Executing: " + unit);
+            LOGGER.info("Executing: " + unit);
             unit.setLastName(NEW_LASTNAME_VALUE);
             try {
               personService.update(unit);
@@ -139,7 +139,7 @@ public abstract class AbstractTestSimpleHibernateBatchExecutor
         new ReadOnlyBatchRunnable<Person>() {
           @Override
           public void executeUnit(Person unit) {
-            LOGGER.warn("Executing: " + unit);
+            LOGGER.info("Executing: " + unit);
             executed.add(unit.getId());
           }
         });
@@ -171,7 +171,7 @@ public abstract class AbstractTestSimpleHibernateBatchExecutor
         new ReadWriteBatchRunnable<Person>() {
           @Override
           public void executeUnit(Person unit) {
-            LOGGER.warn("Executing: " + unit);
+            LOGGER.info("Executing: " + unit);
 
             /* Remove the "Lastname" prefix, which "consumes" this element
              * (e.g. it removes this element from the query's results)
@@ -200,10 +200,10 @@ public abstract class AbstractTestSimpleHibernateBatchExecutor
       super.executePartition(partition, partitionIndex);
       switch (partitionIndex) {
         case 0: // First executePartition: succeed
-          LOGGER.warn("executePartition#{}: Succeeding", partitionIndex);
+          LOGGER.info("executePartition#{}: Succeeding", partitionIndex);
           break;
         case 1: // Second executePartition: fail
-          LOGGER.warn("executePartition#{}: Failing", partitionIndex);
+          LOGGER.info("executePartition#{}: Failing", partitionIndex);
           throw new TestBatchException1();
         default: // Should not happen
           fail();
