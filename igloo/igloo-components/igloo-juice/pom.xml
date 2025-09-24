@@ -59,12 +59,12 @@
 		</dependency>
 		<dependency>
 			<groupId>org.mock-server</groupId>
-			<artifactId>mockserver-netty-no-dependencies</artifactId>
+			<artifactId>mockserver-netty</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.mock-server</groupId>
-			<artifactId>mockserver-client-java-no-dependencies</artifactId>
+			<artifactId>mockserver-client-java</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -102,36 +102,7 @@
 		<dependencies>
 			<dependency>
 				<groupId>org.iglooproject</groupId>
-				<artifactId>dependencies-logging</artifactId>
-				<type>pom</type>
-				<scope>import</scope>
-				<version>${igloo-maven.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.iglooproject</groupId>
-				<artifactId>dependencies-commons</artifactId>
-				<type>pom</type>
-				<scope>import</scope>
-				<version>${igloo-maven.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.iglooproject</groupId>
-				<artifactId>dependencies-testing</artifactId>
-				<type>pom</type>
-				<scope>import</scope>
-				<version>${igloo-maven.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.iglooproject</groupId>
-				<artifactId>dependencies-quality-annotations</artifactId>
-				<type>pom</type>
-				<scope>import</scope>
-				<version>${igloo-maven.version}</version>
-			</dependency>
-			<!--override micrometer-->
-			<dependency>
-				<groupId>org.iglooproject</groupId>
-				<artifactId>dependencies-tools</artifactId>
+				<artifactId>dependencies-all</artifactId>
 				<type>pom</type>
 				<scope>import</scope>
 				<version>${igloo-maven.version}</version>
