@@ -64,6 +64,8 @@
 		<module>igloo-component-web-security</module>
 		<module>igloo-component-rest-jersey</module>
 		<module>igloo-component-jpa-migration</module>
+		<module>igloo-jwt</module>
+		
 		
 		<module>igloo-spring-security</module>
 		<module>igloo-spring-openidc</module>
