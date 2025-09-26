@@ -199,7 +199,7 @@
 		
 		Igloo 5 don't use QueryDSL with orderBy parameter in URL
 		]]></notes>
-		<packageUrl regex="true">^pkg:maven/com\.querydsl/querydsl-jpa@.*$</packageUrl>
+		<packageUrl regex="true">^pkg:maven/com\.querydsl/querydsl-.*$</packageUrl>
 		<vulnerabilityName>CVE-2024-49203</vulnerabilityName>
 	</suppress>
 	<suppress>
