@@ -261,4 +261,13 @@
 		<packageUrl regex="true">^pkg:maven/org\.springframework/spring-web@.*$</packageUrl>
 		<vulnerabilityName>CVE-2025-41234</vulnerabilityName>
 	</suppress>
+	<suppress>
+		<notes><![CDATA[
+   	file name: spring-web-5.3.39.jar
+   	Version 5  out of support
+	annotation is not usually declared on generic interfaces
+   ]]></notes>
+		<packageUrl regex="true">^pkg:maven/org\.springframework/spring-web@.*$</packageUrl>
+		<vulnerabilityName>CVE-2025-41249</vulnerabilityName>
+	</suppress>
 </suppressions>
