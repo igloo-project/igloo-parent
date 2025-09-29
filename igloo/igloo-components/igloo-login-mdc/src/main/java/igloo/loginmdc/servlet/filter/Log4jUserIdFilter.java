@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Optional;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 public class Log4jUserIdFilter implements Filter {
 
@@ -25,6 +27,11 @@ public class Log4jUserIdFilter implements Filter {
   public static final Logger LOGGER = LoggerFactory.getLogger(Log4jUserIdFilter.class);
 
   @Autowired private ISecurityUserService<? extends IUser> securityService;
+
+  @Override
+  public void init(FilterConfig filterConfig) {
+    SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
+  }
 
   @Override
   public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
