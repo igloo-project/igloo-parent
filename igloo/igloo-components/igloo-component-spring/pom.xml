@@ -186,6 +186,14 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+			<!--override error_prone_annotation for guava / caffeine-->
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-quality-annotations</artifactId>
+				<version>${igloo-maven.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	
