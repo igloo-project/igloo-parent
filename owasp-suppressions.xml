@@ -2,84 +2,12 @@
 <suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
 	<suppress>
 		<notes><![CDATA[
-		file name: wicket-core-9.18.0.jar: jquery-2.2.4.min.js
-	
-		This is a dependency version mismatch. We use jquery 3.6 that is not affected by vulnerability.
-	]]></notes>
-		<packageUrl regex="true">^pkg:javascript/jquery@.*$</packageUrl>
-		<vulnerabilityName>jquery issue: 162</vulnerabilityName>
-	</suppress>
-	<suppress>
-		<notes><![CDATA[
 		file name: wicket-core-9.18.0.jar: jquery-2.2.4.js
 	
 		This is a dependency version mismatch. We use jquery 3.6 that is not affected by vulnerability.
 	]]></notes>
 		<packageUrl regex="true">^pkg:javascript/jquery@.*$</packageUrl>
 		<vulnerabilityName>jquery issue: 162</vulnerabilityName>
-	</suppress>
-	<suppress>
-		<notes><![CDATA[
-		file name: wicket-core-9.18.0.jar: jquery-1.12.4.min.js
-	
-		This is a dependency version mismatch. We use jquery 3.6 that is not affected by vulnerability.
-	]]></notes>
-		<packageUrl regex="true">^pkg:javascript/jquery@.*$</packageUrl>
-		<vulnerabilityName>jquery issue: 162</vulnerabilityName>
-	</suppress>
-	<suppress>
-		<notes><![CDATA[
-		file name: wicket-core-9.18.0.jar: jquery-1.12.4.js
-		
-		This is a dependency version mismatch. We use jquery 3.6 that is not affected by vulnerability.
-	]]></notes>
-		<packageUrl regex="true">^pkg:javascript/jquery@.*$</packageUrl>
-		<vulnerabilityName>jquery issue: 162</vulnerabilityName>
-	</suppress>
-	<suppress>
-		<notes><![CDATA[
-		file name: bootstrap-5.3.2.jar
-		
-		we don't use bootstrap carousel component on Igloo
-	]]></notes>
-		<packageUrl regex="true">^pkg:maven/org\.webjars\.npm/bootstrap@.*$</packageUrl>
-		<vulnerabilityName>CVE-2024-6484</vulnerabilityName>
-	</suppress>
-	<suppress>
-		<notes><![CDATA[
-		file name: bootstrap-5.3.2.jar
-		
-		same than CVE-2024-6484 : we don't use bootstrap carousel component on Igloo
-	]]></notes>
-		<packageUrl regex="true">^pkg:maven/org\.webjars\.npm/bootstrap@.*$</packageUrl>
-		<vulnerabilityName>CVE-2024-6531</vulnerabilityName>
-	</suppress>
-	<suppress>
-		<notes><![CDATA[
-		file name: bootstrap4-4.6.0.jar: bootstrap.bundle.js
-		
-		same than CVE-2024-6484 : we don't use bootstrap carousel component on Igloo
-	]]></notes>
-		<packageUrl regex="true">^pkg:javascript/bootstrap@.*$</packageUrl>
-		<vulnerabilityName>CVE-2024-6531</vulnerabilityName>
-	</suppress>
-	<suppress>
-		<notes><![CDATA[
-		file name: bootstrap4-4.6.0.jar: bootstrap.bundle.min.js
-		
-		same than CVE-2024-6484 : we don't use bootstrap carousel component on Igloo
-	]]></notes>
-		<packageUrl regex="true">^pkg:javascript/bootstrap@.*$</packageUrl>
-		<vulnerabilityName>CVE-2024-6531</vulnerabilityName>
-	</suppress>
-	<suppress>
-		<notes><![CDATA[
-	file name: bootstrap4-4.6.0.jar: bootstrap.js
-	
-	
-	]]></notes>
-		<packageUrl regex="true">^pkg:javascript/bootstrap@.*$</packageUrl>
-		<vulnerabilityName>CVE-2024-6531</vulnerabilityName>
 	</suppress>
 	<suppress>
 		<notes><![CDATA[
@@ -107,15 +35,6 @@
 		]]></notes>
 		<packageUrl regex="true">^pkg:maven/org\.webjars\.npm/select2\-bootstrap\-5\-theme@.*$</packageUrl>
 		<cve>CVE-2016-10744</cve>
-	</suppress>
-	<suppress>
-		<notes><![CDATA[
-		file name: jackson-databind-2.14.1.jar
-
-		This vulnerability is a DOS when serializing cyclic objects. It is not reachable by external attackers.
-		]]></notes>
-		<packageUrl regex="true">^pkg:maven/com\.fasterxml\.jackson\.core/jackson\-databind@.*$</packageUrl>
-		<cve>CVE-2023-35116</cve>
 	</suppress>
 	<suppress>
 		<notes><![CDATA[
@@ -185,21 +104,11 @@
 	</suppress>
 	<suppress>
 		<notes><![CDATA[
-		file name: lucene-core-5.5.5.jar
-
-		Igloo don't use LuceneReplicator. If we have to, we would not use it on arbitrary data but on our data.
-		Lucene 9.12.0 is not compatible with hibernate search 5
-		]]></notes>
-		<packageUrl regex="true">^pkg:maven/org\.apache\.lucene/lucene-.*$</packageUrl>
-		<cve>CVE-2024-45772</cve>
-	</suppress>
-	<suppress>
-		<notes><![CDATA[
 		file name: querydsl-jpa-5.1.0.jar
 		
 		Igloo 5 don't use QueryDSL with orderBy parameter in URL
 		]]></notes>
-		<packageUrl regex="true">^pkg:maven/com\.querydsl/querydsl-jpa@.*$</packageUrl>
+		<packageUrl regex="true">^pkg:maven/com\.querydsl/querydsl-.*$</packageUrl>
 		<vulnerabilityName>CVE-2024-49203</vulnerabilityName>
 	</suppress>
 	<suppress>
@@ -240,15 +149,6 @@
 	</suppress>
 	<suppress>
 		<notes><![CDATA[
-		file name: spring-webmvc-5.3.39.jar
-		
-		Igloo applications runs on Tomcat
-   ]]></notes>
-		<packageUrl regex="true">^pkg:maven/org\.springframework/spring-webmvc@.*$</packageUrl>
-		<vulnerabilityName>CVE-2024-38816</vulnerabilityName>
-	</suppress>
-	<suppress>
-		<notes><![CDATA[
 		   file name: spring-web-5.3.39.jar
 		   
 		   This is a dependency version mismatch.
@@ -261,4 +161,30 @@
 		<packageUrl regex="true">^pkg:maven/org\.springframework/spring-web@.*$</packageUrl>
 		<vulnerabilityName>CVE-2025-41234</vulnerabilityName>
 	</suppress>
-</suppressions>
+	<suppress>
+		<notes><![CDATA[
+   	file name: spring-web-5.3.39.jar
+   	Version 5  out of support
+	annotation is not usually declared on generic interfaces
+   ]]></notes>
+		<packageUrl regex="true">^pkg:maven/org\.springframework/spring-.*$</packageUrl>
+		<vulnerabilityName>CVE-2025-41249</vulnerabilityName>
+	</suppress>
+	<suppress>
+		<notes><![CDATA[
+   file name: gson-2.10.1.jar
+   false positive with Nimbus JOSE + JWT 
+   ]]></notes>
+		<packageUrl regex="true">^pkg:maven/com\.google\.code\.gson/gson@.*$</packageUrl>
+		<vulnerabilityName>CVE-2025-53864</vulnerabilityName>
+	</suppress>
+	<suppress>
+		<notes><![CDATA[
+   		file name: spring-core-5.3.39.jar
+   		Version 5  out of support
+   		Igloo is not affected with apache tomcat
+   ]]></notes>
+		<packageUrl regex="true">^pkg:maven/org\.springframework/spring-core@.*$</packageUrl>
+		<vulnerabilityName>CVE-2025-41242</vulnerabilityName>
+	</suppress>
+</suppressions> 

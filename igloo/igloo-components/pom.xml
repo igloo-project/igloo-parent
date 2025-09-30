@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.iglooproject.parents</groupId>
 		<artifactId>igloo-parent-maven-configuration-core</artifactId>
-		<version>5.27.0</version>
+		<version>5.28.0</version>
 		<relativePath>../igloo-parents/igloo-parent-maven-configuration-core/pom.xml</relativePath>
 	</parent>
 	
@@ -21,6 +21,7 @@
 		<module>igloo-component-config-test</module>
 		
 		<module>igloo-component-jul-to-slf4j</module>
+		<module>igloo-login-mdc</module>
 		
 		<module>igloo-component-spring</module>
 		<module>igloo-component-spring-bootstrap-config</module>

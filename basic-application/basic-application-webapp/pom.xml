@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>basic-application</artifactId>
 		<groupId>org.iglooproject.archetype</groupId>
-		<version>5.27.0</version>
+		<version>5.28.0</version>
 	</parent>
 	
 	<packaging>war</packaging>
@@ -59,6 +59,11 @@
 		<dependency>
 			<groupId>org.iglooproject.webjars</groupId>
 			<artifactId>bootstrap4-override</artifactId>
+			<version>${igloo.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-login-mdc</artifactId>
 			<version>${igloo.version}</version>
 		</dependency>
 		<dependency>
@@ -258,6 +263,14 @@
 			<dependency>
 				<groupId>org.iglooproject</groupId>
 				<artifactId>dependencies-logging</artifactId>
+				<version>${igloo-maven.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<!--override error_prone_annotation for guava / caffeine-->
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-quality-annotations</artifactId>
 				<version>${igloo-maven.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
