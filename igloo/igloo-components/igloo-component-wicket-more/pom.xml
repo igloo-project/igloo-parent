@@ -220,12 +220,6 @@
 			<groupId>org.mozilla</groupId>
 			<artifactId>rhino</artifactId>
 		</dependency>
-
-		<!-- fix upper bound dependencies wicket / srping-boot-test-->
-		<dependency>
-			<groupId>org.ow2.asm</groupId>
-			<artifactId>asm</artifactId>
-		</dependency>
 	</dependencies>
 	
 	<build>
