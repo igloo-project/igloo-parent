@@ -44,9 +44,7 @@ public abstract class AbstractImmutableMaterializedIntegerValueUserType<
   }
 
   @Override
-  public T nullSafeGet(
-      ResultSet rs, int position, WrapperOptions options)
-      throws SQLException {
+  public T nullSafeGet(ResultSet rs, int position, WrapperOptions options) throws SQLException {
     Integer columnValue = rs.getInt(position);
     if (rs.wasNull()) {
       return null;

@@ -54,9 +54,7 @@ public class InterfaceEnumMapperType<T extends IMappableInterface & Serializable
   }
 
   @Override
-  public T nullSafeGet(
-      ResultSet rs, int position, WrapperOptions options)
-      throws SQLException {
+  public T nullSafeGet(ResultSet rs, int position, WrapperOptions options) throws SQLException {
     String columnValue = rs.getString(position);
     if (rs.wasNull()) {
       return null;
@@ -65,8 +63,7 @@ public class InterfaceEnumMapperType<T extends IMappableInterface & Serializable
   }
 
   @Override
-  public void nullSafeSet(
-      PreparedStatement st, T value, int index, WrapperOptions session)
+  public void nullSafeSet(PreparedStatement st, T value, int index, WrapperOptions session)
       throws SQLException {
     if (value == null) {
       // postgresql only handle VARCHAR/LONGVARCHAR
