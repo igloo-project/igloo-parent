@@ -7,10 +7,9 @@ import java.sql.SQLException;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
-import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.type.SqlTypes;
+import org.hibernate.type.descriptor.WrapperOptions;
 import org.hibernate.usertype.UserType;
 import org.iglooproject.jpa.business.generic.model.IMappableInterface;
 
@@ -50,18 +49,13 @@ public class InterfaceEnumMapperType<T extends IMappableInterface & Serializable
   }
 
   @Override
-  public boolean equals(T x, T y) {
-    return Objects.equals(x, y);
-  }
-
-  @Override
   public int hashCode(T x) {
     return x.hashCode();
   }
 
   @Override
   public T nullSafeGet(
-      ResultSet rs, int position, SharedSessionContractImplementor session, Object owner)
+      ResultSet rs, int position, WrapperOptions options)
       throws SQLException {
     String columnValue = rs.getString(position);
     if (rs.wasNull()) {
@@ -72,7 +66,7 @@ public class InterfaceEnumMapperType<T extends IMappableInterface & Serializable
 
   @Override
   public void nullSafeSet(
-      PreparedStatement st, T value, int index, SharedSessionContractImplementor session)
+      PreparedStatement st, T value, int index, WrapperOptions session)
       throws SQLException {
     if (value == null) {
       // postgresql only handle VARCHAR/LONGVARCHAR
