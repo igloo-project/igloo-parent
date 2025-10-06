@@ -34,10 +34,10 @@ public class CacheWritingForm<E> extends ModelValidatingForm<E> {
   }
 
   @Override
-  protected void onValidateModelObjects() {
+  protected void onAfterUpdateFormComponentModels() {
     // Make sure sub-form models are up-to-date
     writeAll();
-    super.onValidateModelObjects();
+    super.onAfterUpdateFormComponentModels();
   }
 
   @Override
