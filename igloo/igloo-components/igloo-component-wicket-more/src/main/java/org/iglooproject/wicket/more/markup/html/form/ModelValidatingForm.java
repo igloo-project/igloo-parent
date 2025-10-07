@@ -25,11 +25,10 @@ public class ModelValidatingForm<E> extends Form<E> {
 
   @Override
   protected void onValidateModelObjects() {
-    super.onValidateModelObjects();
-
     for (IFormModelValidator formModelValidator : formModelValidators) {
       validateFormModelValidator(formModelValidator);
     }
+    super.onValidateModelObjects();
   }
 
   private void validateFormModelValidator(IFormModelValidator validator) {

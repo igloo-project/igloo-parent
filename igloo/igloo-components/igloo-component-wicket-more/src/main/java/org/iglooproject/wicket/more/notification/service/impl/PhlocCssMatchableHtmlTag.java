@@ -3,7 +3,6 @@ package org.iglooproject.wicket.more.notification.service.impl;
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Sets;
-import com.helger.css.ECSSVersion;
 import com.helger.css.decl.CSSSelector;
 import com.helger.css.decl.CSSSelectorSimpleMember;
 import com.helger.css.decl.ICSSSelectorMember;
@@ -57,7 +56,7 @@ public class PhlocCssMatchableHtmlTag {
         if (LOGGER.isDebugEnabled()) {
           LOGGER.debug(
               "Only simple selector members ('.class', 'name', '#id') are supported. The selector '{}' and the related declarations will be ignored.",
-              selector.getAsCSSString(new CSSWriterSettings(ECSSVersion.CSS30), 0));
+              selector.getAsCSSString(new CSSWriterSettings(), 0));
         }
         return false;
       }

@@ -1,23 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- This file is duplicated in igloo-parent-maven-configuration-common, please modify both of the files when you need to modify something-->
 <suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
-	<suppress>
-		<notes><![CDATA[
-		file name: bootstrap4-4.6.0.jar: bootstrap.bundle.js
-		
-		same than CVE-2024-6484 : we don't use bootstrap carousel component on Igloo
-	]]></notes>
-		<packageUrl regex="true">^pkg:javascript/bootstrap@.*$</packageUrl>
-		<vulnerabilityName>CVE-2024-6531</vulnerabilityName>
-	</suppress>
-	<suppress>
-		<notes><![CDATA[
-      file name: tomcat-embed-core-10.1.39.jar
+    <suppress>
+        <notes><![CDATA[
+        file name: bootstrap4-4.6.0.jar: bootstrap.bundle.js
 
-      We don't integrate the jar into the product deliverable (optional=true, spring repackage skipped)
-      ]]></notes>
-		<packageUrl regex="true">^pkg:maven/org\.apache\.tomcat\.embed/tomcat-embed-.*$</packageUrl>
-		<vulnerabilityName regex="true">.*</vulnerabilityName>
-	</suppress>
-
+        same than CVE-2024-6484 : we don't use bootstrap carousel component on Igloo
+    ]]></notes>
+        <packageUrl regex="true">^pkg:javascript/bootstrap@.*$</packageUrl>
+        <vulnerabilityName>CVE-2024-6531</vulnerabilityName>
+    </suppress>
 </suppressions>

@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
 import com.helger.css.CCSS;
-import com.helger.css.ECSSVersion;
 import com.helger.css.ICSSWriterSettings;
 import com.helger.css.decl.CSSDeclaration;
 import com.helger.css.decl.CSSSelector;
@@ -47,8 +46,7 @@ public class SimplePhlocCssHtmlNotificationCssRegistry implements IHtmlNotificat
   private static final ICSSWriterSettings STYLE_ATTRIBUTE_WRITER_SETTINGS;
 
   static {
-    CSSWriterSettings settings = new CSSWriterSettings(ECSSVersion.CSS30, true);
-    STYLE_ATTRIBUTE_WRITER_SETTINGS = settings;
+    STYLE_ATTRIBUTE_WRITER_SETTINGS = new CSSWriterSettings(true);
   }
 
   private final CascadingStyleSheet styleSheet;

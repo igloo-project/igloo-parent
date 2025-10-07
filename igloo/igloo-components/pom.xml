@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.iglooproject.parents</groupId>
 		<artifactId>igloo-parent-maven-configuration-core</artifactId>
-		<version>6.15.0</version>
+		<version>6.16.0</version>
 		<relativePath>../igloo-parents/igloo-parent-maven-configuration-core/pom.xml</relativePath>
 	</parent>
 	
@@ -64,6 +64,8 @@
 		<module>igloo-component-web-security</module>
 		<module>igloo-component-rest-jersey</module>
 		<module>igloo-component-jpa-migration</module>
+		<module>igloo-jwt</module>
+		
 		
 		<module>igloo-spring-security</module>
 		<module>igloo-spring-openidc</module>

@@ -1,0 +1,173 @@
+<
+<?xml version="1.0" encoding="UTF-8"?>
+<suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
+
+
+    <!--                                                              -->
+    <!--                    FUTUR IGLOO RELEASE                       -->
+    <!--                                                              -->
+    
+    
+    <!--                                                              -->
+    <!--                    IGLOO 6.16.0                              -->
+    <!--                                                              -->
+    
+    <suppress>
+        <notes><![CDATA[
+       file name: angus-mail-2.0.3.jar (shaded: org.eclipse.angus:smtp:2.0.3)
+           - Severité mineur, dans nos contextes surface d'attaque très limitée.
+           - mise à jour igloo facile - corrigé sur version 2.0.4
+       ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.eclipse\.angus/smtp@.*$</packageUrl>
+        <vulnerabilityName>CVE-2025-7962</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+        file name: commons-beanutils-1.10.1.jar
+           - ne concerne pas nos usages
+           - mise à jour igloo facile - corrigé sur version 1.11.0
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/commons-beanutils/commons-beanutils@.*$</packageUrl>
+        <cve>CVE-2025-48734</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+        file name: commons-lang3-3.17.0.jar
+           - severité mineure
+           - mise à jour igloo facile - corrigé sur version 3.18.0
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.apache\.commons/commons-lang3@.*$</packageUrl>
+        <cve>CVE-2025-48924</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+        file name: spring-core-6.2.5.jar
+           - annotation n'est usuellement pas déclarée sur des interfaces génériques
+           - mise à jour igloo facile - corrigé sur version 6.2.11 
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework/spring-core@.*$</packageUrl>
+        <vulnerabilityName>CVE-2025-41249</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+        file name: spring-core-6.2.5.jar
+           - non affecté avec apache tomcat
+           - mise à jour igloo facile - corrigé sur version 6.2.10 
+   
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework/spring-core@.*$</packageUrl>
+        <vulnerabilityName>CVE-2025-41242</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+        file name: spring-security-core-6.4.4.jar
+           - annotation n'est usuellement pas déclarée sur des interfaces génériques
+           - mise à jour igloo facile - corrigé sur version 6.4.6 
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring-security-core@.*$</packageUrl>
+        <vulnerabilityName>CVE-2025-41248</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+        file name: spring-security-crypto-6.4.4.jar
+           - severité faible 
+           - mise à jour igloo facile - corrigé sur version 6.4.5
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring-security-crypto@.*$</packageUrl>
+        <vulnerabilityName>CVE-2025-22234</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+            file name: wicket-core-10.2.0.jar
+            Faille connue, en cour de traitement avec PR sur wicket.
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.apache\.wicket/wicket-.*$</packageUrl>
+        <cve>CVE-2024-53299</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+        file name: spring-web-6.2.5.jar
+            -  normalement on utilse le pattern ContentDisposition.Builder#filename(String, ASCII), donc pas concerné
+            - mise à jour igloo facile - corrigé sur version 6.2.8  - sera corrigé sur prochaine campagne de MAJ
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework/spring-web@.*$</packageUrl>
+        <vulnerabilityName>CVE-2025-41234</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+          file name: tomcat-embed-core-10.1.39.jar
+    
+          We don't integrate the jar into the product deliverable (optional=true, spring repackage skipped)
+      ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.apache\.tomcat\.embed/tomcat-embed-.*$</packageUrl>
+        <vulnerabilityName regex="true">.*</vulnerabilityName>
+    </suppress>
+    
+    <!--                                                       -->
+    <!--                    IGLOO 6.11.0                       -->
+    <!--                                                       -->
+    
+    <suppress>
+        <notes><![CDATA[
+        file name: commons-fileupload2-core-2.0.0-M2.jar
+            - attack DoS -> 2.0.0-M4 mise à jour avec la verion igloo 6.11.0
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.apache\.commons/commons-fileupload2.*$</packageUrl>
+        <cve>CVE-2025-48976</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+        file name: postgresql-42.7.5.jar
+           - on n'utilise pas channel binding.
+           - mise à jour igloo facile - corrigé sur version 42.7.7 - igloo 6.11.0
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.postgresql/postgresql@.*$</packageUrl>
+        <vulnerabilityName>CVE-2025-49146</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+        file name: spring-boot-actuator-autoconfigure-3.4.4.jar
+           - mise à jour igloo facile - corrigé sur version > 3.4.4 - igloo 6.11.0
+           - non concerné sur igloo (pas d'utilisation de /null)
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring-boot-actuator-autoconfigure@.*$
+        </packageUrl>
+        <vulnerabilityName>CVE-2025-22235</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+        file name: spring-context-6.2.5.jar
+            - sévérité mineur + pas d'utilisation connue de disallowedFields sur igloo
+            - mise à jour igloo facile - corrigé sur version 6.2.8 - igloo 6.11.0
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework/spring-context@.*$</packageUrl>
+        <vulnerabilityName>CVE-2025-22233</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+         file name: spring-security-core-6.4.4.jar
+            - on n'utilise pas l'annotation @EnableMethodSecurity en (mode=ASPECTJ)
+            - mise à jour igloo facile - corrigé sur version 6.4.6 - igloo 6.11.0
+       ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring-security-core@.*$</packageUrl>
+        <vulnerabilityName>CVE-2025-41232</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+		file name: querydsl-jpa-5.1.0.jar
+		
+		Igloo 5 don't use QueryDSL with orderBy parameter in URL
+		]]></notes>
+        <packageUrl regex="true">^pkg:maven/com\.querydsl/querydsl-jpa@.*$</packageUrl>
+        <vulnerabilityName>CVE-2024-49203</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+		file name: select2-bootstrap-5-theme-1.3.0.jar
+		
+		We use select2 4.0.13 ; issues relates to select2 <= 4.0.5.
+		]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.webjars\.npm/select2\-bootstrap\-5\-theme@.*$</packageUrl>
+        <cve>CVE-2016-10744</cve>
+    </suppress>
+</suppressions>

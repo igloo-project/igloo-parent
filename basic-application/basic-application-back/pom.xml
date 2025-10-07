@@ -6,7 +6,7 @@
 	<parent>
 		<artifactId>basic-application</artifactId>
 		<groupId>org.iglooproject.archetype</groupId>
-		<version>6.15.0</version>
+		<version>6.16.0</version>
 	</parent>
 	
 	<artifactId>basic-application-back</artifactId>
@@ -170,7 +170,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate.orm</groupId>
-			<artifactId>hibernate-jpamodelgen</artifactId>
+			<artifactId>hibernate-processor</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>jakarta.xml.bind</groupId>

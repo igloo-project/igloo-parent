@@ -59,7 +59,7 @@ def igloo(
     push,
     stdout,
     dry_run,
-    skip_snapshot
+    skip_snapshot,
 ):
     """\b
     RELEASE_VERSION is the expected new version.
@@ -86,23 +86,13 @@ def igloo(
     commands = Commands(temp_folder, stdout, dry_run)
     if not skip_igloo_maven:
         _release_igloo_maven(
-            commands,
-            release_version,
-            development_version,
-            igloo_maven_repository,
-            igloo_maven_path,
-            release_branch
+            commands, release_version, development_version, igloo_maven_repository, igloo_maven_path, release_branch
         )
     else:
         print("igloo-maven: skipped")
     if not skip_igloo_commons:
         _release_igloo_commons(
-            commands,
-            release_version,
-            development_version,
-            igloo_commons_repository,
-            igloo_commons_path,
-            release_branch
+            commands, release_version, development_version, igloo_commons_repository, igloo_commons_path, release_branch
         )
     else:
         print("igloo-commons: skipped")
@@ -113,7 +103,7 @@ def igloo(
         igloo_parent_repository,
         igloo_parent_path,
         release_branch,
-        igloo_5
+        igloo_5,
     )
     if not skip_snapshot:
         # switch back to snapshot versions
@@ -129,7 +119,17 @@ def igloo(
             igloo_maven_path,
             push,
         )
-        wait_for_artifact(commands, "igloo-maven", IGLOO_REPOSITORY, "org.iglooproject", "plugins-all", "pom", release_version, 5 * 60, 30)
+        wait_for_artifact(
+            commands,
+            "igloo-maven",
+            IGLOO_REPOSITORY,
+            "org.iglooproject",
+            "plugins-all",
+            "pom",
+            release_version,
+            5 * 60,
+            30,
+        )
         _push(
             commands,
             "igloo-commons",
@@ -139,16 +139,29 @@ def igloo(
             igloo_commons_path,
             push,
         )
-        wait_for_artifact(commands, "igloo-commons", IGLOO_REPOSITORY, "org.iglooproject.components", "igloo-security-api", "jar", release_version, 5 * 60, 30)
-        _push(
+        wait_for_artifact(
             commands,
-            "igloo-parent",
+            "igloo-commons",
+            IGLOO_REPOSITORY,
+            "org.iglooproject.components",
+            "igloo-security-api",
+            "jar",
             release_version,
-            release_branch,
-            "master" if igloo_5 else "igloo-boot",
-            igloo_parent_path,
-            push,
+            5 * 60,
+            30,
         )
+        (
+            _push(
+                commands,
+                "igloo-parent",
+                release_version,
+                release_branch,
+                "master" if igloo_5 else "igloo-boot",
+                igloo_parent_path,
+                push,
+            ),
+        )
+        _reset_owasp_branch(commands, "igloo-parent", "master" if igloo_5 else "igloo-boot", igloo_parent_path, push)
     _print_commands(commands)
 
 
@@ -202,17 +215,14 @@ def wait_artifact(repository, type, group_id, artifact_id, version, wait_seconds
     """Wait for artifact availability."""
     temp_folder = tempfile.mkdtemp()
     commands = Commands(temp_folder)
-    wait_for_artifact(commands, "fake", repository, group_id, artifact_id, type, version, wait_seconds, interval_seconds)
+    wait_for_artifact(
+        commands, "fake", repository, group_id, artifact_id, type, version, wait_seconds, interval_seconds
+    )
     _print_commands(commands)
 
 
 def _release_igloo_maven(
-    commands,
-    release_version,
-    development_version,
-    igloo_maven_repository,
-    igloo_maven_path,
-    release_branch
+    commands, release_version, development_version, igloo_maven_repository, igloo_maven_path, release_branch
 ):
     """Perform igloo-maven release. Steps: repository, release-start, release-finish."""
     _prepare_repository(
@@ -223,12 +233,7 @@ def _release_igloo_maven(
 
 
 def _release_igloo_commons(
-    commands,
-    release_version,
-    development_version,
-    igloo_commons_repository,
-    igloo_commons_path,
-    release_branch
+    commands, release_version, development_version, igloo_commons_repository, igloo_commons_path, release_branch
 ):
     """Perform igloo-commons release. Steps: repository, version switches, release-start, release-finish."""
     _prepare_repository(
@@ -240,13 +245,7 @@ def _release_igloo_commons(
 
 
 def _release_igloo_parent(
-    commands,
-    release_version,
-    development_version,
-    igloo_parent_repository,
-    igloo_parent_path,
-    release_branch,
-    igloo_5
+    commands, release_version, development_version, igloo_parent_repository, igloo_parent_path, release_branch, igloo_5
 ):
     """Perform igloo-parent release. Steps: repository, version switches, release-start, release-finish."""
     _prepare_repository(
@@ -259,7 +258,7 @@ def _release_igloo_parent(
 
 def _commons_prepare_versions(commands, release_version, path):
     """igloo-commons version switches. Need to be done after release-start.
-    
+
     - update parent version
     - update igloo.igloo-maven.version
     - commit changes"""
@@ -269,7 +268,8 @@ def _commons_prepare_versions(commands, release_version, path):
         f"igloo-commons: switch parent version to {release_version}",
         [
             "mvn",
-            "-f", os.path.join(path, "pom.xml"),
+            "-f",
+            os.path.join(path, "pom.xml"),
             "versions:update-parent",
             "-pl",
             ".",
@@ -285,7 +285,8 @@ def _commons_prepare_versions(commands, release_version, path):
         f"igloo-commons: switch igloo.igloo-maven.version to {release_version}",
         [
             "mvn",
-            "-f", os.path.join(path, "pom.xml"),
+            "-f",
+            os.path.join(path, "pom.xml"),
             "versions:set-property",
             "-Dproperty=igloo.igloo-maven.version",
             f"-DnewVersion={release_version}",
@@ -298,13 +299,13 @@ def _commons_prepare_versions(commands, release_version, path):
         commands,
         "igloo-commons-dependencies-update-commit",
         "igloo-commons: commit version update",
-        ["git", "-C", path, "commit", "-a", "-m", f"Update Igloo maven dependency to {release_version}"]
+        ["git", "-C", path, "commit", "-a", "-m", f"Update Igloo maven dependency to {release_version}"],
     )
 
 
 def _parent_prepare_versions(commands, release_version, path, igloo_5):
     """igloo-parent version switches. Need to be done after release-start.
-    
+
     - update parent version
     - update igloo-maven.version
     - update igloo-commons.version
@@ -319,7 +320,8 @@ def _parent_prepare_versions(commands, release_version, path, igloo_5):
         f"igloo-parent: switch parent versions to {release_version}",
         [
             "mvn",
-            "-f", os.path.join(path, "pom.xml"),
+            "-f",
+            os.path.join(path, "pom.xml"),
             "versions:update-parent",
             "-pl",
             projects,
@@ -335,7 +337,8 @@ def _parent_prepare_versions(commands, release_version, path, igloo_5):
         f"igloo-parent: switch igloo-maven.version to {release_version}",
         [
             "mvn",
-            "-f", os.path.join(path, "pom.xml"),
+            "-f",
+            os.path.join(path, "pom.xml"),
             "versions:set-property",
             "-Dproperty=igloo-maven.version",
             f"-DnewVersion={release_version}",
@@ -350,7 +353,8 @@ def _parent_prepare_versions(commands, release_version, path, igloo_5):
         f"igloo-parent: switch igloo-commons.version to {release_version}",
         [
             "mvn",
-            "-f", os.path.join(path, "pom.xml"),
+            "-f",
+            os.path.join(path, "pom.xml"),
             "versions:set-property",
             "-Dproperty=igloo-commons.version",
             f"-DnewVersion={release_version}",
@@ -363,7 +367,7 @@ def _parent_prepare_versions(commands, release_version, path, igloo_5):
         commands,
         "igloo-parent-dependencies-update-commit",
         "igloo-parent: commit igloo-maven/commons version update",
-        ["git", "-C", path, "commit", "-a", "-m", f"Update Igloo maven/commons dependency to {release_version}"]
+        ["git", "-C", path, "commit", "-a", "-m", f"Update Igloo maven/commons dependency to {release_version}"],
     )
 
 
@@ -384,16 +388,19 @@ def _prepare_repository(commands, project, repository, path, branch, fetches):
             commands,
             f"{project}-git-switch",
             f"{project}: switch to branch {branch}",
-            ["git", "-C", path, "checkout", branch]
+            ["git", "-C", path, "checkout", branch],
         )
         check_call(
-            commands, f"{project}-git-refresh-branch", f"{project}: refresh branch {branch}", ["git", "-C", path, "pull"]
+            commands,
+            f"{project}-git-refresh-branch",
+            f"{project}: refresh branch {branch}",
+            ["git", "-C", path, "pull"],
         )
     check_call(
         commands,
         f"{project}-git-refresh-others",
         f"{project}: refresh main branches",
-        ["git", "-C", path, "fetch", "-p", "-P", "origin", *[f"{i}:{i}" for i in fetches if i != branch]]
+        ["git", "-C", path, "fetch", "-p", "-P", "origin", *[f"{i}:{i}" for i in fetches if i != branch]],
     )
 
 
@@ -405,12 +412,13 @@ def _release_start_version(commands, project, release_version, development_versi
         f"{project}: release-start {release_version}/{development_version}",
         [
             "mvn",
-            "-f", os.path.join(path, "pom.xml"),
+            "-f",
+            os.path.join(path, "pom.xml"),
             "-B",
             "gitflow:release-start",
             f"-DreleaseVersion={release_version}",
             f"-DdevelopmentVersion={development_version}",
-            "-DallowSnapshots=true"
+            "-DallowSnapshots=true",
         ],
         cwd=path,
     )
@@ -424,7 +432,8 @@ def _release_finish_version(commands, project, release_version, development_vers
         f"{project}: release-finish",
         [
             "mvn",
-            "-f", os.path.join(path, "pom.xml"),
+            "-f",
+            os.path.join(path, "pom.xml"),
             "-B",
             "gitflow:release-finish",
             f"-DreleaseVersion={release_version}",
@@ -447,6 +456,25 @@ def _push(commands, project, release_version, branch, main_branch, path, push):
     )
 
 
+def _reset_owasp_branch(commands, project, main_branch, path, push):
+    """Reset hard owasp branch from master."""
+    check_call(
+        commands,
+        f"{project}owasp-reset",
+        f"{project}: checkout owasp branch",
+        ["git", "-C", path, "branch", "-f", "owasp", main_branch],
+    )
+    if not push:
+        print(f"# {project}: reset owasp branch skipped")
+        return
+    check_call(
+        commands,
+        f"{project}owasp-push",
+        f"{project}: push owasp branch",
+        ["git", "-C", path, "push", "-f", "origin", "owasp"],
+    )
+
+
 def _switch_back_snapshot():
     """TODO Go back to snapshot versions."""
 
@@ -454,7 +482,9 @@ def _switch_back_snapshot():
 def check_call(commands, code, description, command_line, **kwargs):
     """Display and execute a command (if dry-run not enabled and if there is no previous error).
     If there is a previous error, only register command so that it can be displayed at script end a not-run command."""
-    command = Command(description, command_line, os.path.join(commands.log_folder, f"{code}.log"), commands.stdout, commands.dry_run)
+    command = Command(
+        description, command_line, os.path.join(commands.log_folder, f"{code}.log"), commands.stdout, commands.dry_run
+    )
     if commands.failed:
         pass
     else:
@@ -471,7 +501,9 @@ def check_call(commands, code, description, command_line, **kwargs):
     commands.add_command(command)
 
 
-def wait_for_artifact(commands, project, repository, group_id: str, artifact_id, type, version, max_wait_s, check_interval):
+def wait_for_artifact(
+    commands, project, repository, group_id: str, artifact_id, type, version, max_wait_s, check_interval
+):
     """Check if an artifact is available. Used to delay push once dependencies are available."""
     start = time.time()
     now = start
@@ -485,7 +517,6 @@ def wait_for_artifact(commands, project, repository, group_id: str, artifact_id,
     command = Command(f"{project}: waiting for arfifact {url} for {max_wait_s} s.", None, None, False, commands.dry_run)
     if commands.failed:
         command.result = 0
-        pass
     else:
         print(command_header(command, "green"))
         if not commands.dry_run:
