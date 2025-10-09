@@ -12,6 +12,8 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.hibernate.HibernateException;
+import org.hibernate.boot.model.relational.Database;
+import org.hibernate.engine.jdbc.Size;
 import org.hibernate.mapping.BasicValue;
 import org.hibernate.type.descriptor.ValueBinder;
 import org.hibernate.type.descriptor.ValueExtractor;
@@ -152,6 +154,18 @@ public class HistoryEntityReferenceTypeJdbcType implements AdjustableJdbcType {
       throw new HibernateException("Class " + clazz.getName() + " is not a detected entity type");
     }
     return value;
+  }
+
+  @Override
+  public void addAuxiliaryDatabaseObjects(
+      JavaType<?> javaType, Size columnSize, Database database, JdbcTypeIndicators context) {
+    // nothing
+  }
+
+  protected void addAuxiliaryDatabaseObjects(
+      JavaType<?> javaType, Database database, boolean sortEnumValues) {
+    // nothing - we use Igloo SchemaContributor mechanism
+    // (entity list cannot be avaiable here)
   }
 
   @Override

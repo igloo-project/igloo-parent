@@ -59,7 +59,7 @@ public class UserSearchQueryImpl implements IUserSearchQuery {
   }
 
   private BiConsumer<
-          ? super SearchPredicateFactory, ? super SimpleBooleanPredicateClausesCollector<?, ?>>
+          ? super SearchPredicateFactory, ? super SimpleBooleanPredicateClausesCollector<?>>
       predicateContributor(UserSearchQueryData data) {
     return (f, root) -> {
       root.add(f.matchAll());
