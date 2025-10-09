@@ -144,6 +144,16 @@
 	}
 }
 
+.card-bg,
+.card-bg-top {
+	@include border-top-radius(var(--#{$prefix}card-inner-border-radius));
+}
+
+.card-bg,
+.card-bg-bottom {
+	@include border-bottom-radius(var(--#{$prefix}card-inner-border-radius));
+}
+
 .card-main {
 	> .card-header {
 		background-color: $card-main-cap-bg;

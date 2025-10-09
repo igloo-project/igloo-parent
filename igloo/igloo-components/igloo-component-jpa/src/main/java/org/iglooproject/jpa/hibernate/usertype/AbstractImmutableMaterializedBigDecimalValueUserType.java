@@ -7,8 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.hibernate.HibernateException;
 import org.hibernate.annotations.Type;
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.type.SqlTypes;
-import org.hibernate.type.descriptor.WrapperOptions;
 import org.hibernate.usertype.UserType;
 
 /**
@@ -45,7 +45,9 @@ public abstract class AbstractImmutableMaterializedBigDecimalValueUserType<
   }
 
   @Override
-  public T nullSafeGet(ResultSet rs, int position, WrapperOptions options) throws SQLException {
+  public T nullSafeGet(
+      ResultSet rs, int position, SharedSessionContractImplementor session, Object owner)
+      throws SQLException {
     BigDecimal columnValue = rs.getBigDecimal(position);
     if (rs.wasNull()) {
       return null;
@@ -54,7 +56,8 @@ public abstract class AbstractImmutableMaterializedBigDecimalValueUserType<
   }
 
   @Override
-  public void nullSafeSet(PreparedStatement st, T value, int index, WrapperOptions options)
+  public void nullSafeSet(
+      PreparedStatement st, T value, int index, SharedSessionContractImplementor session)
       throws SQLException {
     if (value == null) {
       st.setNull(index, getSqlType());

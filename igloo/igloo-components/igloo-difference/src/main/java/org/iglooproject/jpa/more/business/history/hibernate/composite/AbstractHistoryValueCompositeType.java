@@ -2,6 +2,7 @@ package org.iglooproject.jpa.more.business.history.hibernate.composite;
 
 import java.io.Serializable;
 import org.hibernate.HibernateException;
+import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.metamodel.spi.ValueAccess;
 import org.hibernate.usertype.CompositeUserType;
 import org.iglooproject.jpa.more.business.history.hibernate.HistoryEntityReferenceTypeContributor;
@@ -31,7 +32,8 @@ public abstract class AbstractHistoryValueCompositeType
 
   @SuppressWarnings("unchecked")
   @Override
-  public HistoryEntityReference instantiate(ValueAccess values) {
+  public HistoryEntityReference instantiate(
+      ValueAccess values, SessionFactoryImplementor sessionFactory) {
     if (values.getValue(0, Long.class) == null && values.getValue(1, Class.class) == null) {
       return null;
     }

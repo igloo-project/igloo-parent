@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.iglooproject.components</groupId>
 		<artifactId>igloo-components</artifactId>
-		<version>6.16.1</version>
+		<version>6.16.2</version>
 	</parent>
 
 	<artifactId>igloo-component-wicket-more-test</artifactId>
@@ -50,7 +50,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate.orm</groupId>
-			<artifactId>hibernate-processor</artifactId>
+			<artifactId>hibernate-jpamodelgen</artifactId>
 			<optional>true</optional>
 		</dependency>
 		<dependency>

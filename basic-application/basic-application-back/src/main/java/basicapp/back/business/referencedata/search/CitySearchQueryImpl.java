@@ -14,7 +14,7 @@ public class CitySearchQueryImpl
   }
 
   @Override
-  protected BiConsumer<SearchPredicateFactory, SimpleBooleanPredicateClausesCollector<?, ?>>
+  protected BiConsumer<SearchPredicateFactory, SimpleBooleanPredicateClausesCollector<?>>
       predicateContributor(CitySearchQueryData data) {
     return super.predicateContributor(data)
         .andThen(
