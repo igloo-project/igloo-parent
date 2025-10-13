@@ -1,8 +1,8 @@
 package basicapp.front.referencedata.validator;
 
 import basicapp.back.business.common.model.PostalCode;
+import basicapp.back.business.referencedata.controller.ICityControllerService;
 import basicapp.back.business.referencedata.model.City;
-import basicapp.back.business.referencedata.service.ICityService;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -12,7 +12,7 @@ public class CityUnicityFormValidator extends AbstractUnicityFormValidator<City>
 
   private static final long serialVersionUID = -5035428934340760607L;
 
-  @SpringBean private ICityService cityService;
+  @SpringBean private ICityControllerService cityControllerService;
 
   private final FormComponent<String> label;
   private final FormComponent<PostalCode> postalCode;
@@ -26,7 +26,7 @@ public class CityUnicityFormValidator extends AbstractUnicityFormValidator<City>
 
   @Override
   protected City getByUniqueField() {
-    return cityService.getByLabelAndPostalCode(
+    return cityControllerService.getByLabelAndPostalCode(
         label.getConvertedInput(), postalCode.getConvertedInput());
   }
 }

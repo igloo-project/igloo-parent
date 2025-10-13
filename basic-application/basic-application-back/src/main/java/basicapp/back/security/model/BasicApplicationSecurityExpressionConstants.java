@@ -101,5 +101,12 @@ public final class BasicApplicationSecurityExpressionConstants {
           + BasicApplicationPermissionConstants.ANNOUNCEMENT_REMOVE
           + "')";
 
+  public static final String REFERENCE_DATA_WRITE =
+      "hasPermission(#"
+          + DEFAULT_PERMISSION_OBJECT_NAME
+          + ", '"
+          + BasicApplicationPermissionConstants.REFERENCE_DATA_WRITE
+          + "')";
+
   private BasicApplicationSecurityExpressionConstants() {}
 }

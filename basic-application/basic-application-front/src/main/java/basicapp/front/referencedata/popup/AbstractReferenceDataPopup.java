@@ -16,8 +16,6 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.iglooproject.jpa.more.business.referencedata.service.IGenericReferenceDataService;
 import org.iglooproject.wicket.more.markup.html.form.FormMode;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
@@ -30,8 +28,6 @@ public abstract class AbstractReferenceDataPopup<T extends ReferenceData<? super
   private static final long serialVersionUID = 8594171911880178857L;
 
   private static final Logger LOGGER = LoggerFactory.getLogger(AbstractReferenceDataPopup.class);
-
-  @SpringBean private IGenericReferenceDataService genericReferenceDataService;
 
   protected Form<T> form;
 
@@ -62,15 +58,9 @@ public abstract class AbstractReferenceDataPopup<T extends ReferenceData<? super
           protected void onSubmit(AjaxRequestTarget target) {
             try {
               T referenceData = AbstractReferenceDataPopup.this.getModelObject();
-
-              if (addModeCondition().applies()) {
-                onSubmitAddMode(referenceData);
-              } else {
-                onSubmitEditMode(referenceData);
-              }
+              AbstractReferenceDataPopup.this.onSubmit(referenceData, target);
               Session.get().success(getString("common.success"));
               closePopup(target);
-              refresh(target);
             } catch (RestartResponseException e) { // NOSONAR
               throw e;
             } catch (Exception e) {
@@ -107,23 +97,11 @@ public abstract class AbstractReferenceDataPopup<T extends ReferenceData<? super
     formModeModel.setObject(FormMode.EDIT);
   }
 
-  protected void onSubmitAddMode(T referenceData) {
-    genericReferenceDataService.create(referenceData);
-  }
-
-  protected void onSubmitEditMode(T referenceData) {
-    genericReferenceDataService.update(referenceData);
-  }
+  abstract void onSubmit(T referenceData, AjaxRequestTarget target);
 
   protected Condition addModeCondition() {
     return FormMode.ADD.condition(formModeModel);
   }
-
-  protected Condition editModeCondition() {
-    return FormMode.EDIT.condition(formModeModel);
-  }
-
-  protected abstract void refresh(AjaxRequestTarget target);
 
   @Override
   protected void onDetach() {

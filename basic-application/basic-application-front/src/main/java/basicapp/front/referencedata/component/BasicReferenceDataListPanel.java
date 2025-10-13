@@ -28,18 +28,22 @@ public class BasicReferenceDataListPanel<T extends ReferenceData<? super T>>
 
   private static final long serialVersionUID = -4026683202098875499L;
 
+  private final Class<T> clazz;
+
   public BasicReferenceDataListPanel(String id, SerializableSupplier2<T> supplier, Class<T> clazz) {
     super(id, new BasicReferenceDataDataProvider<>(clazz), supplier);
+    this.clazz = clazz;
     setOutputMarkupId(true);
   }
 
   @Override
   protected AbstractReferenceDataPopup<T> createPopup(String wicketId) {
-    return new BasicReferenceDataPopup<>(wicketId) {
+    return new BasicReferenceDataPopup<>(wicketId, clazz) {
       private static final long serialVersionUID = 1L;
 
       @Override
-      protected void refresh(AjaxRequestTarget target) {
+      protected void onSubmit(T referenceData, AjaxRequestTarget target) {
+        super.onSubmit(referenceData, target);
         target.add(results);
       }
     };

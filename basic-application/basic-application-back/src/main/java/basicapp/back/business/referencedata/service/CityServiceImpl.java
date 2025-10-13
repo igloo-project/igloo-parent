@@ -3,6 +3,7 @@ package basicapp.back.business.referencedata.service;
 import basicapp.back.business.common.model.PostalCode;
 import basicapp.back.business.referencedata.model.City;
 import basicapp.back.business.referencedata.repository.ICityRepository;
+import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +16,13 @@ public class CityServiceImpl implements ICityService {
   @Autowired
   public CityServiceImpl(ICityRepository cityRepository) {
     this.cityRepository = cityRepository;
+  }
+
+  @Override
+  @Transactional
+  public void save(City city) {
+    Objects.requireNonNull(city);
+    cityRepository.save(city);
   }
 
   @Override

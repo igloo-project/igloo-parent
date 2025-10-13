@@ -1,5 +1,6 @@
 package basicapp.front.referencedata.popup;
 
+import basicapp.back.business.referencedata.controller.IReferenceDataControllerService;
 import basicapp.back.business.referencedata.model.ReferenceData;
 import basicapp.back.util.binding.Bindings;
 import igloo.wicket.condition.Condition;
@@ -11,6 +12,7 @@ import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 public class BasicReferenceDataPopup<T extends ReferenceData<? super T>>
     extends AbstractReferenceDataPopup<T> {
@@ -21,8 +23,13 @@ public class BasicReferenceDataPopup<T extends ReferenceData<? super T>>
   private TextField<String> labelEn;
   private CheckBox enabled;
 
-  public BasicReferenceDataPopup(String id) {
+  private final Class<T> clazz;
+
+  @SpringBean private IReferenceDataControllerService<T> referenceDataService;
+
+  public BasicReferenceDataPopup(String id, Class<T> clazz) {
     super(id);
+    this.clazz = clazz;
   }
 
   @Override
@@ -59,6 +66,11 @@ public class BasicReferenceDataPopup<T extends ReferenceData<? super T>>
     return body;
   }
 
+  @Override
+  protected void onSubmit(T referenceData, AjaxRequestTarget target) {
+    referenceDataService.saveReferenceData(referenceData, clazz);
+  }
+
   protected final TextField<String> getLabelFr() {
     return labelFr;
   }
@@ -69,10 +81,5 @@ public class BasicReferenceDataPopup<T extends ReferenceData<? super T>>
 
   protected final CheckBox getEnabled() {
     return enabled;
-  }
-
-  @Override
-  protected void refresh(AjaxRequestTarget target) {
-    // nothing to do
   }
 }
