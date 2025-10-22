@@ -5,7 +5,17 @@
     <!--                                                              -->
     <!--                    FUTUR IGLOO RELEASE                       -->
     <!--                                                              -->
-    
+
+	<suppress>
+		<notes><![CDATA[
+   file name: spring-websocket-6.2.8.jar
+   - Sera corrigé sur la version 6.2.12
+   - Dépendance utilisé en local seulement pour utilisation des websockets avec tomcat embedded de springboot
+   - Igloo n'utilise pas STOMP
+   ]]></notes>
+		<packageUrl regex="true">^pkg:maven/org\.springframework/spring-websocket@.*$</packageUrl>
+		<vulnerabilityName>CVE-2025-41254</vulnerabilityName>
+	</suppress>
     
     <!--                                                              -->
     <!--                    IGLOO 6.16.0                              -->
