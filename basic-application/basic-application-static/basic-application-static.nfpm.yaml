@@ -1,0 +1,21 @@
+---
+name: basic-application-static
+arch: all
+platform: linux
+version: ${VERSION}
+version_schema: none
+release: 1
+section: default
+maintainer: contact@kobalt.fr
+vendor: Kobalt
+license: Apache 2.0
+# remove all 'other' permissions
+# DO NOT DROP read 'group' permissions on repository files
+umask: 0o007
+contents:
+  - src: ../basic-application-front/errors
+    dst: /data/services/web/basic-application/site/errors
+    type: tree
+    file_info:
+      owner: root
+      group: www-data

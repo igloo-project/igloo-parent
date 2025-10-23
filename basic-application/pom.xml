@@ -23,6 +23,7 @@
 		<module>basic-application-back</module>
 		<module>basic-application-front</module>
 		<module>basic-application-app</module>
+		<module>basic-application-static</module>
 	</modules>
 	
 	<build>
