@@ -14,7 +14,7 @@ license: Apache 2.0
 umask: 0o007
 contents:
   - src: ../basic-application-front/errors
-    dst: /data/services/web/basic-application/site/errors
+    dst: /data/services/web/basicapp/site/errors
     type: tree
     file_info:
       owner: root
