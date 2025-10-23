@@ -39,7 +39,7 @@
 						<argument>-f</argument>
 						<argument>${project.basedir}/basic-application-static.nfpm.yaml</argument>
 						<argument>-t</argument>
-						<argument>${project.build.directory}/basic-application-static.deb</argument>
+						<argument>${project.build.directory}/basicapp-static.deb</argument>
 					</arguments>
 				</configuration>
 			</plugin>
