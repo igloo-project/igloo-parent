@@ -29,8 +29,9 @@
 					</execution>
 				</executions>
 				<configuration>
-					<executable>${project.basedir}/nfpm-wrapper.sh</executable>
+					<executable>bash</executable>
 					<arguments>
+						<argument>${project.basedir}/nfpm-wrapper.sh</argument>
 						<argument>${buildNumber}</argument>
 						<argument>${project.version}</argument>
 						<argument>package</argument>
