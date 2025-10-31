@@ -1,0 +1,82 @@
+.dp__theme_light {
+	--dp-background-color: #{$input-bg};
+	--dp-text-color: #{$input-color};
+	--dp-hover-color: #{$gray-100};
+	--dp-hover-text-color: #{$input-color};
+	--dp-hover-icon-color: #{$input-color};
+	--dp-primary-color: #{$brand};
+	--dp-primary-disabled-color: #{rgba($brand, .5)};
+	--dp-primary-text-color: #{color-contrast($brand)};
+	--dp-secondary-color: #{$body-tertiary-color};
+	--dp-border-color: #{$input-border-color};
+	--dp-menu-border-color: #{$input-border-color};
+	--dp-border-color-hover: #{$input-border-color};
+	--dp-border-color-focus: #{$input-border-color};
+	--dp-scroll-bar-background: #{$gray-100};
+	--dp-scroll-bar-color: #{$gray-500};
+	--dp-success-color: #{$success};
+	--dp-success-color-disabled: #{rgba($success, .5)};
+	--dp-icon-color: #{$gray-800};
+	--dp-danger-color: #{$danger};
+	--dp-marker-color: #{$danger};
+	--dp-tooltip-color: #fafafa;
+	--dp-disabled-color: #{$input-disabled-bg};
+	--dp-disabled-color-text: #{$input-disabled-color};
+	--dp-highlight-color: #{rgba($primary, .1)};
+	--dp-range-between-dates-background-color: var(--dp-hover-color);
+	--dp-range-between-dates-text-color: var(--dp-hover-text-color);
+	--dp-range-between-border-color: var(--dp-hover-color);
+}
+
+:root {
+	--dp-font-family: #{$font-family-base};
+	--dp-border-radius: #{$input-border-radius};
+	--dp-cell-border-radius: #{$input-border-radius};
+	--dp-font-size: #{$font-size-base};
+}
+
+.dp__input_valid {
+	box-shadow: none;
+}
+
+.dp__input_invalid {
+	box-shadow: none;
+}
+
+.dp__input.form-control {
+	padding-inline-end: 30px;
+	
+	&.dp__input_icon_pad {
+		padding-inline-start: var(--dp-input-icon-padding);
+	}
+
+	&.is-valid {
+		border-color: var(--dp-success-color);
+	}
+	
+	&.is-invalid {
+		border-color: var(--dp-danger-color);
+	}
+}
+
+.dp__selection_preview {
+	display: none;
+}
+
+.dp__action_button {
+	align-items: unset;
+	background: unset;
+	height: unset;
+}
+
+.dp__action_select {
+	@extend .btn;
+	@extend .btn-primary;
+	@extend .btn-sm;
+}
+
+.dp__action_cancel {
+	@extend .btn;
+	@extend .btn-outline-secondary;
+	@extend .btn-sm;
+}

@@ -31,7 +31,7 @@ public class FooterPanel extends Panel {
                                 ApplicationPropertyModel.of(
                                     BasicApplicationCorePropertyIds.BUILD_DATE))
                             .then(
-                                Renderer.fromDateTimePattern(DateTimePattern.SHORT_DATE)
+                                Renderer.fromDateTimePattern(DateTimePattern.DATE)
                                     .asModel(
                                         ApplicationPropertyModel.of(
                                             BasicApplicationCorePropertyIds.BUILD_DATE)))

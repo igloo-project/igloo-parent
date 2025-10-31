@@ -10,7 +10,7 @@ public class Masks {
   public static MaskOptions dateOptions() {
     return new MaskOptions()
         .translation('r', "/[\\/]/", '/')
-        .placeholder(new ResourceModel("datetime.pattern.shortDate.placeholder"));
+        .placeholder(new ResourceModel("datetime.pattern.date.placeholder"));
   }
 
   public static final String TIME = "00:00";

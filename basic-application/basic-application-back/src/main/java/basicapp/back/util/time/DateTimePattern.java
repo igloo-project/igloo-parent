@@ -4,12 +4,11 @@ import java.util.Objects;
 import org.iglooproject.commons.util.time.IDateTimePattern;
 
 public enum DateTimePattern implements IDateTimePattern {
-  SHORT_DATE("datetime.pattern.shortDate"),
-  SHORT_DATETIME("datetime.pattern.shortDateTime"),
-  REALLY_SHORT_DATE("datetime.pattern.reallyShortDate"),
-  REALLY_SHORT_DATETIME("datetime.pattern.reallyShortDateTime"),
-  MONTH_YEAR("datetime.pattern.monthYear"),
-  SHORT_MONTH_YEAR("datetime.pattern.shortMonthYear"),
+  DATE("datetime.pattern.date"),
+  DATE_SHORT("datetime.pattern.date.short"),
+  DATETIME("datetime.pattern.dateTime"),
+  DATETIME_SHORT("datetime.pattern.dateTime.short"),
+  YEAR_MONTH("datetime.pattern.monthYear"),
   YEAR("datetime.pattern.year"),
   TIME("datetime.pattern.time");
 

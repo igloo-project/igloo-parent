@@ -78,6 +78,11 @@
 			<version>${igloo.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-vue-datepicker</artifactId>
+			<version>${igloo.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>org.bindgen</groupId>
 			<artifactId>bindgen</artifactId>
 		</dependency>

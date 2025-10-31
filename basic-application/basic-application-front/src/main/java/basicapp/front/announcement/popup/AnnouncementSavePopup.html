@@ -16,7 +16,7 @@
 									<label wicket:for="type" class="col-form-label form-label"><wicket:label /></label>
 								</div>
 								<div class="col-md-8">
-									<select class="form-control" wicket:id="type" />
+									<select wicket:id="type" class="form-control" />
 								</div>
 							</div>
 						</div>
@@ -24,50 +24,10 @@
 							<div class="col-12">
 								<div class="row row-form-group form-group">
 									<div class="col-md-4">
-										<label wicket:for="interruptionStartDate" class="col-form-label form-label"><span wicket:id="interruptionStartDateTitle" /></label>
+										<label wicket:for="interruptionDate" class="col-form-label form-label"><span wicket:id="interruptionDateTitle"/></label>
 									</div>
 									<div class="col-md-8">
-										<div class="row g-2">
-											<div class="col-sm-7">
-												<div class="input-group">
-													<span class="input-group-text"><span class="fa fa-fw fa-hourglass-start" /></span>
-													<input class="form-control" wicket:id="interruptionStartDate" type="text" />
-													<label wicket:for="interruptionStartDate" class="input-group-text mb-0"><span class="fa fa-fw fa-calendar" /></label>
-												</div>
-											</div>
-											<div class="col-sm-5">
-												<div class="input-group">
-													<span class="input-group-text"><span class="fa fa-fw fa-hourglass-start" /></span>
-													<input wicket:id="interruptionStartTime" class="form-control time" type="text" />
-													<span class="input-group-text"><span class="fa fa-fw fa-clock" /></span>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="col-12">
-								<div class="row row-form-group form-group">
-									<div class="col-md-4">
-										<label wicket:for="interruptionEndDate" class="col-form-label form-label"><span wicket:id="interruptionEndDateTitle" /></label>
-									</div>
-									<div class="col-md-8">
-										<div class="row g-2">
-											<div class="col-sm-7">
-												<div class="input-group">
-													<span class="input-group-text"><span class="fa fa-fw fa-hourglass-end" /></span>
-													<input wicket:id="interruptionEndDate" class="form-control" type="text" />
-													<label wicket:for="interruptionEndDate" class="input-group-text mb-0"><span class="fa fa-fw fa-calendar" /></label>
-												</div>
-											</div>
-											<div class="col-sm-5">
-												<div class="input-group">
-													<span class="input-group-text"><span class="fa fa-fw fa-hourglass-end" /></span>
-													<input wicket:id="interruptionEndTime" class="form-control time" type="text" />
-													<span class="input-group-text"><span class="fa fa-fw fa-clock" /></span>
-												</div>
-											</div>
-										</div>
+										<vue-date-picker wicket:id="interruptionDate" type="text"/>
 									</div>
 								</div>
 							</div>
@@ -124,50 +84,10 @@
 						<div class="col-12">
 							<div class="row row-form-group form-group">
 								<div class="col-md-4">
-									<label wicket:for="publicationStartDate" class="col-form-label form-label"><span wicket:id="publicationStartDateTitle" /></label>
+									<label wicket:for="publicationDate" class="col-form-label form-label"><span wicket:id="publicationDateTitle"/></label>
 								</div>
 								<div class="col-md-8">
-									<div class="row g-2">
-										<div class="col-sm-7">
-											<div class="input-group">
-												<span class="input-group-text"><span class="fa fa-fw fa-hourglass-start" /></span>
-												<input wicket:id="publicationStartDate" class="form-control" type="text" />
-												<label wicket:for="publicationStartDate" class="input-group-text mb-0"><span class="fa fa-fw fa-calendar" /></label>
-											</div>
-										</div>
-										<div class="col-sm-5">
-											<div class="input-group">
-												<span class="input-group-text"><span class="fa fa-fw fa-hourglass-start" /></span>
-												<input wicket:id="publicationStartTime" class="form-control time" type="text" />
-												<span class="input-group-text"><span class="fa fa-fw fa-clock" /></span>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-12">
-							<div class="row row-form-group form-group">
-								<div class="col-md-4">
-									<label wicket:for="publicationEndDate" class="col-form-label form-label"><span wicket:id="publicationEndDateTitle" /></label>
-								</div>
-								<div class="col-md-8">
-									<div class="row g-2">
-										<div class="col-sm-7">
-											<div class="input-group">
-												<span class="input-group-text"><span class="fa fa-fw fa-hourglass-end" /></span>
-												<input wicket:id="publicationEndDate" class="form-control" type="text" />
-												<label wicket:for="publicationEndDate" class="input-group-text mb-0"><span class="fa fa-fw fa-calendar" /></label>
-											</div>
-										</div>
-										<div class="col-sm-5">
-											<div class="input-group">
-												<span class="input-group-text"><span class="fa fa-fw fa-hourglass-end" /></span>
-												<input wicket:id="publicationEndTime" class="form-control time" type="text" />
-												<span class="input-group-text"><span class="fa fa-fw fa-clock" /></span>
-											</div>
-										</div>
-									</div>
+									<vue-date-picker wicket:id="publicationDate" type="text"/>
 								</div>
 							</div>
 						</div>
