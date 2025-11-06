@@ -6,7 +6,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import javax.cache.Caching;
 import javax.cache.spi.CachingProvider;
-import org.iglooproject.jpa.config.spring.provider.IJpaConfigurationProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.CacheManager;
@@ -18,10 +17,10 @@ public class JcacheLookup {
 
   private JcacheLookup() {}
 
-  public static CacheManager lookup(IJpaConfigurationProvider jpaConfigurationProvider) {
+  public static CacheManager lookup(String locationUri) throws URISyntaxException {
     CachingProvider cachingProvider =
         Caching.getCachingProvider(CaffeineCachingProvider.class.getName());
-    URI cacheManagerUri = URI.create(jpaConfigurationProvider.getJcacheConfiguration());
+    URI cacheManagerUri = URI.create(locationUri);
     // hibernate perform some URI resolution when it creates cache manager;
     // we need to manipulate URI to get a chance to retrieve cache manager from caffeine provider
     // see org.hibernate.cache.jcache.internal.JCacheRegionFactory.getUri(SessionFactoryOptions,
@@ -33,8 +32,8 @@ public class JcacheLookup {
     // - handler available:
     // hibernate lets URI unmodified
     if ("classpath".equals(cacheManagerUri.getScheme())) {
-      try {
-        cacheManagerUri.toURL();
+      try (var is = cacheManagerUri.toURL().openStream()) {
+        // NOTHING, just check if url classpath handler is here
       } catch (Exception ignore) {
         try {
           // Nothing
@@ -55,10 +54,11 @@ public class JcacheLookup {
     }
     javax.cache.CacheManager cacheManager = cachingProvider.getCacheManager(cacheManagerUri, null);
     if (Iterables.isEmpty(cacheManager.getCacheNames())) {
-      LOGGER.warn(
-          "CacheManager for {} is unexpectedly empty.",
-          jpaConfigurationProvider.getJcacheConfiguration());
+      LOGGER.warn("CacheManager for {} is unexpectedly empty.", locationUri);
     }
-    return new JCacheCacheManager(cacheManager);
+    var springCacheManager = new JCacheCacheManager(cacheManager);
+    springCacheManager.afterPropertiesSet();
+    return springCacheManager;
   }
 }
+
