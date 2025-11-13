@@ -1,5 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
+    <suppress>
+        <notes><![CDATA[
+        file name: wicket-core-9.21.0.jar: jquery-1.12.4.js
+
+        This is a dependency version mismatch. We use jquery 3.6 that is not affected by vulnerability.
+        ]]></notes>
+        <packageUrl regex="true">^pkg:javascript/jquery@.*$</packageUrl>
+        <vulnerabilityName>jquery issue: 11974</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+        file name: wicket-core-9.21.0.jar: jquery-1.12.4.min.js
+
+        This is a dependency version mismatch. We use jquery 3.6 that is not affected by vulnerability.
+        ]]></notes>
+        <packageUrl regex="true">^pkg:javascript/jquery@.*$</packageUrl>
+        <vulnerabilityName>jquery issue: 11974</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+        file name: wicket-core-9.21.0.jar: jquery-2.2.4.js
+
+        This is a dependency version mismatch. We use jquery 3.6 that is not affected by vulnerability.
+        ]]></notes>
+        <packageUrl regex="true">^pkg:javascript/jquery@.*$</packageUrl>
+        <vulnerabilityName>jquery issue: 11974</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+        file name: wicket-core-9.21.0.jar: jquery-2.2.4.min.js
+
+        This is a dependency version mismatch. We use jquery 3.6 that is not affected by vulnerability.
+        ]]></notes>
+        <packageUrl regex="true">^pkg:javascript/jquery@.*$</packageUrl>
+        <vulnerabilityName>jquery issue: 11974</vulnerabilityName>
+    </suppress>
 	<suppress>
 		<notes><![CDATA[
 		file name: wicket-core-9.18.0.jar: jquery-2.2.4.js
