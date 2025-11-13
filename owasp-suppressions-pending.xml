@@ -179,4 +179,45 @@
         <packageUrl regex="true">^pkg:maven/org\.webjars\.npm/select2\-bootstrap\-5\-theme@.*$</packageUrl>
         <cve>CVE-2016-10744</cve>
     </suppress>
+    </suppress>
+
+    <!--                                                       -->
+    <!--                    IGLOO 5.28.0                       -->
+    <!--                                                       -->
+    <suppress>
+        <notes><![CDATA[
+        file name: wicket-core-9.21.0.jar: jquery-1.12.4.js
+
+        This is a dependency version mismatch. We use jquery 3.6 that is not affected by vulnerability.
+        ]]></notes>
+        <packageUrl regex="true">^pkg:javascript/jquery@.*$</packageUrl>
+        <vulnerabilityName>jquery issue: 11974</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+        file name: wicket-core-9.21.0.jar: jquery-1.12.4.min.js
+
+        This is a dependency version mismatch. We use jquery 3.6 that is not affected by vulnerability.
+        ]]></notes>
+        <packageUrl regex="true">^pkg:javascript/jquery@.*$</packageUrl>
+        <vulnerabilityName>jquery issue: 11974</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+        file name: wicket-core-9.21.0.jar: jquery-2.2.4.js
+
+        This is a dependency version mismatch. We use jquery 3.6 that is not affected by vulnerability.
+        ]]></notes>
+        <packageUrl regex="true">^pkg:javascript/jquery@.*$</packageUrl>
+        <vulnerabilityName>jquery issue: 11974</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+        file name: wicket-core-9.21.0.jar: jquery-2.2.4.min.js
+
+        This is a dependency version mismatch. We use jquery 3.6 that is not affected by vulnerability.
+        ]]></notes>
+        <packageUrl regex="true">^pkg:javascript/jquery@.*$</packageUrl>
+        <vulnerabilityName>jquery issue: 11974</vulnerabilityName>
+    </suppress>
 </suppressions>
