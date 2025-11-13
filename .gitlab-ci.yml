@@ -36,7 +36,7 @@ maven-build:
   tags:
     - docker
   services:
-    - name: docker:dind
+    - name: docker:28-dind
   variables:
     # Instruct Testcontainers to use the daemon of DinD, use port 2375 for non-tls connections.
     DOCKER_HOST: "tcp://docker:2375"
