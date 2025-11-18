@@ -179,7 +179,6 @@
         <packageUrl regex="true">^pkg:maven/org\.webjars\.npm/select2\-bootstrap\-5\-theme@.*$</packageUrl>
         <cve>CVE-2016-10744</cve>
     </suppress>
-    </suppress>
 
     <!--                                                       -->
     <!--                    IGLOO 5.28.0                       -->
