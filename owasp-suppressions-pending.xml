@@ -27,7 +27,7 @@
            - Severité mineur, dans nos contextes surface d'attaque très limitée.
            - mise à jour igloo facile - corrigé sur version 2.0.4
        ]]></notes>
-        <packageUrl regex="true">^pkg:maven/org\.eclipse\.angus/smtp@.*$</packageUrl>
+        <packageUrl regex="true">^pkg:maven/org\.eclipse\.angus/(angus-core|smtp|logging-mailhandler|jakarta\.mail)@.*$</packageUrl>
         <vulnerabilityName>CVE-2025-7962</vulnerabilityName>
     </suppress>
     <suppress>
@@ -108,7 +108,7 @@
     
           We don't integrate the jar into the product deliverable (optional=true, spring repackage skipped)
       ]]></notes>
-        <packageUrl regex="true">^pkg:maven/org\.apache\.tomcat\.embed/tomcat-embed-.*$</packageUrl>
+        <packageUrl regex="true">^pkg:maven/org\.apache\.tomcat\.embed/(tomcat-embed-|tomcat-util).*$</packageUrl>
         <vulnerabilityName regex="true">.*</vulnerabilityName>
     </suppress>
     
