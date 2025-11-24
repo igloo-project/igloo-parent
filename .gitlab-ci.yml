@@ -93,7 +93,7 @@ sonar-analyze:
         SONAR_OPTS+=("-Dsonar.projectKey=$PROJECT_GROUP_ID:$PROJECT_ARTIFACT_ID:$CI_COMMIT_REF_NAME")
         SONAR_OPTS+=("-Dsonar.projectName=$PROJECT_NAME ($CI_COMMIT_REF_NAME)")
       fi
-    - mvn -U clean verify sonar:sonar
+    - mvn -U clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
       -DskipTests
       -Dsonar.qualitygate.wait=true
       "${SONAR_OPTS[@]}"
