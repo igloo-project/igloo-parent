@@ -126,7 +126,7 @@ sonar-analyze:
   stage: analyze
   environment: staging
   script:
-    - mvn -U verify sonar:sonar
+    - mvn -U verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
       -Dsonar.projectBranch=igloo-boot
       -DskipTests
       -Dsonar.host.url="https://sonar.tools.kobalt.fr"
