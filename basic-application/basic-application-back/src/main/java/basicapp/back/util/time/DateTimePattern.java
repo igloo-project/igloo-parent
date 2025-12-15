@@ -8,7 +8,7 @@ public enum DateTimePattern implements IDateTimePattern {
   DATE_SHORT("datetime.pattern.date.short"),
   DATETIME("datetime.pattern.dateTime"),
   DATETIME_SHORT("datetime.pattern.dateTime.short"),
-  YEAR_MONTH("datetime.pattern.monthYear"),
+  YEAR_MONTH("datetime.pattern.yearMonth"),
   YEAR("datetime.pattern.year"),
   TIME("datetime.pattern.time");
 
