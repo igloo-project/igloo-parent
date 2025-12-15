@@ -16,6 +16,16 @@
 		<packageUrl regex="true">^pkg:maven/org\.springframework/spring-websocket@.*$</packageUrl>
 		<vulnerabilityName>CVE-2025-41254</vulnerabilityName>
 	</suppress>
+
+	<suppress>
+		<notes><![CDATA[
+   file name: rhino-1.8.0.jar
+       - sevérité mineur, utilisation de la méthode seulement pour l'autoprefixer d'igloo avec une valeur fix (digits = 3)
+       - mise à jour igloo facile - corrigé sur version 1.8.1
+   ]]></notes>
+		<packageUrl regex="true">^pkg:maven/org\.mozilla/rhino@.*$</packageUrl>
+		<vulnerabilityName>CVE-2025-66453</vulnerabilityName>
+	</suppress>
     
     <!--                                                              -->
     <!--                    IGLOO 6.16.0                              -->
