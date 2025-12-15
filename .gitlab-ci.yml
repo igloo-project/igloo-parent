@@ -145,8 +145,9 @@ igloo-dependency-check:
   allow_failure: true
   stage: dependency-check
   script:
+    - SUPPRESSION_URL_PENDING=https://raw.githubusercontent.com/igloo-project/igloo-parent/refs/heads/igloo-boot-dev/owasp-suppressions-pending.xml;
     - if [ $CI_COMMIT_BRANCH == "owasp" ] && [ $CI_PIPELINE_SOURCE == "schedule" ]; then
-      SUPPRESSION_FILES=../owasp-suppressions.xml,../owasp-suppressions-pending.xml;
+      SUPPRESSION_FILES=../owasp-suppressions.xml,$SUPPRESSION_URL_PENDING;
       else
       SUPPRESSION_FILES=../owasp-suppressions.xml;
       fi
