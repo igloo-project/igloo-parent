@@ -71,7 +71,7 @@ public abstract class AbstractDatePickerVueField<T> extends AbstractTextComponen
             .teleport(JsHelpers.of(true))
             // Look and feel
             .sixWeeks(JsHelpers.of("fair"))
-            .ui(JsHelpers.ofLiteral("{ input: 'form-control' }"));
+            .ui(JsHelpers.ofLiteral("{ input: 'form-control', menu: 'dp__menu_bs' }"));
   }
 
   public VueDatePickerBehavior getVueDatePickerBehavior() {

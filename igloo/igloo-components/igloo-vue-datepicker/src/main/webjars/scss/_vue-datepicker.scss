@@ -1,12 +1,15 @@
+$dp-active-color: $component-active-color !default;
+$dp-active-bg:    $component-active-bg !default;
+
 .dp__theme_light {
 	--dp-background-color: #{$input-bg};
 	--dp-text-color: #{$input-color};
 	--dp-hover-color: #{$gray-100};
 	--dp-hover-text-color: #{$input-color};
 	--dp-hover-icon-color: #{$input-color};
-	--dp-primary-color: #{$brand};
-	--dp-primary-disabled-color: #{rgba($brand, .5)};
-	--dp-primary-text-color: #{color-contrast($brand)};
+	--dp-primary-color: #{$dp-active-bg};
+	--dp-primary-disabled-color: #{rgba($dp-active-bg, .5)};
+	--dp-primary-text-color: #{$dp-active-color};
 	--dp-secondary-color: #{$body-tertiary-color};
 	--dp-border-color: #{$input-border-color};
 	--dp-menu-border-color: #{$input-border-color};
@@ -22,7 +25,7 @@
 	--dp-tooltip-color: #fafafa;
 	--dp-disabled-color: #{$input-disabled-bg};
 	--dp-disabled-color-text: #{$input-disabled-color};
-	--dp-highlight-color: #{rgba($primary, .1)};
+	--dp-highlight-color: #{rgba($dp-active-bg, .1)};
 	--dp-range-between-dates-background-color: var(--dp-hover-color);
 	--dp-range-between-dates-text-color: var(--dp-hover-text-color);
 	--dp-range-between-border-color: var(--dp-hover-color);
@@ -49,7 +52,7 @@
 	&.dp__input_icon_pad {
 		padding-inline-start: var(--dp-input-icon-padding);
 	}
-
+	
 	&.is-valid {
 		border-color: var(--dp-success-color);
 	}
@@ -59,24 +62,84 @@
 	}
 }
 
+.dp__arrow_bottom {
+	z-index: -1;
+}
+
+.dp__active_date {
+	background: var(--dp-primary-color);
+	color: var(--dp-primary-text-color);
+}
+
+.dp__range_start {
+	background: var(--dp-primary-color);
+	color: var(--dp-primary-text-color);
+}
+
+.dp__range_end {
+	background: var(--dp-primary-color);
+	color: var(--dp-primary-text-color);
+}
+
 .dp__selection_preview {
 	display: none;
 }
 
-.dp__action_button {
-	align-items: unset;
-	background: unset;
-	height: unset;
+.dp__action_buttons {
+	display: flex;
+	gap: 5px;
 }
 
-.dp__action_select {
-	@extend .btn;
-	@extend .btn-primary;
-	@extend .btn-sm;
+.dp__action_button {
+	display: unset;
+	align-items: unset;
+	background: unset;
+	border: none;
+	padding: unset;
+	line-height: unset;
+	margin-inline-start: unset;
+	height: unset;
+	cursor: unset;
+	border-radius: unset;
+	font-size: unset;
+	font-family: unset;
 }
 
 .dp__action_cancel {
-	@extend .btn;
-	@extend .btn-outline-secondary;
-	@extend .btn-sm;
+	color: unset;
+	border: unset;
+	
+	&:hover {
+		border-color: unset;
+		transition: unset;
+	}
+}
+
+.dp__action_buttons .dp__action_select {
+	background: unset;
+	color: unset;
+	
+	&:hover {
+		background: unset;
+		transition: unset;
+	}
+	
+	&:disabled {
+		background: unset;
+		cursor: unset;
+	}
+}
+
+.dp__menu_bs {
+	.dp__action_cancel {
+		@extend .btn;
+		@include button-size($btn-padding-y-sm, $btn-padding-x-sm, $btn-font-size-sm, $btn-border-radius-sm);
+		@include button-outline-variant($secondary);
+	}
+	
+	.dp__action_buttons .dp__action_select {
+		@extend .btn;
+		@include button-size($btn-padding-y-sm, $btn-padding-x-sm, $btn-font-size-sm, $btn-border-radius-sm);
+		@include button-variant($dp-active-bg, $dp-active-bg);
+	}
 }

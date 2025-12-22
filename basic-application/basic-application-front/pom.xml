@@ -68,6 +68,11 @@
 			<version>${igloo.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>org.iglooproject.webjars</groupId>
+			<artifactId>bootstrap-email</artifactId>
+			<version>${igloo.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-spring-actuator</artifactId>
 			<version>${igloo.version}</version>

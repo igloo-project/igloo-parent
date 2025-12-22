@@ -7,7 +7,6 @@ import basicapp.back.business.announcement.service.controller.IAnnouncementContr
 import basicapp.back.util.binding.Bindings;
 import basicapp.front.announcement.model.AnnouncementBindableModel;
 import basicapp.front.announcement.page.AnnouncementListPage;
-import igloo.bootstrap.jsmodel.JsHelpers;
 import igloo.bootstrap.modal.AbstractAjaxModalPopupPanel;
 import igloo.vuedatepicker.component.LocalDateTimeRangePickerVueField;
 import igloo.wicket.component.CoreLabel;
@@ -145,8 +144,7 @@ public class AnnouncementSavePopup extends AbstractAjaxModalPopupPanel<Announcem
         new LocalDateTimeRangePickerVueField(
                 "publicationDate",
                 bindableModel.bind(Bindings.announcement().publication().startDateTime()),
-                bindableModel.bind(Bindings.announcement().publication().endDateTime()),
-                builder -> builder.textInput(JsHelpers.ofLiteral("{tabSubmit:false}")))
+                bindableModel.bind(Bindings.announcement().publication().endDateTime()))
             .setRequired(true)
             .add(new UpdateOnChangeAjaxEventBehavior()),
         new CheckBox("enabled", bindableModel.bind(Bindings.announcement().enabled()))
