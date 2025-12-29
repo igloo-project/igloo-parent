@@ -8,6 +8,15 @@
 
 	<suppress>
 		<notes><![CDATA[
+   file name: log4j-core-2.25.2.jar
+   - on n'utilise pas les socket appender avec log4j
+   medium -> corrigé dans la version 2.25.3
+   ]]></notes>
+		<packageUrl regex="true">^pkg:maven/org\.apache\.logging\.log4j/log4j-core@.*$</packageUrl>
+		<vulnerabilityName>CVE-2025-68161</vulnerabilityName>
+	</suppress>
+	<suppress>
+		<notes><![CDATA[
    file name: spring-websocket-6.2.8.jar
    - Sera corrigé sur la version 6.2.12
    - Dépendance utilisé en local seulement pour utilisation des websockets avec tomcat embedded de springboot
