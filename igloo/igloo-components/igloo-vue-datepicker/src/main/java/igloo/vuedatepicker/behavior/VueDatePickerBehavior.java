@@ -154,6 +154,7 @@ public class VueDatePickerBehavior extends Behavior {
   }
 
   public String getVueOptionVarName(Component component, String option) {
-    return Joiner.on("_").join(component.getMarkupId(), option.replace(":", "").replace("-", "_"));
+    return Joiner.on("_")
+        .join(component.getMarkupId(), option.replace(":", "").replace("-", "_").replace("@", "_"));
   }
 }

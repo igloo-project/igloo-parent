@@ -97,7 +97,6 @@ public class LocalDateRangePickerVueField
                     // Modes
                     .range(JsHelpers.ofLiteral("{ partialRange: false }"))
                     // General configuration
-                    .autoApply(JsHelpers.of(true))
                     .placeholder(JsHelpers.of(getString("datetime.pattern.date.range.placeholder")))
                     // Time picker configuration
                     .enableTimePicker(JsHelpers.of(false))
