@@ -2,33 +2,6 @@
 <suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
     <suppress>
         <notes><![CDATA[
-        file name: wicket-core-9.21.0.jar: jquery-1.12.4.js
-
-        This is a dependency version mismatch. We use jquery 3.6 that is not affected by vulnerability.
-        ]]></notes>
-        <packageUrl regex="true">^pkg:javascript/jquery@.*$</packageUrl>
-        <vulnerabilityName>jquery issue: 11974</vulnerabilityName>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-        file name: wicket-core-9.21.0.jar: jquery-1.12.4.min.js
-
-        This is a dependency version mismatch. We use jquery 3.6 that is not affected by vulnerability.
-        ]]></notes>
-        <packageUrl regex="true">^pkg:javascript/jquery@.*$</packageUrl>
-        <vulnerabilityName>jquery issue: 11974</vulnerabilityName>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-        file name: wicket-core-9.21.0.jar: jquery-2.2.4.js
-
-        This is a dependency version mismatch. We use jquery 3.6 that is not affected by vulnerability.
-        ]]></notes>
-        <packageUrl regex="true">^pkg:javascript/jquery@.*$</packageUrl>
-        <vulnerabilityName>jquery issue: 11974</vulnerabilityName>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
         file name: wicket-core-9.21.0.jar: jquery-2.2.4.min.js
 
         This is a dependency version mismatch. We use jquery 3.6 that is not affected by vulnerability.
@@ -44,15 +17,6 @@
 	]]></notes>
 		<packageUrl regex="true">^pkg:javascript/jquery@.*$</packageUrl>
 		<vulnerabilityName>jquery issue: 162</vulnerabilityName>
-	</suppress>
-	<suppress>
-		<notes><![CDATA[
-		file name: bootstrap4-4.6.0.jar: bootstrap.min.js
-		
-		same than CVE-2024-6484 : we don't use bootstrap carousel component on Igloo
-	]]></notes>
-		<packageUrl regex="true">^pkg:javascript/bootstrap@.*$</packageUrl>
-		<vulnerabilityName>CVE-2024-6531</vulnerabilityName>
 	</suppress>
 	<suppress>
 		<notes><![CDATA[
@@ -127,16 +91,6 @@
 		]]></notes>
 		<packageUrl regex="true">^pkg:javascript/jquery@.*$</packageUrl>
 		<cve>CVE-2020-11023</cve>
-	</suppress>
-	<suppress>
-		<notes><![CDATA[
-		file name: wicket-core-9.12.0.jar: jquery-1.12.4.js
-
-		This is a dependency version mismatch. We use jquery 3.6 that is not affected by vulnerability.
-		]]></notes>
-		<packageUrl regex="true">^pkg:javascript/jquery@.*$</packageUrl>
-		<vulnerabilityName>jQuery 1.x and 2.x are End-of-Life and no longer receiving security updates
-		</vulnerabilityName>
 	</suppress>
 	<suppress>
 		<notes><![CDATA[
@@ -222,5 +176,14 @@
    ]]></notes>
 		<packageUrl regex="true">^pkg:maven/org\.springframework/spring-core@.*$</packageUrl>
 		<vulnerabilityName>CVE-2025-41242</vulnerabilityName>
+	</suppress>
+	<suppress>
+		<notes><![CDATA[
+   file name: log4j-core-2.25.3.jar
+   false positive -> "Users are advised to upgrade to Apache Log4j Core version 2.25.3, which addresses this issue." 
+   We are in 2.25.3
+   ]]></notes>
+		<packageUrl regex="true">^pkg:maven/org\.apache\.logging\.log4j/log4j-core@.*$</packageUrl>
+		<vulnerabilityName>CVE-2025-68161</vulnerabilityName>
 	</suppress>
 </suppressions> 
