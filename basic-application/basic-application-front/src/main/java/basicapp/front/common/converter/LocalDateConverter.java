@@ -11,8 +11,7 @@ public class LocalDateConverter
 
   private static final long serialVersionUID = 729923484832534135L;
 
-  private static final LocalDateConverter INSTANCE =
-      new LocalDateConverter(DateTimePattern.SHORT_DATE);
+  private static final LocalDateConverter INSTANCE = new LocalDateConverter(DateTimePattern.DATE);
 
   public static LocalDateConverter get() {
     return INSTANCE;

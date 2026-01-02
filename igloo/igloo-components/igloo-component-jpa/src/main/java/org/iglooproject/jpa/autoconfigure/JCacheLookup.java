@@ -36,7 +36,7 @@ public class JCacheLookup {
         // NOTHING, just check if url classpath handler is here
       } catch (Exception ignore) {
         try {
-          // Nothing
+          // Use a classpath resource (without scheme) to find working URI
           String pathWithoutLeadingSlash =
               cacheManagerUri.toString().substring("classpath://".length());
           URI resolved =
@@ -44,7 +44,8 @@ public class JCacheLookup {
                   .getContextClassLoader()
                   .getResource(pathWithoutLeadingSlash)
                   .toURI();
-          if ("file".equals(resolved.getScheme())) {
+          // Use only well-known URIs
+          if ("file".equals(resolved.getScheme()) || "jar".equals(resolved.getScheme())) {
             cacheManagerUri = resolved;
           }
         } catch (URISyntaxException e) {

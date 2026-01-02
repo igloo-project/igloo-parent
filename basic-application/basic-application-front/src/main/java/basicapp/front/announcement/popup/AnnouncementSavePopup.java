@@ -7,16 +7,14 @@ import basicapp.back.business.announcement.service.controller.IAnnouncementContr
 import basicapp.back.util.binding.Bindings;
 import basicapp.front.announcement.model.AnnouncementBindableModel;
 import basicapp.front.announcement.page.AnnouncementListPage;
-import basicapp.front.common.form.TimeField;
-import basicapp.front.common.util.Masks;
 import igloo.bootstrap.modal.AbstractAjaxModalPopupPanel;
+import igloo.vuedatepicker.component.LocalDateTimeRangePickerVueField;
 import igloo.wicket.component.CoreLabel;
 import igloo.wicket.component.EnclosureContainer;
 import igloo.wicket.condition.Condition;
 import igloo.wicket.feedback.FeedbackUtils;
 import igloo.wicket.markup.html.panel.DelegatedMarkupPanel;
 import igloo.wicket.model.Detachables;
-import igloo.wicket.util.DatePattern;
 import java.util.Map;
 import org.apache.wicket.Component;
 import org.apache.wicket.RestartResponseException;
@@ -37,9 +35,7 @@ import org.iglooproject.wicket.more.bindable.form.CacheWritingForm;
 import org.iglooproject.wicket.more.common.behavior.UpdateOnChangeAjaxEventBehavior;
 import org.iglooproject.wicket.more.markup.html.form.EnumDropDownSingleChoice;
 import org.iglooproject.wicket.more.markup.html.form.FormMode;
-import org.iglooproject.wicket.more.markup.html.form.LocalDateDatePicker;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.mask.MaskBehavior;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -114,94 +110,41 @@ public class AnnouncementSavePopup extends AbstractAjaxModalPopupPanel<Announcem
             .condition(typeServiceInterruptionCondition)
             .add(
                 new CoreLabel(
-                    "interruptionStartDateTitle",
-                    new ResourceModel("business.announcement.interruption.startDateTime")),
-                new LocalDateDatePicker(
-                        "interruptionStartDate", bindableModel.getInterruptionStartLocalDateModel())
-                    .setLabel(
-                        new ResourceModel("business.announcement.interruption.startDateTime.date"))
-                    .setRequired(true)
-                    .add(new MaskBehavior(Masks.DATE, Masks.dateOptions()))
-                    .add(new UpdateOnChangeAjaxEventBehavior()),
-                new TimeField(
-                        "interruptionStartTime",
-                        bindableModel.getInterruptionStartLocalTimeModel(),
-                        DatePattern.TIME)
-                    .setLabel(
-                        new ResourceModel("business.announcement.interruption.startDateTime.time"))
-                    .setRequired(true)
-                    .add(new UpdateOnChangeAjaxEventBehavior()),
-                new CoreLabel(
-                    "interruptionEndDateTitle",
-                    new ResourceModel("business.announcement.interruption.endDateTime")),
-                new LocalDateDatePicker(
-                        "interruptionEndDate", bindableModel.getInterruptionEndLocalDateModel())
-                    .setLabel(
-                        new ResourceModel("business.announcement.interruption.endDateTime.date"))
-                    .setRequired(true)
-                    .add(new MaskBehavior(Masks.DATE, Masks.dateOptions()))
-                    .add(new UpdateOnChangeAjaxEventBehavior()),
-                new TimeField(
-                        "interruptionEndTime",
-                        bindableModel.getInterruptionEndLocalTimeModel(),
-                        DatePattern.TIME)
-                    .setLabel(
-                        new ResourceModel("business.announcement.interruption.endDateTime.time"))
+                    "interruptionDateTitle",
+                    new ResourceModel("business.announcement.interruption.dates")),
+                new LocalDateTimeRangePickerVueField(
+                        "interruptionDate",
+                        bindableModel.bind(Bindings.announcement().interruption().startDateTime()),
+                        bindableModel.bind(Bindings.announcement().interruption().endDateTime()))
                     .setRequired(true)
                     .add(new UpdateOnChangeAjaxEventBehavior())),
         new EnclosureContainer("descriptionContainer")
             .condition(typeServiceInterruptionCondition.negate())
             .add(
-                new TextField<String>(
-                        "titleFr", bindableModel.bind(Bindings.announcement().title().fr()))
+                new TextField<>("titleFr", bindableModel.bind(Bindings.announcement().title().fr()))
                     .setLabel(new ResourceModel("business.announcement.title.fr"))
                     .setRequired(typeServiceInterruptionCondition.negate().applies())
                     .add(new UpdateOnChangeAjaxEventBehavior()),
-                new TextField<String>(
-                        "titleEn", bindableModel.bind(Bindings.announcement().title().en()))
+                new TextField<>("titleEn", bindableModel.bind(Bindings.announcement().title().en()))
                     .setLabel(new ResourceModel("business.announcement.title.en"))
                     .setRequired(typeServiceInterruptionCondition.negate().applies())
                     .add(new UpdateOnChangeAjaxEventBehavior()),
-                new TextArea<String>(
+                new TextArea<>(
                         "descriptionFr",
                         bindableModel.bind(Bindings.announcement().description().fr()))
                     .setLabel(new ResourceModel("business.announcement.description.fr"))
                     .add(new UpdateOnChangeAjaxEventBehavior()),
-                new TextArea<String>(
+                new TextArea<>(
                         "descriptionEn",
                         bindableModel.bind(Bindings.announcement().description().en()))
                     .setLabel(new ResourceModel("business.announcement.description.en"))
                     .add(new UpdateOnChangeAjaxEventBehavior())),
         new CoreLabel(
-            "publicationStartDateTitle",
-            new ResourceModel("business.announcement.publication.startDateTime")),
-        new LocalDateDatePicker(
-                "publicationStartDate", bindableModel.getPublicationStartLocalDateModel())
-            .setLabel(new ResourceModel("business.announcement.publication.startDateTime.date"))
-            .setRequired(true)
-            .add(new MaskBehavior(Masks.DATE, Masks.dateOptions()))
-            .add(new UpdateOnChangeAjaxEventBehavior()),
-        new TimeField(
-                "publicationStartTime",
-                bindableModel.getPublicationStartLocalTimeModel(),
-                DatePattern.TIME)
-            .setLabel(new ResourceModel("business.announcement.publication.startDateTime.time"))
-            .setRequired(true)
-            .add(new UpdateOnChangeAjaxEventBehavior()),
-        new CoreLabel(
-            "publicationEndDateTitle",
-            new ResourceModel("business.announcement.publication.endDateTime")),
-        new LocalDateDatePicker(
-                "publicationEndDate", bindableModel.getPublicationEndLocalDateModel())
-            .setLabel(new ResourceModel("business.announcement.publication.endDateTime.date"))
-            .setRequired(true)
-            .add(new MaskBehavior(Masks.DATE, Masks.dateOptions()))
-            .add(new UpdateOnChangeAjaxEventBehavior()),
-        new TimeField(
-                "publicationEndTime",
-                bindableModel.getPublicationEndLocalTimeModel(),
-                DatePattern.TIME)
-            .setLabel(new ResourceModel("business.announcement.publication.endDateTime.time"))
+            "publicationDateTitle", new ResourceModel("business.announcement.publication.dates")),
+        new LocalDateTimeRangePickerVueField(
+                "publicationDate",
+                bindableModel.bind(Bindings.announcement().publication().startDateTime()),
+                bindableModel.bind(Bindings.announcement().publication().endDateTime()))
             .setRequired(true)
             .add(new UpdateOnChangeAjaxEventBehavior()),
         new CheckBox("enabled", bindableModel.bind(Bindings.announcement().enabled()))
@@ -223,7 +166,8 @@ public class AnnouncementSavePopup extends AbstractAjaxModalPopupPanel<Announcem
           @Override
           protected void onSubmit(AjaxRequestTarget target) {
             try {
-              Announcement announcement = AnnouncementSavePopup.this.getModelObject();
+              bindableModel.writeAll();
+              Announcement announcement = bindableModel.getObject();
 
               announcementControllerService.saveAnnouncement(announcement);
 

@@ -6,7 +6,7 @@
 	<parent>
 		<artifactId>basic-application</artifactId>
 		<groupId>org.iglooproject.archetype</groupId>
-		<version>6.16.4</version>
+		<version>6.17.0</version>
 	</parent>
 	
 	<packaging>jar</packaging>
@@ -68,6 +68,11 @@
 			<version>${igloo.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>org.iglooproject.webjars</groupId>
+			<artifactId>bootstrap-email</artifactId>
+			<version>${igloo.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-spring-actuator</artifactId>
 			<version>${igloo.version}</version>
@@ -75,6 +80,11 @@
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-login-mdc</artifactId>
+			<version>${igloo.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-vue-datepicker</artifactId>
 			<version>${igloo.version}</version>
 		</dependency>
 		<dependency>

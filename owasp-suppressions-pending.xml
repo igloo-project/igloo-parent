@@ -5,7 +5,36 @@
     <!--                                                              -->
     <!--                    FUTUR IGLOO RELEASE                       -->
     <!--                                                              -->
-    
+
+	<suppress>
+		<notes><![CDATA[
+   file name: log4j-core-2.25.2.jar
+   - on n'utilise pas les socket appender avec log4j
+   medium -> corrigé dans la version 2.25.3
+   ]]></notes>
+		<packageUrl regex="true">^pkg:maven/org\.apache\.logging\.log4j/log4j-core@.*$</packageUrl>
+		<vulnerabilityName>CVE-2025-68161</vulnerabilityName>
+	</suppress>
+	<suppress>
+		<notes><![CDATA[
+   file name: spring-websocket-6.2.8.jar
+   - Sera corrigé sur la version 6.2.12
+   - Dépendance utilisé en local seulement pour utilisation des websockets avec tomcat embedded de springboot
+   - Igloo n'utilise pas STOMP
+   ]]></notes>
+		<packageUrl regex="true">^pkg:maven/org\.springframework/spring-websocket@.*$</packageUrl>
+		<vulnerabilityName>CVE-2025-41254</vulnerabilityName>
+	</suppress>
+
+	<suppress>
+		<notes><![CDATA[
+   file name: rhino-1.8.0.jar
+       - sevérité mineur, utilisation de la méthode seulement pour l'autoprefixer d'igloo avec une valeur fix (digits = 3)
+       - mise à jour igloo facile - corrigé sur version 1.8.1
+   ]]></notes>
+		<packageUrl regex="true">^pkg:maven/org\.mozilla/rhino@.*$</packageUrl>
+		<vulnerabilityName>CVE-2025-66453</vulnerabilityName>
+	</suppress>
     
     <!--                                                              -->
     <!--                    IGLOO 6.16.0                              -->
@@ -17,7 +46,7 @@
            - Severité mineur, dans nos contextes surface d'attaque très limitée.
            - mise à jour igloo facile - corrigé sur version 2.0.4
        ]]></notes>
-        <packageUrl regex="true">^pkg:maven/org\.eclipse\.angus/smtp@.*$</packageUrl>
+        <packageUrl regex="true">^pkg:maven/org\.eclipse\.angus/.*@.*$</packageUrl>
         <vulnerabilityName>CVE-2025-7962</vulnerabilityName>
     </suppress>
     <suppress>
@@ -98,7 +127,7 @@
     
           We don't integrate the jar into the product deliverable (optional=true, spring repackage skipped)
       ]]></notes>
-        <packageUrl regex="true">^pkg:maven/org\.apache\.tomcat\.embed/tomcat-embed-.*$</packageUrl>
+        <packageUrl regex="true">^pkg:maven/org\.apache\.tomcat.*/(tomcat-embed-|tomcat-util|tomcat-coyote).*$</packageUrl>
         <vulnerabilityName regex="true">.*</vulnerabilityName>
     </suppress>
     
@@ -168,5 +197,45 @@
 		]]></notes>
         <packageUrl regex="true">^pkg:maven/org\.webjars\.npm/select2\-bootstrap\-5\-theme@.*$</packageUrl>
         <cve>CVE-2016-10744</cve>
+    </suppress>
+
+    <!--                                                       -->
+    <!--                    IGLOO 5.28.0                       -->
+    <!--                                                       -->
+    <suppress>
+        <notes><![CDATA[
+        file name: wicket-core-9.21.0.jar: jquery-1.12.4.js
+
+        This is a dependency version mismatch. We use jquery 3.6 that is not affected by vulnerability.
+        ]]></notes>
+        <packageUrl regex="true">^pkg:javascript/jquery@.*$</packageUrl>
+        <vulnerabilityName>jquery issue: 11974</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+        file name: wicket-core-9.21.0.jar: jquery-1.12.4.min.js
+
+        This is a dependency version mismatch. We use jquery 3.6 that is not affected by vulnerability.
+        ]]></notes>
+        <packageUrl regex="true">^pkg:javascript/jquery@.*$</packageUrl>
+        <vulnerabilityName>jquery issue: 11974</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+        file name: wicket-core-9.21.0.jar: jquery-2.2.4.js
+
+        This is a dependency version mismatch. We use jquery 3.6 that is not affected by vulnerability.
+        ]]></notes>
+        <packageUrl regex="true">^pkg:javascript/jquery@.*$</packageUrl>
+        <vulnerabilityName>jquery issue: 11974</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+        file name: wicket-core-9.21.0.jar: jquery-2.2.4.min.js
+
+        This is a dependency version mismatch. We use jquery 3.6 that is not affected by vulnerability.
+        ]]></notes>
+        <packageUrl regex="true">^pkg:javascript/jquery@.*$</packageUrl>
+        <vulnerabilityName>jquery issue: 11974</vulnerabilityName>
     </suppress>
 </suppressions>

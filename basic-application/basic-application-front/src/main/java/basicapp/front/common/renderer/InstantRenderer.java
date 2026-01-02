@@ -15,7 +15,7 @@ public abstract class InstantRenderer extends Renderer<Instant> {
 
         @Override
         public String render(Instant value, Locale locale) {
-          return Renderer.fromDateTimePattern(DateTimePattern.SHORT_DATETIME).render(value, locale);
+          return Renderer.fromDateTimePattern(DateTimePattern.DATETIME).render(value, locale);
         }
       }.nullsAsNull();
 

@@ -5,12 +5,12 @@
 		<groupId>org.iglooproject.parents</groupId>
 		<artifactId>igloo-parent-core-project</artifactId>
 		<relativePath>../igloo/igloo-parents/igloo-parent-core-project/pom.xml</relativePath>
-		<version>6.16.4</version><!-- KEEPME: archetype parent.version -->
+		<version>6.17.0</version><!-- KEEPME: archetype parent.version -->
 	</parent>
 	
 	<groupId>org.iglooproject.archetype</groupId>
 	<artifactId>basic-application</artifactId>
-	<version>6.16.4</version>
+	<version>6.17.0</version>
 	<packaging>pom</packaging>
 	
 	<name>Basic Application</name>
@@ -23,6 +23,7 @@
 		<module>basic-application-back</module>
 		<module>basic-application-front</module>
 		<module>basic-application-app</module>
+		<module>basic-application-static</module>
 	</modules>
 	
 	<build>

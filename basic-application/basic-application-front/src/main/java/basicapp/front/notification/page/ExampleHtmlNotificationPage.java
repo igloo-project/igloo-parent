@@ -34,8 +34,7 @@ public class ExampleHtmlNotificationPage extends AbstractHtmlNotificationPage<Us
                 new CoreLabel("user", userModel).showPlaceholder(),
                 new CoreLabel(
                         "date",
-                        Renderer.fromDateTimePattern(DateTimePattern.SHORT_DATE)
-                            .asModel(instantModel))
+                        Renderer.fromDateTimePattern(DateTimePattern.DATE).asModel(instantModel))
                     .showPlaceholder(),
                 new CoreLabel(
                         "time",

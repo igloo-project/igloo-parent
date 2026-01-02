@@ -1,0 +1,145 @@
+$dp-active-color: $component-active-color !default;
+$dp-active-bg:    $component-active-bg !default;
+
+.dp__theme_light {
+	--dp-background-color: #{$input-bg};
+	--dp-text-color: #{$input-color};
+	--dp-hover-color: #{$gray-100};
+	--dp-hover-text-color: #{$input-color};
+	--dp-hover-icon-color: #{$input-color};
+	--dp-primary-color: #{$dp-active-bg};
+	--dp-primary-disabled-color: #{rgba($dp-active-bg, .5)};
+	--dp-primary-text-color: #{$dp-active-color};
+	--dp-secondary-color: #{$body-tertiary-color};
+	--dp-border-color: #{$input-border-color};
+	--dp-menu-border-color: #{$input-border-color};
+	--dp-border-color-hover: #{$input-border-color};
+	--dp-border-color-focus: #{$input-border-color};
+	--dp-scroll-bar-background: #{$gray-100};
+	--dp-scroll-bar-color: #{$gray-500};
+	--dp-success-color: #{$success};
+	--dp-success-color-disabled: #{rgba($success, .5)};
+	--dp-icon-color: #{$gray-800};
+	--dp-danger-color: #{$danger};
+	--dp-marker-color: #{$danger};
+	--dp-tooltip-color: #fafafa;
+	--dp-disabled-color: #{$input-disabled-bg};
+	--dp-disabled-color-text: #{$input-disabled-color};
+	--dp-highlight-color: #{rgba($dp-active-bg, .1)};
+	--dp-range-between-dates-background-color: var(--dp-hover-color);
+	--dp-range-between-dates-text-color: var(--dp-hover-text-color);
+	--dp-range-between-border-color: var(--dp-hover-color);
+}
+
+:root {
+	--dp-font-family: #{$font-family-base};
+	--dp-border-radius: #{$input-border-radius};
+	--dp-cell-border-radius: #{$input-border-radius};
+	--dp-font-size: #{$font-size-base};
+}
+
+.dp__input_valid {
+	box-shadow: none;
+}
+
+.dp__input_invalid {
+	box-shadow: none;
+}
+
+.dp__input.form-control {
+	padding-inline-end: 30px;
+	
+	&.dp__input_icon_pad {
+		padding-inline-start: var(--dp-input-icon-padding);
+	}
+	
+	&.is-valid {
+		border-color: var(--dp-success-color);
+	}
+	
+	&.is-invalid {
+		border-color: var(--dp-danger-color);
+	}
+}
+
+.dp__arrow_bottom {
+	z-index: -1;
+}
+
+.dp__active_date {
+	background: var(--dp-primary-color);
+	color: var(--dp-primary-text-color);
+}
+
+.dp__range_start {
+	background: var(--dp-primary-color);
+	color: var(--dp-primary-text-color);
+}
+
+.dp__range_end {
+	background: var(--dp-primary-color);
+	color: var(--dp-primary-text-color);
+}
+
+.dp__selection_preview {
+	display: none;
+}
+
+.dp__action_buttons {
+	display: flex;
+	gap: 5px;
+}
+
+.dp__action_button {
+	display: unset;
+	align-items: unset;
+	background: unset;
+	border: none;
+	padding: unset;
+	line-height: unset;
+	margin-inline-start: unset;
+	height: unset;
+	cursor: unset;
+	border-radius: unset;
+	font-size: unset;
+	font-family: unset;
+}
+
+.dp__action_cancel {
+	color: unset;
+	border: unset;
+	
+	&:hover {
+		border-color: unset;
+		transition: unset;
+	}
+}
+
+.dp__action_buttons .dp__action_select {
+	background: unset;
+	color: unset;
+	
+	&:hover {
+		background: unset;
+		transition: unset;
+	}
+	
+	&:disabled {
+		background: unset;
+		cursor: unset;
+	}
+}
+
+.dp__menu_bs {
+	.dp__action_cancel {
+		@extend .btn;
+		@include button-size($btn-padding-y-sm, $btn-padding-x-sm, $btn-font-size-sm, $btn-border-radius-sm);
+		@include button-outline-variant($secondary);
+	}
+	
+	.dp__action_buttons .dp__action_select {
+		@extend .btn;
+		@include button-size($btn-padding-y-sm, $btn-padding-x-sm, $btn-font-size-sm, $btn-border-radius-sm);
+		@include button-variant($dp-active-bg, $dp-active-bg);
+	}
+}

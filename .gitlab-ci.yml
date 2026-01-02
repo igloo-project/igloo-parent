@@ -36,7 +36,7 @@ maven-build:
   tags:
     - docker
   services:
-    - name: docker:dind
+    - name: docker:28-dind
   variables:
     # Instruct Testcontainers to use the daemon of DinD, use port 2375 for non-tls connections.
     DOCKER_HOST: "tcp://docker:2375"
@@ -126,7 +126,7 @@ sonar-analyze:
   stage: analyze
   environment: staging
   script:
-    - mvn -U verify sonar:sonar
+    - mvn -U verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
       -Dsonar.projectBranch=igloo-boot
       -DskipTests
       -Dsonar.host.url="https://sonar.tools.kobalt.fr"
@@ -145,8 +145,9 @@ igloo-dependency-check:
   allow_failure: true
   stage: dependency-check
   script:
-    - if [ $CI_COMMIT_BRANCH == "owasp" && $CI_PIPELINE_SOURCE == "schedule"]; then
-      SUPPRESSION_FILES=../owasp-suppressions.xml,../owasp-suppressions-pending.xml;
+    - SUPPRESSION_URL_PENDING=https://raw.githubusercontent.com/igloo-project/igloo-parent/refs/heads/igloo-boot-dev/owasp-suppressions-pending.xml;
+    - if [ $CI_COMMIT_BRANCH == "owasp" ] && [ $CI_PIPELINE_SOURCE == "schedule" ]; then
+      SUPPRESSION_FILES=../owasp-suppressions.xml,$SUPPRESSION_URL_PENDING;
       else
       SUPPRESSION_FILES=../owasp-suppressions.xml;
       fi

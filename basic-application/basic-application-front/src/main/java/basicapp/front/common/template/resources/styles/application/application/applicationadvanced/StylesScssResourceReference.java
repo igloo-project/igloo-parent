@@ -1,5 +1,6 @@
 package basicapp.front.common.template.resources.styles.application.application.applicationadvanced;
 
+import igloo.vuedatepicker.reference.VueDatePickerCssResourceReference;
 import java.util.List;
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.HeaderItem;
@@ -20,6 +21,7 @@ public final class StylesScssResourceReference extends ScssResourceReference {
   public List<HeaderItem> getDependencies() {
     List<HeaderItem> dependencies = super.getDependencies();
     dependencies.add(CssHeaderItem.forReference(WiQueryCoreThemeResourceReference.get()));
+    dependencies.add(CssHeaderItem.forReference(VueDatePickerCssResourceReference.get()));
     return dependencies;
   }
 
