@@ -33,21 +33,12 @@ public class CacheWritingForm<E> extends ModelValidatingForm<E> {
         otherRootModels == null ? List.of() : List.copyOf(Arrays.asList(otherRootModels));
   }
 
-  // TODO WICKET - REMOVE THIS WHEN UPGRADE UP TO 10.7.0
   @Override
-  protected void onValidateModelObjects() {
+  protected void onAfterUpdateFormComponentModels() {
     // Make sure sub-form models are up-to-date
     writeAll();
-    super.onValidateModelObjects();
+    super.onAfterUpdateFormComponentModels();
   }
-
-  // TODO WICKET - ADD THIS WHEN UPGRADE UP TO 10.7.0
-  //  @Override
-  //  protected void onAfterUpdateFormComponentModels() {
-  //    // Make sure sub-form models are up-to-date
-  //    writeAll();
-  //    super.onAfterUpdateFormComponentModels();
-  //  }
 
   @Override
   protected void onError() {

@@ -186,7 +186,7 @@ public class HistoryEntityReferenceSchemaContributor extends BaseSchemaContribut
     int castCount;
     Query query =
         em.createNativeQuery(
-            """
+"""
 
 select
     count(*)
