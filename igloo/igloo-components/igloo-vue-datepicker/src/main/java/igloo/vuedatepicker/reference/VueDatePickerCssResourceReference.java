@@ -14,6 +14,6 @@ public class VueDatePickerCssResourceReference extends WebjarsCssResourceReferen
   }
 
   public VueDatePickerCssResourceReference() {
-    super("vuepic__vue-datepicker/current/dist/main.css");
+    super("igloo-vue-datepicker/current/dist/vueInit.css");
   }
 }
