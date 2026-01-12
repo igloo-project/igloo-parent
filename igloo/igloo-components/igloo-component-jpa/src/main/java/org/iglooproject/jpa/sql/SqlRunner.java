@@ -20,13 +20,11 @@ import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.schema.SourceType;
 import org.hibernate.tool.schema.TargetType;
-import org.hibernate.tool.schema.internal.DefaultSchemaFilter;
 import org.hibernate.tool.schema.internal.ExceptionHandlerCollectingImpl;
 import org.hibernate.tool.schema.internal.exec.ScriptTargetOutputToWriter;
 import org.hibernate.tool.schema.spi.ContributableMatcher;
 import org.hibernate.tool.schema.spi.ExceptionHandler;
 import org.hibernate.tool.schema.spi.ExecutionOptions;
-import org.hibernate.tool.schema.spi.SchemaFilter;
 import org.hibernate.tool.schema.spi.SchemaManagementTool;
 import org.hibernate.tool.schema.spi.ScriptSourceInput;
 import org.hibernate.tool.schema.spi.ScriptTargetOutput;
@@ -88,11 +86,6 @@ public class SqlRunner {
           @Override
           public ExceptionHandler getExceptionHandler() {
             return exceptionHandler;
-          }
-
-          @Override
-          public SchemaFilter getSchemaFilter() {
-            return DefaultSchemaFilter.INSTANCE;
           }
         };
     if (Action.create.equals(action)) {

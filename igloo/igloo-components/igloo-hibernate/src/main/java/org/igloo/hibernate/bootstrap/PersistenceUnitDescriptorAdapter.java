@@ -6,9 +6,9 @@
  */
 package org.igloo.hibernate.bootstrap;
 
+import jakarta.persistence.PersistenceUnitTransactionType;
 import jakarta.persistence.SharedCacheMode;
 import jakarta.persistence.ValidationMode;
-import jakarta.persistence.spi.PersistenceUnitTransactionType;
 import java.net.URL;
 import java.util.Collections;
 import java.util.List;
@@ -38,11 +38,6 @@ public class PersistenceUnitDescriptorAdapter implements PersistenceUnitDescript
   @Override
   public String getProviderClassName() {
     return HibernatePersistenceProvider.class.getName();
-  }
-
-  @Override
-  public PersistenceUnitTransactionType getTransactionType() {
-    return null;
   }
 
   @Override
@@ -78,6 +73,16 @@ public class PersistenceUnitDescriptorAdapter implements PersistenceUnitDescript
   @Override
   public boolean isExcludeUnlistedClasses() {
     return false;
+  }
+
+  @Override
+  public PersistenceUnitTransactionType getPersistenceUnitTransactionType() {
+    return null;
+  }
+
+  @Override
+  public jakarta.persistence.spi.PersistenceUnitTransactionType getTransactionType() {
+    return null;
   }
 
   @Override

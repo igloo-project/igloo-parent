@@ -1,11 +1,14 @@
 package org.iglooproject.jpa.hibernate.jpa;
 
+import jakarta.persistence.GeneratedValue;
 import java.io.Serializable;
+import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.id.IntegralDataTypeHolder;
 import org.hibernate.id.enhanced.AccessCallback;
 import org.hibernate.id.enhanced.NoopOptimizer;
 import org.hibernate.id.enhanced.Optimizer;
 import org.hibernate.id.enhanced.PooledOptimizer;
+import org.hibernate.sql.ast.tree.expression.Expression;
 
 /**
  * This optimizer allows to use a default incrementSize of 1 without overriding configuration on
@@ -45,5 +48,11 @@ public class NoopIncrementOptimizer implements Optimizer {
   @Override
   public boolean applyIncrementSizeToSourceValues() {
     return false;
+  }
+
+  @Override
+  public Expression createLowValueExpression(
+      Expression databaseValue, SessionFactoryImplementor sessionFactory) {
+    return databaseValue;
   }
 }
