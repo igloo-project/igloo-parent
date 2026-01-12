@@ -5,8 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.hibernate.annotations.Type;
-import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.type.SqlTypes;
+import org.hibernate.type.descriptor.WrapperOptions;
 import org.hibernate.usertype.UserType;
 
 /**
@@ -43,9 +43,7 @@ public abstract class AbstractImmutableMaterializedStringValueUserType<
   }
 
   @Override
-  public T nullSafeGet(
-      ResultSet rs, int position, SharedSessionContractImplementor session, Object owner)
-      throws SQLException {
+  public T nullSafeGet(ResultSet rs, int position, WrapperOptions options) throws SQLException {
     String columnValue = rs.getString(position);
     if (rs.wasNull()) {
       return null;
@@ -54,8 +52,7 @@ public abstract class AbstractImmutableMaterializedStringValueUserType<
   }
 
   @Override
-  public void nullSafeSet(
-      PreparedStatement st, T value, int index, SharedSessionContractImplementor session)
+  public void nullSafeSet(PreparedStatement st, T value, int index, WrapperOptions options)
       throws SQLException {
     if (value == null) {
       // postgresql only handle VARCHAR/LONGVARCHAR

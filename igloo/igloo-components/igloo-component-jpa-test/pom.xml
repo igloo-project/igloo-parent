@@ -136,7 +136,7 @@
     </dependency>
     <dependency>
       <groupId>org.hibernate.orm</groupId>
-      <artifactId>hibernate-jpamodelgen</artifactId>
+      <artifactId>hibernate-processor</artifactId>
       <optional>true</optional>
     </dependency>
     <dependency>
