@@ -123,10 +123,14 @@ public class PropertySourceLogger implements ApplicationListener<ContextRefreshe
         String configurerProperty = environment.getProperty(propertyName); // null if not resolved
         String envProperty = context.getEnvironment().getProperty(propertyName);
         if (envProperty != null && !Objects.equals(configurerProperty, envProperty)) {
-          properties.put(String.format("%s.configurer", propertyName), configurerProperty);
-          properties.put(String.format("%s.environment", propertyName), envProperty);
+          properties.put(
+              String.format("%s.configurer", propertyName),
+              Objects.requireNonNullElse(configurerProperty, ""));
+          properties.put(
+              String.format("%s.environment", propertyName),
+              Objects.requireNonNullElse(envProperty, ""));
         } else {
-          properties.put(propertyName, configurerProperty);
+          properties.put(propertyName, Objects.requireNonNullElse(configurerProperty, ""));
         }
       } catch (IllegalArgumentException e) {
         // allow to skip environment variable as value like ${IFS+x} are not resolvable

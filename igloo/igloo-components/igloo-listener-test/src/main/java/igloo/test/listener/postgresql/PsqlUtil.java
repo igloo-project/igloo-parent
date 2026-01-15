@@ -17,7 +17,7 @@ public class PsqlUtil {
 
   static final Logger LOGGER = LoggerFactory.getLogger(PsqlUtil.class);
   static final String TABLE_QUERY =
-      """
+"""
 SELECT
     table_schema || '.' || table_name
 FROM

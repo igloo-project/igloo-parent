@@ -63,9 +63,8 @@ public abstract class AbstractDatePickerVueField<T> extends AbstractTextComponen
             // Modes
             .textInput(JsHelpers.of(true))
             // Localization
-            .locale(JsHelpers.of(getLocale().getLanguage()))
-            .selectText(JsHelpers.of(getString(("datepicker.wording.select"))))
-            .cancelText(JsHelpers.of(getString(("datepicker.wording.cancel"))))
+            .selectBtnLabel(JsHelpers.of(getString(("datepicker.wording.select"))))
+            .cancelBtnLabel(JsHelpers.of(getString(("datepicker.wording.cancel"))))
             .ariaLabels(getAriaLabels())
             // Positioning
             .teleport(JsHelpers.of(true))

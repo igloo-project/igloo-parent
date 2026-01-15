@@ -1,10 +1,11 @@
 package igloo.vuedatepicker.behavior;
 
+import static org.springframework.context.i18n.LocaleContextHolder.getLocale;
+
 import com.google.common.base.Joiner;
 import igloo.bootstrap.js.statement.IJsStatement;
 import igloo.bootstrap.js.statement.IJsVariable;
 import igloo.vuedatepicker.behavior.JsVueDatePicker.Builder;
-import igloo.vuedatepicker.reference.VueDatePickerJavaScriptResourceReference;
 import igloo.vuedatepicker.reference.VueInitAppResourceReference;
 import igloo.vuedatepicker.reference.VueJavaScriptDevResourceReference;
 import igloo.vuedatepicker.reference.VueJavaScriptResourceReference;
@@ -16,6 +17,7 @@ import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.head.PriorityHeaderItem;
+import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.danekja.java.util.function.serializable.SerializableConsumer;
 import org.iglooproject.spring.property.service.IPropertyService;
@@ -44,13 +46,13 @@ public class VueDatePickerBehavior extends Behavior {
     }
   }
 
-  /** put tags on vue datepicker input whith jsVueDatePicker configuration options */
+  /** put tags on vue datepicker input with jsVueDatePicker configuration options */
   @Override
   public void onComponentTag(Component component, ComponentTag tag) {
     super.onComponentTag(component, tag);
     tag.put("v-model", getVmodelVarName(component));
     tag.put("@update:model-value", getVueOnChangeVarName(component));
-    tag.put("uid", component.getMarkupId());
+    tag.put(":locale", "localeRef");
 
     // Add tags values with variables for dynamics options
     // (variable is made in JS to have async vue ref object)
@@ -82,11 +84,6 @@ public class VueDatePickerBehavior extends Behavior {
                     ? VueJavaScriptDevResourceReference.get()
                     : VueJavaScriptResourceReference.get())));
 
-    // Vue datepicker
-    response.render(
-        new PriorityHeaderItem(
-            JavaScriptHeaderItem.forReference(VueDatePickerJavaScriptResourceReference.get())));
-
     // initApp with datePicker
     response.render(
         new PriorityHeaderItem(
@@ -98,6 +95,12 @@ public class VueDatePickerBehavior extends Behavior {
             OnDomReadyHeaderItem.forScript(
                 "vueInit.addVueModel('%s', %s)"
                     .formatted(getVmodelVarName(component), jsVueDatePicker.model().render()))));
+
+    // add locale language
+    response.render(
+        new PriorityHeaderItem(
+            OnDomReadyHeaderItem.forScript(
+                "vueInit.setLocale('%s')".formatted(getLocale().getLanguage()))));
 
     // add onChange methods JS
     IJsStatement onUpdateModelStatement = jsVueDatePicker.onUpdateModel();
@@ -128,12 +131,20 @@ public class VueDatePickerBehavior extends Behavior {
         OnDomReadyHeaderItem.forScript(
             "vueInit.mountVueAppWithId('%s')".formatted(component.getMarkupId())));
 
+    // Setup input with wicket Id and wicket input name (from vue datepicker v12 props are group in
+    // ':input-attrs' prop)
+    response.render(
+        OnDomReadyHeaderItem.forScript(
+            "vueInit.setupInput('%s', '%s')"
+                .formatted(
+                    component.getMarkupId(), ((FormComponent<?>) component).getInputName())));
+
     // Replace tag "for" value in linked datePicker label if exist
     // (If not, the "for" of "wicket:for" is apply to the parent div and not to the generated input)
     response.render(
         new PriorityHeaderItem(
             OnDomReadyHeaderItem.forScript(
-                "vueInit.replaceForToLabel('%s')".formatted(component.getMarkupId()))));
+                "vueInit.replaceForOnLabel('%s')".formatted(component.getMarkupId()))));
   }
 
   public IJsVueDatePicker getJsVueDatePicker() {

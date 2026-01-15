@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+
+    // Environment Settings
+    "module": "ESNext",
+    "target": "ESNext",
+    "types": [],
+
+    "allowImportingTsExtensions": true,
+    "moduleResolution": "node",
+    
+    // Other Outputs
+    "sourceMap": true,
+    "declaration": false,
+    "declarationMap": false,
+
+    // Stricter Typechecking Options
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    
+    // Recommended Options
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strict": true,
+    "verbatimModuleSyntax": true,
+    "isolatedModules": true,
+    "noUncheckedSideEffectImports": true,
+    "moduleDetection": "force",
+    "skipLibCheck": true,
+    "useDefineForClassFields": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "libReplacement": false
+  }
+}

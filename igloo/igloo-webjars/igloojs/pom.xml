@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.iglooproject.webjars</groupId>
 		<artifactId>igloo-webjars</artifactId>
-		<version>6.17.0</version>
+		<version>6.18.0</version>
 	</parent>
 
 	<artifactId>igloojs</artifactId>
@@ -22,11 +22,6 @@
 		<dependency>
 			<groupId>de.agilecoders.wicket.webjars</groupId>
 			<artifactId>wicket-webjars</artifactId>
-		</dependency>
-		<!--TODO remove when update wicket core (override wicket-core version for wicket-webjar)-->
-		<dependency>
-			<groupId>org.apache.wicket</groupId>
-			<artifactId>wicket-core</artifactId>
 		</dependency>
 	</dependencies>
 

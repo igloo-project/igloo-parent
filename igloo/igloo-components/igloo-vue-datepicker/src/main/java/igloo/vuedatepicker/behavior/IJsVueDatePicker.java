@@ -62,24 +62,23 @@ public interface IJsVueDatePicker extends IJsObject, Serializable {
   IJsStatement flow();
 
   @Nullable
-  IJsStatement utc();
+  IJsStatement timezone();
 
   @Nullable
   IJsStatement vertical();
-
-  //
-  // Modes configuration
-  //
-
-  @Nullable
-  IJsStatement partialFlow();
 
   //
   // General configuration
   //
 
   @Nullable
+  IJsObject config();
+
+  @Nullable
   IJsStatement monthChangeOnScroll();
+
+  @Nullable
+  IJsObject inputAttrs();
 
   @Nullable
   IJsStatement clearable();
@@ -103,10 +102,10 @@ public interface IJsVueDatePicker extends IJsObject, Serializable {
   IJsStatement readonly();
 
   @Nullable
-  IJsStatement name();
+  IJsStatement disableYearSelect();
 
   @Nullable
-  IJsStatement disableYearSelect();
+  IJsObject actionRow();
 
   //
   // Calendar configuration
@@ -122,11 +121,14 @@ public interface IJsVueDatePicker extends IJsObject, Serializable {
   IJsStatement disabledDates();
 
   @Nullable
-  IJsStatement disableWeekDays();
+  IJsStatement filters();
 
   //
   // Time picker configuration
   //
+
+  @Nullable
+  IJsObject timeConfig();
 
   @Nullable
   IJsStatement enableTimePicker();
@@ -134,6 +136,9 @@ public interface IJsVueDatePicker extends IJsObject, Serializable {
   //
   // Formatting
   //
+
+  @Nullable
+  IJsObject formats();
 
   @Nullable
   IJsStatement format();
@@ -146,13 +151,13 @@ public interface IJsVueDatePicker extends IJsObject, Serializable {
   //
 
   @Nullable
-  IJsStatement locale();
+  IJsStatement selectBtnLabel();
 
   @Nullable
-  IJsStatement selectText();
+  IJsStatement cancelBtnLabel();
 
   @Nullable
-  IJsStatement cancelText();
+  IJsStatement nowBtnLabel();
 
   @Nullable
   IJsStatement ariaLabels();
@@ -205,12 +210,13 @@ public interface IJsVueDatePicker extends IJsObject, Serializable {
             Map.entry(":inline", this::inline),
             Map.entry(":multi-dates", this::multiDates),
             Map.entry(":flow", this::flow),
-            Map.entry(":utc", this::utc),
+            Map.entry(":timezone", this::timezone),
             Map.entry(":vertical", this::vertical),
-            // Modes configuration
-            Map.entry(":partial-flow", this::partialFlow),
             // General configuration
-            Map.entry(":month-change-on-scroll", this::monthChangeOnScroll),
+            Map.entry(":action-row", this::getActionRowObject),
+            Map.entry( // valeur obligatoire pour l'id
+                ":input-attrs", this::getInputAttrObject),
+            Map.entry(":config", this::getConfigObject),
             Map.entry(":clearable", this::clearable),
             Map.entry(":auto-apply", this::autoApply),
             Map.entry(":placeholder", this::placeholder),
@@ -218,21 +224,17 @@ public interface IJsVueDatePicker extends IJsObject, Serializable {
             Map.entry(":markers", this::markers),
             Map.entry(":disabled", this::disabled),
             Map.entry(":readonly", this::readonly),
-            Map.entry(":name", this::name),
             Map.entry(":disable-year-select", this::disableYearSelect),
             // Calendar configuration
             Map.entry(":min-date", this::minDate),
             Map.entry(":max-date", this::maxDate),
             Map.entry(":disabled-dates", this::disabledDates),
-            Map.entry(":disabled-week-days", this::disableWeekDays),
+            Map.entry(":filters", this::filters),
             // Time picker configuration
-            Map.entry(":enable-time-picker", this::enableTimePicker),
+            Map.entry(":time-config", this::getTimeConfigObject),
             // Formatting
-            Map.entry(":format", this::format),
+            Map.entry(":formats", this::getFormatsObject),
             // Localization
-            Map.entry(":locale", this::locale),
-            Map.entry(":select-text", this::selectText),
-            Map.entry(":cancel-text", this::cancelText),
             Map.entry(":aria-labels", this::ariaLabels),
             // Positioning
             Map.entry(":teleport", this::teleport),
@@ -246,5 +248,72 @@ public interface IJsVueDatePicker extends IJsObject, Serializable {
         .filter(e -> e.getRight() != null)
         .forEachOrdered(e -> result.put(e.getLeft(), e.getRight()));
     return result;
+  }
+
+  private IJsObject getActionRowObject() {
+    IJsObject actionRow = actionRow();
+    Map<String, IJsStatement> values =
+        (actionRow != null && actionRow.values() != null)
+            ? actionRow.values()
+            : new LinkedHashMap<>();
+    if (selectBtnLabel() != null) {
+      values.put("selectBtnLabel", selectBtnLabel());
+    }
+    if (cancelBtnLabel() != null) {
+      values.put("cancelBtnLabel", cancelBtnLabel());
+    }
+    if (nowBtnLabel() != null) {
+      values.put("nowBtnLabel", nowBtnLabel());
+    }
+    return values.isEmpty() ? null : () -> values;
+  }
+
+  /**
+   * create objects <a
+   * href="https://vue3datepicker.com/props/general-configuration/#input-attrs">input-attrs</a>
+   *
+   * <p>must be present to add wicket id to input
+   *
+   * @return non null value
+   */
+  private IJsObject getInputAttrObject() {
+    IJsObject inputAttrs = inputAttrs();
+    Map<String, IJsStatement> values =
+        (inputAttrs != null && inputAttrs.values() != null)
+            ? inputAttrs.values()
+            : new LinkedHashMap<>();
+    return () -> values;
+  }
+
+  private IJsObject getFormatsObject() {
+    IJsObject formats = formats();
+    Map<String, IJsStatement> values =
+        (formats != null && formats.values() != null) ? formats.values() : new LinkedHashMap<>();
+    if (format() != null) {
+      values.put("input", format());
+    }
+    return values.isEmpty() ? null : () -> values;
+  }
+
+  private IJsObject getTimeConfigObject() {
+    IJsObject timeConfig = timeConfig();
+    Map<String, IJsStatement> values =
+        (timeConfig != null && timeConfig.values() != null)
+            ? timeConfig.values()
+            : new LinkedHashMap<>();
+    if (enableTimePicker() != null) {
+      values.put("enableTimePicker", enableTimePicker());
+    }
+    return values.isEmpty() ? null : () -> values;
+  }
+
+  private IJsObject getConfigObject() {
+    IJsObject config = config();
+    Map<String, IJsStatement> values =
+        (config != null && config.values() != null) ? config.values() : new LinkedHashMap<>();
+    if (monthChangeOnScroll() != null) {
+      values.put("monthChangeOnScroll", monthChangeOnScroll());
+    }
+    return values.isEmpty() ? null : () -> values;
   }
 }
