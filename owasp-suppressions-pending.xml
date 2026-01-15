@@ -10,14 +10,14 @@
     <!--                                                              -->
     <!--                    IGLOO 6.18.0                              -->
     <!--                                                              -->
-
+	
 	<suppress>
 		<notes><![CDATA[
    file name: log4j-core-2.25.2.jar
    - on n'utilise pas les socket appender avec log4j
    medium -> corrigé dans la version 2.25.3
    ]]></notes>
-		<packageUrl regex="true">^pkg:maven/org\.apache\.logging\.log4j/log4j-core@.*$</packageUrl>
+		<packageUrl regex="true">^pkg:maven/org\.apache\.logging\.log4j/log4j-.*$</packageUrl>
 		<vulnerabilityName>CVE-2025-68161</vulnerabilityName>
 	</suppress>
 	<suppress>
