@@ -1,3 +1,49 @@
+.badge {
+	--#{$prefix}badge-color: #{$badge-color};
+	--#{$prefix}badge-bg: transparent;
+	--#{$prefix}badge-btn-box-shadow: #{$btn-box-shadow};
+	--#{$prefix}badge-btn-disabled-opacity: #{$btn-disabled-opacity};
+	--#{$prefix}badge-btn-focus-box-shadow: 0 0 0 #{$btn-focus-width} rgba(var(--#{$prefix}badge-btn-focus-shadow-rgb), .5);
+	
+	color: var(--#{$prefix}badge-color);
+	background-color: var(--#{$prefix}badge-bg);
+	
+	@at-root a#{&} {
+		text-decoration: if($link-decoration == none, null, none);
+		cursor: if($enable-button-pointers, pointer, null);
+		user-select: none;
+		@include box-shadow(var(--#{$prefix}badge-btn-box-shadow));
+		@include transition($btn-transition);
+		
+		&:hover {
+			color: var(--#{$prefix}badge-btn-hover-color);
+			text-decoration: if($link-hover-decoration == underline, none, null);
+			background-color: var(--#{$prefix}badge-btn-hover-bg);
+		}
+		
+		&:focus-visible {
+			color: var(--#{$prefix}badge-btn-hover-color);
+			@include gradient-bg(var(--#{$prefix}badge-btn-hover-bg));
+			outline: 0;
+			// Avoid using mixin so we can pass custom focus shadow properly
+			@if $enable-shadows {
+				box-shadow: var(--#{$prefix}badge-btn-box-shadow), var(--#{$prefix}badge-btn-focus-box-shadow);
+			} @else {
+				box-shadow: var(--#{$prefix}badge-btn-focus-box-shadow);
+			}
+		}
+		
+		&.disabled {
+			color: var(--#{$prefix}badge-btn-disabled-color);
+			pointer-events: none;
+			background-color: var(--#{$prefix}badge-btn-disabled-bg);
+			background-image: if($enable-gradients, none, null);
+			opacity: var(--#{$prefix}badge-btn-disabled-opacity);
+			@include box-shadow(none);
+		}
+	}
+}
+
 .badge-pill {
 	padding-right: $badge-pill-padding-x;
 	padding-left: $badge-pill-padding-x;
@@ -6,6 +52,18 @@
 
 @each $color, $value in $theme-colors {
 	.badge-#{$color} {
-		@include badge-variant($value);
+		@if $color == "light" {
+			@include badge-variant(
+				$value,
+				$hover-background: shade-color($value, $btn-hover-bg-shade-amount)
+			);
+		} @else if $color == "dark" {
+			@include badge-variant(
+				$value,
+				$hover-background: tint-color($value, $btn-hover-bg-tint-amount)
+			);
+		} @else {
+			@include badge-variant($value);
+		}
 	}
 }

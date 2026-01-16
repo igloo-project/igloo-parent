@@ -1,4 +1,16 @@
-@mixin badge-variant($background, $color: color-contrast($background)) {
-	color: $color;
-	background-color: $background;
+@mixin badge-variant(
+	$background,
+	$color: color-contrast($background),
+	$hover-background: if($color == $color-contrast-light, shade-color($background, $btn-hover-bg-shade-amount), tint-color($background, $btn-hover-bg-tint-amount)),
+	$hover-color: color-contrast($hover-background),
+	$disabled-background: $background,
+	$disabled-color: color-contrast($disabled-background)
+) {
+	--#{$prefix}badge-color: #{$color};
+	--#{$prefix}badge-bg: #{$background};
+	--#{$prefix}badge-btn-hover-color: #{$hover-color};
+	--#{$prefix}badge-btn-hover-bg: #{$hover-background};
+	--#{$prefix}badge-btn-focus-shadow-rgb: #{to-rgb(mix($color, $background, 15%))};
+	--#{$prefix}badge-btn-disabled-color: #{$disabled-color};
+	--#{$prefix}badge-btn-disabled-bg: #{$disabled-background};
 }
