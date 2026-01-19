@@ -136,6 +136,7 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
       this.entitiesLoaded += size;
     }
 
+    // TODO RFO igloo 7 fix deprecated ?
     @Override
     public void addToTotalCount(long count) {
       this.totalCount += count;

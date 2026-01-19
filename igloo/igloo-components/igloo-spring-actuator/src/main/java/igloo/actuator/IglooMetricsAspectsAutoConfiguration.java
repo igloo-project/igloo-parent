@@ -13,10 +13,10 @@ import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
-import org.springframework.boot.actuate.autoconfigure.metrics.MetricsAspectsAutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.micrometer.metrics.autoconfigure.MetricsAspectsAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
@@ -31,7 +31,10 @@ import org.springframework.expression.spel.support.SimpleEvaluationContext;
  *     <p>to override this bean, we have to remove bean definition of CountedAspect defined on
  *     {@link MetricsAspectsAutoConfiguration}
  */
-@AutoConfiguration(after = MetricsAspectsAutoConfiguration.class)
+@AutoConfiguration(
+    after =
+        org.springframework.boot.micrometer.metrics.autoconfigure.MetricsAspectsAutoConfiguration
+            .class)
 @ConditionalOnBean(MetricsAspectsAutoConfiguration.class)
 public class IglooMetricsAspectsAutoConfiguration implements BeanFactoryPostProcessor {
 

@@ -31,7 +31,7 @@ import org.springframework.aop.aspectj.AspectJExpressionPointcutAdvisor;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.orm.jpa.HibernatePropertiesCustomizer;
+import org.springframework.boot.hibernate.autoconfigure.HibernatePropertiesCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -170,6 +170,7 @@ public class JpaAutoConfiguration {
             (IntegratorProvider) () -> List.of(integrator));
   }
 
+  // TODO RFO igloo 7 -> deprecated à modifier ?
   @Bean
   public HibernatePropertiesCustomizer typeCustomizer(
       List<MetadataBuilderContributor> metadataBuilderContributor) {

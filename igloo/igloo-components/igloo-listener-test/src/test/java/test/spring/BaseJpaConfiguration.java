@@ -7,7 +7,7 @@ import igloo.test.listener.postgresql.PsqlTestContainerConfiguration;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.persistence.autoconfigure.EntityScan;
 import org.springframework.test.context.ContextConfiguration;
 import test.model.DummyEntity;
 

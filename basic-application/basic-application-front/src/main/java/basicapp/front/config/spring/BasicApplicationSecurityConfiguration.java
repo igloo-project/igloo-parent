@@ -3,14 +3,11 @@ package basicapp.front.config.spring;
 import static org.springframework.security.web.util.matcher.RegexRequestMatcher.regexMatcher;
 
 import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
-import org.iglooproject.jpa.security.service.ICorePermissionEvaluator;
-import org.iglooproject.web.security.access.expression.method.CoreWebSecurityExpressionHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
@@ -100,33 +97,28 @@ public class BasicApplicationSecurityConfiguration {
                         "/security/password/reset/",
                         "/maintenance/")
                     .permitAll()
+                    .requestMatchers(publicResourceMatchers())
+                    .permitAll()
                     .requestMatchers("/**")
                     .hasAnyAuthority(CoreAuthorityConstants.ROLE_AUTHENTICATED))
         .build();
   }
 
-  @Bean
-  public WebSecurityCustomizer webSecurityCustomizer(
-      ICorePermissionEvaluator corePermissionEvaluator) {
-    CoreWebSecurityExpressionHandler webSecurityExpressionHandler =
-        new CoreWebSecurityExpressionHandler();
-    webSecurityExpressionHandler.setCorePermissionEvaluator(corePermissionEvaluator);
-    return web ->
-        web.expressionHandler(webSecurityExpressionHandler)
-            .ignoring()
-            .requestMatchers(
-                "/static/**",
-                "/monitoring/**",
-                "/webjars/**",
-                "/android-chrome-192x192.png",
-                "/android-chrome-512x512.png",
-                "/apple-touch-icon.png",
-                "/browserconfig.xml",
-                "/favicon.ico",
-                "/favicon-16x16.png",
-                "/favicon-32x32.png",
-                "/mstile-150x150.png",
-                "/safari-pinned-tab.svg",
-                "/site.webmanifest");
+  public static String[] publicResourceMatchers() {
+    return new String[] {
+      "/static/**",
+      "/monitoring/**",
+      "/webjars/**",
+      "/android-chrome-192x192.png",
+      "/android-chrome-512x512.png",
+      "/apple-touch-icon.png",
+      "/browserconfig.xml",
+      "/favicon.ico",
+      "/favicon-16x16.png",
+      "/favicon-32x32.png",
+      "/mstile-150x150.png",
+      "/safari-pinned-tab.svg",
+      "/site.webmanifest"
+    };
   }
 }

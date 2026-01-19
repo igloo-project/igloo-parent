@@ -36,6 +36,11 @@ public class NoopIncrementOptimizer implements Optimizer {
   }
 
   @Override
+  public void reset() {
+    delegate.reset();
+  }
+
+  @Override
   public IntegralDataTypeHolder getLastSourceValue() {
     return delegate.getLastSourceValue();
   }
