@@ -38,10 +38,10 @@ import org.springframework.context.annotation.Import;
 @Configuration
 @ConditionalOnClass({CacheManagerWrapper.class, CacheManager.class, ICacheManagerRegistry.class})
 @AutoConfiguration(
-    before = org.springframework.boot.autoconfigure.cache.CacheAutoConfiguration.class)
+    before = org.springframework.boot.cache.autoconfigure.CacheAutoConfiguration.class)
 // needed to ensure that cacheManager is already defined; else @Autowired @Qualifier("cacheManager")
 // #cacheManager may fail.
-@Import(org.springframework.boot.autoconfigure.cache.CacheAutoConfiguration.class)
+@Import(org.springframework.boot.cache.autoconfigure.CacheAutoConfiguration.class)
 @EnableCaching
 public class CacheAutoConfiguration implements CachingConfigurer {
 

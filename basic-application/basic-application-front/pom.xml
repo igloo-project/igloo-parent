@@ -105,11 +105,12 @@
       <artifactId>igloo-component-wicket-bootstrap5</artifactId>
       <version>${igloo.version}</version>
     </dependency>
-    <dependency>
-      <groupId>org.iglooproject.components</groupId>
-      <artifactId>igloo-component-web-security</artifactId>
-      <version>${igloo.version}</version>
-    </dependency>
+    <!--// TODO RFO spring 7 à verifier-->
+    <!-- <dependency>-->
+    <!--   <groupId>org.iglooproject.components</groupId>-->
+    <!--   <artifactId>igloo-component-web-security</artifactId>-->
+    <!--   <version>${igloo.version}</version>-->
+    <!-- </dependency>-->
     <dependency>
       <groupId>org.iglooproject.components</groupId>
       <artifactId>igloo-validator</artifactId>

@@ -49,8 +49,6 @@
     <module>igloo-component-wicket-bootstrap4</module>
     <module>igloo-component-wicket-bootstrap5</module>
     <module>igloo-vue-datepicker</module>
-    <module>igloo-component-web-security</module>
-    <module>igloo-component-rest-jersey</module>
     <module>igloo-component-jpa-migration</module>
     <module>igloo-jwt</module>
     <module>igloo-spring-security</module>
@@ -64,7 +62,6 @@
     <module>storage-tools</module>
     <module>igloo-monitoring-page</module>
     <module>igloo-cache</module>
-    <module>igloo-hibernate-search-v5migrationhelper</module>
     <module>jpa-test-patterns</module>
   </modules>
 </project>

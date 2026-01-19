@@ -44,6 +44,10 @@
     </dependencies>
   </dependencyManagement>
   <dependencies>
+	<dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-security</artifactId>
+    </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
@@ -87,6 +91,10 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
+    </dependency>
+	<dependency>
+      <groupId>org.aspectj</groupId>
+      <artifactId>aspectjweaver</artifactId>
     </dependency>
   </dependencies>
   <build>

@@ -102,7 +102,6 @@
     <dependency>
       <groupId>org.flywaydb</groupId>
       <artifactId>flyway-core</artifactId>
-      <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.flywaydb</groupId>
@@ -155,6 +154,14 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-autoconfigure-processor</artifactId>
     </dependency>
+	<dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-hibernate</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-flyway</artifactId>
+    </dependency>
     <!-- Test dependencies -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -202,7 +209,7 @@
     </dependency>
     <dependency>
       <groupId>org.testcontainers</groupId>
-      <artifactId>postgresql</artifactId>
+      <artifactId>testcontainers-postgresql</artifactId>
     </dependency>
   </dependencies>
   <build>

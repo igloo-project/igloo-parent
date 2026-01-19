@@ -7,7 +7,7 @@ import igloo.test.listener.model.IglooTestListenerType;
 import javax.sql.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.autoconfigure.jdbc.JdbcConnectionDetails;
+import org.springframework.boot.jdbc.autoconfigure.JdbcConnectionDetails;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.Ordered;
 import org.springframework.jdbc.core.JdbcTemplate;

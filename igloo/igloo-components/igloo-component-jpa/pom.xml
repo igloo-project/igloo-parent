@@ -159,6 +159,10 @@
       <artifactId>hibernate-search-backend-lucene</artifactId>
       <optional>true</optional>
     </dependency>
+	<dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-flyway</artifactId>
+    </dependency>
     <dependency>
       <groupId>org.flywaydb</groupId>
       <artifactId>flyway-core</artifactId>
@@ -205,14 +209,7 @@
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-data-jpa</artifactId>
-      <exclusions>
-        <exclusion>
-          <!-- Pour exclure Logback et utiliser Log4j2 -->
-          <groupId>org.springframework.boot</groupId>
-          <artifactId>spring-boot-starter-logging</artifactId>
-        </exclusion>
-      </exclusions>
+      <artifactId>spring-boot-data-jpa</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>

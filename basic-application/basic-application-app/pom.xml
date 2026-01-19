@@ -12,6 +12,17 @@
   <properties>
     <start-class>basicapp.app.SpringBootMain</start-class>
   </properties>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.iglooproject</groupId>
+        <artifactId>dependencies-all</artifactId>
+        <version>7.0.0-SNAPSHOT</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
   <dependencies>
     <dependency>
       <groupId>org.iglooproject.archetype</groupId>
@@ -51,11 +62,11 @@
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-web</artifactId>
+      <artifactId>spring-boot-starter-webmvc</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.flywaydb</groupId>
-      <artifactId>flyway-core</artifactId>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-flyway</artifactId>
     </dependency>
     <dependency>
       <groupId>org.flywaydb</groupId>
@@ -72,8 +83,8 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.springframework.security</groupId>
-      <artifactId>spring-security-test</artifactId>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-security-test</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
