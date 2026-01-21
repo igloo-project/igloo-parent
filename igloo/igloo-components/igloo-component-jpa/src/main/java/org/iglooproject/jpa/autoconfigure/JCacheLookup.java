@@ -1,9 +1,15 @@
 package org.iglooproject.jpa.autoconfigure;
 
 import com.github.benmanes.caffeine.jcache.spi.CaffeineCachingProvider;
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Iterables;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.LinkedHashSet;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.function.Function;
 import javax.cache.Caching;
 import javax.cache.spi.CachingProvider;
 import org.slf4j.Logger;
@@ -15,50 +21,100 @@ public class JCacheLookup {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(JCacheLookup.class);
 
+  private static final String CLASSPATH_PREFIX = "classpath://";
+
   private JCacheLookup() {}
 
-  public static CacheManager lookup(String locationUri) throws URISyntaxException {
-    CachingProvider cachingProvider =
-        Caching.getCachingProvider(CaffeineCachingProvider.class.getName());
-    URI cacheManagerUri = URI.create(locationUri);
-    // hibernate perform some URI resolution when it creates cache manager;
-    // we need to manipulate URI to get a chance to retrieve cache manager from caffeine provider
-    // see org.hibernate.cache.jcache.internal.JCacheRegionFactory.getUri(SessionFactoryOptions,
-    // Map)
-    // Behavior depends on the availability of classpath:// resource handler
-    // - all cases: caffeine does not modify provided URI
-    // - no handler:
-    // hibernate modifies classpath://FILE to resolved value (file:/ or jar: URI)
-    // - handler available:
-    // hibernate lets URI unmodified
-    if ("classpath".equals(cacheManagerUri.getScheme())) {
-      try (var is = cacheManagerUri.toURL().openStream()) {
-        // NOTHING, just check if url classpath handler is here
-      } catch (Exception ignore) {
-        try {
-          // Use a classpath resource (without scheme) to find working URI
-          String pathWithoutLeadingSlash =
-              cacheManagerUri.toString().substring("classpath://".length());
-          URI resolved =
-              Thread.currentThread()
-                  .getContextClassLoader()
-                  .getResource(pathWithoutLeadingSlash)
-                  .toURI();
-          // Use only well-known URIs
-          if ("file".equals(resolved.getScheme()) || "jar".equals(resolved.getScheme())) {
-            cacheManagerUri = resolved;
-          }
-        } catch (URISyntaxException e) {
-          // Nothing, there is a warn emitted if cache manager is empty
+  public static CacheManager lookup(String locationUri) {
+    return lookup(locationUri, JCacheLookup::resolveUri, JCacheLookup::findValidCandidate);
+  }
+
+  @VisibleForTesting
+  public static CacheManager lookup(
+      String locationUri,
+      Function<String, Optional<String>> uriResolver,
+      Function<URI, JCacheCacheManager> cacheProvider) {
+    // Hibernate can perform some URI resolution when it creates cache manager. We need
+    // to find the effective url used to register cache.
+    // Cases:
+    // 1. ClasspathURLStreamHandler is registered (tomcat native):
+    // classpath:// URL is valid and untouched
+    // classpath:// URL cannot be used to open resource with streamhandler (correct URL is
+    // classpath:/)
+    // We need to lookup original URL
+    //
+    // 2. ClasspathURLStreamHandler is not registered (tests, spring boot launcher):
+    // classpath:// URL is invalid and transformed to file: (IDE, tests) or jar: (deployment) -
+    // depends on the way to provide back module
+    // We need to resolve location to the same effective URL
+    //
+    // classpath:/ cannot be used as Hibernate does not handle this URL (only classpath://)
+    // see ClassLoaderServiceImpl#locateResource.
+    // A direct path inside classpath may be used (without PROTOCOL:) but it is not a valid URL so
+    // it is resolved by Hibernate (key is the file: or jar:).
+    //
+    // To handle all the cases, we just try the two candidates: raw and resolved URI
+    // We keep the first not-empty CacheManager
+    // We emit an error if no not-empty CacheManager can be retrieved
+    // classpath:/ (not classpath://) values are rejected
+    Set<String> uriCandidates = new LinkedHashSet<>(); // preserve insertion order
+    // test with original URI
+    uriCandidates.add(locationUri);
+    // add resolved classpath:// URI (only if well-known)
+    uriResolver.apply(locationUri).ifPresent(uriCandidates::add);
+
+    LOGGER.info("Trying to locate Hibernate Level 2 cache from {}", uriCandidates);
+    // try candidates ; return first valid (not-empty)
+    return uriCandidates.stream()
+        .map(URI::create)
+        .map(cacheProvider)
+        .filter(Objects::nonNull)
+        .findFirst()
+        .orElseThrow(
+            () ->
+                new IllegalStateException(
+                    "No not-empty Hibernate Level 2 cache found for %s".formatted(locationUri)));
+  }
+
+  private static Optional<String> resolveUri(String uri) {
+    if (uri.startsWith(CLASSPATH_PREFIX)) {
+      try {
+        // Use a classpath resource (without scheme) to find working URI
+        String pathWithoutLeadingSlash = uri.substring(CLASSPATH_PREFIX.length());
+        URI resolved =
+            Thread.currentThread()
+                .getContextClassLoader()
+                .getResource(pathWithoutLeadingSlash)
+                .toURI();
+        // Use only well-known URIs
+        if ("file".equals(resolved.getScheme()) || "jar".equals(resolved.getScheme())) {
+          return Optional.of(resolved.toString());
         }
+      } catch (RuntimeException | URISyntaxException e) {
+        // nothing
       }
     }
-    javax.cache.CacheManager cacheManager = cachingProvider.getCacheManager(cacheManagerUri, null);
-    if (Iterables.isEmpty(cacheManager.getCacheNames())) {
-      LOGGER.warn("CacheManager for {} is unexpectedly empty.", locationUri);
+    return Optional.empty();
+  }
+
+  /**
+   * Lookup caffeine cache with uri and checks if cache is empty. We expect a not-empty cache as
+   * region must be already created by Hibernate.
+   */
+  private static JCacheCacheManager findValidCandidate(URI uri) {
+    CachingProvider cachingProvider =
+        Caching.getCachingProvider(CaffeineCachingProvider.class.getName());
+    javax.cache.CacheManager cacheManager = cachingProvider.getCacheManager(uri, null);
+    int cacheSize = Iterables.size(cacheManager.getCacheNames());
+    if (cacheSize == 0) {
+      LOGGER.info("CacheManager for {} is empty. Ignored as Hibernate Level 2 cache.", uri);
+      cacheManager.close();
+    } else {
+      LOGGER.info("Hibernate Level 2 cache found with {} ({} caches)", uri, cacheSize);
+      var springCacheManager = new JCacheCacheManager(cacheManager);
+      springCacheManager.afterPropertiesSet();
+      return springCacheManager;
     }
-    var springCacheManager = new JCacheCacheManager(cacheManager);
-    springCacheManager.afterPropertiesSet();
-    return springCacheManager;
+    return null;
   }
 }
