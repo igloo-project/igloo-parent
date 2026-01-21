@@ -17,7 +17,7 @@
 	<name>Igloo - Parent - Maven configuration - Common</name>
 
 	<properties>
-		<masterBranchName>main</masterBranchName>
+		<productionBranchName>main</productionBranchName>
 	</properties>
 
 	<build>
@@ -28,7 +28,7 @@
 					<artifactId>jgitflow-maven-plugin</artifactId>
 					<configuration>
 						<flowInitContext>
-							<masterBranchName>${masterBranchName}</masterBranchName>
+							<masterBranchName>${productionBranchName}</masterBranchName>
 							<developBranchName>dev</developBranchName>
 							<featureBranchPrefix>ft-</featureBranchPrefix>
 							<releaseBranchPrefix>rl-</releaseBranchPrefix>
@@ -43,7 +43,7 @@
 					<version>${igloo.gitflow-maven-plugin.version}</version>
 					<configuration>
 						<gitFlowConfig>
-							<productionBranch>${masterBranchName}</productionBranch>
+							<productionBranch>${productionBranchName}</productionBranch>
 							<developmentBranch>dev</developmentBranch>
 							<featureBranchPrefix>ft-</featureBranchPrefix>
 							<releaseBranchPrefix>rl-</releaseBranchPrefix>
