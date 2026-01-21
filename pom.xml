@@ -15,7 +15,7 @@
 	<name>Igloo - Parent</name>
 	
 	<properties>
-		<masterBranchName>master</masterBranchName>
+		<productionBranchName>v5-main</productionBranchName>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		

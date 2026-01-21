@@ -16,13 +16,61 @@
 
 	<name>Igloo - Parent - Maven configuration - Common</name>
 
+	<properties>
+		<productionBranchName>main</productionBranchName>
+	</properties>
+
 	<build>
-		<plugins>
-			<plugin>
-				<groupId>external.atlassian.jgitflow</groupId>
-				<artifactId>jgitflow-maven-plugin</artifactId>
-			</plugin>
-		</plugins>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>external.atlassian.jgitflow</groupId>
+					<artifactId>jgitflow-maven-plugin</artifactId>
+					<configuration>
+						<flowInitContext>
+							<masterBranchName>${productionBranchName}</masterBranchName>
+							<developBranchName>dev</developBranchName>
+							<featureBranchPrefix>ft-</featureBranchPrefix>
+							<releaseBranchPrefix>rl-</releaseBranchPrefix>
+							<hotfixBranchPrefix>hf-</hotfixBranchPrefix>
+							<versionTagPrefix>v</versionTagPrefix>
+						</flowInitContext>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>com.amashchenko.maven.plugin</groupId>
+					<artifactId>gitflow-maven-plugin</artifactId>
+					<version>${igloo.gitflow-maven-plugin.version}</version>
+					<configuration>
+						<gitFlowConfig>
+							<productionBranch>${productionBranchName}</productionBranch>
+							<developmentBranch>dev</developmentBranch>
+							<featureBranchPrefix>ft-</featureBranchPrefix>
+							<releaseBranchPrefix>rl-</releaseBranchPrefix>
+							<hotfixBranchPrefix>hf-</hotfixBranchPrefix>
+							<supportBranchPrefix>sp-</supportBranchPrefix>
+							<versionTagPrefix>v</versionTagPrefix>
+							<origin>origin</origin>
+						</gitFlowConfig>
+						<skipFeatureVersion>true</skipFeatureVersion>
+						<!-- do not run verify, done on CI -->
+						<skipTestProject>true</skipTestProject>
+						<!-- In X.Y.Z, update Y -->
+						<versionDigitToIncrement>1</versionDigitToIncrement>
+						<!-- do not push during release; we perform this independently-->
+						<pushRemote>false</pushRemote>
+						<!-- build project during release -->
+						<installProject>true</installProject>
+						<!-- ensure all modules are processed by versions: calls -->
+						<argLine>-DskipTests=true -DprocessAllModules=true -DskipResolution=true</argLine>
+						<!-- print subcommand output -->
+						<verbose>true</verbose>
+						<!-- Needed as it implies project reloading during versioning, and triggers resolution failure -->
+						<updateOutputTimestamp>false</updateOutputTimestamp>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
 	<repositories>
 		<repository>

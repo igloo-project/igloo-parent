@@ -72,10 +72,10 @@ maven-deploy:
   rules:
     - if: $CHECK_DEPENDENCIES == "true"
       when: never
-    - if: $CI_COMMIT_BRANCH == "master"
-    - if: $CI_COMMIT_BRANCH == "dev"
-    - if: $CI_COMMIT_BRANCH =~ /^ft-.*-deploy$/
-    - if: $CI_COMMIT_BRANCH =~ /^hf-.*$/
+    - if: $CI_COMMIT_BRANCH == "v5-main"
+    - if: $CI_COMMIT_BRANCH == "v5-dev"
+    - if: $CI_COMMIT_BRANCH =~ /^v5-ft-.*-deploy$/
+    - if: $CI_COMMIT_BRANCH =~ /^v5-hf-.*$/
   tags:
     - docker
 
@@ -83,10 +83,10 @@ sonar-analyze:
   stage: analyze
   environment: staging
   script:
-    # override sonar.projectKey / sonar.projectName for not-master not-main branches
+    # override sonar.projectKey / sonar.projectName for not-main branches
     - |
       SONAR_OPTS=( "-Dsonar.host.url=https://sonar.tools.kobalt.fr" )
-      if [ "$CI_COMMIT_REF_NAME" != "master" -a "$CI_COMMIT_REF_NAME" != "main" ]; then
+      if [ "$CI_COMMIT_REF_NAME" != "v5-main" ]; then
         PROJECT_NAME="$( mvn -q help:evaluate -DforceStdout -Dexpression=project.name )"
         PROJECT_ARTIFACT_ID="$( mvn -q help:evaluate -DforceStdout -Dexpression=project.artifactId )"
         PROJECT_GROUP_ID="$( mvn -q help:evaluate -DforceStdout -Dexpression=project.groupId )"
@@ -100,12 +100,9 @@ sonar-analyze:
   rules:
     - if: $CHECK_DEPENDENCIES == "true"
       when: never
-    - if: $CI_COMMIT_BRANCH == "dev"
-    - if: $CI_COMMIT_BRANCH == "master"
-    - if: $CI_COMMIT_BRANCH =~ "main"
-    - if: $CI_COMMIT_BRANCH =~ "igloo-boot"
-    - if: $CI_COMMIT_BRANCH =~ "igloo-boot-dev"
-    - if: $CI_COMMIT_BRANCH =~ /^hf-.*$/
+    - if: $CI_COMMIT_BRANCH == "v5-dev"
+    - if: $CI_COMMIT_BRANCH =~ "v5-main"
+    - if: $CI_COMMIT_BRANCH =~ /^v5-hf-.*$/
   allow_failure: true
   tags:
     - docker
