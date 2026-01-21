@@ -240,8 +240,8 @@ def _release_igloo_commons(
     _prepare_repository(
         commands, "igloo-commons", igloo_commons_repository, igloo_commons_path, release_branch, FETCHES
     )
-    _release_start_version(commands, "igloo-commons", release_version, development_version, igloo_commons_path)
     _commons_prepare_versions(commands, release_version, igloo_commons_path)
+    _release_start_version(commands, "igloo-commons", release_version, development_version, igloo_commons_path)
     _release_finish_version(commands, "igloo-commons", release_version, development_version, igloo_commons_path)
 
 
@@ -252,8 +252,8 @@ def _release_igloo_parent(
     _prepare_repository(
         commands, "igloo-parent", igloo_parent_repository, igloo_parent_path, release_branch, FETCHES
     )
-    _release_start_version(commands, "igloo-parent", release_version, development_version, igloo_parent_path)
     _parent_prepare_versions(commands, release_version, igloo_parent_path, igloo_5)
+    _release_start_version(commands, "igloo-parent", release_version, development_version, igloo_parent_path)
     _release_finish_version(commands, "igloo-parent", release_version, development_version, igloo_parent_path)
 
 
