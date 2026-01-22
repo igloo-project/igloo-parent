@@ -162,7 +162,8 @@ def igloo(
                 push,
             ),
         )
-        _reset_owasp_branch(commands, "igloo-parent", "v5-main" if igloo_5 else "main", igloo_parent_path, push)
+        if not igloo_5:
+            _reset_owasp_branch(commands, "igloo-parent", "main", igloo_parent_path, push)
     _print_commands(commands)
 
 
