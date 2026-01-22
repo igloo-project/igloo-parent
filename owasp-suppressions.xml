@@ -9,4 +9,13 @@
         <packageUrl regex="true">^pkg:javascript/bootstrap@.*$</packageUrl>
         <vulnerabilityName>CVE-2024-6531</vulnerabilityName>
     </suppress>
+	<suppress>
+		<notes><![CDATA[
+   file name: log4j-jul-2.24.3.jar
+   come from spring-boot-starter-loggin
+   we don't use socket appenders with log4j
+   ]]></notes>
+		<packageUrl regex="true">^pkg:maven/org\.apache\.logging\.log4j/log4j-.*$</packageUrl>
+		<cve>CVE-2025-68161</cve>
+	</suppress>
 </suppressions>

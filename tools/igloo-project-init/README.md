@@ -11,7 +11,7 @@ curl --location --request POST 'https://gitlab.tools.kobalt.fr/api/v4/projects/i
 --header 'PRIVATE-TOKEN: XXX' \
 --header 'Content-Type: application/json' \
 --data-raw '{
-    "ref":"igloo-boot-dev",
+    "ref":"dev",
     "variables":[
         {"key":"ARTIFACT_ID", "variable_type" : "env_var", "value" : "hello-basicapp"},
         {"key":"GROUP_ID", "variable_type" : "env_var", "value" : "fr.hello.basicapp"},

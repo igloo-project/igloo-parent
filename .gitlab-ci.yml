@@ -11,7 +11,6 @@ stages:
   - deploy
   - analyze
   - init
-  - owasp-reset-master
   - dependency-check
 
 maven-build:
@@ -72,10 +71,7 @@ test-init:
     - if: $CI_PIPELINE_SOURCE == "api"
       when: never
     - if: $CI_COMMIT_BRANCH == "dev"
-    - if: $CI_COMMIT_BRANCH == "master"
     - if: $CI_COMMIT_BRANCH == "main"
-    - if: $CI_COMMIT_BRANCH == "igloo-boot"
-    - if: $CI_COMMIT_BRANCH == "igloo-boot-dev"
     - if: $CI_COMMIT_BRANCH =~ /^ft-.*-deploy$/
   tags:
   - docker
@@ -111,13 +107,9 @@ maven-deploy:
     - if: $CI_PIPELINE_SOURCE == "api"
       when: never
     - if: $CI_COMMIT_BRANCH == "main"
-    - if: $CI_COMMIT_BRANCH == "master"
     - if: $CI_COMMIT_BRANCH == "dev"
-    - if: $CI_COMMIT_BRANCH == "igloo-boot"
-    - if: $CI_COMMIT_BRANCH == "igloo-boot-dev"
     - if: $CI_COMMIT_BRANCH =~ /^ft-.*-deploy$/
     - if: $CI_COMMIT_BRANCH =~ /^hf-.*$/
-    - if: $CI_COMMIT_BRANCH =~ /^igloo-boot-hf-.*$/
   tags:
     - docker
 
@@ -127,7 +119,7 @@ sonar-analyze:
   environment: staging
   script:
     - mvn -U verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
-      -Dsonar.projectBranch=igloo-boot
+      -Dsonar.projectBranch=dev
       -DskipTests
       -Dsonar.host.url="https://sonar.tools.kobalt.fr"
   rules:
@@ -145,7 +137,7 @@ igloo-dependency-check:
   allow_failure: true
   stage: dependency-check
   script:
-    - SUPPRESSION_URL_PENDING=https://raw.githubusercontent.com/igloo-project/igloo-parent/refs/heads/igloo-boot-dev/owasp-suppressions-pending.xml;
+    - SUPPRESSION_URL_PENDING=https://raw.githubusercontent.com/igloo-project/igloo-parent/refs/heads/dev/owasp-suppressions-pending.xml;
     - if [ $CI_COMMIT_BRANCH == "owasp" ] && [ $CI_PIPELINE_SOURCE == "schedule" ]; then
       SUPPRESSION_FILES=../owasp-suppressions.xml,$SUPPRESSION_URL_PENDING;
       else
@@ -170,15 +162,9 @@ igloo-dependency-check:
       when: never
     - if: $CI_COMMIT_BRANCH == "dev"
       when: manual
-    - if: $CI_COMMIT_BRANCH == "igloo-boot-dev"
-      when: manual
     - if: $CI_COMMIT_BRANCH =~ /^hf-.*$/
-      when: manual
-    - if: $CI_COMMIT_BRANCH =~ /^igloo-boot-hf-.*$/
       when: manual
     - if: $CI_COMMIT_BRANCH =~ /^ft-.*-deploy$/
       when: manual
-    - if: $CI_COMMIT_BRANCH == "master"
-    - if: $CI_COMMIT_BRANCH == "igloo-boot"
     - if: $CI_COMMIT_BRANCH == "main"
     - if: $CI_COMMIT_BRANCH == "owasp" && $CI_PIPELINE_SOURCE == "schedule"

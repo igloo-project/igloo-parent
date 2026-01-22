@@ -12,8 +12,7 @@ import termcolor
 from igloo_release.command import Command, Commands
 from igloo_release.process import command_header, run_stdout
 
-MODERN_FETCHES = ["main", "dev", "igloo-boot", "igloo-boot-dev"]
-OLD_FETCHES = ["master", "dev", "igloo-boot", "igloo-boot-dev"]
+FETCHES = ["main", "dev", "v5-main", "v5-dev"]
 IGLOO_REPOSITORY = "https://nexus.tools.kobalt.fr/repository/igloo-releases/"
 
 
@@ -35,7 +34,7 @@ def igloo_release():
 @click.option("--igloo-maven-path", default=None)
 @click.option("--igloo-commons-path", default=None)
 @click.option("--igloo-parent-path", default=None)
-@click.option("--release-branch", default="igloo-boot-dev")
+@click.option("--release-branch", default=None)
 @click.option("--skip-igloo-maven", is_flag=True, default=False)
 @click.option("--skip-igloo-commons", is_flag=True, default=False)
 @click.option("--igloo-5", is_flag=True, default=False)
@@ -71,6 +70,8 @@ def igloo(
     * branch `main` contains the released version.
     * branch `dev` contains the development version."""
     # TODO: do not create a temp folder
+    if not release_branch:
+        release_branch = "dev" if not igloo_5 else "v5-dev"
     temp_folder = tempfile.mkdtemp()
     if igloo_maven_path is None:
         igloo_maven_path = os.path.join(temp_folder, "igloo-maven")
@@ -115,7 +116,7 @@ def igloo(
             "igloo-maven",
             release_version,
             release_branch,
-            "main" if igloo_5 else "igloo-boot",
+            "v5-main" if igloo_5 else "main",
             igloo_maven_path,
             push,
         )
@@ -135,7 +136,7 @@ def igloo(
             "igloo-commons",
             release_version,
             release_branch,
-            "main" if igloo_5 else "igloo-boot",
+            "v5-main" if igloo_5 else "main",
             igloo_commons_path,
             push,
         )
@@ -147,7 +148,7 @@ def igloo(
             "igloo-security-api",
             "jar",
             release_version,
-            5 * 60,
+            10 * 60,
             30,
         )
         (
@@ -156,12 +157,12 @@ def igloo(
                 "igloo-parent",
                 release_version,
                 release_branch,
-                "master" if igloo_5 else "igloo-boot",
+                "v5-main" if igloo_5 else "main",
                 igloo_parent_path,
                 push,
             ),
         )
-        _reset_owasp_branch(commands, "igloo-parent", "master" if igloo_5 else "igloo-boot", igloo_parent_path, push)
+        _reset_owasp_branch(commands, "igloo-parent", "v5-main" if igloo_5 else "main", igloo_parent_path, push)
     _print_commands(commands)
 
 
@@ -226,7 +227,7 @@ def _release_igloo_maven(
 ):
     """Perform igloo-maven release. Steps: repository, release-start, release-finish."""
     _prepare_repository(
-        commands, "igloo-maven", igloo_maven_repository, igloo_maven_path, release_branch, MODERN_FETCHES
+        commands, "igloo-maven", igloo_maven_repository, igloo_maven_path, release_branch, FETCHES
     )
     _release_start_version(commands, "igloo-maven", release_version, development_version, igloo_maven_path)
     _release_finish_version(commands, "igloo-maven", release_version, development_version, igloo_maven_path)
@@ -237,7 +238,7 @@ def _release_igloo_commons(
 ):
     """Perform igloo-commons release. Steps: repository, version switches, release-start, release-finish."""
     _prepare_repository(
-        commands, "igloo-commons", igloo_commons_repository, igloo_commons_path, release_branch, MODERN_FETCHES
+        commands, "igloo-commons", igloo_commons_repository, igloo_commons_path, release_branch, FETCHES
     )
     _release_start_version(commands, "igloo-commons", release_version, development_version, igloo_commons_path)
     _commons_prepare_versions(commands, release_version, igloo_commons_path)
@@ -249,7 +250,7 @@ def _release_igloo_parent(
 ):
     """Perform igloo-parent release. Steps: repository, version switches, release-start, release-finish."""
     _prepare_repository(
-        commands, "igloo-parent", igloo_parent_repository, igloo_parent_path, release_branch, OLD_FETCHES
+        commands, "igloo-parent", igloo_parent_repository, igloo_parent_path, release_branch, FETCHES
     )
     _release_start_version(commands, "igloo-parent", release_version, development_version, igloo_parent_path)
     _parent_prepare_versions(commands, release_version, igloo_parent_path, igloo_5)
@@ -457,7 +458,7 @@ def _push(commands, project, release_version, branch, main_branch, path, push):
 
 
 def _reset_owasp_branch(commands, project, main_branch, path, push):
-    """Reset hard owasp branch from master."""
+    """Reset hard owasp branch from main."""
     check_call(
         commands,
         f"{project}owasp-reset",
