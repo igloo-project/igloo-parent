@@ -26,14 +26,19 @@ public class JCacheLookup {
   private JCacheLookup() {}
 
   public static CacheManager lookup(String locationUri) {
-    return lookup(locationUri, JCacheLookup::resolveUri, JCacheLookup::findValidCandidate);
+    return lookup(
+        locationUri,
+        JCacheLookup::resolveUri,
+        uri -> JCacheLookup.findValidCandidate(uri, true),
+        uri -> JCacheLookup.findValidCandidate(uri, false));
   }
 
   @VisibleForTesting
   public static CacheManager lookup(
       String locationUri,
       Function<String, Optional<String>> uriResolver,
-      Function<URI, JCacheCacheManager> cacheProvider) {
+      Function<URI, JCacheCacheManager> cacheProvider,
+      Function<URI, JCacheCacheManager> fallbackProvider) {
     // Hibernate can perform some URI resolution when it creates cache manager. We need
     // to find the effective url used to register cache.
     // Cases:
@@ -64,16 +69,13 @@ public class JCacheLookup {
     uriResolver.apply(locationUri).ifPresent(uriCandidates::add);
 
     LOGGER.info("Trying to locate Hibernate Level 2 cache from {}", uriCandidates);
-    // try candidates ; return first valid (not-empty)
+    // try candidates ; return first valid (not-empty), or fallback with default
     return uriCandidates.stream()
         .map(URI::create)
         .map(cacheProvider)
         .filter(Objects::nonNull)
         .findFirst()
-        .orElseThrow(
-            () ->
-                new IllegalStateException(
-                    "No not-empty Hibernate Level 2 cache found for %s".formatted(locationUri)));
+        .orElseGet(() -> fallbackProvider.apply(URI.create(locationUri)));
   }
 
   private static Optional<String> resolveUri(String uri) {
@@ -101,13 +103,16 @@ public class JCacheLookup {
    * Lookup caffeine cache with uri and checks if cache is empty. We expect a not-empty cache as
    * region must be already created by Hibernate.
    */
-  private static JCacheCacheManager findValidCandidate(URI uri) {
+  private static JCacheCacheManager findValidCandidate(URI uri, boolean ensureNotEmpty) {
     CachingProvider cachingProvider =
         Caching.getCachingProvider(CaffeineCachingProvider.class.getName());
     javax.cache.CacheManager cacheManager = cachingProvider.getCacheManager(uri, null);
     int cacheSize = Iterables.size(cacheManager.getCacheNames());
-    if (cacheSize == 0) {
+    if (ensureNotEmpty && cacheSize == 0) {
       LOGGER.info("CacheManager for {} is empty. Ignored as Hibernate Level 2 cache.", uri);
+      // we cannot close cacheManager as if cache is enabled but no entity is cachable, we
+      // may have a valid hibernate level 2 cache with 0 region. We do not want to close
+      // this cache. Just keep the orphan empty cache.
       cacheManager.close();
     } else {
       LOGGER.info("Hibernate Level 2 cache found with {} ({} caches)", uri, cacheSize);
