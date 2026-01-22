@@ -148,7 +148,7 @@ def igloo(
             "igloo-security-api",
             "jar",
             release_version,
-            5 * 60,
+            10 * 60,
             30,
         )
         (
