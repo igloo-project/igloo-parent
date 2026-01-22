@@ -5,17 +5,17 @@
 	<parent>
 		<groupId>org.iglooproject</groupId>
 		<artifactId>plugins-all</artifactId>
-		<version>5.29.0</version>
+		<version>5.30.0</version>
 	</parent>
 	
 	<artifactId>igloo-parent</artifactId>
-	<version>5.29.0</version>
+	<version>5.30.0</version>
 	<packaging>pom</packaging>
 	
 	<name>Igloo - Parent</name>
 	
 	<properties>
-		<masterBranchName>master</masterBranchName>
+		<productionBranchName>v5-main</productionBranchName>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		
