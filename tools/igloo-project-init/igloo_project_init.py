@@ -25,6 +25,7 @@ Once archetype is generated, provided configuration (package, application name, 
 generate a new project. It is needed to fix some pom settings not handled by archetype plugin
 (parent for ARTIFACT-app, package name in pom.xml)."""
 
+import glob
 import logging
 import os
 import pathlib
@@ -36,6 +37,7 @@ import typing
 
 import click
 import colorlog
+import lxml.etree as ET  # noqa: N812
 
 __version__ = "0.1.0"
 logger = logging.getLogger("igloo")
@@ -54,7 +56,10 @@ FILTERED_EXTENSIONS = (
 )
 EXCLUDE_PATTERNS = "target,.classpath,.project,.settings/,.factorypath"
 
+# placeholder version for archetype
 OVERRIDE_VERSION = "__OVERRIDE_VERSION__"
+# fake version to ease ${revision} replacement
+FAKE_VERSION = "9.9.999-FAKE"
 CAPTURE_STDOUT = True
 
 
@@ -188,7 +193,12 @@ def main(
         artifact_id,
         group_id,
         package,
-        version,
+        # To ease version replacement, we need to use placeholders
+        # archetype:create-from-project -> OVERRIDE_VERSION
+        # archetype:generate -> FAKE_VERSION
+        # pom fixes -> FAKE_VERSION -> ${revision}
+        # igloo version: effective Igloo version
+        FAKE_VERSION,
         archetype_camel_case_name,
         archetype_bean_name,
         archetype_full_name,
@@ -199,20 +209,24 @@ def main(
     try:
         # clone igloo branch
         igloo_clone = clone_igloo_project(igloo_url, igloo_branch, workdir)
-        # retrieve current version
+        # retrieve current igloo version
         igloo_version = extract_version(workdir, igloo_clone)
-        if version.lower() == 'current_igloo_version':
+        if version.lower() == "current_igloo_version":
             version = igloo_version
-        # split basic-application version -> __OVERRIDE_VERSION__ and setup igloo.version
+        # split versions
+        # - basic-application -> ${revision} -> __OVERRIDE_VERSION__
+        # - igloo -> ${revision} -> igloo_version
+        # - parent -> ${revision} -> igloo_version / unset <relativePath>
+        # - add igloo.version property + revision property
         override_versions(igloo_clone, igloo_version)
         # configure archetype generation ; we setup the placeholder version
         build_archetype_properties(igloo_clone)
         # build archetype ; as version must be different than igloo version, we use the placeholder version
         generate_archetype(igloo_clone)
         # generate project from just generated archetype
-        project_path = generate_project(workdir, OVERRIDE_VERSION, version, definition)
+        project_path = generate_project(workdir, OVERRIDE_VERSION, definition)
         # fix pom.xml (things not handled by archetype plugin)
-        fix_poms(project_path, igloo_version, definition.artifact_id, definition.package)
+        fix_poms(project_path, version, definition.artifact_id, definition.package)
         format_pom(project_path)
         if check_build or check_test:
             if check_test:
@@ -267,6 +281,8 @@ def perform_diff(igloo_clone: pathlib.Path, project_path: pathlib.Path):
         ".git",
         "--exclude",
         "archetype.properties",
+        "--exclude",
+        "maven.config",  # does not exist in orginal project
         "--exclude",
         "pom.xml",  # does not match because of version / module re-ordering / snapshot tag rewritten
         str(igloo_clone.joinpath("basic-application")),
@@ -358,13 +374,19 @@ def format_pom(project_path: pathlib.Path):
 
 
 def override_versions(igloo_clone: pathlib.Path, igloo_version: str):
-    """Setup igloo.version property, then use a placeholder version for basic-application. It is needed
-    so that archetype building does not mix up basic-application and igloo versions."""
+    """${revision} -> __OVERRIDE_VERSION__ if basic-application
+    ${revision} -> igloo_version if parent
+    replace <relativePath>...</relativePath> with <relativePath />
+    add igloo.version property
+    add revision property
+    """
     # replace <versionPlaceholderDoNotRemove /> line with igloo.version declaration
     pom_file = igloo_clone.joinpath("basic-application", "pom.xml")
     basicapp_pom = pom_file.read_text()
     igloo_version_sub = re.compile("^(.*)<versionPlaceholderDoNotRemove />.*$", re.MULTILINE)
-    updated_pom = igloo_version_sub.sub(f"\\1<igloo.version>{igloo_version}</igloo.version>", basicapp_pom)
+    updated_pom = igloo_version_sub.sub(
+        f"\\1<igloo.version>{igloo_version}</igloo.version>\n\t\t<revision>{OVERRIDE_VERSION}</revision>", basicapp_pom
+    )
     pom_file.write_text(updated_pom)
     # update basicapp version
     subprocess.check_call(
@@ -376,11 +398,21 @@ def override_versions(igloo_clone: pathlib.Path, igloo_version: str):
             "-DartifactId=basic-application*",
             f"-DnewVersion={OVERRIDE_VERSION}",
             "-DgenerateBackupPoms=false",
-            "-DskipResolution=true"
+            "-DskipResolution=true",
         ],
         cwd=igloo_clone,
         **subprocess_args(),
     )
+
+    fix_parent_pom(igloo_clone.joinpath("basic-application/pom.xml"))
+    fix_parent_pom(igloo_clone.joinpath("basic-application/basic-application-app/pom.xml"))
+
+    # replace remaining ${revision}
+    replace_version(igloo_clone.joinpath("basic-application/pom.xml"), "version", "${revision}", igloo_version)
+    replace_version(
+        igloo_clone.joinpath("basic-application/basic-application-app/pom.xml"), "version", "${revision}", igloo_version
+    )
+
     logger.debug("Basic application version overriden to split igloo and basic-application versions.")
 
 
@@ -426,19 +458,20 @@ def extract_version(workdir: pathlib.Path, igloo_clone: pathlib.Path) -> str:
 def generate_project(
     workdir: pathlib.Path,
     archetype_version: str,
-    project_version: str,
     definition: ArchetypeDefinition,
 ) -> pathlib.Path:
     """Generate a new project with archetype:generate command. Created project still needs to be
     reprocessed to fix things not handled by maven-archetype-plugin."""
     project = workdir.joinpath(definition.artifact_id)
+    # we user FAKE_VERSION as a placholder
+    # pom fixes then replace FAKE_VERSION by ${revision}
     java_properties = {
         "interactiveMode": "false",
         "archetypeCatalog": "local",
         "archetypeGroupId": "org.iglooproject.archetype",
         "archetypeArtifactId": "basic-application-archetype",
         "archetypeVersion": archetype_version,
-        "version": project_version,
+        "version": FAKE_VERSION,
     }
     java_properties.update(definition.to_properties())
     java_args = [f"-D{k}={v}" for k, v in java_properties.items()]
@@ -451,37 +484,54 @@ def generate_project(
     return project_path
 
 
-def fix_poms(project_path: pathlib.Path, igloo_version: str, artifact_id: str, package_name: str):
+def fix_poms(project_path: pathlib.Path, version: str, artifact_id: str, package_name: str):
     """Fix things not handled correctly by archetype plugin:
-    * package used for spring application configuration and scss processing
+    * setup ${revision} CI-friendly versions
+    * package in pom.xml (used for spring application configuration and scss processing)
     * parent for ARTIFACT-app
     """
-    fix_root_pom(project_path.joinpath("pom.xml"))
-    fix_pom_app_parent(project_path.joinpath(f"{artifact_id}-app", "pom.xml"), igloo_version)
-    fix_pom(project_path.joinpath(f"{artifact_id}-back", "pom.xml"), package_name)
-    fix_pom(project_path.joinpath(f"{artifact_id}-front", "pom.xml"), package_name)
-    fix_pom(project_path.joinpath(f"{artifact_id}-app", "pom.xml"), package_name)
+    fix_all_versions(project_path, version)
+    fix_pom(project_path.joinpath(f"{artifact_id}-back/pom.xml"), package_name)
+    fix_pom(project_path.joinpath(f"{artifact_id}-front/pom.xml"), package_name)
+    fix_pom(project_path.joinpath(f"{artifact_id}-app/pom.xml"), package_name)
+    # https://github.com/apache/maven-archetype/issues/983 workaround
+    # internal dependencies are broken
+    replace_xml(
+        project_path.joinpath(f"{artifact_id}-front/pom.xml"),
+        f".//pom:dependency/pom:artifactId[text()='{artifact_id}']",
+        artifact_id + "-back",
+    )
+    replace_xml(
+        project_path.joinpath(f"{artifact_id}-app/pom.xml"),
+        f".//pom:dependency/pom:artifactId[text()='{artifact_id}']",
+        artifact_id + "-front",
+    )
+    # end workaround
     logger.info("Pom fixes applied (indentation, parent relative path, app parent, packages).")
 
 
-def fix_root_pom(root_pom_path: pathlib.Path):
+def fix_all_versions(root_path: pathlib.Path, version: str):
+    """Setup pom version with ${revision}."""
+    for pom in [root_path.joinpath(i) for i in glob.glob("**/pom.xml", root_dir=root_path, recursive=True)]:
+        replace_version(pathlib.Path(pom), "version", FAKE_VERSION, "${revision}")
+    replace_version(root_path.joinpath("pom.xml"), "revision", FAKE_VERSION, version)
+    logger.debug("Version updated to ${revision} in poms")
+
+
+def fix_parent_pom(root_pom_path: pathlib.Path):
     """Remove relativePath declaration."""
     content = root_pom_path.read_text()
-    new_content = re.compile(r"<relativePath>[^<]+</relativePath>").sub("<relativePath />", content)
+    new_content = re.compile(r"<relativePath>[^<]+</relativePath>.*").sub("<relativePath />", content)
     root_pom_path.write_text(new_content)
     logger.debug("Root pom fixed (unset relativePath)")
 
 
-def fix_pom_app_parent(pom_app_path: pathlib.Path, igloo_version: str):
-    """Setup ARTIFACT-app parent project version and set `<relativePath />`.
-    As pom is invalid, we need to search/replace; versions:update-parent does not work."""
-    content = pom_app_path.read_text()
-    # indentation is captured to write new line correctly
-    new_content = re.compile(r"^(.*)<version>[^<]+</version>", re.MULTILINE).sub(
-        f"<version>{igloo_version}</version>\n\\1<relativePath />", content, count=1
-    )
-    pom_app_path.write_text(new_content)
-    logger.debug("App pom fixed (unset relativePath)")
+def replace_version(pom_file: pathlib.Path, tag_name: str, from_version: str, to_version: str):
+    """Substitute from_version by to_version (may be ${revision}) (not possible with versions-maven-plugin)."""
+    content = pom_file.read_text()
+    content = content.replace(f"<{tag_name}>{from_version}</{tag_name}>", f"<{tag_name}>{to_version}</{tag_name}>")
+    pom_file.write_text(content)
+    logger.debug("Version updated to ${revision} in %s", pom_file)
 
 
 def fix_pom(pom_file: pathlib.Path, package_name: str):
@@ -497,15 +547,22 @@ def generate_archetype(igloo_clone: pathlib.Path) -> pathlib.Path:
     basic_application = igloo_clone.joinpath("basic-application")
     archetype = basic_application.joinpath("target", "generated-sources", "archetype")
     os.makedirs(archetype)
+    env: dict[str, str] = {}
+    env.update(os.environ)
+    # if remote debugging is needed
+    # env.update({"JDK_JAVA_OPTIONS": "-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8000"})
     subprocess.check_call(
         [
             "mvn",
             "-N",
+            "-B",
             "archetype:create-from-project",
             "-Darchetype.properties=archetype.properties",
+            "-Darchetype.preserveCData",
         ],
         cwd=basic_application,
         **subprocess_args(),
+        env=env,
     )
     logger.info("Archetype generated into %s.", archetype)
     subprocess.check_call(["mvn", "clean", "install"], cwd=archetype, **subprocess_args())
@@ -535,6 +592,16 @@ def clone_igloo_project(igloo_git_url: str, igloo_branch: str, target_dir: pathl
         os.path.join(target_dir, "igloo-parent"),
     )
     return target_dir.joinpath("igloo-parent")
+
+
+def replace_xml(pom_file: pathlib.Path, xpath: str, value: str, fail_if_no_match: bool = True):
+    tree = ET.parse(pom_file)
+    items: typing.Any = tree.xpath(xpath, namespaces={"pom": "http://maven.apache.org/POM/4.0.0"})
+    if not items and fail_if_no_match:
+        raise Exception(f"No match found for {xpath} in {pom_file}")  # noqa: TRY002 EM102
+    for item in items:
+        item.text = value
+    tree.write(pom_file)
 
 
 if __name__ == "__main__":

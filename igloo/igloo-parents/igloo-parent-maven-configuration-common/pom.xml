@@ -5,38 +5,25 @@
 	<parent>
 		<groupId>org.iglooproject</groupId>
 		<artifactId>plugins-all</artifactId>
-		<version>6.20.0-SNAPSHOT</version>
+		<version>6.20.0-rev-SNAPSHOT</version>
 		<relativePath />
 	</parent>
 
 	<groupId>org.iglooproject.parents</groupId>
 	<artifactId>igloo-parent-maven-configuration-common</artifactId>
-	<version>6.20.0-SNAPSHOT</version>
+	<version>${revision}</version>
 	<packaging>pom</packaging>
 
 	<name>Igloo - Parent - Maven configuration - Common</name>
 
 	<properties>
+		<revision>6.20.0-rev-SNAPSHOT</revision>
 		<productionBranchName>main</productionBranchName>
 	</properties>
 
 	<build>
 		<pluginManagement>
 			<plugins>
-				<plugin>
-					<groupId>external.atlassian.jgitflow</groupId>
-					<artifactId>jgitflow-maven-plugin</artifactId>
-					<configuration>
-						<flowInitContext>
-							<masterBranchName>${productionBranchName}</masterBranchName>
-							<developBranchName>dev</developBranchName>
-							<featureBranchPrefix>ft-</featureBranchPrefix>
-							<releaseBranchPrefix>rl-</releaseBranchPrefix>
-							<hotfixBranchPrefix>hf-</hotfixBranchPrefix>
-							<versionTagPrefix>v</versionTagPrefix>
-						</flowInitContext>
-					</configuration>
-				</plugin>
 				<plugin>
 					<groupId>com.amashchenko.maven.plugin</groupId>
 					<artifactId>gitflow-maven-plugin</artifactId>
@@ -52,6 +39,9 @@
 							<versionTagPrefix>v</versionTagPrefix>
 							<origin>origin</origin>
 						</gitFlowConfig>
+						<!-- handle release versioning with revision property -->
+						<versionProperty>revision</versionProperty>
+						<skipUpdateVersion>true</skipUpdateVersion>
 						<skipFeatureVersion>true</skipFeatureVersion>
 						<!-- do not run verify, done on CI -->
 						<skipTestProject>true</skipTestProject>
