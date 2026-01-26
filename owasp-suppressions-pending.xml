@@ -4,7 +4,16 @@
 	<!--                                                              -->
 	<!--                    FUTUR IGLOO RELEASE                       -->
 	<!--                                                              -->
-	
+
+	<suppress>
+		<notes><![CDATA[
+   file name: babel__helper-validator-identifier-8.0.0-alpha.13.jar
+   file name: igloo-validator-6.19.0.jar
+   dependencies mismatch with 'Nu Html Checker (vnu)'
+   ]]></notes>
+		<packageUrl regex="true">^pkg:maven/org\.webjars\.npm/babel__helper-validator-identifier@.*$</packageUrl>
+		<cve>CVE-2025-15104</cve>
+	</suppress>
 	
 
     <!--                                                              -->
