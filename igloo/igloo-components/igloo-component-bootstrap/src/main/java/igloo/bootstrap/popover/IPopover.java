@@ -4,9 +4,9 @@ import igloo.bootstrap.woption.IWOption;
 import igloo.bootstrap.woption.IWVisitable;
 import igloo.bootstrap.woption.IWVisitor;
 import igloo.bootstrap.woption.WVisitables;
+import jakarta.annotation.Nullable;
 import java.io.Serializable;
 import org.immutables.value.Value;
-import org.springframework.lang.Nullable;
 
 @Value.Immutable
 @Value.Style(typeImmutable = "*", typeAbstract = "I*")

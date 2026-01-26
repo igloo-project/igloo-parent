@@ -2,6 +2,7 @@ package igloo.bootstrap.popover;
 
 import igloo.bootstrap.js.statement.IJsObject;
 import igloo.bootstrap.js.statement.IJsStatement;
+import jakarta.annotation.Nullable;
 import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -9,7 +10,6 @@ import java.util.Map;
 import java.util.function.Supplier;
 import org.apache.commons.lang3.tuple.Pair;
 import org.immutables.value.Value;
-import org.springframework.lang.Nullable;
 
 @Value.Immutable
 @Value.Style(typeImmutable = "*", typeAbstract = "I*")

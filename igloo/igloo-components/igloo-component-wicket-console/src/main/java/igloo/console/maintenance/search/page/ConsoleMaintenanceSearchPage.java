@@ -151,8 +151,7 @@ public class ConsoleMaintenanceSearchPage extends ConsoleMaintenanceTemplate {
                               StringUtils.NEW_LINE_ANTISLASH_N)) {
                         if (StringUtils.hasText(entityIdString)) {
                           try {
-                            entityIds.add(
-                                Long.parseLong(StringUtils.trimWhitespace(entityIdString)));
+                            entityIds.add(Long.parseLong(entityIdString));
                           } catch (NumberFormatException e) {
                             // On ignore les id saisis qui ne sont pas numériques
                           }

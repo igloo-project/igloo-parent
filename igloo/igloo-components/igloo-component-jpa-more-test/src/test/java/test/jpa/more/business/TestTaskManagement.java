@@ -33,10 +33,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
 import org.springframework.transaction.interceptor.TransactionAttribute;
-import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 import test.jpa.more.business.task.config.TestTaskManagementConfig;
 import test.jpa.more.business.task.model.TestQueueId;
@@ -210,18 +208,15 @@ class TestTaskManagement extends AbstractJpaMoreTestCase {
   void simple() throws Exception {
     final StaticValueAccessor<String> result = new StaticValueAccessor<>();
     final StaticValueAccessor<Long> taskHolderId = new StaticValueAccessor<>();
-    transactionTemplate.execute(
-        new TransactionCallbackWithoutResult() {
-          @Override
-          public void doInTransactionWithoutResult(TransactionStatus status) {
-            try {
-              QueuedTaskHolder taskHolder =
-                  manager.submit(
-                      new SimpleTestTask<>(result, "success", TaskExecutionResult.completed()));
-              taskHolderId.set(taskHolder.getId());
-            } catch (ServiceException e) {
-              throw new IllegalStateException(e);
-            }
+    transactionTemplate.executeWithoutResult(
+        status -> {
+          try {
+            QueuedTaskHolder taskHolder =
+                manager.submit(
+                    new SimpleTestTask<>(result, "success", TaskExecutionResult.completed()));
+            taskHolderId.set(taskHolder.getId());
+          } catch (ServiceException e) {
+            throw new IllegalStateException(e);
           }
         });
 
@@ -273,32 +268,29 @@ class TestTaskManagement extends AbstractJpaMoreTestCase {
         new Runnable() {
           @Override
           public void run() {
-            transactionTemplate.execute(
-                new TransactionCallbackWithoutResult() {
-                  @Override
-                  public void doInTransactionWithoutResult(TransactionStatus status) {
-                    try {
-                      QueuedTaskHolder taskHolder =
-                          manager.submit(
-                              new SimpleTestTask<>(
-                                  result, "success", TaskExecutionResult.completed()));
-                      // signal that submit is called for task 1
-                      step1ConcurrentLinkedQueue.offer(true); // STEP 1 signal
+            transactionTemplate.executeWithoutResult(
+                status -> {
+                  try {
+                    QueuedTaskHolder taskHolder =
+                        manager.submit(
+                            new SimpleTestTask<>(
+                                result, "success", TaskExecutionResult.completed()));
+                    // signal that submit is called for task 1
+                    step1ConcurrentLinkedQueue.offer(true); // STEP 1 signal
 
-                      taskHolderId.set(taskHolder.getId());
+                    taskHolderId.set(taskHolder.getId());
 
-                      // wait for task 2 to be pushed and committed
-                      step2ConcurrentLinkedQueue.take(); // STEP 2 wait
+                    // wait for task 2 to be pushed and committed
+                    step2ConcurrentLinkedQueue.take(); // STEP 2 wait
 
-                      // Check that the task has not been consumed during this transaction
-                      // (which could be aborted)
-                      // and that task 2 is allowed to be done
-                      assertNull(result.get());
-                    } catch (ServiceException e) {
-                      throw new IllegalStateException(e);
-                    } catch (InterruptedException e) {
-                      throw new IllegalStateException(e);
-                    }
+                    // Check that the task has not been consumed during this transaction
+                    // (which could be aborted)
+                    // and that task 2 is allowed to be done
+                    assertNull(result.get());
+                  } catch (ServiceException e) {
+                    throw new IllegalStateException(e);
+                  } catch (InterruptedException e) {
+                    throw new IllegalStateException(e);
                   }
                 });
           }
@@ -311,16 +303,13 @@ class TestTaskManagement extends AbstractJpaMoreTestCase {
     step1ConcurrentLinkedQueue.take(); // STEP 1 wait
 
     // push another task
-    transactionTemplate.execute(
-        new TransactionCallbackWithoutResult() {
-          @Override
-          public void doInTransactionWithoutResult(TransactionStatus status) {
-            try {
-              manager.submit(
-                  new SimpleTestTask<>(result2, "success", TaskExecutionResult.completed()));
-            } catch (ServiceException e) {
-              throw new IllegalStateException(e);
-            }
+    transactionTemplate.executeWithoutResult(
+        status -> {
+          try {
+            manager.submit(
+                new SimpleTestTask<>(result2, "success", TaskExecutionResult.completed()));
+          } catch (ServiceException e) {
+            throw new IllegalStateException(e);
           }
         });
 
@@ -380,21 +369,18 @@ class TestTaskManagement extends AbstractJpaMoreTestCase {
   void interrupt() throws Exception {
     final StaticValueAccessor<String> result = new StaticValueAccessor<>();
     final StaticValueAccessor<Long> taskHolderId = new StaticValueAccessor<>();
-    transactionTemplate.execute(
-        new TransactionCallbackWithoutResult() {
-          @Override
-          public void doInTransactionWithoutResult(TransactionStatus status) {
-            try {
-              // This task will stop the manager during its execution
-              SelfInterruptingTask<String> testTask =
-                  new SelfInterruptingTask<>(result, "success", TaskExecutionResult.completed());
-              // we want to force an interruption
-              testTask.setTimeToWaitMs(2000);
-              QueuedTaskHolder taskHolder = manager.submit(testTask);
-              taskHolderId.set(taskHolder.getId());
-            } catch (ServiceException e) {
-              throw new IllegalStateException(e);
-            }
+    transactionTemplate.executeWithoutResult(
+        status -> {
+          try {
+            // This task will stop the manager during its execution
+            SelfInterruptingTask<String> testTask =
+                new SelfInterruptingTask<>(result, "success", TaskExecutionResult.completed());
+            // we want to force an interruption
+            testTask.setTimeToWaitMs(2000);
+            QueuedTaskHolder taskHolder = manager.submit(testTask);
+            taskHolderId.set(taskHolder.getId());
+          } catch (ServiceException e) {
+            throw new IllegalStateException(e);
           }
         });
 
@@ -431,19 +417,16 @@ class TestTaskManagement extends AbstractJpaMoreTestCase {
     final StaticValueAccessor<String> result = new StaticValueAccessor<>();
     final StaticValueAccessor<Long> taskHolderId = new StaticValueAccessor<>();
 
-    transactionTemplate.execute(
-        new TransactionCallbackWithoutResult() {
-          @Override
-          protected void doInTransactionWithoutResult(TransactionStatus status) {
-            try {
-              QueuedTaskHolder taskHolder =
-                  manager.submit(
-                      new RuntimeExceptionTestTask<>(
-                          result, "success", TaskExecutionResult.completed()));
-              taskHolderId.set(taskHolder.getId());
-            } catch (ServiceException e) {
-              throw new IllegalStateException(e);
-            }
+    transactionTemplate.executeWithoutResult(
+        status -> {
+          try {
+            QueuedTaskHolder taskHolder =
+                manager.submit(
+                    new RuntimeExceptionTestTask<>(
+                        result, "success", TaskExecutionResult.completed()));
+            taskHolderId.set(taskHolder.getId());
+          } catch (ServiceException e) {
+            throw new IllegalStateException(e);
           }
         });
 

@@ -51,7 +51,7 @@ public interface IJuiceInliner {
    */
   @Value.Default
   default ObjectMapper objectMapper() {
-    return new ObjectMapper().setSerializationInclusion(Include.NON_NULL);
+    return new ObjectMapper().setDefaultPropertyInclusion(Include.NON_NULL);
   }
 
   /**

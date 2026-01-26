@@ -15,6 +15,7 @@ public class CoreMethodSecurityExpressionRoot extends SecurityExpressionRoot
   private Object target;
 
   public CoreMethodSecurityExpressionRoot(Authentication a) {
+    // TODO RFO spring 7
     super(a);
   }
 

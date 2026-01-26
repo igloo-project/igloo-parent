@@ -19,7 +19,6 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.Ordered;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionSynchronization;
-import org.springframework.transaction.support.TransactionSynchronizationAdapter;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 @Service
@@ -262,7 +261,7 @@ public class TransactionSynchronizationTaskManagerServiceImpl
     }
   }
 
-  public class TaskTransactionSynchronizationAdapter extends TransactionSynchronizationAdapter {
+  public class TaskTransactionSynchronizationAdapter implements TransactionSynchronization {
 
     private TransactionSynchronizationTasks suspendedTasks = null;
 

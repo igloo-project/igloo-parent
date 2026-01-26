@@ -25,7 +25,6 @@ import org.springframework.transaction.TransactionException;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.SimpleTransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
-import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionOperations;
 
 @Component
@@ -158,13 +157,7 @@ public class SimpleHibernateBatchExecutor
         executionStrategyFactory.create(this, query, batchRunnable);
     executionStrategy
         .getExecuteTransactionOperations()
-        .execute(
-            new TransactionCallbackWithoutResult() {
-              @Override
-              protected void doInTransactionWithoutResult(TransactionStatus status) {
-                doRun(executionStrategy, loggerContext, consuming);
-              }
-            });
+        .executeWithoutResult(status -> doRun(executionStrategy, loggerContext, consuming));
   }
 
   private <E extends GenericEntity<Long, ?>> void doRun(
@@ -397,13 +390,7 @@ public class SimpleHibernateBatchExecutor
 
     @Override
     public void preExecute() {
-      stepTransactionTemplate.execute(
-          new TransactionCallbackWithoutResult() {
-            @Override
-            protected void doInTransactionWithoutResult(TransactionStatus status) {
-              runnable.preExecute();
-            }
-          });
+      stepTransactionTemplate.executeWithoutResult(status -> runnable.preExecute());
     }
 
     @Override
@@ -424,13 +411,7 @@ public class SimpleHibernateBatchExecutor
 
     @Override
     public void postExecute() {
-      stepTransactionTemplate.execute(
-          new TransactionCallbackWithoutResult() {
-            @Override
-            protected void doInTransactionWithoutResult(TransactionStatus status) {
-              runnable.postExecute();
-            }
-          });
+      stepTransactionTemplate.executeWithoutResult(status -> runnable.postExecute());
     }
   }
 }

@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -30,7 +31,6 @@ import org.iglooproject.jpa.more.util.init.util.WorkbookUtils;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.spring.util.ReflectionUtils;
 import org.iglooproject.spring.util.SpringBeanUtils;
-import org.iglooproject.spring.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -227,9 +227,10 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 
       for (Map<String, Object> line : WorkbookUtils.getSheetContent(sheet)) {
         E item = BeanUtils.instantiateClass(clazz);
-
         String importId =
-            StringUtils.trimWhitespace(Objects.toString(line.get(ID_FIELD_NAME), null));
+            Optional.ofNullable(Objects.toString(line.get(ID_FIELD_NAME)))
+                .map(String::strip)
+                .orElse(null);
         line.remove(ID_FIELD_NAME);
 
         doFilterLine(clazz, line);
