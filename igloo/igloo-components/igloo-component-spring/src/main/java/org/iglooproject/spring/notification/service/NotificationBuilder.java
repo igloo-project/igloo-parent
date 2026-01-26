@@ -12,7 +12,6 @@ import static org.iglooproject.spring.property.SpringPropertyIds.NOTIFICATION_MA
 import static org.iglooproject.spring.property.SpringPropertyIds.NOTIFICATION_MAIL_SEND_MODE;
 import static org.iglooproject.spring.property.SpringPropertyIds.NOTIFICATION_MAIL_SUBJECT_PREFIX;
 
-import com.google.common.base.Charsets;
 import com.google.common.base.Joiner;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Lists;
@@ -27,6 +26,7 @@ import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import java.io.File;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -72,7 +72,7 @@ public class NotificationBuilder
         INotificationBuilderTemplateState,
         INotificationBuilderSendState {
 
-  private static final Charset DEFAULT_MAIL_CHARSET = Charsets.UTF_8;
+  private static final Charset DEFAULT_MAIL_CHARSET = StandardCharsets.UTF_8;
 
   private static final String NEW_LINE_TEXT_PLAIN = StringUtils.NEW_LINE_ANTISLASH_N;
   private static final String NEW_LINE_HTML = "<br />";

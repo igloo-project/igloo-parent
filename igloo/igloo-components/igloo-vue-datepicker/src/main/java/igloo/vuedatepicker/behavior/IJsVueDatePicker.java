@@ -2,6 +2,7 @@ package igloo.vuedatepicker.behavior;
 
 import igloo.bootstrap.js.statement.IJsObject;
 import igloo.bootstrap.js.statement.IJsStatement;
+import jakarta.annotation.Nullable;
 import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -9,7 +10,6 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 import org.apache.commons.lang3.tuple.Pair;
 import org.immutables.value.Value;
-import org.springframework.lang.Nullable;
 
 /**
  * Options applies to Vue.js Vue Datepicker. @see <a href="https://vue3datepicker.com/">Vue

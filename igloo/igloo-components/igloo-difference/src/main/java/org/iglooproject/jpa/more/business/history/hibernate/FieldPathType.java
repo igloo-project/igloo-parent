@@ -5,8 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.hibernate.HibernateException;
-import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.type.SqlTypes;
+import org.hibernate.type.descriptor.WrapperOptions;
 import org.hibernate.usertype.UserType;
 import org.iglooproject.commons.util.fieldpath.FieldPath;
 
@@ -34,8 +34,7 @@ public class FieldPathType implements UserType<FieldPath> {
   }
 
   @Override
-  public FieldPath nullSafeGet(
-      ResultSet rs, int position, SharedSessionContractImplementor session, Object owner)
+  public FieldPath nullSafeGet(ResultSet rs, int position, WrapperOptions options)
       throws SQLException {
     String columnValue = rs.getString(position);
     if (rs.wasNull()) {
@@ -45,8 +44,7 @@ public class FieldPathType implements UserType<FieldPath> {
   }
 
   @Override
-  public void nullSafeSet(
-      PreparedStatement st, FieldPath value, int index, SharedSessionContractImplementor session)
+  public void nullSafeSet(PreparedStatement st, FieldPath value, int index, WrapperOptions options)
       throws SQLException {
     if (value == null) {
       // postgresql only handle VARCHAR/LONGVARCHAR

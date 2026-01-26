@@ -11,6 +11,7 @@ import igloo.wicket.condition.Condition;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
+import org.apache.commons.lang3.Strings;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -158,10 +159,7 @@ public class ConsoleMaintenancePropertiesPage extends ConsoleMaintenanceTemplate
                 propertyKeys.stream()
                     .filter(k -> k.startsWith(ENVIRONEMENT_PREFIX))
                     .filter(
-                        k ->
-                            propertyKeys.contains(
-                                org.apache.commons.lang3.StringUtils.removeStart(
-                                    k, ENVIRONEMENT_PREFIX)))
+                        k -> propertyKeys.contains(Strings.CS.removeStart(k, ENVIRONEMENT_PREFIX)))
                     .sorted()
                     .collect(ImmutableList.toImmutableList());
 

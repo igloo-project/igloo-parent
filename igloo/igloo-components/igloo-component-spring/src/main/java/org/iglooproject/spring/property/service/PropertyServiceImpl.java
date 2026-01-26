@@ -70,10 +70,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
 import org.springframework.transaction.interceptor.TransactionAttribute;
-import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 /**
@@ -551,17 +549,14 @@ public class PropertyServiceImpl implements IConfigurablePropertyService {
   public void setAll(final IMutablePropertyValueMap valueMap)
       throws ServiceException, SecurityServiceException {
     Objects.requireNonNull(valueMap);
-    writeTransactionTemplate.execute(
-        new TransactionCallbackWithoutResult() {
-          @Override
-          protected void doInTransactionWithoutResult(TransactionStatus status) {
-            try {
-              for (IMutablePropertyValueMap.Entry<?> idToValueEntry : valueMap) {
-                set(idToValueEntry);
-              }
-            } catch (RuntimeException | ServiceException | SecurityServiceException e) {
-              throw new IllegalStateException(String.format("Error while updating properties"), e);
+    writeTransactionTemplate.executeWithoutResult(
+        status -> {
+          try {
+            for (IMutablePropertyValueMap.Entry<?> idToValueEntry : valueMap) {
+              set(idToValueEntry);
             }
+          } catch (RuntimeException | ServiceException | SecurityServiceException e) {
+            throw new IllegalStateException("Error while updating properties", e);
           }
         });
   }

@@ -1,6 +1,7 @@
 package org.iglooproject.autoprefixer.internal;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import org.apache.commons.io.IOUtils;
 import org.iglooproject.autoprefixer.AutoprefixerException;
 import org.iglooproject.autoprefixer.IAutoprefixer;
@@ -48,6 +49,7 @@ public class SimpleAutoprefixerImpl implements IAutoprefixer {
   }
 
   private String loadAutoprefixerScriptAsString() throws IOException {
-    return IOUtils.toString(getClass().getResourceAsStream(AUTOPREFIXER_JS_CLASSPATH));
+    return IOUtils.toString(
+        getClass().getResourceAsStream(AUTOPREFIXER_JS_CLASSPATH), Charset.defaultCharset());
   }
 }

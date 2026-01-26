@@ -9,7 +9,6 @@ import java.util.function.Supplier;
 import org.igloo.hibernate.bootstrap.EntityManagerFactoryHelper;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ExtensionContext.Namespace;
-import org.junit.jupiter.api.extension.ExtensionContext.Store.CloseableResource;
 import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.extension.ParameterResolutionException;
 import org.junit.jupiter.api.extension.ParameterResolver;
@@ -45,7 +44,7 @@ public class EntityManagerFactoryExtension implements ParameterResolver {
     EntityManagerFactoryWrapper wrapper =
         extensionContext
             .getStore(Namespace.GLOBAL)
-            .getOrComputeIfAbsent(
+            .computeIfAbsent(
                 "entityManagerFactoryWrapper",
                 p ->
                     new EntityManagerFactoryWrapper(
@@ -73,7 +72,7 @@ public class EntityManagerFactoryExtension implements ParameterResolver {
     }
   }
 
-  static class EntityManagerFactoryWrapper implements CloseableResource {
+  static class EntityManagerFactoryWrapper implements AutoCloseable {
     final EntityManagerFactory emf;
     EntityManager em;
     EntityTransaction t;
@@ -83,7 +82,7 @@ public class EntityManagerFactoryExtension implements ParameterResolver {
     }
 
     @Override
-    public void close() throws Throwable {
+    public void close() {
       if (t != null && t.isActive()) {
         t.rollback();
       }

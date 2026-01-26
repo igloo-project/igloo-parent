@@ -2,12 +2,12 @@ package igloo.bootstrap.js.statement;
 
 import igloo.bootstrap.js.util.ImmutableStyle;
 import igloo.bootstrap.woption.IWVisitor;
+import jakarta.annotation.Nullable;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.immutables.value.Value;
-import org.springframework.lang.Nullable;
 
 @Value.Immutable(builder = true)
 @ImmutableStyle

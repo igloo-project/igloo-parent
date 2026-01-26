@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -56,7 +57,7 @@ public class GenericEntityConverter implements GenericConverter {
   public Object convert(Object source, TypeDescriptor sourceType, TypeDescriptor targetType) {
     Object item = null;
 
-    String importId = StringUtils.trimWhitespace((String) source);
+    String importId = Optional.ofNullable((String) source).map(String::strip).orElse(null);
     if (StringUtils.hasText(importId)) {
       item = convertFromDatabase(importId, targetType);
 

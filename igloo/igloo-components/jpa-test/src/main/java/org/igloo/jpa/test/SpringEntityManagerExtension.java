@@ -6,7 +6,6 @@ import jakarta.persistence.EntityTransaction;
 import java.util.Arrays;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ExtensionContext.Namespace;
-import org.junit.jupiter.api.extension.ExtensionContext.Store.CloseableResource;
 import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.extension.ParameterResolutionException;
 import org.junit.jupiter.api.extension.ParameterResolver;
@@ -44,7 +43,7 @@ public class SpringEntityManagerExtension implements ParameterResolver {
     EntityManagerFactoryWrapper wrapper =
         extensionContext
             .getStore(Namespace.GLOBAL)
-            .getOrComputeIfAbsent(
+            .computeIfAbsent(
                 "entityManagerFactoryWrapper",
                 p -> new EntityManagerFactoryWrapper(entityManagerFactory),
                 EntityManagerFactoryWrapper.class);
@@ -70,7 +69,7 @@ public class SpringEntityManagerExtension implements ParameterResolver {
     }
   }
 
-  static class EntityManagerFactoryWrapper implements CloseableResource {
+  static class EntityManagerFactoryWrapper implements AutoCloseable {
     final EntityManagerFactory emf;
     EntityManager em;
     EntityTransaction t;
@@ -80,7 +79,7 @@ public class SpringEntityManagerExtension implements ParameterResolver {
     }
 
     @Override
-    public void close() throws Throwable {
+    public void close() {
       if (t != null && t.isActive()) {
         t.rollback();
       }

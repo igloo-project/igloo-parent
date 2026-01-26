@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Configuration;
 @EntityScan(basePackageClasses = BasicApplicationCoreCommonBusinessPackage.class)
 public class BasicApplicationJpaModelConfiguration {
 
-  // TODO RFO igloo 7 -> deprecated à modifier ?
+  // TODO RFO spring 7 -> deprecated à modifier ?
   @Bean
   public MetadataBuilderContributor basicApplicationMetadataBuilderContributor() {
     return new TypeMetadataBuilderContributor();
