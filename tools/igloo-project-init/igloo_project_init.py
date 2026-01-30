@@ -362,7 +362,7 @@ def setup_git(
 
 def format_pom(project_path: pathlib.Path):
     """Reformat project"""
-    # TODO use spotless:apply@format-poms if spotless + prettier is added to igloo-maven
+    # TODO: use spotless:apply@format-poms if spotless + prettier is added to igloo-maven
     subprocess.check_call(["mvn", "spotless:apply"], cwd=project_path, **subprocess_args())
     logger.info("Spotless applied.")
 
@@ -399,13 +399,9 @@ def override_versions(igloo_clone: pathlib.Path, igloo_version: str):
     )
 
     fix_parent_pom(igloo_clone.joinpath("basic-application/pom.xml"))
-    fix_parent_pom(igloo_clone.joinpath("basic-application/basic-application-app/pom.xml"))
 
     # replace remaining ${revision}
     replace_version(igloo_clone.joinpath("basic-application/pom.xml"), "version", "${revision}", igloo_version)
-    replace_version(
-        igloo_clone.joinpath("basic-application/basic-application-app/pom.xml"), "version", "${revision}", igloo_version
-    )
 
     logger.debug("Basic application version overriden to split igloo and basic-application versions.")
 
@@ -478,7 +474,7 @@ def generate_project(
     return project_path
 
 
-def fix_poms(project_path: pathlib.Path, version: str, artifact_id: str, package_name: str):
+def fix_poms(project_path: pathlib.Path, version: str, artifact_id: str, package_name: str):  # noqa: ARG001
     """Fix things not handled correctly by archetype plugin:
     * setup ${revision} CI-friendly versions
     * package in pom.xml (used for spring application configuration and scss processing)
@@ -486,10 +482,10 @@ def fix_poms(project_path: pathlib.Path, version: str, artifact_id: str, package
     """
     fix_all_versions(project_path, version)
     # fix_pom: unused if preserveCData is used to generate project
-    #fix_pom(project_path.joinpath(f"{artifact_id}-back/pom.xml"), package_name)
-    #fix_pom(project_path.joinpath(f"{artifact_id}-front/pom.xml"), package_name)
-    #fix_pom(project_path.joinpath(f"{artifact_id}-app/pom.xml"), package_name)
-    
+    # fix_pom(project_path.joinpath(f"{artifact_id}-back/pom.xml"), package_name)
+    # fix_pom(project_path.joinpath(f"{artifact_id}-front/pom.xml"), package_name)
+    # fix_pom(project_path.joinpath(f"{artifact_id}-app/pom.xml"), package_name)
+
     # https://github.com/apache/maven-archetype/issues/983 workaround
     # internal dependencies are broken
     replace_xml(

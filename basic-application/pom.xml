@@ -5,7 +5,7 @@
 		<groupId>org.iglooproject.parents</groupId>
 		<artifactId>igloo-parent-core-project</artifactId>
 		<relativePath>../igloo/igloo-parents/igloo-parent-core-project/pom.xml</relativePath>
-		<version>${revision}</version><!-- KEEPME: archetype parent.version -->
+		<version>${revision}</version>
 	</parent>
 	
 	<groupId>org.iglooproject.archetype</groupId>
@@ -16,7 +16,7 @@
 	<name>Basic Application</name>
 
 	<properties>
-		<versionPlaceholderDoNotRemove /><!-- KEEP; used for init substitution -->
+		<versionPlaceholderDoNotRemove />
 	</properties>
 	
 	<modules>
