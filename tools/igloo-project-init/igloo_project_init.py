@@ -361,14 +361,8 @@ def setup_git(
 
 
 def format_pom(project_path: pathlib.Path):
-    """Reindent pom file. This is needed because of https://github.com/apache/maven-archetype/pull/35#issuecomment-1925768656
-    and https://github.com/apache/maven-archetype/pull/128."""
-    pom_file = project_path.joinpath("pom.xml")
-    env = dict(os.environ)
-    env["XMLLINT_INDENT"] = "\t"
-    output = subprocess.check_output(["xmllint", "--format", str(pom_file)], env=env, encoding="utf-8")
-    pom_file.write_text(output)
-    logger.info("Root pom reformatted.")
+    """Reformat project"""
+    # TODO use spotless:apply@format-poms if spotless + prettier is added to igloo-maven
     subprocess.check_call(["mvn", "spotless:apply"], cwd=project_path, **subprocess_args())
     logger.info("Spotless applied.")
 
@@ -491,9 +485,11 @@ def fix_poms(project_path: pathlib.Path, version: str, artifact_id: str, package
     * parent for ARTIFACT-app
     """
     fix_all_versions(project_path, version)
-    fix_pom(project_path.joinpath(f"{artifact_id}-back/pom.xml"), package_name)
-    fix_pom(project_path.joinpath(f"{artifact_id}-front/pom.xml"), package_name)
-    fix_pom(project_path.joinpath(f"{artifact_id}-app/pom.xml"), package_name)
+    # fix_pom: unused if preserveCData is used to generate project
+    #fix_pom(project_path.joinpath(f"{artifact_id}-back/pom.xml"), package_name)
+    #fix_pom(project_path.joinpath(f"{artifact_id}-front/pom.xml"), package_name)
+    #fix_pom(project_path.joinpath(f"{artifact_id}-app/pom.xml"), package_name)
+    
     # https://github.com/apache/maven-archetype/issues/983 workaround
     # internal dependencies are broken
     replace_xml(
@@ -536,6 +532,7 @@ def replace_version(pom_file: pathlib.Path, tag_name: str, from_version: str, to
 
 def fix_pom(pom_file: pathlib.Path, package_name: str):
     """Replace basicapp. with correct package."""
+    # Note: unused if preserveCData is used
     content = pom_file.read_text()
     new_content = re.compile(r"basicapp\.").sub(package_name + ".", content)
     pom_file.write_text(new_content)
