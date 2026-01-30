@@ -5,15 +5,14 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Properties;
-import org.iglooproject.config.bootstrap.spring.ILoggerConfiguration.LoggerImplementation;
+import java.util.Objects;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.LoggerContext;
 import org.iglooproject.config.bootstrap.spring.annotations.IglooPropertySourcesLevels;
 import org.iglooproject.config.bootstrap.spring.config.BootstrapPropertySourcesConfiguration;
 import org.iglooproject.config.bootstrap.spring.config.PropertySourcesLevelsConfiguration;
@@ -28,8 +27,6 @@ import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigRegistry;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.MutablePropertySources;
-import org.springframework.core.env.PropertySourcesPropertyResolver;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.EncodedResource;
 import org.springframework.core.io.support.ResourcePropertySource;
@@ -150,63 +147,22 @@ public class ExtendedApplicationContextInitializer
     }
   }
 
-  private LoggerImplementation getLoggerImplementation() {
-    String loggerFactoryClassName = LoggerFactory.getILoggerFactory().getClass().getName();
-    if (loggerFactoryClassName.equals(LoggerImplementation.LOG4J.slf4jLoggerFactoryClass)) {
-      return LoggerImplementation.LOG4J;
-    } else if (loggerFactoryClassName.equals(
-        LoggerImplementation.RELOAD4J.slf4jLoggerFactoryClass)) {
-      return LoggerImplementation.RELOAD4J;
-    } else if (loggerFactoryClassName.equals(LoggerImplementation.LOG4J2.slf4jLoggerFactoryClass)) {
-      return LoggerImplementation.LOG4J2;
-    } else {
-      throw new IllegalStateException(
-          String.format("Unknown LoggerFactory implementation %s", loggerFactoryClassName));
-    }
-  }
-
-  private String getLoggerConfigurationsPropertyName(
-      ConfigurableApplicationContext applicationContext, LoggerImplementation implementation) {
-    switch (implementation) {
-      case LOG4J:
-      case RELOAD4J:
-        return LOG4J_CONFIGURATIONS_PROPERTY;
-      case LOG4J2:
-        return LOG4J2_CONFIGURATIONS_PROPERTY;
-      default:
-        throw new IllegalStateException(
-            String.format("Unknown implementation %s", implementation.name()));
-    }
-  }
-
   private void loadLog4jConfiguration(ConfigurableApplicationContext applicationContext)
       throws IOException {
     // Customized log4j configuration. We combine multiple log4j files to build a new configuration.
-    LoggerImplementation implementation = getLoggerImplementation();
-    String loggerConfigurationsPropertyName =
-        getLoggerConfigurationsPropertyName(applicationContext, implementation);
-    if (applicationContext.getEnvironment().getProperty(loggerConfigurationsPropertyName) != null) {
+
+    if (applicationContext.getEnvironment().getProperty(LOG4J2_CONFIGURATIONS_PROPERTY) != null) {
       @SuppressWarnings("unchecked")
       List<String> log4jLocations =
-          applicationContext
-              .getEnvironment()
-              .getProperty(loggerConfigurationsPropertyName, List.class);
+          Objects.requireNonNull(
+              applicationContext
+                  .getEnvironment()
+                  .getProperty(LOG4J2_CONFIGURATIONS_PROPERTY, List.class));
       List<String> loadedConfigurations = Lists.newArrayList();
       List<String> ignoredConfigurations = Lists.newArrayList();
-      switch (implementation) {
-        case LOG4J:
-        case RELOAD4J:
-          loadLog4j1Configuration(
-              applicationContext, log4jLocations, loadedConfigurations, ignoredConfigurations);
-          break;
-        case LOG4J2:
-          loadLog4j2Configuration(
-              applicationContext, log4jLocations, loadedConfigurations, ignoredConfigurations);
-          break;
-        default:
-          throw new IllegalStateException(
-              String.format("Unknown implementation %s", implementation.name()));
-      }
+
+      loadLog4j2Configuration(
+          applicationContext, log4jLocations, loadedConfigurations, ignoredConfigurations);
 
       if (LOGGER_SYNTHETIC.isInfoEnabled()) {
         LOGGER_SYNTHETIC.info(
@@ -219,39 +175,19 @@ public class ExtendedApplicationContextInitializer
     } else {
       LOGGER_SYNTHETIC.warn(
           "Log4j: no {} configuration found; keeping default configuration",
-          loggerConfigurationsPropertyName);
+          LOG4J2_CONFIGURATIONS_PROPERTY);
     }
   }
 
-  /**
-   * Perform reconfiguration by loading {@link ILoggerConfiguration} by class name (this allow to
-   * put only needed implementation in classpath).
-   *
-   * @param configurationClassName
-   * @param properties
-   * @param locations
-   */
-  private void reconfigure(
-      String configurationClassName, Properties properties, List<String> locations) {
-    try {
-      ILoggerConfiguration configuration =
-          (ILoggerConfiguration)
-              Class.forName(configurationClassName).getConstructor().newInstance();
-      if (properties != null) {
-        configuration.reconfigure(properties);
-      } else {
-        configuration.reconfigure(locations);
-      }
-    } catch (InvocationTargetException
-        | NoSuchMethodException
-        | RuntimeException
-        | InstantiationException
-        | IllegalAccessException
-        | ClassNotFoundException e) {
-      throw new IllegalStateException(
-          String.format("Failed loading configuration reloading class %s", configurationClassName),
-          e);
-    }
+  private void reconfigure(List<String> locations) {
+
+    // modify configuration files list (comma-separated file path or url)
+    // path without schemes are resolved as file, then as classpath resource
+    // classpath resource must NOT start with a '/'
+    System.setProperty("log4j2.configurationFile", String.join(",", locations));
+
+    // reload configuration
+    ((LoggerContext) LogManager.getContext(false)).reconfigure();
   }
 
   /**
@@ -294,60 +230,7 @@ public class ExtendedApplicationContextInitializer
             "Log4j : no additional files configured in {}", Joiner.on(",").join(log4jLocations));
       }
     } else {
-      reconfigure(LoggerImplementation.LOG4J2.configurationClass, null, locations);
-    }
-  }
-
-  /**
-   * Perform resource lookup from Spring-style urls. Build a custom {@link Properties} to reload
-   * log4j configuration.
-   */
-  private void loadLog4j1Configuration(
-      ConfigurableApplicationContext applicationContext,
-      List<String> log4jLocations,
-      List<String> loadedConfigurations,
-      List<String> ignoredConfigurations)
-      throws IOException {
-    boolean hasSource = false;
-    MutablePropertySources sources = new MutablePropertySources();
-    List<String> propertyNames = new ArrayList<>();
-    for (String location : log4jLocations) {
-      if (applicationContext.getResource(location).exists()) {
-        loadedConfigurations.add(location);
-        LOGGER.info("Log4j : {} added", location);
-        hasSource = true;
-        ResourcePropertySource source =
-            new ResourcePropertySource(applicationContext.getResource(location));
-        sources.addFirst(source);
-        propertyNames.addAll(Arrays.asList(source.getPropertyNames()));
-      } else {
-        ignoredConfigurations.add(location);
-        LOGGER.info("Log4j : {} not found", location);
-      }
-    }
-
-    if (hasSource) {
-      PropertySourcesPropertyResolver resolver = new PropertySourcesPropertyResolver(sources);
-      resolver.setPlaceholderPrefix("#{");
-      resolver.setPlaceholderSuffix("}");
-      Properties properties = new Properties();
-      for (String propertyName : propertyNames) {
-        if (resolver.containsProperty(propertyName)) {
-          LOGGER.debug(
-              "Log4j : property resolved {} -> {}",
-              propertyName,
-              resolver.getProperty(propertyName));
-          properties.put(propertyName, resolver.getProperty(propertyName));
-        } else {
-          LOGGER.warn("Log4j : property {} cannot be resolved", propertyName);
-        }
-      }
-      reconfigure(LoggerImplementation.LOG4J.configurationClass, properties, null);
-    } else {
-      if (LOGGER.isWarnEnabled()) {
-        LOGGER.warn(
-            "Log4j : no additional files configured in {}", Joiner.on(",").join(log4jLocations));
-      }
+      reconfigure(locations);
     }
   }
 
@@ -355,7 +238,8 @@ public class ExtendedApplicationContextInitializer
    * Bootstrap configuration locations either from environment, system property or default
    * locations; first available win.
    *
-   * @see AbstractExtendedApplicationContextInitializer#getDefaultBootstrapConfigurationLocations()
+   * @see
+   *     AbstractExtendedApplicationContextInitializer#<getDefaultBootstrapConfigurationLocations>()
    */
   private Collection<String> getBootstrapConfigurationLocations(
       ConfigurableApplicationContext applicationContext) {

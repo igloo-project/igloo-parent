@@ -170,7 +170,6 @@ public class JpaAutoConfiguration {
             (IntegratorProvider) () -> List.of(integrator));
   }
 
-  // TODO RFO spring 7 -> deprecated à modifier ?
   @Bean
   public HibernatePropertiesCustomizer typeCustomizer(
       List<MetadataBuilderContributor> metadataBuilderContributor) {

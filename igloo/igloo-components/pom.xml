@@ -61,9 +61,7 @@
 		<module>igloo-component-wicket-bootstrap4</module>
 		<module>igloo-component-wicket-bootstrap5</module>
 		<module>igloo-vue-datepicker</module>
-
-		<!--// TODO RFO spring 7 à verifier-->
-<!--		<module>igloo-component-web-security</module>-->
+		
 		<module>igloo-component-jpa-migration</module>
 		<module>igloo-jwt</module>
 		

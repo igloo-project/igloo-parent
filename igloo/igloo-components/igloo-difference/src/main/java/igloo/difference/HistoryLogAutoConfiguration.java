@@ -32,7 +32,6 @@ public class HistoryLogAutoConfiguration {
     return new HistoryLogTransactionSynchronizationTaskMerger();
   }
 
-  // TODO RFO spring 7 -> deprecated à modifier ?
   @Bean
   public MetadataBuilderContributor historyLogMetadataBuilderContributor() {
     return new TypeMetadataBuilderContributor();
