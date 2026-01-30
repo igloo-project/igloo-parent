@@ -107,12 +107,6 @@
       <artifactId>spring-test</artifactId>
       <scope>test</scope>
     </dependency>
-	<!--TODO RFO spring 7 voir si on a bien la conf de log4j pour storageTools-->
-	<dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-test</artifactId>
-	  <scope>test</scope>
-    </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-test</artifactId>

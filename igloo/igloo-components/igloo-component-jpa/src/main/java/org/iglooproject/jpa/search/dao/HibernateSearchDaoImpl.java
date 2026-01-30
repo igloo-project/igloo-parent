@@ -136,7 +136,6 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
       this.entitiesLoaded += size;
     }
 
-    // TODO RFO spring 7 fix deprecated ?
     @Override
     public void addToTotalCount(long count) {
       this.totalCount += count;
