@@ -1,8 +1,6 @@
 package igloo.bootstrap;
 
-import igloo.wicket.offline.OfflineComponentClassMetadataKey;
 import java.util.Optional;
-import javax.annotation.Nonnull;
 import org.apache.wicket.Application;
 import org.apache.wicket.MetaDataKey;
 import org.apache.wicket.core.request.handler.IPageRequestHandler;
@@ -18,38 +16,70 @@ public class BootstrapRequestCycle {
 
   private BootstrapRequestCycle() {}
 
-  @SuppressWarnings("serial")
   public static final MetaDataKey<BootstrapVersion> VERSION_KEY =
       new MetaDataKey<BootstrapVersion>() {};
 
   /**
    * Get bootstrap version from request cycle cache, or resolve it from currently processed page.
    */
-  private static BootstrapVersion getVersion() {
+  public static BootstrapVersion getVersion() {
+    IRequestHandler requestHandler = RequestCycle.get().getActiveRequestHandler();
+
+    if (requestHandler instanceof IRequestHandlerDelegate requestHandlerDelegate) {
+      requestHandler = requestHandlerDelegate.getDelegateHandler();
+    }
+
+    if (requestHandler.getClass().getSimpleName().contains("WebSocketRequestHandler")
+        || requestHandler.getClass().getSimpleName().contains("WebSocketMessageBroadcastHandler")) {
+      LOGGER.error("IRequestHandler: {}", requestHandler);
+    }
+
     return Optional.ofNullable(RequestCycle.get().getMetaData(VERSION_KEY))
-        .orElse(resolveVersion());
+        .orElseGet(BootstrapRequestCycle::resolveVersion);
   }
 
-  /** Resolve version from page, cache on request cycle and return. */
-  private static BootstrapVersion resolveVersion() {
-    BootstrapVersion version = findVersion();
+  /** Set bootstrap version from component class */
+  public static BootstrapVersion setVersion(Class<?> componentClass) {
+    BootstrapVersion version = findVersion(componentClass);
     RequestCycle.get().setMetaData(VERSION_KEY, version);
     return version;
   }
 
+  /** Clear bootstrap version */
+  public static void clearVersion() {
+    RequestCycle.get().setMetaData(VERSION_KEY, null);
+  }
+
+  /** Resolve version from page, cache on request cycle and return. */
+  private static BootstrapVersion resolveVersion() {
+    return setVersion(lookupPageClassFromPageRequestHandler());
+  }
+
   /** Resolve bootstrap version from currently processed page. */
-  private static BootstrapVersion findVersion() {
+  private static Class<?> lookupPageClassFromPageRequestHandler() {
     IRequestHandler requestHandler = RequestCycle.get().getActiveRequestHandler();
-    final Class<?> componentClass;
-    if (requestHandler != null) {
-      componentClass = lookupPageFromPageRequestHandler(requestHandler);
-    } else if (RequestCycle.get().getMetaData(OfflineComponentClassMetadataKey.INSTANCE) != null) {
-      // beware that for notifications, it may be a Component and not a page !
-      componentClass = RequestCycle.get().getMetaData(OfflineComponentClassMetadataKey.INSTANCE);
-    } else {
-      throw new IllegalStateException(
-          "No IPageRequestHandler and no OfflinePageMetadataKey metadata found; Page class retrieval fails.");
+
+    if (requestHandler == null) {
+      throw new IllegalStateException("No IRequestHandler; version cannot be resolved");
     }
+
+    if (requestHandler instanceof IRequestHandlerDelegate requestHandlerDelegate) {
+      requestHandler = requestHandlerDelegate.getDelegateHandler();
+    }
+
+    LOGGER.error("IRequestHandler: {}", requestHandler);
+
+    if (!(requestHandler instanceof IPageRequestHandler pageRequestHandler)) {
+      throw new IllegalStateException(
+          String.format(
+              "IRequestHandler not a IPageRequestHandler; version cannot be resolved (%s)",
+              requestHandler.getClass().getName()));
+    }
+
+    return pageRequestHandler.getPageClass();
+  }
+
+  private static BootstrapVersion findVersion(Class<?> componentClass) {
     boolean bootstrap4 = IBootstrap4Component.class.isAssignableFrom(componentClass);
     boolean bootstrap5 = IBootstrap5Component.class.isAssignableFrom(componentClass);
     if (bootstrap4 && bootstrap5) {
@@ -64,22 +94,6 @@ public class BootstrapRequestCycle {
       return BootstrapVersion.BOOTSTRAP_4;
     } else {
       return ((IBootstrapApplication) Application.get()).getBootstrapSettings().getDefaultVersion();
-    }
-  }
-
-  private static Class<?> lookupPageFromPageRequestHandler(
-      @Nonnull IRequestHandler requestHandler) {
-    if (requestHandler instanceof IRequestHandlerDelegate) {
-      requestHandler = ((IRequestHandlerDelegate) requestHandler).getDelegateHandler();
-    }
-    if (!(requestHandler instanceof IPageRequestHandler)) {
-      throw new IllegalStateException(
-          String.format(
-              "requestHandler not a IPageRequestHandler; version cannot be resolved (%s)",
-              requestHandler.getClass().getName()));
-    } else {
-      IPageRequestHandler pageRequestHandler = (IPageRequestHandler) requestHandler;
-      return pageRequestHandler.getPageClass();
     }
   }
 

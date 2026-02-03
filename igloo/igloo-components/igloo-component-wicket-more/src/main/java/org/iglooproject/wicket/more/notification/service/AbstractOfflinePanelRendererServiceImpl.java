@@ -1,7 +1,7 @@
 package org.iglooproject.wicket.more.notification.service;
 
+import igloo.bootstrap.BootstrapRequestCycle;
 import igloo.wicket.offline.IOfflineComponentProvider;
-import igloo.wicket.offline.OfflineComponentClassMetadataKey;
 import java.util.Locale;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.wicket.Component;
@@ -73,9 +73,7 @@ abstract class AbstractOfflinePanelRendererServiceImpl {
       final String variation) {
     Args.notNull(offlineComponent, "offlineComponent");
     try (ITearDownHandle handle = context(locale).open()) {
-      RequestCycle.get()
-          .setMetaData(
-              OfflineComponentClassMetadataKey.INSTANCE, offlineComponent.getComponentClass());
+      BootstrapRequestCycle.setVersion(offlineComponent.getComponentClass());
       Component component = offlineComponent.getComponent();
       Args.notNull(component, "component");
       return postProcessHtml(
@@ -144,8 +142,7 @@ abstract class AbstractOfflinePanelRendererServiceImpl {
     Page component = null;
     try {
       requestCycle.setResponse(tempResponse);
-      requestCycle.setMetaData(
-          OfflineComponentClassMetadataKey.INSTANCE, offlineComponent.getComponentClass());
+      BootstrapRequestCycle.setVersion(offlineComponent.getComponentClass());
       component = offlineComponent.getComponent();
       if (!offlineComponent.getComponentClass().isInstance(component)) {
         LOGGER.warn(
@@ -160,6 +157,7 @@ abstract class AbstractOfflinePanelRendererServiceImpl {
         component.detach();
       }
       requestCycle.setResponse(originalResponse);
+      BootstrapRequestCycle.clearVersion();
     }
   }
 
