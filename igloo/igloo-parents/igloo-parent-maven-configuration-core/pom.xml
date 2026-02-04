@@ -1,57 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
-	<modelVersion>4.0.0</modelVersion>
-
-	<parent>
-		<groupId>org.iglooproject.parents</groupId>
-		<artifactId>igloo-parent-maven-configuration-common</artifactId>
-		<version>${revision}</version>
-		<relativePath>../igloo-parent-maven-configuration-common/pom.xml</relativePath>
-	</parent>
-
-	<artifactId>igloo-parent-maven-configuration-core</artifactId>
-	<packaging>pom</packaging>
-
-	<name>Igloo - Parent - Maven configuration - Core</name>
-
-	<properties>
-		<igloo.version>${project.version}</igloo.version>
-		<igloo-maven.version>6.20.0-rev-SNAPSHOT</igloo-maven.version>
-		<igloo-commons.version>6.20.0-rev-SNAPSHOT</igloo-commons.version>
-
-		<igloo.log4j.major-version>2</igloo.log4j.major-version>
-		<igloo.logging.artifact>igloo-component-core-logging-log4j${igloo.log4j.major-version}</igloo.logging.artifact>
-	</properties>
-
-	<profiles>
-		<profile>
-			<id>sonar-branch</id>
-			<activation>
-				<property>
-					<name>sonar.projectBranch</name>
-				</property>
-			</activation>
-			<properties>
-				<sonar.projectKey>${project.groupId}:${project.artifactId}:${sonar.projectBranch}</sonar.projectKey>
-				<sonar.projectName>${project.name} (${sonar.projectBranch})</sonar.projectName>
-			</properties>
-		</profile>
-	</profiles>
-
-	<build>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-javadoc-plugin</artifactId>
-					<configuration>
-						<additionalJOptions>
-							<additionalJOption>-Xdoclint:none</additionalJOption>
-						</additionalJOptions>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
-	</build>
-
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.iglooproject.parents</groupId>
+    <artifactId>igloo-parent-maven-configuration-common</artifactId>
+    <version>${revision}</version>
+    <relativePath>../igloo-parent-maven-configuration-common/pom.xml</relativePath>
+  </parent>
+  <artifactId>igloo-parent-maven-configuration-core</artifactId>
+  <packaging>pom</packaging>
+  <name>Igloo - Parent - Maven configuration - Core</name>
+  <properties>
+    <igloo.version>${project.version}</igloo.version>
+    <igloo-maven.version>6.20.0-rev-SNAPSHOT</igloo-maven.version>
+    <igloo-commons.version>6.20.0-rev-SNAPSHOT</igloo-commons.version>
+    <igloo.log4j.major-version>2</igloo.log4j.major-version>
+    <igloo.logging.artifact>igloo-component-core-logging-log4j${igloo.log4j.major-version}</igloo.logging.artifact>
+  </properties>
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <configuration>
+            <additionalJOptions>
+              <additionalJOption>-Xdoclint:none</additionalJOption>
+            </additionalJOptions>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+  <profiles>
+    <profile>
+      <id>sonar-branch</id>
+      <activation>
+        <property>
+          <name>sonar.projectBranch</name>
+        </property>
+      </activation>
+      <properties>
+        <sonar.projectKey>${project.groupId}:${project.artifactId}:${sonar.projectBranch}</sonar.projectKey>
+        <sonar.projectName>${project.name} (${sonar.projectBranch})</sonar.projectName>
+      </properties>
+    </profile>
+  </profiles>
 </project>

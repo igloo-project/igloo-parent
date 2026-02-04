@@ -1,68 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-
-	<modelVersion>4.0.0</modelVersion>
-
-	<parent>
-		<groupId>org.iglooproject.components</groupId>
-		<artifactId>igloo-components</artifactId>
-		<version>${revision}</version>
-	</parent>
-
-	<artifactId>igloo-component-hibernate-configurator-lucene</artifactId>
-	
-	<name>Igloo - Component - Hibernate configuration for Lucene backend</name>
-	<description>Lucene backend for Hibernate Search</description>
-
-	<dependencies>
-		<dependency>
-			<groupId>org.hibernate.search</groupId>
-			<artifactId>hibernate-search-mapper-orm</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate.search</groupId>
-			<artifactId>hibernate-search-backend-lucene</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.lucene</groupId>
-			<artifactId>lucene-core</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.lucene</groupId>
-			<artifactId>lucene-analysis-common</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.iglooproject.components</groupId>
-			<artifactId>igloo-component-hibernate-configurator-api</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.iglooproject.components</groupId>
-			<artifactId>igloo-component-lucene-analyzers</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-	</dependencies>
-	
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.iglooproject</groupId>
-				<artifactId>dependencies-hibernate</artifactId>
-				<version>${igloo-maven.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.iglooproject</groupId>
-				<artifactId>dependencies-hibernate-search</artifactId>
-				<version>${igloo-maven.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
-
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.iglooproject.components</groupId>
+    <artifactId>igloo-components</artifactId>
+    <version>${revision}</version>
+  </parent>
+  <artifactId>igloo-component-hibernate-configurator-lucene</artifactId>
+  <name>Igloo - Component - Hibernate configuration for Lucene backend</name>
+  <description>Lucene backend for Hibernate Search</description>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.iglooproject</groupId>
+        <artifactId>dependencies-hibernate</artifactId>
+        <version>${igloo-maven.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.iglooproject</groupId>
+        <artifactId>dependencies-hibernate-search</artifactId>
+        <version>${igloo-maven.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+  <dependencies>
+    <dependency>
+      <groupId>org.hibernate.search</groupId>
+      <artifactId>hibernate-search-mapper-orm</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate.search</groupId>
+      <artifactId>hibernate-search-backend-lucene</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.lucene</groupId>
+      <artifactId>lucene-core</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.lucene</groupId>
+      <artifactId>lucene-analysis-common</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.iglooproject.components</groupId>
+      <artifactId>igloo-component-hibernate-configurator-api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.iglooproject.components</groupId>
+      <artifactId>igloo-component-lucene-analyzers</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
 </project>

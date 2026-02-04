@@ -1,82 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>org.iglooproject.parents</groupId>
-		<artifactId>igloo-parent-core-project</artifactId>
-		<relativePath>../igloo/igloo-parents/igloo-parent-core-project/pom.xml</relativePath>
-		<version>${revision}</version>
-	</parent>
-	
-	<groupId>org.iglooproject.archetype</groupId>
-	<artifactId>basic-application</artifactId>
-	<version>${revision}</version>
-	<packaging>pom</packaging>
-	
-	<name>Basic Application</name>
-
-	<properties>
-		<versionPlaceholderDoNotRemove />
-	</properties>
-	
-	<modules>
-		<module>basic-application-back</module>
-		<module>basic-application-front</module>
-		<module>basic-application-app</module>
-		<module>basic-application-static</module>
-	</modules>
-	
-	<build>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-deploy-plugin</artifactId>
-					<configuration>
-						<skip>true</skip>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
-	</build>
-	
-	<repositories>
-		<repository>
-			<id>nexus-igloo-releases</id>
-			<name>Nexus Igloo Releases</name>
-			<url>https://nexus.tools.kobalt.fr/repository/igloo-releases/</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-		
-		<repository>
-			<id>nexus-igloo-snapshots</id>
-			<name>Nexus Igloo Snapshots</name>
-			<url>https://nexus.tools.kobalt.fr/repository/igloo-snapshots/</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-		</repository>
-	</repositories>
-	
-	<issueManagement>
-		<system>GitLab</system>
-		<url>https://gitlab.tools.kobalt.fr/kobalt/${projectName}/issues</url>
-	</issueManagement>
-
-	<ciManagement>
-		<system>GitLab</system>
-		<url>https://gitlab.tools.kobalt.fr/kobalt/${projectName}/pipelines</url>
-	</ciManagement>
-
-	<scm>
-		<developerConnection>scm:git:git@gitlab.tools.kobalt.fr:kobalt/${projectName}.git</developerConnection>
-		<url>https://gitlab.tools.kobalt.fr/kobalt/${projectName}</url>
-		<tag>HEAD</tag>
-	</scm>
-	
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.iglooproject.parents</groupId>
+    <artifactId>igloo-parent-core-project</artifactId>
+    <version>${revision}</version>
+    <relativePath>../igloo/igloo-parents/igloo-parent-core-project/pom.xml</relativePath>
+  </parent>
+  <groupId>org.iglooproject.archetype</groupId>
+  <artifactId>basic-application</artifactId>
+  <version>${revision}</version>
+  <packaging>pom</packaging>
+  <name>Basic Application</name>
+  <modules>
+    <module>basic-application-back</module>
+    <module>basic-application-front</module>
+    <module>basic-application-app</module>
+    <module>basic-application-static</module>
+  </modules>
+  <properties>
+    <versionPlaceholderDoNotRemove/>
+  </properties>
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-deploy-plugin</artifactId>
+          <configuration>
+            <skip>true</skip>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+  <scm>
+    <developerConnection>scm:git:git@gitlab.tools.kobalt.fr:kobalt/${projectName}.git</developerConnection>
+    <url>https://gitlab.tools.kobalt.fr/kobalt/${projectName}</url>
+    <tag>HEAD</tag>
+  </scm>
+  <issueManagement>
+    <system>GitLab</system>
+    <url>https://gitlab.tools.kobalt.fr/kobalt/${projectName}/issues</url>
+  </issueManagement>
+  <ciManagement>
+    <system>GitLab</system>
+    <url>https://gitlab.tools.kobalt.fr/kobalt/${projectName}/pipelines</url>
+  </ciManagement>
+  <repositories>
+    <repository>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>nexus-igloo-releases</id>
+      <name>Nexus Igloo Releases</name>
+      <url>https://nexus.tools.kobalt.fr/repository/igloo-releases/</url>
+    </repository>
+    <repository>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <id>nexus-igloo-snapshots</id>
+      <name>Nexus Igloo Snapshots</name>
+      <url>https://nexus.tools.kobalt.fr/repository/igloo-snapshots/</url>
+    </repository>
+  </repositories>
 </project>

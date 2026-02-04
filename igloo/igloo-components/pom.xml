@@ -1,89 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
-	<modelVersion>4.0.0</modelVersion>
-	
-	<parent>
-		<groupId>org.iglooproject.parents</groupId>
-		<artifactId>igloo-parent-maven-configuration-core</artifactId>
-		<version>${revision}</version>
-		<relativePath>../igloo-parents/igloo-parent-maven-configuration-core/pom.xml</relativePath>
-	</parent>
-	
-	<groupId>org.iglooproject.components</groupId>
-	<artifactId>igloo-components</artifactId>
-	<packaging>pom</packaging>
-
-	<name>Igloo - Components</name>
-
-	<modules>
-		<module>jpa-test</module>
-		
-		<module>igloo-component-config-test</module>
-		
-		<module>igloo-component-jul-to-slf4j</module>
-		<module>igloo-login-mdc</module>
-		
-		<module>igloo-component-spring</module>
-		<module>igloo-component-spring-bootstrap-config</module>
-		<module>igloo-component-lucene-analyzers</module>
-		
-		<module>igloo-component-hibernate-configurator-api</module>
-		<module>igloo-component-hibernate-configurator-lucene</module>
-		<module>igloo-hibernate</module>
-		<module>igloo-jpa-model</module>
-		<module>igloo-component-jpa</module>
-		<module>igloo-component-jpa-batch</module>
-		<module>igloo-component-jpa-test</module>
-		<module>igloo-listener-test</module>
-		
-		<module>igloo-component-jpa-more</module>
-		<module>igloo-difference</module>
-		<module>igloo-component-jpa-more-test</module>
-		<module>igloo-component-jpa-security</module>
-		
-		<module>igloo-component-export</module>
-		<module>igloo-component-imports</module>
-		
-		<module>igloo-component-sass</module>
-		<module>igloo-component-autoprefixer</module>
-		<module>igloo-juice</module>
-		
-		<module>igloo-component-wicket-jquery</module>
-		<module>igloo-component-wicket</module>
-		<module>igloo-component-wicket-select2</module>
-		<module>igloo-component-wicket-fontawesome</module>
-		<module>igloo-component-wicket-jqueryui</module>
-		<module>igloo-component-wicket-test</module>
-		<module>igloo-component-wicket-console</module>
-		<module>igloo-component-wicket-more</module>
-		<module>igloo-component-wicket-more-test</module>
-		<module>igloo-component-bootstrap</module>
-		<module>igloo-component-wicket-bootstrap4</module>
-		<module>igloo-component-wicket-bootstrap5</module>
-		<module>igloo-vue-datepicker</module>
-		
-		<module>igloo-component-web-security</module>
-		<module>igloo-component-rest-jersey</module>
-		<module>igloo-component-jpa-migration</module>
-		<module>igloo-jwt</module>
-		
-		
-		<module>igloo-spring-security</module>
-		<module>igloo-spring-openidc</module>
-		<module>igloo-spring-actuator</module>
-		
-		<module>storage-api</module>
-		<module>storage-impl</module>
-		<module>storage-model</module>
-		<module>storage-micrometer</module>
-		<module>storage-integration</module>
-		<module>storage-tools</module>
-		
-		<module>igloo-monitoring-page</module>
-		<module>igloo-cache</module>
-		<module>igloo-hibernate-search-v5migrationhelper</module>
-		
-		<module>jpa-test-patterns</module>
-	</modules>
-
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.iglooproject.parents</groupId>
+    <artifactId>igloo-parent-maven-configuration-core</artifactId>
+    <version>${revision}</version>
+    <relativePath>../igloo-parents/igloo-parent-maven-configuration-core/pom.xml</relativePath>
+  </parent>
+  <groupId>org.iglooproject.components</groupId>
+  <artifactId>igloo-components</artifactId>
+  <packaging>pom</packaging>
+  <name>Igloo - Components</name>
+  <modules>
+    <module>jpa-test</module>
+    <module>igloo-component-config-test</module>
+    <module>igloo-component-jul-to-slf4j</module>
+    <module>igloo-login-mdc</module>
+    <module>igloo-component-spring</module>
+    <module>igloo-component-spring-bootstrap-config</module>
+    <module>igloo-component-lucene-analyzers</module>
+    <module>igloo-component-hibernate-configurator-api</module>
+    <module>igloo-component-hibernate-configurator-lucene</module>
+    <module>igloo-hibernate</module>
+    <module>igloo-jpa-model</module>
+    <module>igloo-component-jpa</module>
+    <module>igloo-component-jpa-batch</module>
+    <module>igloo-component-jpa-test</module>
+    <module>igloo-listener-test</module>
+    <module>igloo-component-jpa-more</module>
+    <module>igloo-difference</module>
+    <module>igloo-component-jpa-more-test</module>
+    <module>igloo-component-jpa-security</module>
+    <module>igloo-component-export</module>
+    <module>igloo-component-imports</module>
+    <module>igloo-component-sass</module>
+    <module>igloo-component-autoprefixer</module>
+    <module>igloo-juice</module>
+    <module>igloo-component-wicket-jquery</module>
+    <module>igloo-component-wicket</module>
+    <module>igloo-component-wicket-select2</module>
+    <module>igloo-component-wicket-fontawesome</module>
+    <module>igloo-component-wicket-jqueryui</module>
+    <module>igloo-component-wicket-test</module>
+    <module>igloo-component-wicket-console</module>
+    <module>igloo-component-wicket-more</module>
+    <module>igloo-component-wicket-more-test</module>
+    <module>igloo-component-bootstrap</module>
+    <module>igloo-component-wicket-bootstrap4</module>
+    <module>igloo-component-wicket-bootstrap5</module>
+    <module>igloo-vue-datepicker</module>
+    <module>igloo-component-web-security</module>
+    <module>igloo-component-rest-jersey</module>
+    <module>igloo-component-jpa-migration</module>
+    <module>igloo-jwt</module>
+    <module>igloo-spring-security</module>
+    <module>igloo-spring-openidc</module>
+    <module>igloo-spring-actuator</module>
+    <module>storage-api</module>
+    <module>storage-impl</module>
+    <module>storage-model</module>
+    <module>storage-micrometer</module>
+    <module>storage-integration</module>
+    <module>storage-tools</module>
+    <module>igloo-monitoring-page</module>
+    <module>igloo-cache</module>
+    <module>igloo-hibernate-search-v5migrationhelper</module>
+    <module>jpa-test-patterns</module>
+  </modules>
 </project>

@@ -1,69 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-
-	<modelVersion>4.0.0</modelVersion>
-
-	<parent>
-		<groupId>org.iglooproject.components</groupId>
-		<artifactId>igloo-components</artifactId>
-		<version>${revision}</version>
-	</parent>
-
-	<artifactId>storage-api</artifactId>
-	
-	<name>Storage API</name>
-
-	<dependencies>
-		<dependency>
-			<groupId>org.iglooproject.components</groupId>
-			<artifactId>storage-model</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-tx</artifactId>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>com.google.code.findbugs</groupId>
-			<artifactId>annotations</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.google.code.findbugs</groupId>
-			<artifactId>jsr305</artifactId>
-			<scope>provided</scope>
-		</dependency>
-	</dependencies>
-
-	<build>
-		<plugins>
-		</plugins>
-	</build>
-
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.iglooproject</groupId>
-				<artifactId>dependencies-hibernate</artifactId>
-				<type>pom</type>
-				<scope>import</scope>
-				<version>${igloo-maven.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.iglooproject</groupId>
-				<artifactId>dependencies-spring</artifactId>
-				<type>pom</type>
-				<scope>import</scope>
-				<version>${igloo-maven.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.iglooproject</groupId>
-				<artifactId>dependencies-quality-annotations</artifactId>
-				<type>pom</type>
-				<scope>import</scope>
-				<version>${igloo-maven.version}</version>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
-
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.iglooproject.components</groupId>
+    <artifactId>igloo-components</artifactId>
+    <version>${revision}</version>
+  </parent>
+  <artifactId>storage-api</artifactId>
+  <name>Storage API</name>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.iglooproject</groupId>
+        <artifactId>dependencies-hibernate</artifactId>
+        <version>${igloo-maven.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.iglooproject</groupId>
+        <artifactId>dependencies-spring</artifactId>
+        <version>${igloo-maven.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.iglooproject</groupId>
+        <artifactId>dependencies-quality-annotations</artifactId>
+        <version>${igloo-maven.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+  <dependencies>
+    <dependency>
+      <groupId>org.iglooproject.components</groupId>
+      <artifactId>storage-model</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-tx</artifactId>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>com.google.code.findbugs</groupId>
+      <artifactId>annotations</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.google.code.findbugs</groupId>
+      <artifactId>jsr305</artifactId>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+  <build>
+    <plugins/>
+  </build>
 </project>

@@ -1,47 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-
-	<modelVersion>4.0.0</modelVersion>
-
-	<parent>
-		<groupId>org.iglooproject.components</groupId>
-		<artifactId>igloo-components</artifactId>
-		<version>${revision}</version>
-	</parent>
-
-	<artifactId>igloo-spring-security</artifactId>
-	
-	<name>Igloo - spring security integration</name>
-	<description>igloo-spring-security</description>
-
-	<dependencies>
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-acl</artifactId>
-		</dependency>
-	</dependencies>
-	
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.iglooproject</groupId>
-				<artifactId>dependencies-spring</artifactId>
-				<version>${igloo-maven.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<!-- Override micrometer-->
-			<dependency>
-				<groupId>org.iglooproject</groupId>
-				<artifactId>dependencies-tools</artifactId>
-				<version>${igloo-maven.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
-
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.iglooproject.components</groupId>
+    <artifactId>igloo-components</artifactId>
+    <version>${revision}</version>
+  </parent>
+  <artifactId>igloo-spring-security</artifactId>
+  <name>Igloo - spring security integration</name>
+  <description>igloo-spring-security</description>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.iglooproject</groupId>
+        <artifactId>dependencies-spring</artifactId>
+        <version>${igloo-maven.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <!-- Override micrometer-->
+      <dependency>
+        <groupId>org.iglooproject</groupId>
+        <artifactId>dependencies-tools</artifactId>
+        <version>${igloo-maven.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+  <dependencies>
+    <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-acl</artifactId>
+    </dependency>
+  </dependencies>
 </project>
