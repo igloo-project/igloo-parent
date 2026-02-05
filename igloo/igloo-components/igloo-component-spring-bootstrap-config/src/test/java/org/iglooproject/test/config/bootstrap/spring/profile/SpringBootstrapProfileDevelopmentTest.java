@@ -3,7 +3,7 @@ package org.iglooproject.test.config.bootstrap.spring.profile;
 import org.assertj.core.api.Assertions;
 import org.iglooproject.test.config.bootstrap.spring.util.AbstractSpringBoostrapProfileTest;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.ActiveProfiles;
 
 /**
  * Test with default bootstrap configuration (selection with igloo.profile, and switch with
@@ -13,9 +13,7 @@ import org.springframework.test.context.TestPropertySource;
  *
  * <p><b>user.name<b> is overriden with <em>username<em>
  */
-@TestPropertySource(
-    inheritProperties = true,
-    properties = {"igloo.profile=development"})
+@ActiveProfiles(value = "development")
 public class SpringBootstrapProfileDevelopmentTest extends AbstractSpringBoostrapProfileTest {
 
   /**

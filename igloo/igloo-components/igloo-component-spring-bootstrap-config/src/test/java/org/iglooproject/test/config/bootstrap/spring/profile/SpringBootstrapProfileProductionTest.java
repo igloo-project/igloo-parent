@@ -3,20 +3,19 @@ package org.iglooproject.test.config.bootstrap.spring.profile;
 import org.assertj.core.api.Assertions;
 import org.iglooproject.test.config.bootstrap.spring.util.AbstractSpringBoostrapProfileTest;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 
 /**
  * Test with default bootstrap configuration (selection with igloo.profile, and switch with
  * recursive resolve in properties)
  *
- * <p>i.e., igloo.configurationLocations=${igloo.${igloo.profile}.configurationLocations}
- *
  * <p><b>user.name<b> is overriden with <em>username<em>
  */
+@ActiveProfiles(value = "production")
 @TestPropertySource(
     inheritProperties = true,
     properties = {
-      "igloo.profile=production",
       // needed as default configuration-default-bootstrap.properties references it
       "igloo.applicationName=igloo-component-spring-bootstrap-config"
     })

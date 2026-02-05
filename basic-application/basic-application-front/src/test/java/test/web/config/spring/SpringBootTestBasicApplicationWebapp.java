@@ -8,6 +8,7 @@ import java.lang.annotation.Target;
 import org.iglooproject.config.bootstrap.spring.ExtendedApplicationContextInitializer;
 import org.iglooproject.test.jpa.junit.EntityManagerExecutionListener;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.TestExecutionListeners.MergeMode;
@@ -19,7 +20,8 @@ import org.springframework.test.context.TestPropertySource;
 @ContextConfiguration(
     classes = BasicApplicationWebappTestCommonConfig.class,
     initializers = ExtendedApplicationContextInitializer.class)
-@TestPropertySource(properties = "igloo.profile=test")
+@TestPropertySource(properties = {"igloo.profile=test"})
+@ActiveProfiles(value = "test")
 @TestExecutionListeners(
     listeners = EntityManagerExecutionListener.class,
     mergeMode = MergeMode.MERGE_WITH_DEFAULTS)
