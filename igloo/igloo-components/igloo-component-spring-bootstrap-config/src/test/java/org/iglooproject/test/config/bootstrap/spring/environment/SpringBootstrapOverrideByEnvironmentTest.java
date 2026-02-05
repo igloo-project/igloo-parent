@@ -4,8 +4,8 @@ import org.iglooproject.test.config.bootstrap.spring.util.AbstractSpringBoostrap
 import org.springframework.test.context.TestPropertySource;
 
 @TestPropertySource(
-    properties = {
-      "IGLOO_BOOTSTRAP_LOCATIONS=classpath:test-bootstrap.properties,classpath:test-bootstrap-override.properties",
-      "IGLOO_BOOTSTRAP_OVERRIDE_DEFAULT=true"
+    locations = {
+      "classpath:test-bootstrap.properties",
+      "classpath:test-bootstrap-override.properties"
     })
 public class SpringBootstrapOverrideByEnvironmentTest extends AbstractSpringBoostrapSimpleTest {}

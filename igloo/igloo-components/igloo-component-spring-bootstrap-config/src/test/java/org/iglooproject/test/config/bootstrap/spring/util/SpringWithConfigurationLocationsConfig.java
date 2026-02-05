@@ -12,7 +12,6 @@ import org.springframework.context.annotation.PropertySource;
 @PropertySource(
     name = IglooPropertySourcePriority.APPLICATION,
     value = {
-      "classpath:configuration-app.properties",
       "classpath:configuration-app-${igloo.applicationName}.properties",
       "classpath:configuration-app-${user.name}.properties",
       "classpath:configuration-app-placeholder.properties",
