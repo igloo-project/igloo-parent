@@ -14,3 +14,11 @@
 	--#{$prefix}badge-btn-disabled-color: #{$disabled-color};
 	--#{$prefix}badge-btn-disabled-bg: #{$disabled-background};
 }
+
+@mixin badge-subtle-variant(
+	$base-color,
+	$background: tint-color($base-color, 60%),
+	$color: shade-color($base-color, 50%)
+) {
+	@include badge-variant($background, $color, shade-color($background, 10%), shade-color($color, 10%), $background, $color)
+}
