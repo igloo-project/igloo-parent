@@ -12,7 +12,7 @@
 		&.offcanvas-top,
 		&.offcanvas-bottom {
 			border: none;
-			box-shadow: $box-shadow;
+			box-shadow: 1px 0 0 0 rgba(0, 0, 0, 0.1), 4px 0 24px -4px rgba(0, 0, 0, 0.05);
 		}
 	}
 }

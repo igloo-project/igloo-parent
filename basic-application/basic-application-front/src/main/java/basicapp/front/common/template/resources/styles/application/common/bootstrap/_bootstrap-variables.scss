@@ -6,6 +6,7 @@
 // Color system
 
 // scss-docs-start gray-color-variables
+// Gray system (Based on Modern Slate)
 $white:    #fff !default;
 $gray-100: #f8f9fa !default;
 $gray-200: #e9ecef !default;
@@ -35,150 +36,124 @@ $grays: (
 // scss-docs-end gray-colors-map
 // fusv-enable
 
-// scss-docs-start color-variables
-$blue:    #0d6efd !default;
-$indigo:  #6610f2 !default;
-$purple:  #6f42c1 !default;
-$pink:    #d63384 !default;
-$red:     #dc3545 !default;
-$orange:  #fd7e14 !default;
-$yellow:  #ffc107 !default;
-$green:   #198754 !default;
-$teal:    #20c997 !default;
-$cyan:    #0dcaf0 !default;
-$brand:      #1b0fa4 !default;
-$brand-text: $white !default;
-// scss-docs-end color-variables
-
-// scss-docs-start colors-map
-$colors: (
-  "blue":       $blue,
-  "indigo":     $indigo,
-  "purple":     $purple,
-  "pink":       $pink,
-  "red":        $red,
-  "orange":     $orange,
-  "yellow":     $yellow,
-  "green":      $green,
-  "teal":       $teal,
-  "cyan":       $cyan,
-  "black":      $black,
-  "white":      $white,
-  "gray":       $gray-600,
-  "gray-dark":  $gray-800,
-  "brand":      $brand,
-  "brand-text": $brand-text
-) !default;
-// scss-docs-end colors-map
-
 // The contrast ratio to reach against white, to determine if color changes from "light" to "dark". Acceptable values for WCAG 2.2 are 3, 4.5 and 7.
 // See https://www.w3.org/TR/WCAG/#contrast-minimum
-$min-contrast-ratio:   4.5 !default;
+$min-contrast-ratio:   2 !default;
 
 // Customize the light and dark text colors for use in our color contrast function.
 $color-contrast-dark:      $black !default;
 $color-contrast-light:     $white !default;
 
 // fusv-disable
-$blue-100: tint-color($blue, 80%) !default;
-$blue-200: tint-color($blue, 60%) !default;
-$blue-300: tint-color($blue, 40%) !default;
-$blue-400: tint-color($blue, 20%) !default;
-$blue-500: $blue !default;
-$blue-600: shade-color($blue, 20%) !default;
-$blue-700: shade-color($blue, 40%) !default;
-$blue-800: shade-color($blue, 60%) !default;
-$blue-900: shade-color($blue, 80%) !default;
+$blue-100: #d5e6ff !default;
+$blue-200: #a8cdff !default;
+$blue-300: #74b5ff !default;
+$blue-400: #0f9dff !default;
+$blue-500: #0087fe !default;
+$blue-600: #0070d0 !default;
+$blue-700: #005aa5 !default;
+$blue-800: #00457c !default;
+$blue-900: #013155 !default;
 
-$indigo-100: tint-color($indigo, 80%) !default;
-$indigo-200: tint-color($indigo, 60%) !default;
-$indigo-300: tint-color($indigo, 40%) !default;
-$indigo-400: tint-color($indigo, 20%) !default;
-$indigo-500: $indigo !default;
-$indigo-600: shade-color($indigo, 20%) !default;
-$indigo-700: shade-color($indigo, 40%) !default;
-$indigo-800: shade-color($indigo, 60%) !default;
-$indigo-900: shade-color($indigo, 80%) !default;
+$indigo-100: #e9d9ff !default;
+$indigo-200: #d2b3ff !default;
+$indigo-300: #b88dff !default;
+$indigo-400: #9a68ff !default;
+$indigo-500: #7740ff !default;
+$indigo-600: #6538d2 !default;
+$indigo-700: #532fa6 !default;
+$indigo-800: #41267d !default;
+$indigo-900: #301d55 !default;
 
-$purple-100: tint-color($purple, 80%) !default;
-$purple-200: tint-color($purple, 60%) !default;
-$purple-300: tint-color($purple, 40%) !default;
-$purple-400: tint-color($purple, 20%) !default;
-$purple-500: $purple !default;
-$purple-600: shade-color($purple, 20%) !default;
-$purple-700: shade-color($purple, 40%) !default;
-$purple-800: shade-color($purple, 60%) !default;
-$purple-900: shade-color($purple, 80%) !default;
+$violet-100: #ecd9fc !default;
+$violet-200: #d7b3f8 !default;
+$violet-300: #c18df3 !default;
+$violet-400: #a967ee !default;
+$violet-500: #8e3de8 !default;
+$violet-600: #7635bf !default;
+$violet-700: #602d98 !default;
+$violet-800: #4a2572 !default;
+$violet-900: #351d4e !default;
 
-$pink-100: tint-color($pink, 80%) !default;
-$pink-200: tint-color($pink, 60%) !default;
-$pink-300: tint-color($pink, 40%) !default;
-$pink-400: tint-color($pink, 20%) !default;
-$pink-500: $pink !default;
-$pink-600: shade-color($pink, 20%) !default;
-$pink-700: shade-color($pink, 40%) !default;
-$pink-800: shade-color($pink, 60%) !default;
-$pink-900: shade-color($pink, 80%) !default;
+$purple-100: #f2d7f5 !default;
+$purple-200: #e3b0ea !default;
+$purple-300: #d388e0 !default;
+$purple-400: #c15ed4 !default;
+$purple-500: #ae29c9 !default;
+$purple-600: #9027a6 !default;
+$purple-700: #732384 !default;
+$purple-800: #581f63 !default;
+$purple-900: #3e1945 !default;
 
-$red-100: tint-color($red, 80%) !default;
-$red-200: tint-color($red, 60%) !default;
-$red-300: tint-color($red, 40%) !default;
-$red-400: tint-color($red, 20%) !default;
-$red-500: $red !default;
-$red-600: shade-color($red, 20%) !default;
-$red-700: shade-color($red, 40%) !default;
-$red-800: shade-color($red, 60%) !default;
-$red-900: shade-color($red, 80%) !default;
+$pink-100: #ffd9e1 !default;
+$pink-200: #fbb3c3 !default;
+$pink-300: #f58ca7 !default;
+$pink-400: #ec628b !default;
+$pink-500: #e12871 !default;
+$pink-600: #b9275e !default;
+$pink-700: #94254c !default;
+$pink-800: #70203b !default;
+$pink-900: #4e1b2a !default;
 
-$orange-100: tint-color($orange, 80%) !default;
-$orange-200: tint-color($orange, 60%) !default;
-$orange-300: tint-color($orange, 40%) !default;
-$orange-400: tint-color($orange, 20%) !default;
-$orange-500: $orange !default;
-$orange-600: shade-color($orange, 20%) !default;
-$orange-700: shade-color($orange, 40%) !default;
-$orange-800: shade-color($orange, 60%) !default;
-$orange-900: shade-color($orange, 80%) !default;
+$red-100: #ffd9d7 !default;
+$red-200: #ffb4b0 !default;
+$red-300: #fa8c8a !default;
+$red-400: #f26267 !default;
+$red-500: #e62845 !default;
+$red-600: #be273b !default;
+$red-700: #972530 !default;
+$red-800: #732026 !default;
+$red-900: #501b1d !default;
 
-$yellow-100: tint-color($yellow, 80%) !default;
-$yellow-200: tint-color($yellow, 60%) !default;
-$yellow-300: tint-color($yellow, 40%) !default;
-$yellow-400: tint-color($yellow, 20%) !default;
-$yellow-500: $yellow !default;
-$yellow-600: shade-color($yellow, 20%) !default;
-$yellow-700: shade-color($yellow, 40%) !default;
-$yellow-800: shade-color($yellow, 60%) !default;
-$yellow-900: shade-color($yellow, 80%) !default;
+$orange-100: #ffe2bc !default;
+$orange-200: #ffc57a !default;
+$orange-300: #ffa72f !default;
+$orange-400: #ff8900 !default;
+$orange-500: #ff6800 !default;
+$orange-600: #d55800 !default;
+$orange-700: #aa4800 !default;
+$orange-800: #803800 !default;
+$orange-900: #592900 !default;
 
-$green-100: tint-color($green, 80%) !default;
-$green-200: tint-color($green, 60%) !default;
-$green-300: tint-color($green, 40%) !default;
-$green-400: tint-color($green, 20%) !default;
-$green-500: $green !default;
-$green-600: shade-color($green, 20%) !default;
-$green-700: shade-color($green, 40%) !default;
-$green-800: shade-color($green, 60%) !default;
-$green-900: shade-color($green, 80%) !default;
+$yellow-100: #fff3a9 !default;
+$yellow-200: #ffe846 !default;
+$yellow-300: #ffdd00 !default;
+$yellow-400: #ffd300 !default;
+$yellow-500: #ffc900 !default;
+$yellow-600: #e7a500 !default;
+$yellow-700: #b88300 !default;
+$yellow-800: #8b6300 !default;
+$yellow-900: #614400 !default;
 
-$teal-100: tint-color($teal, 80%) !default;
-$teal-200: tint-color($teal, 60%) !default;
-$teal-300: tint-color($teal, 40%) !default;
-$teal-400: tint-color($teal, 20%) !default;
-$teal-500: $teal !default;
-$teal-600: shade-color($teal, 20%) !default;
-$teal-700: shade-color($teal, 40%) !default;
-$teal-800: shade-color($teal, 60%) !default;
-$teal-900: shade-color($teal, 80%) !default;
+$green-100: #cdf1dd !default;
+$green-200: #98e3bb !default;
+$green-300: #59d39a !default;
+$green-400: #00c37a !default;
+$green-500: #00b15a !default;
+$green-600: #00934c !default;
+$green-700: #00753e !default;
+$green-800: #005930 !default;
+$green-900: #003e24 !default;
 
-$cyan-100: tint-color($cyan, 80%) !default;
-$cyan-200: tint-color($cyan, 60%) !default;
-$cyan-300: tint-color($cyan, 40%) !default;
-$cyan-400: tint-color($cyan, 20%) !default;
-$cyan-500: $cyan !default;
-$cyan-600: shade-color($cyan, 20%) !default;
-$cyan-700: shade-color($cyan, 40%) !default;
-$cyan-800: shade-color($cyan, 60%) !default;
-$cyan-900: shade-color($cyan, 80%) !default;
+$teal-100: #c8f4f0 !default;
+$teal-200: #8be8e1 !default;
+$teal-300: #25dbd3 !default;
+$teal-400: #00cdc4 !default;
+$teal-500: #00beb6 !default;
+$teal-600: #009d96 !default;
+$teal-700: #007e78 !default;
+$teal-800: #005f5b !default;
+$teal-900: #00423f !default;
+
+$cyan-100: #d1f1fe !default;
+$cyan-200: #9de2fd !default;
+$cyan-300: #5bd3fb !default;
+$cyan-400: #00c4f9 !default;
+$cyan-500: #00b4f8 !default;
+$cyan-600: #0095cb !default;
+$cyan-700: #0077a1 !default;
+$cyan-800: #005a79 !default;
+$cyan-900: #003f53 !default;
 
 $blues: (
   "blue-100": $blue-100,
@@ -300,6 +275,42 @@ $cyans: (
   "cyan-900": $cyan-900
 ) !default;
 // fusv-enable
+
+// scss-docs-start color-variables
+$blue:    $blue-500 !default;
+$indigo:  $indigo-500 !default;
+$purple:  $purple-500 !default;
+$pink:    $pink-500 !default;
+$red:     $red-500 !default;
+$orange:  $orange-500 !default;
+$yellow:  $yellow-500 !default;
+$green:   $green-500 !default;
+$teal:    $teal-500 !default;
+$cyan:    $cyan-500 !default;
+$brand:      $indigo !default;
+$brand-text: $white !default;
+// scss-docs-end color-variables
+
+// scss-docs-start colors-map
+$colors: (
+  "blue":       $blue,
+  "indigo":     $indigo,
+  "purple":     $purple,
+  "pink":       $pink,
+  "red":        $red,
+  "orange":     $orange,
+  "yellow":     $yellow,
+  "green":      $green,
+  "teal":       $teal,
+  "cyan":       $cyan,
+  "black":      $black,
+  "white":      $white,
+  "gray":       $gray-500,
+  "gray-dark":  $gray-800,
+  "brand":      $brand,
+  "brand-text": $brand-text
+) !default;
+// scss-docs-end colors-map
 
 // scss-docs-start theme-color-variables
 $primary:       $blue !default;
@@ -577,10 +588,10 @@ $border-color-translucent:    rgba($black, .125) !default;
 // scss-docs-end border-variables
 
 // scss-docs-start border-radius-variables
-$border-radius:               .375rem !default;
-$border-radius-xs:            .25rem !default;
-$border-radius-sm:            .25rem !default;
-$border-radius-lg:            .5rem !default;
+$border-radius:               .5rem !default;
+$border-radius-xs:            .375rem !default;
+$border-radius-sm:            .375rem !default;
+$border-radius-lg:            .75rem !default;
 $border-radius-xl:            1rem !default;
 $border-radius-xxl:           2rem !default;
 $border-radius-pill:          50rem !default;

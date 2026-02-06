@@ -67,3 +67,23 @@
 		}
 	}
 }
+
+@each $color, $value in $theme-colors {
+	.badge-subtle-#{$color} {
+		@if $color == "light" {
+			@include badge-subtle-variant(
+				$value,
+				tint-color($value, 30%),
+				shade-color($value, 60%)
+			);
+		} @else if $color == "dark" {
+			@include badge-subtle-variant(
+				$value,
+				tint-color($value, 60%),
+				shade-color($value, 30%)
+			);
+		} @else {
+			@include badge-subtle-variant($value);
+		}
+	}
+}
