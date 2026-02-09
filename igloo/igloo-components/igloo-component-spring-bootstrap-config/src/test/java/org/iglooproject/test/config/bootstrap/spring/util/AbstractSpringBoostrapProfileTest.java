@@ -2,7 +2,6 @@ package org.iglooproject.test.config.bootstrap.spring.util;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 
 /**
@@ -13,7 +12,6 @@ import org.springframework.test.context.TestPropertySource;
  *
  * @see AbstractBootstrapTestCase
  */
-@ActiveProfiles(value = "OVERRIDE")
 @TestPropertySource(
     inheritProperties = true,
     properties = {"user.name=username"})
