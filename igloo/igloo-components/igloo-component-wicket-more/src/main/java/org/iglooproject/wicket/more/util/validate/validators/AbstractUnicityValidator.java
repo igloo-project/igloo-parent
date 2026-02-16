@@ -1,6 +1,6 @@
 package org.iglooproject.wicket.more.util.validate.validators;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.model.IModel;

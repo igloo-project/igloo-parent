@@ -2,12 +2,12 @@ package igloo.bootstrap.js.statement;
 
 import com.github.openjson.JSONArray;
 import igloo.bootstrap.js.util.ImmutableStyle;
+import jakarta.annotation.Nullable;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Objects;
 import java.util.stream.Stream;
-import javax.annotation.Nullable;
 import org.apache.wicket.model.IModel;
 import org.immutables.value.Value;
 import org.javatuples.Pair;

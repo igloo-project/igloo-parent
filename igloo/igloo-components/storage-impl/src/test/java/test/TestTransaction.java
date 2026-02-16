@@ -6,7 +6,6 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,12 +22,12 @@ import org.springframework.transaction.support.TransactionSynchronization;
 
 class TestTransaction extends AbstractTest {
 
-  private StorageTransactionResourceManager resourceManager =
+  private final StorageTransactionResourceManager resourceManager =
       new StorageTransactionResourceManager();
 
   /** On commit, deleted files are physically removed. Other events are ignored. */
   @Test
-  void testTransactionCommit() throws IOException {
+  void testTransactionCommit() {
     StorageOperations operations = Mockito.mock(StorageOperations.class);
     StorageTransactionAdapter adapter =
         new StorageTransactionAdapter(
@@ -36,17 +35,17 @@ class TestTransaction extends AbstractTest {
     Path fichier1 = Path.of("fichier1");
     Path fichier2 = Path.of("fichier2");
     Path fichier3 = Path.of("fichier3");
-    resourceManager.addEvent(1l, StorageEventType.ADD, fichier1);
-    resourceManager.addEvent(2l, StorageEventType.DELETE, fichier2);
-    resourceManager.addEvent(4l, StorageEventType.ADD, fichier3);
+    resourceManager.addEvent(1L, StorageEventType.ADD, fichier1);
+    resourceManager.addEvent(2L, StorageEventType.DELETE, fichier2);
+    resourceManager.addEvent(4L, StorageEventType.ADD, fichier3);
     adapter.afterCompletion(TransactionSynchronization.STATUS_COMMITTED);
-    verify(operations).removePhysicalFile(anyString(), eq(2l), eq(fichier2));
+    verify(operations).removePhysicalFile(anyString(), eq(2L), eq(fichier2));
     verifyNoMoreInteractions(operations);
   }
 
   /** On rollback, added files are physically removed. Other events are ignored. */
   @Test
-  void testTransactionRollback() throws IOException {
+  void testTransactionRollback() {
     StorageOperations operations = Mockito.mock(StorageOperations.class);
     StorageTransactionAdapter adapter =
         new StorageTransactionAdapter(
@@ -54,9 +53,9 @@ class TestTransaction extends AbstractTest {
     Path fichier1 = Path.of("fichier1");
     Path fichier2 = Path.of("fichier2");
     Path fichier3 = Path.of("fichier3");
-    resourceManager.addEvent(1l, StorageEventType.ADD, fichier1);
-    resourceManager.addEvent(2l, StorageEventType.DELETE, fichier2);
-    resourceManager.addEvent(4l, StorageEventType.ADD, fichier3);
+    resourceManager.addEvent(1L, StorageEventType.ADD, fichier1);
+    resourceManager.addEvent(2L, StorageEventType.DELETE, fichier2);
+    resourceManager.addEvent(4L, StorageEventType.ADD, fichier3);
     adapter.afterCompletion(TransactionSynchronization.STATUS_ROLLED_BACK);
     verify(operations).removePhysicalFile(anyString(), anyLong(), eq(fichier1));
     verify(operations).removePhysicalFile(anyString(), anyLong(), eq(fichier3));

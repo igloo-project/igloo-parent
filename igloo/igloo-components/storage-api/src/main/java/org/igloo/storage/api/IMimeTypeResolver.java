@@ -1,7 +1,7 @@
 package org.igloo.storage.api;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * {@link IMimeTypeResolver} allow to select a mimetype from a filename. Returned mimetype cannot be

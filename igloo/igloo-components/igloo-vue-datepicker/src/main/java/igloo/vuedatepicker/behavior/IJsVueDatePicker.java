@@ -16,7 +16,7 @@ import org.immutables.value.Value;
  * Datepicker documentation</a>
  */
 @Value.Immutable()
-@Value.Style(typeImmutable = "*", typeAbstract = "I*")
+@Value.Style(typeImmutable = "*", typeAbstract = "I*", jakarta = true)
 public interface IJsVueDatePicker extends IJsObject, Serializable {
 
   IJsStatement model();
