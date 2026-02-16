@@ -9,7 +9,7 @@ import java.io.Serializable;
 import org.immutables.value.Value;
 
 @Value.Immutable
-@Value.Style(typeImmutable = "*", typeAbstract = "I*")
+@Value.Style(typeImmutable = "*", typeAbstract = "I*", jakarta = true)
 public interface IPopover extends IWVisitable, Serializable {
 
   IJsPopover js();

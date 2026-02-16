@@ -13,7 +13,6 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
-import javax.sql.DataSource;
 import org.hibernate.bytecode.enhance.spi.EnhancementContext;
 import org.hibernate.bytecode.spi.ClassTransformer;
 import org.hibernate.jpa.HibernatePersistenceProvider;
@@ -41,12 +40,12 @@ public class PersistenceUnitDescriptorAdapter implements PersistenceUnitDescript
   }
 
   @Override
-  public DataSource getJtaDataSource() {
+  public Object getJtaDataSource() {
     return null;
   }
 
   @Override
-  public DataSource getNonJtaDataSource() {
+  public Object getNonJtaDataSource() {
     return null;
   }
 

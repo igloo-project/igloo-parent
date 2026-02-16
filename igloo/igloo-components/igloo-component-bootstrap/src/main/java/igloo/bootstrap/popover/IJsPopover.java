@@ -12,7 +12,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.immutables.value.Value;
 
 @Value.Immutable
-@Value.Style(typeImmutable = "*", typeAbstract = "I*")
+@Value.Style(typeImmutable = "*", typeAbstract = "I*", jakarta = true)
 public interface IJsPopover extends IJsObject, Serializable {
 
   @Nullable

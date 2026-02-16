@@ -25,7 +25,7 @@ import java.util.function.UnaryOperator;
 import org.immutables.value.Value;
 
 @Value.Immutable
-@Value.Style(typeImmutable = "*", typeAbstract = "I*")
+@Value.Style(typeImmutable = "*", typeAbstract = "I*", jakarta = true)
 public interface IJuiceInliner {
 
   /**

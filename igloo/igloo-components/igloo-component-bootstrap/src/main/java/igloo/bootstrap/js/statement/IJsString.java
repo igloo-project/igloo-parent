@@ -1,8 +1,8 @@
 package igloo.bootstrap.js.statement;
 
 import igloo.bootstrap.js.util.ImmutableStyle;
+import jakarta.annotation.Nullable;
 import java.io.Serializable;
-import javax.annotation.Nullable;
 import org.immutables.value.Value;
 
 @Value.Immutable

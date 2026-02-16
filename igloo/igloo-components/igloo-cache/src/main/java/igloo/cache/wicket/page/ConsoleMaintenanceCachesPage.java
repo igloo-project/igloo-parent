@@ -32,7 +32,6 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.iglooproject.functional.Predicates2;
-import org.iglooproject.spring.util.StringUtils;
 import org.iglooproject.wicket.more.markup.html.form.LabelPlaceholderBehavior;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
 import org.iglooproject.wicket.more.markup.html.model.PercentageFloatToBigDecimalModel;
@@ -44,6 +43,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
+import org.springframework.util.StringUtils;
 import org.wicketstuff.wiquery.core.events.KeyboardEvent;
 import org.wicketstuff.wiquery.core.events.MouseEvent;
 

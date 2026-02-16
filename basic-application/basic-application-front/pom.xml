@@ -151,11 +151,6 @@
       <artifactId>bindgen</artifactId>
     </dependency>
     <dependency>
-      <groupId>javax.annotation</groupId>
-      <artifactId>javax.annotation-api</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
       <groupId>org.iglooproject.components</groupId>
       <artifactId>igloo-component-config-test</artifactId>
       <version>${igloo.version}</version>

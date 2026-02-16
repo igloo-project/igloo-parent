@@ -1,7 +1,7 @@
 package org.iglooproject.wicket.more.link.descriptor.builder.impl.parameter;
 
+import jakarta.annotation.Nullable;
 import java.util.Collection;
-import javax.annotation.Nullable;
 import org.iglooproject.functional.SerializableSupplier2;
 import org.springframework.core.convert.TypeDescriptor;
 

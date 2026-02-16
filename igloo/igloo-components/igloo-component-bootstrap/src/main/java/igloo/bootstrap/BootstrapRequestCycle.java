@@ -1,8 +1,8 @@
 package igloo.bootstrap;
 
 import igloo.wicket.offline.OfflineComponentClassMetadataKey;
+import jakarta.annotation.Nonnull;
 import java.util.Optional;
-import javax.annotation.Nonnull;
 import org.apache.wicket.Application;
 import org.apache.wicket.MetaDataKey;
 import org.apache.wicket.core.request.handler.IPageRequestHandler;

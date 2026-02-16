@@ -266,11 +266,6 @@
       <artifactId>jakarta.xml.bind-api</artifactId>
       <optional>true</optional>
     </dependency>
-    <dependency>
-      <groupId>javax.annotation</groupId>
-      <artifactId>javax.annotation-api</artifactId>
-      <optional>true</optional>
-    </dependency>
     <!-- Code generation only -->
     <dependency>
       <groupId>io.github.openfeign.querydsl</groupId>

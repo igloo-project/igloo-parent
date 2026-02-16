@@ -2,10 +2,10 @@ package igloo.bootstrap.js.statement;
 
 import igloo.bootstrap.js.util.ImmutableStyle;
 import igloo.bootstrap.woption.IWVisitor;
+import jakarta.annotation.Nullable;
 import java.io.Serializable;
 import java.util.Map;
 import java.util.stream.Collectors;
-import javax.annotation.Nullable;
 import org.immutables.value.Value;
 
 @Value.Immutable(builder = true)
