@@ -10,6 +10,7 @@ import basicapp.back.business.user.model.embeddable.UserAnnouncementInformation;
 import basicapp.back.business.user.model.embeddable.UserPasswordInformation;
 import basicapp.back.business.user.model.embeddable.UserPasswordRecoveryRequest;
 import basicapp.back.config.hibernate.search.bridge.EmailAddressValueBridge;
+import basicapp.back.config.hibernate.type.EmailAddressType;
 import basicapp.back.util.binding.Bindings;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.base.MoreObjects.ToStringHelper;
@@ -37,6 +38,7 @@ import java.util.SortedSet;
 import org.bindgen.Bindable;
 import org.hibernate.annotations.NaturalId;
 import org.hibernate.annotations.SortComparator;
+import org.hibernate.annotations.Type;
 import org.hibernate.search.engine.backend.types.Sortable;
 import org.hibernate.search.mapper.pojo.bridge.mapping.annotation.ValueBridgeRef;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
@@ -112,6 +114,7 @@ public class User extends GenericEntity<Long, User> implements IUser, INotificat
   private String lastName;
 
   @Basic
+  @Type(EmailAddressType.class)
   @FullTextField(
       name = EMAIL_ADDRESS_AUTOCOMPLETE,
       analyzer = HibernateSearchAnalyzer.TEXT,
