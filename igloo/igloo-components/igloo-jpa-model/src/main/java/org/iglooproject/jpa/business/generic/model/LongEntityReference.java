@@ -39,8 +39,7 @@ public final class LongEntityReference
     return genericEntityReference == null ? null : new LongEntityReference(genericEntityReference);
   }
 
-  // Pour Hibernate
-  protected LongEntityReference() {}
+  public LongEntityReference() {}
 
   public LongEntityReference(Class<? extends GenericEntity<Long, ?>> entityClass, Long entityId) {
     super(entityClass, entityId);
@@ -75,6 +74,7 @@ public final class LongEntityReference
     return type;
   }
 
+  @Override
   public void setType(Class<? extends GenericEntity<Long, ?>> type) {
     this.type = type;
   }

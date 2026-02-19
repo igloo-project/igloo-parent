@@ -218,6 +218,9 @@ public class Fichier extends GenericEntity<Long, Fichier> {
   }
 
   public LongEntityReference getCreatedBy() {
+    if (createdBy == null) {
+      createdBy = new LongEntityReference();
+    }
     return createdBy;
   }
 
