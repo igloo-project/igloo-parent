@@ -28,31 +28,31 @@ public class PerfData {
     this.max = max;
   }
 
-  public synchronized String getName() {
+  public String getName() {
     return name;
   }
 
-  public synchronized String getUnit() {
+  public String getUnit() {
     return unit;
   }
 
-  public synchronized Number getValue() {
+  public Number getValue() {
     return value;
   }
 
-  public synchronized Number getWarning() {
+  public Number getWarning() {
     return warning;
   }
 
-  public synchronized Number getCritical() {
+  public Number getCritical() {
     return critical;
   }
 
-  public synchronized Number getMin() {
+  public Number getMin() {
     return min;
   }
 
-  public synchronized Number getMax() {
+  public Number getMax() {
     return max;
   }
 }

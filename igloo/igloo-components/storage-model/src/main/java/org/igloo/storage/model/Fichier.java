@@ -217,11 +217,11 @@ public class Fichier extends GenericEntity<Long, Fichier> {
     this.invalidationDate = deletionDate;
   }
 
-  public synchronized LongEntityReference getCreatedBy() {
+  public LongEntityReference getCreatedBy() {
     return createdBy;
   }
 
-  public synchronized void setCreatedBy(LongEntityReference createdBy) {
+  public void setCreatedBy(LongEntityReference createdBy) {
     this.createdBy = createdBy;
   }
 }

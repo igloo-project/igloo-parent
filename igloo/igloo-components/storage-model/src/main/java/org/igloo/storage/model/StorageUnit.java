@@ -176,19 +176,19 @@ public class StorageUnit extends GenericEntity<Long, StorageUnit> {
     this.checkChecksumDelay = checkChecksumDelay;
   }
 
-  public synchronized Long getSplitSize() {
+  public Long getSplitSize() {
     return splitSize;
   }
 
-  public synchronized void setSplitSize(Long splitSize) {
+  public void setSplitSize(Long splitSize) {
     this.splitSize = splitSize;
   }
 
-  public synchronized Duration getSplitDuration() {
+  public Duration getSplitDuration() {
     return splitDuration;
   }
 
-  public synchronized void setSplitDuration(Duration splitDuration) {
+  public void setSplitDuration(Duration splitDuration) {
     this.splitDuration = splitDuration;
   }
 }
