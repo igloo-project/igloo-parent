@@ -7,9 +7,7 @@ import jakarta.persistence.EntityManagerFactory;
 import java.util.List;
 import java.util.Properties;
 import org.hibernate.boot.Metadata;
-import org.hibernate.boot.MetadataBuilder;
 import org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl;
-import org.hibernate.boot.spi.MetadataBuilderContributor;
 import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
 import org.hibernate.jpa.boot.spi.IntegratorProvider;
 import org.igloo.hibernate.hbm.MetadataRegistryIntegrator;
@@ -168,21 +166,6 @@ public class JpaAutoConfiguration {
         p.put(
             EntityManagerFactoryBuilderImpl.INTEGRATOR_PROVIDER,
             (IntegratorProvider) () -> List.of(integrator));
-  }
-
-  @Bean
-  public HibernatePropertiesCustomizer typeCustomizer(
-      List<MetadataBuilderContributor> metadataBuilderContributor) {
-    return hp -> {
-      hp.put(
-          "hibernate.metadata_builder_contributor",
-          new MetadataBuilderContributor() {
-            @Override
-            public void contribute(MetadataBuilder metadataBuilder) {
-              metadataBuilderContributor.stream().forEach(i -> i.contribute(metadataBuilder));
-            }
-          });
-    };
   }
 
   /** Construit un transactionInterceptor avec une configuration par défaut. */
