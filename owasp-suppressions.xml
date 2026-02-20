@@ -186,4 +186,13 @@
 		<packageUrl regex="true">^pkg:maven/org\.apache\.logging\.log4j/log4j-core@.*$</packageUrl>
 		<vulnerabilityName>CVE-2025-68161</vulnerabilityName>
 	</suppress>
+	<suppress>
+		<notes><![CDATA[
+   file name: hibernate-core-5.6.15.Final.jar
+   Version 5  out of support
+   We don't use string id and we don't use InlineIdsOrClauseBulkIdStrategy
+   ]]></notes>
+		<packageUrl regex="true">^pkg:maven/org\.hibernate/hibernate-core@.*$</packageUrl>
+		<vulnerabilityName>CVE-2026-0603</vulnerabilityName>
+	</suppress>
 </suppressions> 
