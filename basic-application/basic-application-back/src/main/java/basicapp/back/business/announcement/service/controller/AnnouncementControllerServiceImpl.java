@@ -2,6 +2,7 @@ package basicapp.back.business.announcement.service.controller;
 
 import basicapp.back.business.announcement.model.Announcement;
 import basicapp.back.business.announcement.service.business.IAnnouncementService;
+import igloo.loginmdc.annotation.LogExecution;
 import java.util.List;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
@@ -19,12 +20,14 @@ public class AnnouncementControllerServiceImpl implements IAnnouncementControlle
   }
 
   @Override
+  @LogExecution
   public void saveAnnouncement(Announcement announcement)
       throws ServiceException, SecurityServiceException {
     announcementService.saveAnnouncement(announcement);
   }
 
   @Override
+  @LogExecution
   public void deleteAnnouncement(Announcement announcement)
       throws SecurityServiceException, ServiceException {
     announcementService.deleteAnnouncement(announcement);

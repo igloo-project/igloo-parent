@@ -2,6 +2,7 @@ package basicapp.back.business.role.service.controller;
 
 import basicapp.back.business.role.model.Role;
 import basicapp.back.business.role.service.IRoleService;
+import igloo.loginmdc.annotation.LogExecution;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ public class RoleControllerServiceImpl implements IRoleControllerService {
   }
 
   @Override
+  @LogExecution
   public void saveRole(Role role) throws ServiceException, SecurityServiceException {
     roleService.saveRole(role);
   }

@@ -35,7 +35,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
   BasicApplicationCoreSchedulingConfig.class, // configuration des tâches planifiées
   BasicApplicationCoreApplicationPropertyConfig
       .class, // configuration des propriétés de l'application
-  BasicApplicationReferenceDataConfiguration.class
+  BasicApplicationReferenceDataConfiguration.class,
+  BasicApplicationLoggerConfig.class // configuration des loggers
 })
 @ComponentScan(
     basePackageClasses = {BasicApplicationCorePackage.class},
