@@ -101,12 +101,14 @@ basic-application-init:
 maven-deploy:
   stage: deploy
   environment: staging
-  script:
-    - "mvn -U deploy -DperformRelease -Ddistribution=igloo-release -DskipTests"
+  before_script:
+    - IGLOO_VERSION=$(mvn -Dexec.executable='echo' -Dexec.args='${project.version}' --non-recursive exec:exec -q)
+    - if [ $IGLOO_VERSION != *"SNAPSHOT"* ] && [ $CI_COMMIT_TAG != "true" ]; then
+      echo "can't deploy non version SNAPSHOT on branch job"; exit 0; fi
   rules:
     - if: $CI_PIPELINE_SOURCE == "api"
       when: never
-    - if: $CI_COMMIT_BRANCH == "main"
+    - if: $CI_COMMIT_TAG
     - if: $CI_COMMIT_BRANCH == "dev"
     - if: $CI_COMMIT_BRANCH =~ /^ft-.*-deploy$/
     - if: $CI_COMMIT_BRANCH =~ /^hf-.*$/
