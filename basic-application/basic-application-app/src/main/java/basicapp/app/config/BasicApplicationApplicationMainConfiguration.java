@@ -4,6 +4,7 @@ import basicapp.back.config.BasicApplicationBackBaseConfiguration;
 import basicapp.back.config.BasicApplicationBackDifferenceConfiguration;
 import basicapp.back.config.BasicApplicationBackFlywayConfiguration;
 import basicapp.back.config.BasicApplicationBackJpaConfiguration;
+import basicapp.back.config.BasicApplicationBackLoggerConfig;
 import basicapp.back.config.BasicApplicationBackManifestConfiguration;
 import basicapp.back.config.BasicApplicationBackNotificationConfiguration;
 import basicapp.back.config.BasicApplicationBackPropertyRegistryConfiguration;
@@ -39,7 +40,8 @@ import org.springframework.context.annotation.Import;
   BasicApplicationFrontSecurityConfiguration.class,
   BasicApplicationFrontServletConfiguration.class,
   BasicApplicationFrontWicketConfiguration.class,
-  BasicApplicationFrontNotificationConfiguration.class
+  BasicApplicationFrontNotificationConfiguration.class,
+  BasicApplicationBackLoggerConfig.class
 })
 @ComponentScan(
     basePackageClasses = {BasicApplicationApplication.class},
