@@ -158,7 +158,9 @@
 										<wicket:message key="console.maintenance.task.detail.serializedTask" />
 									</div>
 								</div>
-								<pre wicket:id="serializedTask" class="card-body bg-light pre-scrollable m-0" />
+								<div wicket:enclosure-component="serializedTask" class="card-body bg-light card-bg-bottom">
+									<pre wicket:id="serializedTask" class="pre-scrollable m-0" />
+								</div>
 							</div>
 						</div>
 						
