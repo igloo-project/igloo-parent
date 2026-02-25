@@ -7,9 +7,9 @@ import java.lang.annotation.Target;
 import org.slf4j.event.Level;
 
 /**
- * Annotation to simply add logs before and after calling method execution.
+ * Annotation to add logs before and after calling method execution.
  *
- * <p>by default, add a log with class name and methode name with INFO level.
+ * <p>By default, add a log with class name and method name with {@link #level()} level.
  *
  * @see LogExecutionContributor
  */
@@ -17,19 +17,40 @@ import org.slf4j.event.Level;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface LogExecution {
 
-  String additionalLogsBefore() default "";
+  Level level() default Level.INFO;
 
-  Level additionalLogsLevelBefore() default Level.INFO;
+  String beforeAdditionalLogMessage() default "";
 
-  String additionalLogsAfter() default "";
+  LogLevel beforeAdditionalLogLevel() default LogLevel.INHERIT;
 
-  Level additionalLogsLevelAfter() default Level.INFO;
+  String afterReturningAdditionalLogMessage() default "";
 
-  String additionalLogsIfException() default "";
+  LogLevel afterReturningAdditionalLogLevel() default LogLevel.INHERIT;
 
-  Level additionalLogsLevelIfException() default Level.INFO;
+  String afterThrowingAdditionalLogMessage() default "";
 
-  boolean logStackTrace() default false;
+  LogLevel afterThrowingAdditionalLogLevel() default LogLevel.INHERIT;
 
-  Level logStackTraceLevel() default Level.INFO;
+  boolean afterThrowingLogStackTrace() default false;
+
+  LogLevel afterThrowingLogStackTraceLevel() default LogLevel.INHERIT;
+
+  public enum LogLevel {
+    INHERIT(null),
+    ERROR(org.slf4j.event.Level.ERROR),
+    WARN(org.slf4j.event.Level.WARN),
+    INFO(org.slf4j.event.Level.INFO),
+    DEBUG(org.slf4j.event.Level.DEBUG),
+    TRACE(org.slf4j.event.Level.TRACE);
+
+    private final org.slf4j.event.Level level;
+
+    private LogLevel(org.slf4j.event.Level level) {
+      this.level = level;
+    }
+
+    public org.slf4j.event.Level resolve(org.slf4j.event.Level level) {
+      return this == INHERIT ? level : this.level;
+    }
+  }
 }
