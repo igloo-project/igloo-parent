@@ -34,4 +34,13 @@
 		<packageUrl regex="true">^pkg:maven/org\.iglooproject\.components/igloo-validator@.*$</packageUrl>
 		<cve>CVE-2025-15104</cve>
 	</suppress>
+	<suppress>
+		<notes><![CDATA[
+   file name: kotlin-stdlib-1.9.0.jar
+   
+   Only for JetBrains Kotlin before 1.4.21. We use version up or equal to 1.9.0
+   ]]></notes>
+		<packageUrl regex="true">^pkg:maven/org\.jetbrains\.kotlin/kotlin-stdlib@.*$</packageUrl>
+		<cve>CVE-2020-29582</cve>
+	</suppress>
 </suppressions>
