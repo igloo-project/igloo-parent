@@ -12,8 +12,8 @@
   <name>Igloo - Parent - Maven configuration - Core</name>
   <properties>
     <igloo.version>${project.version}</igloo.version>
-    <igloo-maven.version>6.20.0-rev-SNAPSHOT</igloo-maven.version>
-    <igloo-commons.version>6.20.0-rev-SNAPSHOT</igloo-commons.version>
+    <igloo-maven.version>6.20.0-SNAPSHOT</igloo-maven.version>
+    <igloo-commons.version>6.20.0-SNAPSHOT</igloo-commons.version>
     <igloo.log4j.major-version>2</igloo.log4j.major-version>
     <igloo.logging.artifact>igloo-component-core-logging-log4j${igloo.log4j.major-version}</igloo.logging.artifact>
   </properties>
