@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.iglooproject</groupId>
     <artifactId>plugins-all</artifactId>
-    <version>6.20.0-SNAPSHOT</version>
+    <version>6.20.0</version>
     <relativePath/>
   </parent>
   <groupId>org.iglooproject.parents</groupId>
@@ -13,7 +13,7 @@
   <packaging>pom</packaging>
   <name>Igloo - Parent - Maven configuration - Common</name>
   <properties>
-    <revision>6.20.0-SNAPSHOT</revision>
+    <revision>6.20.0</revision>
     <productionBranchName>main</productionBranchName>
   </properties>
   <build>
