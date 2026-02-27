@@ -44,7 +44,7 @@
     </dependencies>
   </dependencyManagement>
   <dependencies>
-	<dependency>
+    <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-security</artifactId>
     </dependency>
@@ -92,7 +92,7 @@
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
     </dependency>
-	<dependency>
+    <dependency>
       <groupId>org.aspectj</groupId>
       <artifactId>aspectjweaver</artifactId>
     </dependency>

@@ -31,12 +31,12 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
-	  <dependency>
+      <dependency>
         <groupId>org.iglooproject</groupId>
         <artifactId>dependencies-commons</artifactId>
+        <version>${igloo-maven.version}</version>
         <type>pom</type>
         <scope>import</scope>
-        <version>${igloo-maven.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -61,7 +61,7 @@
       <artifactId>jsr305</artifactId>
       <scope>provided</scope>
     </dependency>
-	<dependency>
+    <dependency>
       <groupId>jakarta.annotation</groupId>
       <artifactId>jakarta.annotation-api</artifactId>
       <optional>true</optional>
