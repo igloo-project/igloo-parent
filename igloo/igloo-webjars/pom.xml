@@ -1,42 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-
-	<parent>
-		<groupId>org.iglooproject.parents</groupId>
-		<artifactId>igloo-parent-maven-configuration-core</artifactId>
-		<version>6.19.0</version>
-		<relativePath>../igloo-parents/igloo-parent-maven-configuration-core/pom.xml</relativePath>
-	</parent>
-
-	<groupId>org.iglooproject.webjars</groupId>
-	<artifactId>igloo-webjars</artifactId>
-
-	<packaging>pom</packaging>
-	<name>webjars parent module</name>
-	<description>webjars for Igloo project</description>
-
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<destDir>${project.build.outputDirectory}/META-INF/resources/webjars/${project.artifactId}/${project.version}</destDir>
-		<version.snapshotLess>test</version.snapshotLess>
-	</properties>
-	
-	<modules>
-		<module>bootstrap4-override</module>
-		<module>bootstrap5-override</module>
-		<module>bootstrap-email</module>
-		<module>bootstrap-print</module>
-		<module>igloojs</module>
-	</modules>
-	
-	<build>
-		<resources>
-			<resource>
-				<directory>src/main/webjars</directory>
-				<targetPath>META-INF/resources/webjars/${project.name}/${project.version}</targetPath>
-			</resource>
-		</resources>
-	</build>
-
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.iglooproject.parents</groupId>
+    <artifactId>igloo-parent-maven-configuration-core</artifactId>
+    <version>${revision}</version>
+    <relativePath>../igloo-parents/igloo-parent-maven-configuration-core/pom.xml</relativePath>
+  </parent>
+  <groupId>org.iglooproject.webjars</groupId>
+  <artifactId>igloo-webjars</artifactId>
+  <packaging>pom</packaging>
+  <name>webjars parent module</name>
+  <description>webjars for Igloo project</description>
+  <modules>
+    <module>bootstrap4-override</module>
+    <module>bootstrap5-override</module>
+    <module>bootstrap-email</module>
+    <module>bootstrap-print</module>
+    <module>igloojs</module>
+  </modules>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <destDir>${project.build.outputDirectory}/META-INF/resources/webjars/${project.artifactId}/${project.version}</destDir>
+    <version.snapshotLess>test</version.snapshotLess>
+  </properties>
+  <build>
+    <resources>
+      <resource>
+        <targetPath>META-INF/resources/webjars/${project.name}/${project.version}</targetPath>
+        <directory>src/main/webjars</directory>
+      </resource>
+    </resources>
+  </build>
 </project>

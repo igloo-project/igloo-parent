@@ -1,332 +1,313 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	
-	<modelVersion>4.0.0</modelVersion>
-
-	<parent>
-		<groupId>org.iglooproject</groupId>
-		<artifactId>plugins-all</artifactId>
-		<version>6.19.0</version>
-	</parent>
-	
-	<artifactId>igloo-parent</artifactId>
-	<version>6.19.0</version>
-	<packaging>pom</packaging>
-	
-	<name>Igloo - Parent</name>
-
-	<properties>
-		<productionBranchName>main</productionBranchName>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		
-		<maven-toolchains-plugin.version>3.2.0</maven-toolchains-plugin.version>
-		<maven-site-plugin.version>4.0.0-M16</maven-site-plugin.version>
-		<igloo.wagon-ssh-external-plugin.version>3.4.1</igloo.wagon-ssh-external-plugin.version>
-		<maven-project-info-reports-plugin.version>3.9.0</maven-project-info-reports-plugin.version>
-		<igloo.owasp-maven-plugin.version>12.1.9</igloo.owasp-maven-plugin.version>
-		<igloo.versions-maven-plugin.version>2.20.1</igloo.versions-maven-plugin.version>
-	</properties>
-	
-	<profiles>
-		<profile>
-			<id>sonar-branch</id>
-			<activation>
-				<property>
-					<name>sonar.projectBranch</name>
-				</property>
-			</activation>
-			<properties>
-				<sonar.projectKey>${project.groupId}:${project.artifactId}:${sonar.projectBranch}</sonar.projectKey>
-				<sonar.projectName>${project.name} (${sonar.projectBranch})</sonar.projectName>
-			</properties>
-		</profile>
-		<profile>
-			<id>igloo-release</id>
-			<activation>
-				<property>
-					<name>distribution</name>
-					<value>igloo-release</value>
-				</property>
-			</activation>
-			<modules>
-				<module>igloo</module>
-			</modules>
-		</profile>
-		<profile>
-			<id>all</id>
-			<activation>
-				<property>
-					<name>!distribution</name>
-				</property>
-			</activation>
-			<modules>
-				<module>igloo</module>
-				<module>basic-application</module>
-			</modules>
-		</profile>
-		<profile>
-			<id>owasp</id>
-			<activation>
-				<property>
-					<name>owasp.enabled</name>
-					<value>true</value>
-				</property>
-			</activation>
-			<reporting>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-project-info-reports-plugin</artifactId>
-						<reportSets>
-							<reportSet>
-								<reports>
-									<report>index</report>
-								</reports>
-							</reportSet>
-						</reportSets>
-					</plugin>
-					<plugin>
-						<groupId>org.owasp</groupId>
-						<artifactId>dependency-check-maven</artifactId>
-						<configuration>
-							<suppressionFiles>
-								<suppressionFile>owasp-suppressions.xml</suppressionFile>
-							</suppressionFiles>
-                            <nodeAnalyzerEnabled>false</nodeAnalyzerEnabled>
-                            <yarnAuditAnalyzerEnabled>false</yarnAuditAnalyzerEnabled>
-                            <assemblyAnalyzerEnabled>false</assemblyAnalyzerEnabled>
-						</configuration>
-						<reportSets>
-							<reportSet>
-								<reports>
-									<report>aggregate</report>
-								</reports>
-							</reportSet>
-						</reportSets>
-					</plugin>
-				</plugins>
-			</reporting>
-		</profile>
-		
-		<profile>
-			<id>update-report</id>
-			<activation>
-				<property>
-					<name>update-report.enabled</name>
-					<value>true</value>
-				</property>
-			</activation>
-			<reporting>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-project-info-reports-plugin</artifactId>
-						<reportSets>
-							<reportSet>
-								<reports>
-									<report>index</report>
-								</reports>
-							</reportSet>
-						</reportSets>
-					</plugin>
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>versions-maven-plugin</artifactId>
-						<version>2.7</version>
-						<configuration>
-							<processDependencyManagement>true</processDependencyManagement>
-							<processDependencyManagementTransitive>true</processDependencyManagementTransitive>
-							<formats>
-								<format>xml</format>
-							</formats>
-						</configuration>
-						<reportSets>
-							<reportSet>
-								<reports>
-									<report>dependency-updates-report</report>
-									<report>plugin-updates-report</report>
-									<report>property-updates-report</report>
-								</reports>
-							</reportSet>
-						</reportSets>
-					</plugin>
-				</plugins>
-			</reporting>
-		</profile>
-	</profiles>
-	
-	<build>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-toolchains-plugin</artifactId>
-					<version>${maven-toolchains-plugin.version}</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-site-plugin</artifactId>
-					<version>${maven-site-plugin.version}</version>
-					<executions>
-						<!-- BUGS (?): target/site is erroneously used as source by site:stage-deploy -->
-						<!-- found on maven-site-plugin 3.8.2 / not verified on a minimal use case -->
-						<!-- on command line, run with "mvn site:stage-deploy@stage-deploy" -->
-						<execution>
-							<id>stage-deploy</id>
-							<configuration>
-									<inputDirectory>target/staging</inputDirectory>
-							</configuration>
-						</execution>
-					</executions>
-					<dependencies>
-						<dependency><!-- add support for ssh/scp -->
-							<groupId>org.apache.maven.wagon</groupId>
-							<artifactId>wagon-ssh-external</artifactId>
-							<version>${igloo.wagon-ssh-external-plugin.version}</version>
-						</dependency>
-					</dependencies>	
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-project-info-reports-plugin</artifactId>
-					<version>${maven-project-info-reports-plugin.version}</version>
-				</plugin>
-				<plugin>
-					<groupId>org.owasp</groupId>
-					<artifactId>dependency-check-maven</artifactId>
-					<version>${igloo.owasp-maven-plugin.version}</version>
-                    
-				</plugin>
-				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>versions-maven-plugin</artifactId>
-					<version>${igloo.versions-maven-plugin.version}</version>
-				</plugin>
-			</plugins>
-		</pluginManagement>
-	</build>
-	
-	<!-- Project information -->
-
-	<organization>
-		<name>Kobalt</name>
-		<url>https://www.kobalt.fr/</url>
-	</organization>
-
-	<licenses>
-		<license>
-			<name>The Apache Software License, Version 2.0</name>
-			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-			<distribution>repo</distribution>
-		</license>
-	</licenses>
-
-	<developers>
-		<developer>
-			<id>gsmet</id>
-			<name>Guillaume Smet</name>
-			<email>guillaume.smet@openwide.fr</email>
-			<organization>Open Wide</organization>
-		</developer>
-		<developer>
-			<id>lalmeras</id>
-			<name>Laurent Almeras</name>
-			<email>laurent.almeras@kobalt.fr</email>
-			<organization>Kobalt</organization>
-		</developer>
-		<developer>
-			<id>jgonzalez</id>
-			<name>Julien Gonzalez</name>
-			<email>julien.gonzalez@kobalt.fr</email>
-			<organization>Kobalt</organization>
-		</developer>
-		<developer>
-			<id>rjoly</id>
-			<name>Renaud Joly</name>
-			<email>renaud.joly@kobalt.fr</email>
-			<organization>Kobalt</organization>
-		</developer>
-		<developer>
-			<id>yrodiere</id>
-			<name>Yoann Rodière</name>
-			<email>yoann.rodiere@openwide.fr</email>
-			<organization>Open Wide</organization>
-		</developer>
-		<developer>
-			<id>flacreuse</id>
-			<name>Florian Lacreuse</name>
-			<email>florian.lacreuse@kobalt.fr</email>
-			<organization>Kobalt</organization>
-		</developer>
-		<developer>
-			<id>nbarithel</id>
-			<name>Nicolas Barithel</name>
-			<email>nicolas.barithel@openwide.fr</email>
-			<organization>Open Wide</organization>
-		</developer>
-		<developer>
-			<id>jbenichou</id>
-			<name>Julien Bénichou</name>
-			<email>julien.benichou@kobalt.fr</email>
-			<organization>Kobalt</organization>
-		</developer>
-	</developers>
-	
-	<distributionManagement>
-		<site>
-			<id>igloo</id>
-			<name>Igloo site</name>
-			<url>https://igloo-doc.readthedocs.org/</url>
-		</site>
-		<repository>
-			<id>nexus-igloo-releases</id>
-			<name>Nexus Igloo Releases</name>
-			<url>https://nexus.tools.kobalt.fr/repository/igloo-releases/</url>
-		</repository>
-		<snapshotRepository>
-			<id>nexus-igloo-snapshots</id>
-			<name>Nexus Igloo Snapshots</name>
-			<url>https://nexus.tools.kobalt.fr/repository/igloo-snapshots/</url>
-		</snapshotRepository>
-	</distributionManagement>
-
-	<issueManagement>
-		<system>GitHub</system>
-		<url>https://github.com/igloo-project/igloo-parent/issues</url>
-	</issueManagement>
-
-	<ciManagement>
-		<system>GitLab</system>
-		<url>https://gitlab.tools.kobalt.fr/igloo/igloo-parent/pipelines</url>
-	</ciManagement>
-
-	<scm>
-		<developerConnection>scm:git:git@github.com:igloo-project/igloo-parent.git</developerConnection>
-		<url>https://github.com/igloo-project/igloo-parent</url>
-		<tag>HEAD</tag>
-	</scm>
-
-	<repositories>
-		<repository>
-			<id>nexus-igloo-releases</id>
-			<name>Nexus Igloo Releases</name>
-			<url>https://nexus.tools.kobalt.fr/repository/igloo-releases/</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-		
-		<repository>
-			<id>nexus-igloo-snapshots</id>
-			<name>Nexus Igloo Snapshots</name>
-			<url>https://nexus.tools.kobalt.fr/repository/igloo-snapshots/</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-		</repository>
-	</repositories>
-	
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.iglooproject</groupId>
+    <artifactId>plugins-all</artifactId>
+    <version>6.20.0</version>
+  </parent>
+  <artifactId>igloo-parent</artifactId>
+  <version>${revision}</version>
+  <packaging>pom</packaging>
+  <name>Igloo - Parent</name>
+  <properties>
+    <revision>6.20.0</revision>
+    <productionBranchName>main</productionBranchName>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <maven-toolchains-plugin.version>3.2.0</maven-toolchains-plugin.version>
+    <maven-site-plugin.version>4.0.0-M16</maven-site-plugin.version>
+    <igloo.wagon-ssh-external-plugin.version>3.4.1</igloo.wagon-ssh-external-plugin.version>
+    <maven-project-info-reports-plugin.version>3.9.0</maven-project-info-reports-plugin.version>
+    <igloo.owasp-maven-plugin.version>12.1.9</igloo.owasp-maven-plugin.version>
+    <igloo.versions-maven-plugin.version>2.20.1</igloo.versions-maven-plugin.version>
+  </properties>
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-toolchains-plugin</artifactId>
+          <version>${maven-toolchains-plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-site-plugin</artifactId>
+          <version>${maven-site-plugin.version}</version>
+          <dependencies>
+            <dependency>
+              <!-- add support for ssh/scp -->
+              <groupId>org.apache.maven.wagon</groupId>
+              <artifactId>wagon-ssh-external</artifactId>
+              <version>${igloo.wagon-ssh-external-plugin.version}</version>
+            </dependency>
+          </dependencies>
+          <executions>
+            <!-- BUGS (?): target/site is erroneously used as source by site:stage-deploy -->
+            <!-- found on maven-site-plugin 3.8.2 / not verified on a minimal use case -->
+            <!-- on command line, run with "mvn site:stage-deploy@stage-deploy" -->
+            <execution>
+              <id>stage-deploy</id>
+              <configuration>
+                <inputDirectory>target/staging</inputDirectory>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-project-info-reports-plugin</artifactId>
+          <version>${maven-project-info-reports-plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.owasp</groupId>
+          <artifactId>dependency-check-maven</artifactId>
+          <version>${igloo.owasp-maven-plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>versions-maven-plugin</artifactId>
+          <version>${igloo.versions-maven-plugin.version}</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+  <organization>
+    <name>Kobalt</name>
+    <url>https://www.kobalt.fr/</url>
+  </organization>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <id>gsmet</id>
+      <name>Guillaume Smet</name>
+      <email>guillaume.smet@openwide.fr</email>
+      <organization>Open Wide</organization>
+    </developer>
+    <developer>
+      <id>lalmeras</id>
+      <name>Laurent Almeras</name>
+      <email>laurent.almeras@kobalt.fr</email>
+      <organization>Kobalt</organization>
+    </developer>
+    <developer>
+      <id>jgonzalez</id>
+      <name>Julien Gonzalez</name>
+      <email>julien.gonzalez@kobalt.fr</email>
+      <organization>Kobalt</organization>
+    </developer>
+    <developer>
+      <id>rjoly</id>
+      <name>Renaud Joly</name>
+      <email>renaud.joly@kobalt.fr</email>
+      <organization>Kobalt</organization>
+    </developer>
+    <developer>
+      <id>yrodiere</id>
+      <name>Yoann Rodière</name>
+      <email>yoann.rodiere@openwide.fr</email>
+      <organization>Open Wide</organization>
+    </developer>
+    <developer>
+      <id>flacreuse</id>
+      <name>Florian Lacreuse</name>
+      <email>florian.lacreuse@kobalt.fr</email>
+      <organization>Kobalt</organization>
+    </developer>
+    <developer>
+      <id>nbarithel</id>
+      <name>Nicolas Barithel</name>
+      <email>nicolas.barithel@openwide.fr</email>
+      <organization>Open Wide</organization>
+    </developer>
+    <developer>
+      <id>jbenichou</id>
+      <name>Julien Bénichou</name>
+      <email>julien.benichou@kobalt.fr</email>
+      <organization>Kobalt</organization>
+    </developer>
+  </developers>
+  <scm>
+    <developerConnection>scm:git:git@github.com:igloo-project/igloo-parent.git</developerConnection>
+    <url>https://github.com/igloo-project/igloo-parent</url>
+    <tag>HEAD</tag>
+  </scm>
+  <issueManagement>
+    <system>GitHub</system>
+    <url>https://github.com/igloo-project/igloo-parent/issues</url>
+  </issueManagement>
+  <ciManagement>
+    <system>GitLab</system>
+    <url>https://gitlab.tools.kobalt.fr/igloo/igloo-parent/pipelines</url>
+  </ciManagement>
+  <repositories>
+    <repository>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>nexus-igloo-releases</id>
+      <name>Nexus Igloo Releases</name>
+      <url>https://nexus.tools.kobalt.fr/repository/igloo-releases/</url>
+    </repository>
+    <repository>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <id>nexus-igloo-snapshots</id>
+      <name>Nexus Igloo Snapshots</name>
+      <url>https://nexus.tools.kobalt.fr/repository/igloo-snapshots/</url>
+    </repository>
+  </repositories>
+  <distributionManagement>
+    <repository>
+      <id>nexus-igloo-releases</id>
+      <name>Nexus Igloo Releases</name>
+      <url>https://nexus.tools.kobalt.fr/repository/igloo-releases/</url>
+    </repository>
+    <snapshotRepository>
+      <id>nexus-igloo-snapshots</id>
+      <name>Nexus Igloo Snapshots</name>
+      <url>https://nexus.tools.kobalt.fr/repository/igloo-snapshots/</url>
+    </snapshotRepository>
+    <site>
+      <id>igloo</id>
+      <name>Igloo site</name>
+      <url>https://igloo-doc.readthedocs.org/</url>
+    </site>
+  </distributionManagement>
+  <profiles>
+    <profile>
+      <id>sonar-branch</id>
+      <activation>
+        <property>
+          <name>sonar.projectBranch</name>
+        </property>
+      </activation>
+      <properties>
+        <sonar.projectKey>${project.groupId}:${project.artifactId}:${sonar.projectBranch}</sonar.projectKey>
+        <sonar.projectName>${project.name} (${sonar.projectBranch})</sonar.projectName>
+      </properties>
+    </profile>
+    <profile>
+      <id>igloo-release</id>
+      <activation>
+        <property>
+          <name>distribution</name>
+          <value>igloo-release</value>
+        </property>
+      </activation>
+      <modules>
+        <module>igloo</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>all</id>
+      <activation>
+        <property>
+          <name>!distribution</name>
+        </property>
+      </activation>
+      <modules>
+        <module>igloo</module>
+        <module>basic-application</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>owasp</id>
+      <activation>
+        <property>
+          <name>owasp.enabled</name>
+          <value>true</value>
+        </property>
+      </activation>
+      <reporting>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-project-info-reports-plugin</artifactId>
+            <reportSets>
+              <reportSet>
+                <reports>
+                  <report>index</report>
+                </reports>
+              </reportSet>
+            </reportSets>
+          </plugin>
+          <plugin>
+            <groupId>org.owasp</groupId>
+            <artifactId>dependency-check-maven</artifactId>
+            <configuration>
+              <suppressionFiles>
+                <suppressionFile>owasp-suppressions.xml</suppressionFile>
+              </suppressionFiles>
+              <nodeAnalyzerEnabled>false</nodeAnalyzerEnabled>
+              <yarnAuditAnalyzerEnabled>false</yarnAuditAnalyzerEnabled>
+              <assemblyAnalyzerEnabled>false</assemblyAnalyzerEnabled>
+            </configuration>
+            <reportSets>
+              <reportSet>
+                <reports>
+                  <report>aggregate</report>
+                </reports>
+              </reportSet>
+            </reportSets>
+          </plugin>
+        </plugins>
+      </reporting>
+    </profile>
+    <profile>
+      <id>update-report</id>
+      <activation>
+        <property>
+          <name>update-report.enabled</name>
+          <value>true</value>
+        </property>
+      </activation>
+      <reporting>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-project-info-reports-plugin</artifactId>
+            <reportSets>
+              <reportSet>
+                <reports>
+                  <report>index</report>
+                </reports>
+              </reportSet>
+            </reportSets>
+          </plugin>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>versions-maven-plugin</artifactId>
+            <version>2.7</version>
+            <configuration>
+              <processDependencyManagement>true</processDependencyManagement>
+              <processDependencyManagementTransitive>true</processDependencyManagementTransitive>
+              <formats>
+                <format>xml</format>
+              </formats>
+            </configuration>
+            <reportSets>
+              <reportSet>
+                <reports>
+                  <report>dependency-updates-report</report>
+                  <report>plugin-updates-report</report>
+                  <report>property-updates-report</report>
+                </reports>
+              </reportSet>
+            </reportSets>
+          </plugin>
+        </plugins>
+      </reporting>
+    </profile>
+  </profiles>
 </project>

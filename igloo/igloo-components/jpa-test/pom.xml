@@ -1,98 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-
-	<modelVersion>4.0.0</modelVersion>
-
-	<parent>
-		<groupId>org.iglooproject.components</groupId>
-		<artifactId>igloo-components</artifactId>
-		<version>6.19.0</version>
-	</parent>
-
-	<artifactId>jpa-test</artifactId>
-	
-	<name>JPA test utilities</name>
-
-	<properties>
-		<asciidoclet.version>1.5.6</asciidoclet.version>
-	</properties>
-
-	<dependencies>
-		<dependency>
-			<groupId>org.iglooproject.components</groupId>
-			<artifactId>igloo-hibernate</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>jakarta.persistence</groupId>
-			<artifactId>jakarta.persistence-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate.orm</groupId>
-			<artifactId>hibernate-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.assertj</groupId>
-			<artifactId>assertj-core</artifactId>
-		</dependency>
-		<!-- only for EntityManagerExtension -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-test</artifactId>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context</artifactId>
-			<optional>true</optional>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<configuration>
-					<additionalJOptions combine.self="override">
-					</additionalJOptions>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
-
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.iglooproject</groupId>
-				<artifactId>dependencies-hibernate</artifactId>
-				<version>${igloo-maven.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.iglooproject</groupId>
-				<artifactId>dependencies-spring</artifactId>
-				<version>${igloo-maven.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.iglooproject</groupId>
-				<artifactId>dependencies-testing</artifactId>
-				<version>${igloo-maven.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.iglooproject.components</groupId>
+    <artifactId>igloo-components</artifactId>
+    <version>${revision}</version>
+  </parent>
+  <artifactId>jpa-test</artifactId>
+  <name>JPA test utilities</name>
+  <properties>
+    <asciidoclet.version>1.5.6</asciidoclet.version>
+  </properties>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.iglooproject</groupId>
+        <artifactId>dependencies-hibernate</artifactId>
+        <version>${igloo-maven.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.iglooproject</groupId>
+        <artifactId>dependencies-spring</artifactId>
+        <version>${igloo-maven.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.iglooproject</groupId>
+        <artifactId>dependencies-testing</artifactId>
+        <version>${igloo-maven.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+  <dependencies>
+    <dependency>
+      <groupId>org.iglooproject.components</groupId>
+      <artifactId>igloo-hibernate</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>jakarta.persistence</groupId>
+      <artifactId>jakarta.persistence-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate.orm</groupId>
+      <artifactId>hibernate-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+    </dependency>
+    <!-- only for EntityManagerExtension -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-test</artifactId>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <additionalJOptions combine.self="override"/>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>

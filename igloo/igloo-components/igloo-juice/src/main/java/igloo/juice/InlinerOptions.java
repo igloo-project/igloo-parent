@@ -30,115 +30,115 @@ public class InlinerOptions {
 
   private Boolean xmlMode;
 
-  public synchronized Boolean getApplyAttributesTableElements() {
+  public Boolean getApplyAttributesTableElements() {
     return applyAttributesTableElements;
   }
 
-  public synchronized void setApplyAttributesTableElements(Boolean applyAttributesTableElements) {
+  public void setApplyAttributesTableElements(Boolean applyAttributesTableElements) {
     this.applyAttributesTableElements = applyAttributesTableElements;
   }
 
-  public synchronized Boolean getApplyHeightAttributes() {
+  public Boolean getApplyHeightAttributes() {
     return applyHeightAttributes;
   }
 
-  public synchronized void setApplyHeightAttributes(Boolean applyHeightAttributes) {
+  public void setApplyHeightAttributes(Boolean applyHeightAttributes) {
     this.applyHeightAttributes = applyHeightAttributes;
   }
 
-  public synchronized Boolean getApplyStyleTags() {
+  public Boolean getApplyStyleTags() {
     return applyStyleTags;
   }
 
-  public synchronized void setApplyStyleTags(Boolean applyStyleTags) {
+  public void setApplyStyleTags(Boolean applyStyleTags) {
     this.applyStyleTags = applyStyleTags;
   }
 
-  public synchronized Boolean getApplyWidthAttributes() {
+  public Boolean getApplyWidthAttributes() {
     return applyWidthAttributes;
   }
 
-  public synchronized void setApplyWidthAttributes(Boolean applyWidthAttributes) {
+  public void setApplyWidthAttributes(Boolean applyWidthAttributes) {
     this.applyWidthAttributes = applyWidthAttributes;
   }
 
-  public synchronized String getExtraCss() {
+  public String getExtraCss() {
     return extraCss;
   }
 
-  public synchronized void setExtraCss(String extraCss) {
+  public void setExtraCss(String extraCss) {
     this.extraCss = extraCss;
   }
 
-  public synchronized Boolean getInsertPreservedExtraCss() {
+  public Boolean getInsertPreservedExtraCss() {
     return insertPreservedExtraCss;
   }
 
-  public synchronized void setInsertPreservedExtraCss(Boolean insertPreservedExtraCss) {
+  public void setInsertPreservedExtraCss(Boolean insertPreservedExtraCss) {
     this.insertPreservedExtraCss = insertPreservedExtraCss;
   }
 
-  public synchronized Boolean getInlinePseudoElements() {
+  public Boolean getInlinePseudoElements() {
     return inlinePseudoElements;
   }
 
-  public synchronized void setInlinePseudoElements(Boolean inlinePseudoElements) {
+  public void setInlinePseudoElements(Boolean inlinePseudoElements) {
     this.inlinePseudoElements = inlinePseudoElements;
   }
 
-  public synchronized Boolean getPreserveFontFaces() {
+  public Boolean getPreserveFontFaces() {
     return preserveFontFaces;
   }
 
-  public synchronized void setPreserveFontFaces(Boolean preserveFontFaces) {
+  public void setPreserveFontFaces(Boolean preserveFontFaces) {
     this.preserveFontFaces = preserveFontFaces;
   }
 
-  public synchronized Boolean getPreserveImportant() {
+  public Boolean getPreserveImportant() {
     return preserveImportant;
   }
 
-  public synchronized void setPreserveImportant(Boolean preserveImportant) {
+  public void setPreserveImportant(Boolean preserveImportant) {
     this.preserveImportant = preserveImportant;
   }
 
-  public synchronized Boolean getPreserveMediaQueries() {
+  public Boolean getPreserveMediaQueries() {
     return preserveMediaQueries;
   }
 
-  public synchronized void setPreserveMediaQueries(Boolean preserveMediaQueries) {
+  public void setPreserveMediaQueries(Boolean preserveMediaQueries) {
     this.preserveMediaQueries = preserveMediaQueries;
   }
 
-  public synchronized Boolean getPreserveKeyFrames() {
+  public Boolean getPreserveKeyFrames() {
     return preserveKeyFrames;
   }
 
-  public synchronized void setPreserveKeyFrames(Boolean preserveKeyFrames) {
+  public void setPreserveKeyFrames(Boolean preserveKeyFrames) {
     this.preserveKeyFrames = preserveKeyFrames;
   }
 
-  public synchronized Boolean getPreservePseudos() {
+  public Boolean getPreservePseudos() {
     return preservePseudos;
   }
 
-  public synchronized void setPreservePseudos(Boolean preservePseudos) {
+  public void setPreservePseudos(Boolean preservePseudos) {
     this.preservePseudos = preservePseudos;
   }
 
-  public synchronized Boolean getRemoveStyleTags() {
+  public Boolean getRemoveStyleTags() {
     return removeStyleTags;
   }
 
-  public synchronized void setRemoveStyleTags(Boolean removeStyleTags) {
+  public void setRemoveStyleTags(Boolean removeStyleTags) {
     this.removeStyleTags = removeStyleTags;
   }
 
-  public synchronized Boolean getXmlMode() {
+  public Boolean getXmlMode() {
     return xmlMode;
   }
 
-  public synchronized void setXmlMode(Boolean xmlMode) {
+  public void setXmlMode(Boolean xmlMode) {
     this.xmlMode = xmlMode;
   }
 }

@@ -17,19 +17,19 @@ public class HealthLookup {
     this.perfDatas = perfDatas;
   }
 
-  public synchronized String getName() {
+  public String getName() {
     return name;
   }
 
-  public synchronized HealthStatus getStatus() {
+  public HealthStatus getStatus() {
     return status;
   }
 
-  public synchronized String getMessage() {
+  public String getMessage() {
     return message;
   }
 
-  public synchronized List<PerfData> getPerfDatas() {
+  public List<PerfData> getPerfDatas() {
     return perfDatas;
   }
 }

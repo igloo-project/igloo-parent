@@ -6,19 +6,19 @@ public class InlinerQuery {
 
   private InlinerOptions options;
 
-  public synchronized String getContent() {
+  public String getContent() {
     return content;
   }
 
-  public synchronized void setContent(String content) {
+  public void setContent(String content) {
     this.content = content;
   }
 
-  public synchronized InlinerOptions getOptions() {
+  public InlinerOptions getOptions() {
     return options;
   }
 
-  public synchronized void setOptions(InlinerOptions options) {
+  public void setOptions(InlinerOptions options) {
     this.options = options;
   }
 }

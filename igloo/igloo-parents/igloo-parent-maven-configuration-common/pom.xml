@@ -1,98 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
-	<modelVersion>4.0.0</modelVersion>
-
-	<parent>
-		<groupId>org.iglooproject</groupId>
-		<artifactId>plugins-all</artifactId>
-		<version>6.19.0</version>
-		<relativePath />
-	</parent>
-
-	<groupId>org.iglooproject.parents</groupId>
-	<artifactId>igloo-parent-maven-configuration-common</artifactId>
-	<version>6.19.0</version>
-	<packaging>pom</packaging>
-
-	<name>Igloo - Parent - Maven configuration - Common</name>
-
-	<properties>
-		<productionBranchName>main</productionBranchName>
-	</properties>
-
-	<build>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>external.atlassian.jgitflow</groupId>
-					<artifactId>jgitflow-maven-plugin</artifactId>
-					<configuration>
-						<flowInitContext>
-							<masterBranchName>${productionBranchName}</masterBranchName>
-							<developBranchName>dev</developBranchName>
-							<featureBranchPrefix>ft-</featureBranchPrefix>
-							<releaseBranchPrefix>rl-</releaseBranchPrefix>
-							<hotfixBranchPrefix>hf-</hotfixBranchPrefix>
-							<versionTagPrefix>v</versionTagPrefix>
-						</flowInitContext>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>com.amashchenko.maven.plugin</groupId>
-					<artifactId>gitflow-maven-plugin</artifactId>
-					<version>${igloo.gitflow-maven-plugin.version}</version>
-					<configuration>
-						<gitFlowConfig>
-							<productionBranch>${productionBranchName}</productionBranch>
-							<developmentBranch>dev</developmentBranch>
-							<featureBranchPrefix>ft-</featureBranchPrefix>
-							<releaseBranchPrefix>rl-</releaseBranchPrefix>
-							<hotfixBranchPrefix>hf-</hotfixBranchPrefix>
-							<supportBranchPrefix>sp-</supportBranchPrefix>
-							<versionTagPrefix>v</versionTagPrefix>
-							<origin>origin</origin>
-						</gitFlowConfig>
-						<skipFeatureVersion>true</skipFeatureVersion>
-						<!-- do not run verify, done on CI -->
-						<skipTestProject>true</skipTestProject>
-						<!-- In X.Y.Z, update Y -->
-						<versionDigitToIncrement>1</versionDigitToIncrement>
-						<!-- do not push during release; we perform this independently-->
-						<pushRemote>false</pushRemote>
-						<!-- build project during release -->
-						<installProject>true</installProject>
-						<!-- ensure all modules are processed by versions: calls -->
-						<argLine>-DskipTests=true -DprocessAllModules=true -DskipResolution=true</argLine>
-						<!-- print subcommand output -->
-						<verbose>true</verbose>
-						<!-- Needed as it implies project reloading during versioning, and triggers resolution failure -->
-						<updateOutputTimestamp>false</updateOutputTimestamp>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
-	</build>
-	<repositories>
-		<repository>
-			<id>nexus-igloo-releases</id>
-			<name>Nexus Igloo Releases</name>
-			<url>https://nexus.tools.kobalt.fr/repository/igloo-releases/</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-
-		<repository>
-			<id>nexus-igloo-snapshots</id>
-			<name>Nexus Igloo Snapshots</name>
-			<url>https://nexus.tools.kobalt.fr/repository/igloo-snapshots/</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-		</repository>
-	</repositories>
-
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.iglooproject</groupId>
+    <artifactId>plugins-all</artifactId>
+    <version>6.20.0</version>
+    <relativePath/>
+  </parent>
+  <groupId>org.iglooproject.parents</groupId>
+  <artifactId>igloo-parent-maven-configuration-common</artifactId>
+  <version>${revision}</version>
+  <packaging>pom</packaging>
+  <name>Igloo - Parent - Maven configuration - Common</name>
+  <properties>
+    <revision>6.20.0</revision>
+    <productionBranchName>main</productionBranchName>
+  </properties>
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>com.amashchenko.maven.plugin</groupId>
+          <artifactId>gitflow-maven-plugin</artifactId>
+          <version>${igloo.gitflow-maven-plugin.version}</version>
+          <configuration>
+            <gitFlowConfig>
+              <productionBranch>${productionBranchName}</productionBranch>
+              <developmentBranch>dev</developmentBranch>
+              <featureBranchPrefix>ft-</featureBranchPrefix>
+              <releaseBranchPrefix>rl-</releaseBranchPrefix>
+              <hotfixBranchPrefix>hf-</hotfixBranchPrefix>
+              <supportBranchPrefix>sp-</supportBranchPrefix>
+              <versionTagPrefix>v</versionTagPrefix>
+              <origin>origin</origin>
+            </gitFlowConfig>
+            <!-- handle release versioning with revision property -->
+            <versionProperty>revision</versionProperty>
+            <skipUpdateVersion>true</skipUpdateVersion>
+            <skipFeatureVersion>true</skipFeatureVersion>
+            <!-- do not run verify, done on CI -->
+            <skipTestProject>true</skipTestProject>
+            <!-- In X.Y.Z, update Y -->
+            <versionDigitToIncrement>1</versionDigitToIncrement>
+            <!-- do not push during release; we perform this independently-->
+            <pushRemote>false</pushRemote>
+            <!-- build project during release -->
+            <installProject>true</installProject>
+            <!-- ensure all modules are processed by versions: calls -->
+            <argLine>-DskipTests=true -DprocessAllModules=true -DskipResolution=true</argLine>
+            <!-- print subcommand output -->
+            <verbose>true</verbose>
+            <!-- Needed as it implies project reloading during versioning, and triggers resolution failure -->
+            <updateOutputTimestamp>false</updateOutputTimestamp>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+  <repositories>
+    <repository>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>nexus-igloo-releases</id>
+      <name>Nexus Igloo Releases</name>
+      <url>https://nexus.tools.kobalt.fr/repository/igloo-releases/</url>
+    </repository>
+    <repository>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <id>nexus-igloo-snapshots</id>
+      <name>Nexus Igloo Snapshots</name>
+      <url>https://nexus.tools.kobalt.fr/repository/igloo-snapshots/</url>
+    </repository>
+  </repositories>
 </project>

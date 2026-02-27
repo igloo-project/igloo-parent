@@ -22,7 +22,8 @@ classifiers = [
 dependencies = [
   "click",
   "colorlog",
-  "termcolor"
+  "termcolor",
+  "lxml"
 ]
 
 [project.scripts]
@@ -44,4 +45,4 @@ check = "mypy --install-types --non-interactive {args:igloo_project_init.py}"
 
 
 [tool.ruff.lint.extend-per-file-ignores]
-"**" = ["TRY003", "EM101", "FBT001", "FBT002", "S607"]
+"**" = ["TRY003", "EM101", "FBT001", "FBT002", "S607", "S320"]
