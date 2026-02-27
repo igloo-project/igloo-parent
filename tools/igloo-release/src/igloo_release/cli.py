@@ -314,8 +314,6 @@ def _parent_prepare_versions(commands, release_version, path, igloo_5):
     - commit changes"""
     """Nécessite d'être fait après le switch de version (release-start)."""
     projects = ".,:igloo-parent-maven-configuration-common"
-    if not igloo_5:
-        projects += ",:basic-application-app"
     check_call(
         commands,
         "igloo-parent-parent-update",
