@@ -11,7 +11,7 @@
   <packaging>pom</packaging>
   <name>Igloo - Parent</name>
   <properties>
-    <revision>6.20.0</revision>
+    <revision>6.21.0-SNAPSHOT</revision>
     <productionBranchName>main</productionBranchName>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
