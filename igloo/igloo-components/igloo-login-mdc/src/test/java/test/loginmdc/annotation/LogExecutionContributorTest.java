@@ -17,6 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.stereotype.Service;
+import test.loginmdc.model.DummyUser;
 
 @SpringBootTest(
     classes = LogExecutionContributorTest.Configuration.class,
@@ -54,6 +55,25 @@ class LogExecutionContributorTest {
     assertThat(silentOutput.toString())
         .contains("INFO - Entering method: MyServiceTestImpl#methodLogArgs(String, Integer)")
         .contains("INFO - Exiting method: MyServiceTestImpl#methodLogArgs(String, Integer)");
+  }
+
+  @Test
+  void testLogReplaceMessages() {
+    myServiceTest.methodReplaceMessages("", 0);
+
+    assertThat(silentOutput.toString())
+        .contains("INFO - Start methodReplaceMessages")
+        .contains("INFO - Finish methodReplaceMessages");
+  }
+
+  @Test
+  void testLogArgsSpEL() {
+    myServiceTest.methodLogArgsSpEL(new DummyUser(1L, "g.abidbole"), 0);
+
+    assertThat(silentOutput.toString())
+        .contains(
+            "INFO - Entering MyServiceTestImpl#methodLogArgsSpEL with user : userId = 1 username = g.abidbole")
+        .contains("INFO - Exiting method: MyServiceTestImpl#methodLogArgsSpEL(DummyUser, Integer)");
   }
 
   @Test
@@ -119,11 +139,15 @@ class LogExecutionContributorTest {
     }
   }
 
-  static interface IMyServiceTest {
+  interface IMyServiceTest {
 
     void methodLog();
 
     void methodLogArgs(String arg1, Integer arg2);
+
+    void methodReplaceMessages(String arg1, Integer arg2);
+
+    void methodLogArgsSpEL(DummyUser user, Integer arg2);
 
     void methodLogLevel();
 
@@ -149,34 +173,50 @@ class LogExecutionContributorTest {
       // Nothing to do
     }
 
+    @LogExecution(
+        beforeLogMessage = "Start methodReplaceMessages",
+        afterReturningLogMessage = "Finish methodReplaceMessages")
+    @Override
+    public void methodReplaceMessages(String arg1, Integer arg2) {
+      // Nothing to do
+    }
+
+    @LogExecution(
+        beforeLogMessage =
+            "Entering MyServiceTestImpl#methodLogArgsSpEL with user : userId = #{#user?.id} username = #{#user?.username}")
+    @Override
+    public void methodLogArgsSpEL(DummyUser user, Integer arg2) {}
+
     @LogExecution(level = Level.WARN)
     @Override
     public void methodLogLevel() {
       // Nothing to do
     }
 
+    @LogExecution
     @LogExecution(
-        beforeAdditionalLogMessage = "Additional message before execution",
-        afterReturningAdditionalLogMessage = "Additional message after execution")
+        beforeLogMessage = "Additional message before execution",
+        afterReturningLogMessage = "Additional message after execution")
     @Override
     public void methodLogWithAdditionalMessages() {
       // Nothing to do
     }
 
+    @LogExecution(level = Level.DEBUG)
     @LogExecution(
         level = Level.DEBUG,
-        beforeAdditionalLogMessage = "Additional message before execution",
-        afterReturningAdditionalLogLevel = LogLevel.WARN,
-        afterReturningAdditionalLogMessage = "Additional message after execution")
+        beforeLogMessage = "Additional message before execution",
+        afterReturningLogLevel = LogLevel.WARN,
+        afterReturningLogMessage = "Additional message after execution")
     @Override
     public void methodLogWithAdditionalMessagesLevel() {
       // Nothing to do
     }
 
     @LogExecution(
-        afterThrowingAdditionalLogMessage = "Additional message after throwing",
         afterThrowingLogStackTrace = true,
         afterThrowingLogStackTraceLevel = LogLevel.ERROR)
+    @LogExecution(afterThrowingLogMessage = "Additional message after throwing")
     @Override
     public void methodLogExceptionWithStackTrace() {
       throw new RuntimeException("Fake error");

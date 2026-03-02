@@ -1,6 +1,7 @@
 package igloo.loginmdc.annotation;
 
 import java.lang.annotation.ElementType;
+import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
@@ -15,41 +16,42 @@ import org.slf4j.event.Level;
  */
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
+@Repeatable(LogExecutions.class)
 public @interface LogExecution {
 
   Level level() default Level.INFO;
 
-  String beforeAdditionalLogMessage() default "";
+  String beforeLogMessage() default "";
 
-  LogLevel beforeAdditionalLogLevel() default LogLevel.INHERIT;
+  LogLevel beforeLogLevel() default LogLevel.INHERIT;
 
-  String afterReturningAdditionalLogMessage() default "";
+  String afterReturningLogMessage() default "";
 
-  LogLevel afterReturningAdditionalLogLevel() default LogLevel.INHERIT;
+  LogLevel afterReturningLogLevel() default LogLevel.INHERIT;
 
-  String afterThrowingAdditionalLogMessage() default "";
+  String afterThrowingLogMessage() default "";
 
-  LogLevel afterThrowingAdditionalLogLevel() default LogLevel.INHERIT;
+  LogLevel afterThrowingLogLevel() default LogLevel.INHERIT;
 
   boolean afterThrowingLogStackTrace() default false;
 
   LogLevel afterThrowingLogStackTraceLevel() default LogLevel.INHERIT;
 
-  public enum LogLevel {
+  enum LogLevel {
     INHERIT(null),
-    ERROR(org.slf4j.event.Level.ERROR),
-    WARN(org.slf4j.event.Level.WARN),
-    INFO(org.slf4j.event.Level.INFO),
-    DEBUG(org.slf4j.event.Level.DEBUG),
-    TRACE(org.slf4j.event.Level.TRACE);
+    ERROR(Level.ERROR),
+    WARN(Level.WARN),
+    INFO(Level.INFO),
+    DEBUG(Level.DEBUG),
+    TRACE(Level.TRACE);
 
-    private final org.slf4j.event.Level level;
+    private final Level level;
 
-    private LogLevel(org.slf4j.event.Level level) {
+    LogLevel(Level level) {
       this.level = level;
     }
 
-    public org.slf4j.event.Level resolve(org.slf4j.event.Level level) {
+    public Level resolve(Level level) {
       return this == INHERIT ? level : this.level;
     }
   }
