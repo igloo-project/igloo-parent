@@ -9,14 +9,14 @@ import org.springframework.stereotype.Service;
 import test.jpa.more.business.history.dao.ITestHistoryLogDao;
 import test.jpa.more.business.history.model.TestHistoryDifference;
 import test.jpa.more.business.history.model.TestHistoryLog;
-import test.jpa.more.business.history.model.atomic.TestHistoryEventType;
+import test.jpa.more.business.history.model.atomic.TestHistoryLogEventType;
 import test.jpa.more.business.history.model.bean.TestHistoryLogAdditionalInformationBean;
 
 @Service
 public class TestHistoryLogServiceImpl
     extends AbstractHistoryLogServiceImpl<
         TestHistoryLog,
-        TestHistoryEventType,
+        TestHistoryLogEventType,
         TestHistoryDifference,
         TestHistoryLogAdditionalInformationBean>
     implements ITestHistoryLogService {
@@ -32,7 +32,7 @@ public class TestHistoryLogServiceImpl
   @Override
   protected <T> TestHistoryLog newHistoryLog(
       Instant date,
-      TestHistoryEventType eventType,
+      TestHistoryLogEventType eventType,
       List<TestHistoryDifference> differences,
       T mainObject,
       TestHistoryLogAdditionalInformationBean additionalInformation) {

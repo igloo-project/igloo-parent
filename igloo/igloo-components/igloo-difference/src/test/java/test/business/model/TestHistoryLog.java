@@ -9,7 +9,7 @@ import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryValue;
 @Entity
 @Indexed
 public class TestHistoryLog
-    extends AbstractHistoryLog<TestHistoryLog, TestHistoryEventType, TestHistoryDifference> {
+    extends AbstractHistoryLog<TestHistoryLog, TestHistoryLogEventType, TestHistoryDifference> {
 
   private static final long serialVersionUID = 1L;
 
@@ -17,7 +17,7 @@ public class TestHistoryLog
     super();
   }
 
-  public TestHistoryLog(Instant date, TestHistoryEventType eventType, HistoryValue mainObject) {
+  public TestHistoryLog(Instant date, TestHistoryLogEventType eventType, HistoryValue mainObject) {
     super(date, eventType, mainObject);
   }
 }

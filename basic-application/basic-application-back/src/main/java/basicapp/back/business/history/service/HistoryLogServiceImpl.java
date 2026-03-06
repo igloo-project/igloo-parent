@@ -3,7 +3,7 @@ package basicapp.back.business.history.service;
 import basicapp.back.business.history.dao.IHistoryLogDao;
 import basicapp.back.business.history.model.HistoryDifference;
 import basicapp.back.business.history.model.HistoryLog;
-import basicapp.back.business.history.model.atomic.HistoryEventType;
+import basicapp.back.business.history.model.atomic.HistoryLogEventType;
 import basicapp.back.business.history.model.bean.HistoryLogAdditionalInformationBean;
 import basicapp.back.business.user.model.User;
 import basicapp.back.business.user.service.business.IUserService;
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class HistoryLogServiceImpl
     extends AbstractHistoryLogServiceImpl<
-        HistoryLog, HistoryEventType, HistoryDifference, HistoryLogAdditionalInformationBean>
+        HistoryLog, HistoryLogEventType, HistoryDifference, HistoryLogAdditionalInformationBean>
     implements IHistoryLogService {
 
   private static final Supplier2<HistoryDifference> HISTORY_DIFFERENCE_SUPPLIER =
@@ -33,7 +33,7 @@ public class HistoryLogServiceImpl
   @Override
   protected <T> HistoryLog newHistoryLog(
       Instant date,
-      HistoryEventType eventType,
+      HistoryLogEventType eventType,
       List<HistoryDifference> differences,
       T mainObject,
       HistoryLogAdditionalInformationBean additionalInformation) {

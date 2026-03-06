@@ -11,15 +11,16 @@ import org.iglooproject.jpa.more.business.difference.util.IDifferenceFromReferen
 import org.iglooproject.jpa.more.business.difference.util.IHistoryDifferenceGenerator;
 import org.iglooproject.jpa.more.business.history.model.AbstractHistoryDifference;
 import org.iglooproject.jpa.more.business.history.model.AbstractHistoryLog;
+import org.iglooproject.jpa.more.business.history.model.atomic.IHistoryLogEventType;
 import org.iglooproject.jpa.more.business.history.model.bean.AbstractHistoryLogAdditionalInformationBean;
 
 public class HistoryLogBeforeCommitWithDifferencesTask<
         T,
         HLAIB extends AbstractHistoryLogAdditionalInformationBean,
-        HL extends AbstractHistoryLog<HL, HET, HD>,
-        HET extends Enum<HET>,
+        HL extends AbstractHistoryLog<HL, HLET, HD>,
+        HLET extends Enum<HLET> & IHistoryLogEventType<HLET>,
         HD extends AbstractHistoryDifference<HD, HL>>
-    extends HistoryLogBeforeCommitTask<T, HLAIB, HL, HET, HD> {
+    extends HistoryLogBeforeCommitTask<T, HLAIB, HL, HLET, HD> {
 
   private Supplier2<HD> historyDifferenceSupplier;
   private IDifferenceFromReferenceGenerator<T> differenceGenerator;
@@ -29,7 +30,7 @@ public class HistoryLogBeforeCommitWithDifferencesTask<
   @SafeVarargs
   public HistoryLogBeforeCommitWithDifferencesTask(
       Instant date,
-      HET eventType,
+      HLET eventType,
       T mainObject,
       HLAIB additionalInformation,
       Supplier2<HD> historyDifferenceSupplier,

@@ -8,6 +8,7 @@ import org.iglooproject.jpa.more.business.difference.util.IDifferenceFromReferen
 import org.iglooproject.jpa.more.business.difference.util.IHistoryDifferenceGenerator;
 import org.iglooproject.jpa.more.business.history.model.AbstractHistoryDifference;
 import org.iglooproject.jpa.more.business.history.model.AbstractHistoryLog;
+import org.iglooproject.jpa.more.business.history.model.atomic.IHistoryLogEventType;
 import org.iglooproject.jpa.more.business.history.model.bean.AbstractHistoryLogAdditionalInformationBean;
 import org.iglooproject.jpa.more.business.history.util.HistoryLogBeforeCommitTask;
 import org.iglooproject.jpa.more.business.history.util.HistoryLogBeforeCommitWithDifferencesTask;
@@ -21,11 +22,11 @@ import org.springframework.transaction.annotation.Transactional;
  * ORM API used
  */
 public abstract class AbstractHistoryLogJpaServiceImpl<
-        HL extends AbstractHistoryLog<HL, HET, HD>,
-        HET extends Enum<HET>,
+        HL extends AbstractHistoryLog<HL, HLET, HD>,
+        HLET extends Enum<HLET> & IHistoryLogEventType<HLET>,
         HD extends AbstractHistoryDifference<HD, HL>,
         HLAIB extends AbstractHistoryLogAdditionalInformationBean>
-    implements IGenericHistoryLogService<HL, HET, HD, HLAIB> {
+    implements IGenericHistoryLogService<HL, HLET, HD, HLAIB> {
 
   @Autowired
   protected ITransactionSynchronizationTaskManagerService
@@ -37,7 +38,7 @@ public abstract class AbstractHistoryLogJpaServiceImpl<
   @Transactional
   public <T> HL logNow(
       Instant date,
-      HET eventType,
+      HLET eventType,
       List<HD> differences,
       T mainObject,
       HLAIB additionalInformation) {
@@ -52,7 +53,11 @@ public abstract class AbstractHistoryLogJpaServiceImpl<
   }
 
   protected abstract <T> HL newHistoryLog(
-      Instant date, HET eventType, List<HD> differences, T mainObject, HLAIB additionalInformation);
+      Instant date,
+      HLET eventType,
+      List<HD> differences,
+      T mainObject,
+      HLAIB additionalInformation);
 
   protected abstract <T> void saveHistoryLog(HL historyLog);
 
@@ -85,15 +90,15 @@ public abstract class AbstractHistoryLogJpaServiceImpl<
 
   @Override
   @Transactional
-  public <T> void log(HET eventType, T mainObject, HLAIB additionalInformation) {
+  public <T> void log(HLET eventType, T mainObject, HLAIB additionalInformation) {
     transactionSynchronizationTaskManagerService.push(
-        new HistoryLogBeforeCommitTask<T, HLAIB, HL, HET, HD>(
+        new HistoryLogBeforeCommitTask<T, HLAIB, HL, HLET, HD>(
             Instant.now(), eventType, mainObject, additionalInformation));
   }
 
   @Override
   public final <T> void logWithDifferences(
-      HET eventType,
+      HLET eventType,
       T mainObject,
       HLAIB additionalInformation,
       IDifferenceService<T> differenceService) {
@@ -108,7 +113,7 @@ public abstract class AbstractHistoryLogJpaServiceImpl<
   @Override
   @SafeVarargs
   public final <T> void logWithDifferences(
-      HET eventType,
+      HLET eventType,
       T mainObject,
       HLAIB additionalInformation,
       IDifferenceService<T> differenceService,
@@ -125,14 +130,14 @@ public abstract class AbstractHistoryLogJpaServiceImpl<
   @Override
   @SafeVarargs
   public final <T> void logWithDifferences(
-      HET eventType,
+      HLET eventType,
       T mainObject,
       HLAIB additionalInformation,
       IDifferenceFromReferenceGenerator<T> differenceGenerator,
       IHistoryDifferenceGenerator<T> historyDifferenceGenerator,
       IHistoryDifferenceHandler<? super T, ? super HL>... differenceHandlers) {
     transactionSynchronizationTaskManagerService.push(
-        new HistoryLogBeforeCommitWithDifferencesTask<T, HLAIB, HL, HET, HD>(
+        new HistoryLogBeforeCommitWithDifferencesTask<T, HLAIB, HL, HLET, HD>(
             Instant.now(),
             eventType,
             mainObject,

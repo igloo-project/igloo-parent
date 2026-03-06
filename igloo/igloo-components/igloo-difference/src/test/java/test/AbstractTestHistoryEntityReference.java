@@ -4,10 +4,15 @@ import static java.time.Duration.ofMillis;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.within;
 
+import com.querydsl.jpa.impl.JPAQuery;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import java.time.Instant;
+import java.util.Collection;
 import java.util.List;
 import org.iglooproject.commons.util.fieldpath.FieldPath;
 import org.iglooproject.jpa.business.generic.model.GenericEntityReference;
+import org.iglooproject.jpa.business.generic.service.ITransactionScopeIndependantRunnerService;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.more.business.history.model.atomic.HistoryDifferenceEventType;
@@ -16,19 +21,27 @@ import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryValue;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import test.business.model.HistoryLogAdditionalInformationBean;
+import test.business.model.QTestHistoryLog;
 import test.business.model.TestData;
 import test.business.model.TestHistoryDifference;
-import test.business.model.TestHistoryEventType;
 import test.business.model.TestHistoryLog;
+import test.business.model.TestHistoryLogEventType;
 import test.business.model.TestUser;
 import test.business.service.ISubjectService;
+import test.business.service.ITestDataDifferenceService;
 import test.business.service.ITestHistoryLogService;
 
 @SpringBootTestDifference
 abstract class AbstractTestHistoryEntityReference {
   @Autowired ITestHistoryLogService historyLogService;
 
+  @Autowired ITestDataDifferenceService testDataDifferenceService;
+
   @Autowired ISubjectService subjectService;
+
+  @Autowired ITransactionScopeIndependantRunnerService transactionScopeIndependantRunnerService;
+
+  @PersistenceContext private EntityManager entityManager;
 
   @Test
   void testHistoryEntityReference() throws ServiceException, SecurityServiceException {
@@ -69,7 +82,7 @@ abstract class AbstractTestHistoryEntityReference {
     TestHistoryLog historyLog =
         historyLogService.logNow(
             now,
-            TestHistoryEventType.EVENT1,
+            TestHistoryLogEventType.EVENT1,
             List.of(historyDifference1, historyDifference2, historyDifference3),
             new TestData(1l),
             new HistoryLogAdditionalInformationBean(
@@ -158,7 +171,7 @@ abstract class AbstractTestHistoryEntityReference {
                         assertThat(sub.getParentDifference()).isEqualTo(historyDifference3);
                       });
             });
-    assertThat(historyLog.getEventType()).isEqualTo(TestHistoryEventType.EVENT1);
+    assertThat(historyLog.getEventType()).isEqualTo(TestHistoryLogEventType.EVENT1);
     assertThat(historyLog.getMainObject().getReference())
         .isEqualTo(GenericEntityReference.of(TestData.class, 1l));
     assertThat(historyLog.getObject1().getReference())
@@ -172,5 +185,86 @@ abstract class AbstractTestHistoryEntityReference {
     assertThat(historyLog.getSubject().getReference())
         .isEqualTo(GenericEntityReference.of(TestUser.class, 1l));
     assertThat(historyLog.getRootLog()).isEqualTo(historyLog);
+  }
+
+  @Test
+  void testHistoryLogEventTypeMergeGroup() throws ServiceException, SecurityServiceException {
+    transactionScopeIndependantRunnerService.run(
+        false,
+        () -> {
+          historyLogService.log(
+              TestHistoryLogEventType.EVENT1,
+              new TestData(2l),
+              HistoryLogAdditionalInformationBean.empty());
+          historyLogService.log(
+              TestHistoryLogEventType.EVENT1,
+              new TestData(2l),
+              HistoryLogAdditionalInformationBean.empty());
+          historyLogService.log(
+              TestHistoryLogEventType.EVENT2,
+              new TestData(2l),
+              HistoryLogAdditionalInformationBean.empty());
+          historyLogService.log(
+              TestHistoryLogEventType.EVENT2,
+              new TestData(2l),
+              HistoryLogAdditionalInformationBean.empty());
+          historyLogService.log(
+              TestHistoryLogEventType.EVENT3,
+              new TestData(2l),
+              HistoryLogAdditionalInformationBean.empty());
+          return null;
+        });
+
+    Collection<TestHistoryLog> historyLogs =
+        new JPAQuery<>(entityManager)
+            .select(QTestHistoryLog.testHistoryLog)
+            .from(QTestHistoryLog.testHistoryLog)
+            .where(QTestHistoryLog.testHistoryLog.mainObject.reference.id.eq(2l))
+            .orderBy(QTestHistoryLog.testHistoryLog.id.asc())
+            .fetch();
+
+    assertThat(historyLogs)
+        .extracting(TestHistoryLog::getEventType)
+        .containsExactly(TestHistoryLogEventType.EVENT1, TestHistoryLogEventType.EVENT2);
+
+    transactionScopeIndependantRunnerService.run(
+        false,
+        () -> {
+          historyLogService.logWithDifferences(
+              TestHistoryLogEventType.EVENT1,
+              new TestData(3l),
+              HistoryLogAdditionalInformationBean.empty(),
+              testDataDifferenceService);
+          historyLogService.logWithDifferences(
+              TestHistoryLogEventType.EVENT2,
+              new TestData(3l),
+              HistoryLogAdditionalInformationBean.empty(),
+              testDataDifferenceService);
+          historyLogService.log(
+              TestHistoryLogEventType.EVENT2,
+              new TestData(3l),
+              HistoryLogAdditionalInformationBean.empty());
+          historyLogService.logWithDifferences(
+              TestHistoryLogEventType.EVENT3,
+              new TestData(3l),
+              HistoryLogAdditionalInformationBean.empty(),
+              testDataDifferenceService);
+          return null;
+        });
+
+    historyLogs =
+        new JPAQuery<>(entityManager)
+            .select(QTestHistoryLog.testHistoryLog)
+            .from(QTestHistoryLog.testHistoryLog)
+            .where(QTestHistoryLog.testHistoryLog.mainObject.reference.id.eq(3l))
+            .orderBy(QTestHistoryLog.testHistoryLog.id.asc())
+            .fetch();
+
+    assertThat(historyLogs)
+        .extracting(TestHistoryLog::getEventType)
+        .containsExactly(
+            TestHistoryLogEventType.EVENT2,
+            TestHistoryLogEventType.EVENT1,
+            TestHistoryLogEventType.EVENT2);
   }
 }

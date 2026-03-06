@@ -3,7 +3,7 @@ package basicapp.back.business.history.search;
 import basicapp.back.business.history.model.HistoryLog;
 import basicapp.back.business.history.model.QHistoryDifference;
 import basicapp.back.business.history.model.QHistoryLog;
-import basicapp.back.business.history.model.atomic.HistoryEventType;
+import basicapp.back.business.history.model.atomic.HistoryLogEventType;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
 import jakarta.persistence.EntityManager;
@@ -102,8 +102,8 @@ public class HistoryLogSearchQueryImpl implements IHistoryLogSearchQuery {
     }
     if (data.getMandatoryDifferencesEventTypes() != null
         && !data.getMandatoryDifferencesEventTypes().isEmpty()) {
-      Collection<HistoryEventType> allowedWithoutDifferencesEventTypes =
-          EnumUtils.getEnumList(HistoryEventType.class);
+      Collection<HistoryLogEventType> allowedWithoutDifferencesEventTypes =
+          EnumUtils.getEnumList(HistoryLogEventType.class);
       allowedWithoutDifferencesEventTypes.removeAll(data.getMandatoryDifferencesEventTypes());
       BooleanBuilder condition = new BooleanBuilder();
       condition.or(qHistoryLog.eventType.in(allowedWithoutDifferencesEventTypes));

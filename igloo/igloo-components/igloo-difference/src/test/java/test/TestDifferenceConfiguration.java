@@ -1,7 +1,10 @@
 package test;
 
+import igloo.difference.DifferenceIntrospector;
+import igloo.difference.DifferenceIntrospectorDefaults;
 import igloo.test.listener.postgresql.PsqlTestContainerConfiguration;
 import java.util.Locale;
+import java.util.Set;
 import org.iglooproject.commons.util.context.ExecutionContexts;
 import org.iglooproject.commons.util.context.IExecutionContext;
 import org.iglooproject.commons.util.fieldpath.FieldPath;
@@ -16,10 +19,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import test.business.dao.ITestHistoryLogDao;
 import test.business.dao.TestHistoryLogDaoImpl;
+import test.business.model.TestDataBinding;
 import test.business.model.TestHistoryLog;
 import test.business.model.TestUser;
 import test.business.service.ISubjectService;
+import test.business.service.ITestDataDifferenceService;
 import test.business.service.ITestHistoryLogService;
+import test.business.service.TestDataDifferenceServiceImpl;
 import test.business.service.TestHistoryLogServiceImpl;
 import test.business.service.TestHistoryValueServiceImpl;
 
@@ -46,6 +52,15 @@ public class TestDifferenceConfiguration {
   @Bean
   public IHistoryValueService historyValueService(ITestHistoryLogDao dao) {
     return new TestHistoryValueServiceImpl();
+  }
+
+  @Bean
+  public ITestDataDifferenceService testDataDifferenceService() {
+    DifferenceIntrospector differenceIntrospector =
+        new DifferenceIntrospector(new TestDataBinding(), Set.of());
+    DifferenceIntrospectorDefaults.ignoreCommonFields(differenceIntrospector);
+
+    return new TestDataDifferenceServiceImpl(differenceIntrospector.visitBinding());
   }
 
   @Bean

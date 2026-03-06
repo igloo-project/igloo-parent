@@ -5,7 +5,7 @@ import static org.iglooproject.spring.property.SpringSecurityPropertyIds.PASSWOR
 import static org.iglooproject.spring.property.SpringSecurityPropertyIds.PASSWORD_RECOVERY_REQUEST_EXPIRATION_MINUTES;
 import static org.iglooproject.spring.property.SpringSecurityPropertyIds.PASSWORD_RECOVERY_REQUEST_TOKEN_RANDOM_COUNT;
 
-import basicapp.back.business.history.model.atomic.HistoryEventType;
+import basicapp.back.business.history.model.atomic.HistoryLogEventType;
 import basicapp.back.business.history.model.bean.HistoryLogAdditionalInformationBean;
 import basicapp.back.business.history.service.IHistoryLogService;
 import basicapp.back.business.notification.service.INotificationService;
@@ -78,7 +78,7 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
     userService.update(user);
 
     historyLogService.log(
-        HistoryEventType.PASSWORD_UPDATE, user, HistoryLogAdditionalInformationBean.empty());
+        HistoryLogEventType.PASSWORD_UPDATE, user, HistoryLogAdditionalInformationBean.empty());
   }
 
   @Override
@@ -112,13 +112,13 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
     switch (type) {
       case CREATION:
         historyLogService.log(
-            HistoryEventType.PASSWORD_CREATION_REQUEST,
+            HistoryLogEventType.PASSWORD_CREATION_REQUEST,
             user,
             HistoryLogAdditionalInformationBean.empty());
         break;
       case RESET:
         historyLogService.log(
-            HistoryEventType.PASSWORD_RESET_REQUEST,
+            HistoryLogEventType.PASSWORD_RESET_REQUEST,
             user,
             HistoryLogAdditionalInformationBean.empty());
         break;

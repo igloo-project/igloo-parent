@@ -2,7 +2,7 @@ package basicapp.front.user.component;
 
 import static basicapp.front.property.BasicApplicationFrontPropertyIds.PORTFOLIO_ITEMS_PER_PAGE;
 
-import basicapp.back.business.history.model.atomic.HistoryEventType;
+import basicapp.back.business.history.model.atomic.HistoryLogEventType;
 import basicapp.back.business.history.search.HistoryLogSort;
 import basicapp.back.business.user.model.User;
 import basicapp.back.util.binding.Bindings;
@@ -43,7 +43,7 @@ public class UserDetailSecurityHistoryLogsPanel extends GenericPanel<User> {
     dataProvider
         .getDataModel()
         .getObject()
-        .addMandatoryDifferencesEventType(HistoryEventType.UPDATE);
+        .addMandatoryDifferencesEventType(HistoryLogEventType.UPDATE);
 
     add(
         DataTableBuilder.start(dataProvider, dataProvider.getSortModel())

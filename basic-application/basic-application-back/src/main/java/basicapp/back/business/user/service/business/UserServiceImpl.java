@@ -1,7 +1,7 @@
 package basicapp.back.business.user.service.business;
 
 import basicapp.back.business.common.model.EmailAddress;
-import basicapp.back.business.history.model.atomic.HistoryEventType;
+import basicapp.back.business.history.model.atomic.HistoryLogEventType;
 import basicapp.back.business.history.model.bean.HistoryLogAdditionalInformationBean;
 import basicapp.back.business.history.service.IHistoryEventSummaryService;
 import basicapp.back.business.history.service.IHistoryLogService;
@@ -100,7 +100,7 @@ public class UserServiceImpl extends GenericEntityServiceImpl<Long, User> implem
     if (user.isNew()) {
       create(user);
       historyLogService.log(
-          HistoryEventType.CREATE, user, HistoryLogAdditionalInformationBean.empty());
+          HistoryLogEventType.CREATE, user, HistoryLogAdditionalInformationBean.empty());
       if (StringUtils.hasText(password)) {
         securityManagementService.updatePassword(user, password, author);
       } else {
@@ -126,13 +126,13 @@ public class UserServiceImpl extends GenericEntityServiceImpl<Long, User> implem
   @Override
   public void onSignIn(User user) throws ServiceException, SecurityServiceException {
     historyLogService.log(
-        HistoryEventType.SIGN_IN, user, HistoryLogAdditionalInformationBean.empty());
+        HistoryLogEventType.SIGN_IN, user, HistoryLogAdditionalInformationBean.empty());
   }
 
   @Override
   public void onSignInFail(User user) throws ServiceException, SecurityServiceException {
     historyLogService.log(
-        HistoryEventType.SIGN_IN_FAIL, user, HistoryLogAdditionalInformationBean.empty());
+        HistoryLogEventType.SIGN_IN_FAIL, user, HistoryLogAdditionalInformationBean.empty());
   }
 
   @Override
@@ -170,7 +170,7 @@ public class UserServiceImpl extends GenericEntityServiceImpl<Long, User> implem
     user.setEnabled(true);
     update(user);
     historyLogService.log(
-        HistoryEventType.ENABLE, user, HistoryLogAdditionalInformationBean.empty());
+        HistoryLogEventType.ENABLE, user, HistoryLogAdditionalInformationBean.empty());
   }
 
   @Override
@@ -180,7 +180,7 @@ public class UserServiceImpl extends GenericEntityServiceImpl<Long, User> implem
     user.setEnabled(false);
     update(user);
     historyLogService.log(
-        HistoryEventType.DISABLE, user, HistoryLogAdditionalInformationBean.empty());
+        HistoryLogEventType.DISABLE, user, HistoryLogAdditionalInformationBean.empty());
   }
 
   @Override

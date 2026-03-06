@@ -3,9 +3,11 @@ package test.business.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import org.bindgen.Bindable;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 
 @Entity
+@Bindable
 public class TestData extends GenericEntity<Long, TestData> {
   private static final long serialVersionUID = 1L;
 
