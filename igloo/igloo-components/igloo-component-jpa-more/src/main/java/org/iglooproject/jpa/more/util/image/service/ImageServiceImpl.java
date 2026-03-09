@@ -13,6 +13,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
@@ -135,11 +136,7 @@ public class ImageServiceImpl implements IImageService {
   }
 
   private boolean isImageMagickConvertAvailable() {
-    if (imageMagickConvertBinary != null) {
-      return true;
-    } else {
-      return false;
-    }
+    return imageMagickConvertBinary != null;
   }
 
   private void generateThumbnailWithImageMagickConvert(
@@ -168,8 +165,11 @@ public class ImageServiceImpl implements IImageService {
 
       commandLine.setSubstitutionMap(parameters);
 
-      DefaultExecutor executor = new DefaultExecutor();
-      ExecuteWatchdog watchdog = new ExecuteWatchdog(IMAGE_MAGICK_CONVERT_TIMEOUT);
+      DefaultExecutor executor = DefaultExecutor.builder().get();
+      ExecuteWatchdog watchdog =
+          ExecuteWatchdog.builder()
+              .setTimeout(Duration.ofMillis(IMAGE_MAGICK_CONVERT_TIMEOUT))
+              .get();
       executor.setWatchdog(watchdog);
       executor.execute(commandLine);
     } catch (RuntimeException | IOException e) {

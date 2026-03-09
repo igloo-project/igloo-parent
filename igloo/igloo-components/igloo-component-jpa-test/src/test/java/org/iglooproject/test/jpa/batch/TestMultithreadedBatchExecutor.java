@@ -27,8 +27,6 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 
 @SpringBootTestJpaBatchSearch
 class TestMultithreadedBatchExecutor extends AbstractTestHibernateBatchExecutor {
@@ -109,45 +107,41 @@ class TestMultithreadedBatchExecutor extends AbstractTestHibernateBatchExecutor 
   @Test
   void postExecute() {
     final MutableBoolean postExecuteWasRun = new MutableBoolean(false);
-    writeRequiredTransactionTemplate.execute(
-        new TransactionCallbackWithoutResult() {
-          @Override
-          protected void doInTransactionWithoutResult(TransactionStatus status) {
+    writeRequiredTransactionTemplate.executeWithoutResult(
+        status -> {
+          MultithreadedBatchExecutor executor = executorCreator.newMultithreadedBatchExecutor();
+          executor.batchSize(10).threads(4);
+          executor.run(
+              Person.class.getSimpleName(),
+              personIds,
+              new ReadWriteBatchRunnable<Long>() {
+                @Override
+                public void preExecutePartition(List<Long> partition) {
+                  LOGGER.warn("Executing partition: " + Joiners.onComma().join(partition));
+                }
 
-            MultithreadedBatchExecutor executor = executorCreator.newMultithreadedBatchExecutor();
-            executor.batchSize(10).threads(4);
-            executor.run(
-                Person.class.getSimpleName(),
-                personIds,
-                new ReadWriteBatchRunnable<Long>() {
-                  @Override
-                  public void preExecutePartition(List<Long> partition) {
-                    LOGGER.warn("Executing partition: " + Joiners.onComma().join(partition));
+                @Override
+                public void executeUnit(Long unit) {
+                  Person person = personService.getById(unit);
+                  person.setLastName(NEW_LASTNAME_VALUE);
+                  try {
+                    personService.update(person);
+                    LOGGER.info("Updated: " + person);
+                  } catch (ServiceException | SecurityServiceException e) {
+                    throw new IllegalStateException(e);
                   }
+                }
 
-                  @Override
-                  public void executeUnit(Long unit) {
-                    Person person = personService.getById(unit);
-                    person.setLastName(NEW_LASTNAME_VALUE);
-                    try {
-                      personService.update(person);
-                      LOGGER.info("Updated: " + person);
-                    } catch (ServiceException | SecurityServiceException e) {
-                      throw new IllegalStateException(e);
-                    }
-                  }
-
-                  @Override
-                  public void postExecute() {
-                    postExecuteWasRun.setTrue();
-                    Person person = personService.getById(personIds.get(0));
-                    assertEquals(
-                        NEW_LASTNAME_VALUE,
-                        person.getLastName(),
-                        "An entity had not been updated from the postExecute() perspective.");
-                  }
-                });
-          }
+                @Override
+                public void postExecute() {
+                  postExecuteWasRun.setTrue();
+                  Person person = personService.getById(personIds.get(0));
+                  assertEquals(
+                      NEW_LASTNAME_VALUE,
+                      person.getLastName(),
+                      "An entity had not been updated from the postExecute() perspective.");
+                }
+              });
         });
 
     assertTrue(postExecuteWasRun.booleanValue(), "postExecute was not run.");

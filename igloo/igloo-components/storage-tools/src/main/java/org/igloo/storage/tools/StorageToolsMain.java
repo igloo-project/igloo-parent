@@ -19,6 +19,7 @@ import org.igloo.storage.tools.util.EntityManagerHelper;
 import org.igloo.storage.tools.util.FichierUtil;
 import org.igloo.storage.tools.util.FsUtil;
 import org.iglooproject.jpa.more.autoconfigure.JpaMoreModelAutoConfiguration;
+import org.iglooproject.jpa.security.autoconfigure.SecurityAutoConfiguration;
 import org.iglooproject.jpa.security.autoconfigure.SecurityModelAutoConfiguration;
 import org.iglooproject.jpa.util.EntityManagerUtils;
 import org.iglooproject.spring.autoconfigure.SecurityPropertyRegistryAutoConfiguration;
@@ -26,13 +27,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.cache.CacheAutoConfiguration;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.boot.autoconfigure.freemarker.FreeMarkerAutoConfiguration;
-import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.autoconfigure.task.TaskExecutionAutoConfiguration;
 import org.springframework.boot.autoconfigure.task.TaskSchedulingAutoConfiguration;
+import org.springframework.boot.persistence.autoconfigure.EntityScan;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -55,11 +52,8 @@ import picocli.CommandLine.Option;
       JpaMoreModelAutoConfiguration.class,
       SecurityPropertyRegistryAutoConfiguration.class,
       SecurityModelAutoConfiguration.class,
-      FreeMarkerAutoConfiguration.class,
-      JacksonAutoConfiguration.class,
-      CacheAutoConfiguration.class,
       TaskExecutionAutoConfiguration.class,
-      TaskSchedulingAutoConfiguration.class
+      TaskSchedulingAutoConfiguration.class,
     })
 @EntityScan(basePackageClasses = {Fichier.class, StorageUnit.class})
 public class StorageToolsMain {

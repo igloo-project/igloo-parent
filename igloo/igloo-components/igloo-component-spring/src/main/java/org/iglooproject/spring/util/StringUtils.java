@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.regex.Pattern;
+import org.apache.commons.lang3.Strings;
 import org.apache.lucene.analysis.miscellaneous.ASCIIFoldingFilter;
 
 /**
@@ -112,7 +113,7 @@ public final class StringUtils extends org.springframework.util.StringUtils {
    * @see org.apache.commons.lang3.StringUtils#contains(String, String)
    */
   public static boolean contains(String str, String searchStr) {
-    return org.apache.commons.lang3.StringUtils.contains(str, searchStr);
+    return Strings.CS.contains(str, searchStr);
   }
 
   /**

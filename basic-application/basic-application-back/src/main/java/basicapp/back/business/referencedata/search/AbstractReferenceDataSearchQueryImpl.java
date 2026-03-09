@@ -56,7 +56,7 @@ public abstract class AbstractReferenceDataSearchQueryImpl<
         .fetchTotalHitCount();
   }
 
-  protected BiConsumer<SearchPredicateFactory, SimpleBooleanPredicateClausesCollector<?>>
+  protected BiConsumer<SearchPredicateFactory, SimpleBooleanPredicateClausesCollector<?, ?>>
       predicateContributor(D data) {
     return (f, root) -> {
       root.add(f.matchAll());

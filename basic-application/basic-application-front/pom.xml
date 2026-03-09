@@ -107,11 +107,6 @@
     </dependency>
     <dependency>
       <groupId>org.iglooproject.components</groupId>
-      <artifactId>igloo-component-web-security</artifactId>
-      <version>${igloo.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.iglooproject.components</groupId>
       <artifactId>igloo-validator</artifactId>
       <version>${igloo-commons.version}</version>
     </dependency>
@@ -154,11 +149,6 @@
     <dependency>
       <groupId>org.bindgen</groupId>
       <artifactId>bindgen</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>javax.annotation</groupId>
-      <artifactId>javax.annotation-api</artifactId>
-      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.iglooproject.components</groupId>

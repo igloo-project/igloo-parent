@@ -25,7 +25,7 @@ import java.util.function.UnaryOperator;
 import org.immutables.value.Value;
 
 @Value.Immutable
-@Value.Style(typeImmutable = "*", typeAbstract = "I*")
+@Value.Style(typeImmutable = "*", typeAbstract = "I*", jakarta = true)
 public interface IJuiceInliner {
 
   /**
@@ -51,7 +51,7 @@ public interface IJuiceInliner {
    */
   @Value.Default
   default ObjectMapper objectMapper() {
-    return new ObjectMapper().setSerializationInclusion(Include.NON_NULL);
+    return new ObjectMapper().setDefaultPropertyInclusion(Include.NON_NULL);
   }
 
   /**

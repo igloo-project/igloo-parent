@@ -4,9 +4,6 @@ public interface IApplicationContextInitializer {
 
   public static final String IGLOO_CONFIGURATION_LOGGER_NAME = "igloo@config";
 
-  /** Log4j configurations to aggregate. This must be defined in bootstrap configuration. */
-  public static final String LOG4J_CONFIGURATIONS_PROPERTY = "igloo.log4j.configurationLocations";
-
   /** Log4j2 configurations to aggregate. This must be defined in bootstrap configuration. */
   public static final String LOG4J2_CONFIGURATIONS_PROPERTY = "igloo.log4j2.configurationLocations";
 

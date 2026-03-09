@@ -1,6 +1,7 @@
 package org.igloo.hibernate.hbm;
 
 import org.hibernate.boot.Metadata;
+import org.hibernate.boot.spi.BootstrapContext;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.service.spi.SessionFactoryServiceRegistry;
 
@@ -14,14 +15,16 @@ public class MetadataRegistryIntegrator implements org.hibernate.integrator.spi.
   @Override
   public void integrate(
       Metadata metadata,
-      SessionFactoryImplementor sessionFactory,
-      SessionFactoryServiceRegistry serviceRegistry) {
+      BootstrapContext bootstrapContext,
+      SessionFactoryImplementor sessionFactory) {
     this.metadata = metadata;
   }
 
   @Override
   public void disintegrate(
-      SessionFactoryImplementor sessionFactory, SessionFactoryServiceRegistry serviceRegistry) {}
+      SessionFactoryImplementor sessionFactory, SessionFactoryServiceRegistry serviceRegistry) {
+    // nothing
+  }
 
   public Metadata getMetadata() {
     return metadata;

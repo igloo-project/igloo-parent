@@ -405,7 +405,7 @@ public abstract class AbstractNotificationContentDescriptorFactory
 
     private String cleanAttribute(String attribute) {
       return StringUtils.trimTrailingCharacter(
-          StringUtils.trimLeadingCharacter(StringUtils.trimWhitespace(attribute), ';'), ';');
+          StringUtils.trimLeadingCharacter(attribute.strip(), ';'), ';');
     }
   }
 

@@ -5,7 +5,7 @@ import org.springframework.security.access.expression.SecurityExpressionRoot;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionOperations;
 import org.springframework.security.core.Authentication;
 
-public class CoreMethodSecurityExpressionRoot extends SecurityExpressionRoot
+public class CoreMethodSecurityExpressionRoot extends SecurityExpressionRoot<Object>
     implements MethodSecurityExpressionOperations {
 
   private ICorePermissionEvaluator corePermissionEvaluator;
@@ -15,7 +15,7 @@ public class CoreMethodSecurityExpressionRoot extends SecurityExpressionRoot
   private Object target;
 
   public CoreMethodSecurityExpressionRoot(Authentication a) {
-    super(a);
+    super(() -> a, null);
   }
 
   @Override

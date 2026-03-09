@@ -1,6 +1,7 @@
 package test.autoprefixer;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import org.apache.commons.io.IOUtils;
 import org.assertj.core.api.Assertions;
 import org.iglooproject.autoprefixer.Autoprefixer;
@@ -48,7 +49,9 @@ class TestAutoprefixer {
   @Test
   @Disabled
   void bootstrap() throws AutoprefixerException, IOException {
-    String css = IOUtils.toString(getClass().getResourceAsStream("/css/bootstrap.css"));
+    String css =
+        IOUtils.toString(
+            getClass().getResourceAsStream("/css/bootstrap.css"), Charset.defaultCharset());
 
     StopWatch stopWatch = new StopWatch();
     stopWatch.start();

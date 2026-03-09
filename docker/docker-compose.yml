@@ -2,11 +2,11 @@ name: basic-application
 
 services:
   bdd:
-    image: "igloo-containers.tools.kobalt.fr/containers/postgres-igloo:15"
+    image: "igloo-containers.tools.kobalt.fr/containers/postgres-igloo:18"
     ports:
       - "127.0.0.1:1532:5432"
     volumes:
-      - basic-application-bdd:/var/lib/postgresql/data
+      - basic-application-bdd:/var/lib/postgresql
     environment:
       - POSTGRES_DB=basic_application
       - POSTGRES_USER=basic_application

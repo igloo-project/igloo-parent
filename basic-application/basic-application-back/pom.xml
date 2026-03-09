@@ -151,11 +151,6 @@
       <artifactId>spring-expression</artifactId>
     </dependency>
     <dependency>
-      <groupId>javax.annotation</groupId>
-      <artifactId>javax.annotation-api</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
       <groupId>jakarta.annotation</groupId>
       <artifactId>jakarta.annotation-api</artifactId>
       <optional>true</optional>
@@ -220,7 +215,7 @@
     </dependency>
     <dependency>
       <groupId>org.hibernate.orm</groupId>
-      <artifactId>hibernate-jpamodelgen</artifactId>
+      <artifactId>hibernate-processor</artifactId>
     </dependency>
     <dependency>
       <groupId>jakarta.xml.bind</groupId>
@@ -265,8 +260,13 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.springframework.security</groupId>
-      <artifactId>spring-security-test</artifactId>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-security-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-junit-jupiter</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>

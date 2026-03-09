@@ -6,14 +6,13 @@
  */
 package org.igloo.hibernate.bootstrap;
 
+import jakarta.persistence.PersistenceUnitTransactionType;
 import jakarta.persistence.SharedCacheMode;
 import jakarta.persistence.ValidationMode;
-import jakarta.persistence.spi.PersistenceUnitTransactionType;
 import java.net.URL;
 import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
-import javax.sql.DataSource;
 import org.hibernate.bytecode.enhance.spi.EnhancementContext;
 import org.hibernate.bytecode.spi.ClassTransformer;
 import org.hibernate.jpa.HibernatePersistenceProvider;
@@ -41,17 +40,12 @@ public class PersistenceUnitDescriptorAdapter implements PersistenceUnitDescript
   }
 
   @Override
-  public PersistenceUnitTransactionType getTransactionType() {
+  public Object getJtaDataSource() {
     return null;
   }
 
   @Override
-  public DataSource getJtaDataSource() {
-    return null;
-  }
-
-  @Override
-  public DataSource getNonJtaDataSource() {
+  public Object getNonJtaDataSource() {
     return null;
   }
 
@@ -78,6 +72,16 @@ public class PersistenceUnitDescriptorAdapter implements PersistenceUnitDescript
   @Override
   public boolean isExcludeUnlistedClasses() {
     return false;
+  }
+
+  @Override
+  public PersistenceUnitTransactionType getPersistenceUnitTransactionType() {
+    return null;
+  }
+
+  @Override
+  public jakarta.persistence.spi.PersistenceUnitTransactionType getTransactionType() {
+    return null;
   }
 
   @Override

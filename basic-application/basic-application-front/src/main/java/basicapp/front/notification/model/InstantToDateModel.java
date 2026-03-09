@@ -1,8 +1,8 @@
 package basicapp.front.notification.model;
 
+import jakarta.annotation.Nonnull;
 import java.time.Instant;
 import java.util.Date;
-import javax.annotation.Nonnull;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 

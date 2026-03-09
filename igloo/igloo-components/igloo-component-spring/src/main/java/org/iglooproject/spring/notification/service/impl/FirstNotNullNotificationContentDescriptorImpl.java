@@ -41,15 +41,15 @@ public class FirstNotNullNotificationContentDescriptorImpl
       INotificationContentBody body = descriptor.renderBody();
 
       if (body != null) {
-        if (plainText.getValue() == null) {
+        if (plainText.get() == null) {
           plainText.setValue(body.getPlainText());
         }
 
-        if (htmlText.getValue() == null) {
+        if (htmlText.get() == null) {
           htmlText.setValue(body.getHtmlText());
         }
 
-        if (plainText.getValue() != null && htmlText.getValue() != null) {
+        if (plainText.get() != null && htmlText.get() != null) {
           break;
         }
       }
@@ -58,8 +58,8 @@ public class FirstNotNullNotificationContentDescriptorImpl
     return NotificationContentBody.start()
         .with(
             o -> {
-              o.setPlainText(plainText.getValue());
-              o.setHtmlText(htmlText.getValue());
+              o.setPlainText(plainText.get());
+              o.setHtmlText(htmlText.get());
             })
         .build();
   }

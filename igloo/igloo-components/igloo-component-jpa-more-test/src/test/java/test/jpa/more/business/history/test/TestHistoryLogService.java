@@ -43,10 +43,8 @@ import org.mockito.quality.Strictness;
 import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
 import org.springframework.transaction.interceptor.TransactionAttribute;
-import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 import test.jpa.more.business.AbstractJpaMoreTestCase;
 import test.jpa.more.business.entity.model.TestEntity;
@@ -230,23 +228,19 @@ class TestHistoryLogService extends AbstractJpaMoreTestCase {
 
     final Instant before = Instant.now();
 
-    writeTransactionTemplate.execute(
-        new TransactionCallbackWithoutResult() {
-          @SuppressWarnings("unchecked")
-          @Override
-          protected void doInTransactionWithoutResult(TransactionStatus status) {
-            TestEntity objectReloaded = entityService.getEntity(object);
-            TestEntity secondaryObjectReloaded = entityService.getEntity(secondaryObject);
-            try {
-              historyLogService.logWithDifferences(
-                  TestHistoryEventType.EVENT1,
-                  objectReloaded,
-                  TestHistoryLogAdditionalInformationBean.of(secondaryObjectReloaded),
-                  differenceGeneratorMock,
-                  historyDifferenceGeneratorMock);
-            } catch (Exception e) {
-              throw new IllegalStateException(e);
-            }
+    writeTransactionTemplate.executeWithoutResult(
+        status -> {
+          TestEntity objectReloaded = entityService.getEntity(object);
+          TestEntity secondaryObjectReloaded = entityService.getEntity(secondaryObject);
+          try {
+            historyLogService.logWithDifferences(
+                TestHistoryEventType.EVENT1,
+                objectReloaded,
+                TestHistoryLogAdditionalInformationBean.of(secondaryObjectReloaded),
+                differenceGeneratorMock,
+                historyDifferenceGeneratorMock);
+          } catch (Exception e) {
+            throw new IllegalStateException(e);
           }
         });
 
@@ -312,29 +306,25 @@ class TestHistoryLogService extends AbstractJpaMoreTestCase {
 
     final Instant before = Instant.now();
 
-    writeTransactionTemplate.execute(
-        new TransactionCallbackWithoutResult() {
-          @SuppressWarnings("unchecked")
-          @Override
-          protected void doInTransactionWithoutResult(TransactionStatus status) {
-            TestEntity objectReloaded = entityService.getEntity(object);
-            TestEntity secondaryObjectReloaded = entityService.getEntity(secondaryObject);
-            try {
-              historyLogService.logWithDifferences(
-                  TestHistoryEventType.EVENT1,
-                  objectReloaded,
-                  TestHistoryLogAdditionalInformationBean.of(secondaryObjectReloaded),
-                  differenceGeneratorMock,
-                  historyDifferenceGeneratorMock);
+    writeTransactionTemplate.executeWithoutResult(
+        status -> {
+          TestEntity objectReloaded = entityService.getEntity(object);
+          TestEntity secondaryObjectReloaded = entityService.getEntity(secondaryObject);
+          try {
+            historyLogService.logWithDifferences(
+                TestHistoryEventType.EVENT1,
+                objectReloaded,
+                TestHistoryLogAdditionalInformationBean.of(secondaryObjectReloaded),
+                differenceGeneratorMock,
+                historyDifferenceGeneratorMock);
 
-              // Simulate a batch treatment, that flushes and clears the session repeatedly
-              entityService.flush();
-              transactionSynchronizationService.beforeClear();
-              entityService.clear();
+            // Simulate a batch treatment, that flushes and clears the session repeatedly
+            entityService.flush();
+            transactionSynchronizationService.beforeClear();
+            entityService.clear();
 
-            } catch (Exception e) {
-              throw new IllegalStateException(e);
-            }
+          } catch (Exception e) {
+            throw new IllegalStateException(e);
           }
         });
 

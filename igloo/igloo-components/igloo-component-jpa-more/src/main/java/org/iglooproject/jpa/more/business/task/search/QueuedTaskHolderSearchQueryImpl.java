@@ -45,7 +45,7 @@ public class QueuedTaskHolderSearchQueryImpl implements IQueuedTaskHolderSearchQ
   }
 
   private BiConsumer<
-          ? super SearchPredicateFactory, ? super SimpleBooleanPredicateClausesCollector<?>>
+          ? super SearchPredicateFactory, ? super SimpleBooleanPredicateClausesCollector<?, ?>>
       predicateContributor(QueuedTaskHolderSearchQueryData data) {
     return (f, root) -> {
       root.add(f.matchAll());

@@ -1,8 +1,8 @@
 package org.igloo.storage.impl;
 
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import java.util.EnumSet;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import org.igloo.storage.api.IMimeTypeResolver;
 import org.iglooproject.commons.util.mime.MediaType;
 import org.slf4j.Logger;
@@ -13,7 +13,7 @@ public class MimeTypeResolver implements IMimeTypeResolver {
   private static final Logger LOGGER = LoggerFactory.getLogger(MimeTypeResolver.class);
 
   @Override
-  public String resolve(@Nullable String filename) {
+  public @Nonnull String resolve(@Nullable String filename) {
     if (filename == null) {
       if (LOGGER.isDebugEnabled()) {
         LOGGER.debug("No mimetype found, called with a null filename");

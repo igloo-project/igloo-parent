@@ -3,11 +3,13 @@ package igloo.actuator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.util.StringUtils;
 
-/** Configure user/password security for actuators. From {@link SecurityProperties} pattern. */
+/**
+ * Configure user/password security for actuators. From {@link
+ * org.springframework.boot.security.autoconfigure.SecurityProperties} pattern.
+ */
 @ConfigurationProperties(prefix = "igloo.actuator.security")
 public class IglooActuatorProperties {
 

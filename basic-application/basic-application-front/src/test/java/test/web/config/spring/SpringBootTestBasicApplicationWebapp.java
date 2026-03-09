@@ -19,7 +19,7 @@ import org.springframework.test.context.TestPropertySource;
 @ContextConfiguration(
     classes = BasicApplicationWebappTestCommonConfig.class,
     initializers = ExtendedApplicationContextInitializer.class)
-@TestPropertySource(properties = "igloo.profile=test")
+@TestPropertySource(properties = {"igloo.profile=test"})
 @TestExecutionListeners(
     listeners = EntityManagerExecutionListener.class,
     mergeMode = MergeMode.MERGE_WITH_DEFAULTS)

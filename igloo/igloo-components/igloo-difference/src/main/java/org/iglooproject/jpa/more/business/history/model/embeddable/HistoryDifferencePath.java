@@ -11,7 +11,9 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.bindgen.Bindable;
 import org.hibernate.Length;
+import org.hibernate.annotations.Type;
 import org.iglooproject.commons.util.fieldpath.FieldPath;
+import org.iglooproject.jpa.more.business.history.hibernate.FieldPathType;
 
 @Embeddable
 @Bindable
@@ -20,6 +22,7 @@ public class HistoryDifferencePath {
 
   @Basic(optional = false)
   @Column(length = Length.LONG32)
+  @Type(FieldPathType.class)
   private FieldPath path;
 
   @Embedded private HistoryValue key;

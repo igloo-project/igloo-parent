@@ -10,7 +10,7 @@ import org.iglooproject.jpa.more.business.history.model.AbstractHistoryLog;
 import org.iglooproject.jpa.more.business.history.service.IHistoryValueService;
 import org.iglooproject.jpa.more.rendering.service.IRendererService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.persistence.autoconfigure.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;

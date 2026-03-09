@@ -5,7 +5,7 @@ import static org.iglooproject.jpa.property.JpaSearchPropertyIds.HIBERNATE_SEARC
 import static org.iglooproject.jpa.property.JpaSearchPropertyIds.LUCENE_BOOLEAN_QUERY_MAX_CLAUSE_COUNT;
 
 import com.google.common.primitives.Ints;
-import org.apache.lucene.search.BooleanQuery;
+import org.apache.lucene.search.IndexSearcher;
 import org.hibernate.search.mapper.orm.Search;
 import org.iglooproject.functional.Functions2;
 import org.iglooproject.functional.Supplier2;
@@ -64,7 +64,7 @@ public class HibernateSearchAutoConfiguration {
       registry.register(
           LUCENE_BOOLEAN_QUERY_MAX_CLAUSE_COUNT,
           Functions2.from(Ints.stringConverter()),
-          (Supplier2<? extends Integer>) () -> BooleanQuery.getMaxClauseCount());
+          (Supplier2<? extends Integer>) IndexSearcher::getMaxClauseCount);
 
       registry.registerInteger(HIBERNATE_SEARCH_REINDEX_BATCH_SIZE, 25);
       registry.registerInteger(HIBERNATE_SEARCH_REINDEX_LOAD_THREADS, 8);

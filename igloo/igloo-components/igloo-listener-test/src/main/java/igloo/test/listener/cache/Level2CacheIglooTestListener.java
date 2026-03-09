@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
+import org.springframework.boot.jpa.autoconfigure.JpaProperties;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.Ordered;
 import org.springframework.test.context.TestContext;

@@ -126,7 +126,7 @@ class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
     int countAccessibleItems =
         sidebarMenuComponents(NavbarItem.menu(), "sidebar:menu:sidenavContainer:sidenavItems");
     assertEquals(nbExpectedItems, countAccessibleItems);
-    assertEquals(nbExpectedItems, countVisibleItems.getValue().intValue());
+    assertEquals(nbExpectedItems, countVisibleItems.get().intValue());
   }
 
   private int sidebarMenuComponents(List<NavbarItem> menu, String pathToMenu) {

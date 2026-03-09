@@ -18,10 +18,8 @@ import org.iglooproject.jpa.search.service.IHibernateSearchService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
 import org.springframework.transaction.interceptor.TransactionAttribute;
-import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 import test.jpa.more.business.entity.model.TestEntity;
 import test.jpa.more.business.entity.service.ITestEntityService;
@@ -85,13 +83,8 @@ class TestTransactionSynchronization extends AbstractJpaMoreTestCase {
   @Test
   void testAfterCommitTask() {
     final TestCreateAfterCommitTask createAfterCommitTask = new TestCreateAfterCommitTask();
-    readOnlyTransactionTemplate.execute(
-        new TransactionCallbackWithoutResult() {
-          @Override
-          protected void doInTransactionWithoutResult(TransactionStatus status) {
-            transactionSynchronizationTaskManagerService.push(createAfterCommitTask);
-          }
-        });
+    readOnlyTransactionTemplate.executeWithoutResult(
+        status -> transactionSynchronizationTaskManagerService.push(createAfterCommitTask));
 
     entityManagerClear();
 
@@ -109,14 +102,11 @@ class TestTransactionSynchronization extends AbstractJpaMoreTestCase {
 
     final Long testEntityId = entity.getId();
 
-    writeTransactionTemplate.execute(
-        new TransactionCallbackWithoutResult() {
-          @Override
-          protected void doInTransactionWithoutResult(TransactionStatus status) {
-            transactionSynchronizationTaskManagerService.push(
-                new TestDeleteOnRollbackTask(testEntityId));
-            status.setRollbackOnly();
-          }
+    writeTransactionTemplate.executeWithoutResult(
+        status -> {
+          transactionSynchronizationTaskManagerService.push(
+              new TestDeleteOnRollbackTask(testEntityId));
+          status.setRollbackOnly();
         });
 
     entityManagerClear();
@@ -134,28 +124,22 @@ class TestTransactionSynchronization extends AbstractJpaMoreTestCase {
     testEntityService.create(entityNOTExpectedToBeDeleted);
     final Long entityNOTExpectedToBeDeletedId = entityNOTExpectedToBeDeleted.getId();
 
-    writeTransactionTemplate.execute(
-        new TransactionCallbackWithoutResult() {
-          @Override
-          protected void doInTransactionWithoutResult(TransactionStatus status) {
-            // Create a new transaction
-            writeRequiresNewTransactionTemplate.execute(
-                new TransactionCallbackWithoutResult() {
-                  @Override
-                  protected void doInTransactionWithoutResult(TransactionStatus status) {
-                    // Should not be executed since this transaction will execute just fine
-                    transactionSynchronizationTaskManagerService.push(
-                        new TestDeleteOnRollbackTask(entityNOTExpectedToBeDeletedId));
-                  }
-                });
+    writeTransactionTemplate.executeWithoutResult(
+        status -> {
+          // Create a new transaction
+          writeRequiresNewTransactionTemplate.executeWithoutResult(
+              status1 -> {
+                // Should not be executed since this transaction will execute just fine
+                transactionSynchronizationTaskManagerService.push(
+                    new TestDeleteOnRollbackTask(entityNOTExpectedToBeDeletedId));
+              });
 
-            // Should not trigger the execution of the rollback task declared above, but only the
-            // one below
-            status.setRollbackOnly();
+          // Should not trigger the execution of the rollback task declared above, but only the
+          // one below
+          status.setRollbackOnly();
 
-            transactionSynchronizationTaskManagerService.push(
-                new TestDeleteOnRollbackTask(entityExpectedToBeDeletedId));
-          }
+          transactionSynchronizationTaskManagerService.push(
+              new TestDeleteOnRollbackTask(entityExpectedToBeDeletedId));
         });
 
     entityManagerClear();
@@ -172,29 +156,26 @@ class TestTransactionSynchronization extends AbstractJpaMoreTestCase {
 
     final MutableObject<TestUseEntityBeforeCommitOrClearTask> taskReference = new MutableObject<>();
 
-    writeTransactionTemplate.execute(
-        new TransactionCallbackWithoutResult() {
-          @Override
-          protected void doInTransactionWithoutResult(TransactionStatus status) {
-            TestEntity reloadedEntity = testEntityService.getById(entityId);
+    writeTransactionTemplate.executeWithoutResult(
+        status -> {
+          TestEntity reloadedEntity = testEntityService.getById(entityId);
 
-            // This task will fail if executed when the entity is not in the session anymore
-            TestUseEntityBeforeCommitOrClearTask task =
-                new TestUseEntityBeforeCommitOrClearTask(reloadedEntity);
-            taskReference.setValue(task);
+          // This task will fail if executed when the entity is not in the session anymore
+          TestUseEntityBeforeCommitOrClearTask task =
+              new TestUseEntityBeforeCommitOrClearTask(reloadedEntity);
+          taskReference.setValue(task);
 
-            transactionSynchronizationTaskManagerService.push(task);
+          transactionSynchronizationTaskManagerService.push(task);
 
-            // Should trigger the task's execution
-            transactionSynchronizationTaskManagerService.beforeClear();
+          // Should trigger the task's execution
+          transactionSynchronizationTaskManagerService.beforeClear();
 
-            entityManagerClear();
-          }
+          entityManagerClear();
         });
 
     entityManagerClear();
 
-    assertThat(taskReference.getValue().getExecutionCount()).isEqualTo(1);
+    assertThat(taskReference.get().getExecutionCount()).isEqualTo(1);
   }
 
   @Test
@@ -205,32 +186,29 @@ class TestTransactionSynchronization extends AbstractJpaMoreTestCase {
 
     final MutableObject<TestUseEntityBeforeCommitOrClearTask> taskReference = new MutableObject<>();
 
-    writeTransactionTemplate.execute(
-        new TransactionCallbackWithoutResult() {
-          @Override
-          protected void doInTransactionWithoutResult(TransactionStatus status) {
-            TestEntity reloadedEntity = testEntityService.getById(entityId);
+    writeTransactionTemplate.executeWithoutResult(
+        status -> {
+          TestEntity reloadedEntity = testEntityService.getById(entityId);
 
-            // This task will fail if executed when the entity is not in the session anymore
-            TestUseEntityBeforeCommitOrClearTask task =
-                new TestUseEntityBeforeCommitOrClearTask(reloadedEntity);
-            taskReference.setValue(task);
+          // This task will fail if executed when the entity is not in the session anymore
+          TestUseEntityBeforeCommitOrClearTask task =
+              new TestUseEntityBeforeCommitOrClearTask(reloadedEntity);
+          taskReference.setValue(task);
 
-            transactionSynchronizationTaskManagerService.push(task);
+          transactionSynchronizationTaskManagerService.push(task);
 
-            // Should trigger the task's execution
-            transactionSynchronizationTaskManagerService.beforeClear();
+          // Should trigger the task's execution
+          transactionSynchronizationTaskManagerService.beforeClear();
 
-            entityManagerClear();
+          entityManagerClear();
 
-            status.setRollbackOnly();
-          }
+          status.setRollbackOnly();
         });
 
     entityManagerClear();
 
-    assertThat(taskReference.getValue().getExecutionCount()).isEqualTo(1);
-    assertThat(taskReference.getValue().getRollbackCount()).isEqualTo(1);
+    assertThat(taskReference.get().getExecutionCount()).isEqualTo(1);
+    assertThat(taskReference.get().getRollbackCount()).isEqualTo(1);
   }
 
   @Test

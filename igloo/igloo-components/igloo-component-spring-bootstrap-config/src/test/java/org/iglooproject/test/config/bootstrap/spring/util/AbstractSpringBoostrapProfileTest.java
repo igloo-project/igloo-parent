@@ -14,7 +14,7 @@ import org.springframework.test.context.TestPropertySource;
  */
 @TestPropertySource(
     inheritProperties = true,
-    properties = {"igloo.profile=OVERRIDE", "user.name=username"})
+    properties = {"user.name=username"})
 public abstract class AbstractSpringBoostrapProfileTest extends AbstractBootstrapTestCase {
 
   @Value("${property.default:}")

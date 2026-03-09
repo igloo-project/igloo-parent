@@ -17,6 +17,9 @@ import org.hibernate.search.mapper.orm.massindexing.MassIndexer;
 import org.hibernate.search.mapper.orm.session.SearchSession;
 import org.hibernate.search.mapper.pojo.massindexing.MassIndexingMonitor;
 // import org.hibernate.search.jpa.Search;
+import org.hibernate.search.mapper.pojo.massindexing.MassIndexingTypeGroupMonitor;
+import org.hibernate.search.mapper.pojo.massindexing.MassIndexingTypeGroupMonitorCreateContext;
+import org.hibernate.search.mapper.pojo.massindexing.impl.LegacyDelegatingMassIndexingTypeGroupMonitor;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.spring.property.service.IPropertyService;
@@ -64,7 +67,7 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
     for (Class<?> clazz : entityClasses) {
       ProgressMonitor progressMonitor = new ProgressMonitor();
       Thread t = new Thread(progressMonitor);
-      LOGGER.info(String.format("Reindexing %1$s.", clazz));
+      LOGGER.info("Reindexing {}.", clazz);
       t.start();
       MassIndexer indexer = fullTextEntityManager.massIndexer(clazz);
       indexer
@@ -75,7 +78,7 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
           .startAndWait();
       progressMonitor.stop();
       t.interrupt();
-      LOGGER.info(String.format("Reindexing %1$s done.", clazz));
+      LOGGER.info("Reindexing {} done.", clazz);
     }
   }
 
@@ -137,8 +140,11 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
     }
 
     @Override
-    public void addToTotalCount(long count) {
-      this.totalCount += count;
+    public MassIndexingTypeGroupMonitor typeGroupMonitor(
+        MassIndexingTypeGroupMonitorCreateContext context) {
+      context.totalCount().ifPresent(count -> this.totalCount += count);
+
+      return new LegacyDelegatingMassIndexingTypeGroupMonitor(this, context);
     }
 
     @Override
@@ -177,9 +183,11 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 
     private void log() {
       LOGGER.debug(
-          String.format(
-              "Indexing %1$d / %2$d (entities loaded: %3$d, documents built: %4$d)",
-              documentsAdded, totalCount, entitiesLoaded, documentsBuilt));
+          "Indexing {} / {} (entities loaded: {}, documents built: {})",
+          documentsAdded,
+          totalCount,
+          entitiesLoaded,
+          documentsBuilt);
     }
   }
 

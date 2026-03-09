@@ -25,8 +25,6 @@ import org.iglooproject.test.business.person.model.QPerson;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 
 public abstract class AbstractTestSimpleHibernateBatchExecutor
     extends AbstractTestHibernateBatchExecutor {
@@ -67,13 +65,7 @@ public abstract class AbstractTestSimpleHibernateBatchExecutor
 
   @Test
   void readWriteInsideTransaction() {
-    writeRequiredTransactionTemplate.execute(
-        new TransactionCallbackWithoutResult() {
-          @Override
-          protected void doInTransactionWithoutResult(TransactionStatus status) {
-            readWrite();
-          }
-        });
+    writeRequiredTransactionTemplate.executeWithoutResult(status -> readWrite());
     assertAllPersonsNamed(NEW_LASTNAME_VALUE);
   }
 
@@ -105,13 +97,7 @@ public abstract class AbstractTestSimpleHibernateBatchExecutor
 
   @Test
   void readOnlyInsideTransaction() {
-    writeRequiredTransactionTemplate.execute(
-        new TransactionCallbackWithoutResult() {
-          @Override
-          protected void doInTransactionWithoutResult(TransactionStatus status) {
-            readOnly();
-          }
-        });
+    writeRequiredTransactionTemplate.executeWithoutResult(status -> readOnly());
     assertNoPersonNamed(NEW_LASTNAME_VALUE);
   }
 

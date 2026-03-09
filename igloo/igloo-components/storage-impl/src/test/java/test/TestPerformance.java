@@ -79,9 +79,9 @@ class TestPerformance extends AbstractTest {
         new RandomStringGenerator.Builder()
             .usingRandom(random::nextInt)
             .filteredBy(CharacterPredicates.ASCII_ALPHA_NUMERALS)
-            .build();
+            .get();
     RandomStringGenerator contentGenerator =
-        new RandomStringGenerator.Builder().usingRandom(random::nextInt).build();
+        new RandomStringGenerator.Builder().usingRandom(random::nextInt).get();
     String[] extensions = new String[] {".pdf", ".doc", ".docx", ".xlsx", ".txt", ""};
     Supplier<String> extensionGenerator =
         () -> {
