@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.iglooproject</groupId>
     <artifactId>plugins-all</artifactId>
-    <version>7.0.0-SNAPSHOT</version>
+    <version>7.0.0</version>
   </parent>
   <artifactId>igloo-parent</artifactId>
   <version>${revision}</version>
