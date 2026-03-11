@@ -2,6 +2,7 @@ package test.web.config;
 
 import basicapp.back.config.BasicApplicationBackBaseConfiguration;
 import basicapp.back.config.BasicApplicationBackDifferenceConfiguration;
+import basicapp.back.config.BasicApplicationBackFlywayConfiguration;
 import basicapp.back.config.BasicApplicationBackJpaConfiguration;
 import basicapp.back.config.BasicApplicationBackManifestConfiguration;
 import basicapp.back.config.BasicApplicationBackNotificationConfiguration;
@@ -27,6 +28,7 @@ import test.core.config.BasicApplicationBackTestBaseConfiguration;
   BasicApplicationBackJpaConfiguration.class,
   BasicApplicationBackPropertyRegistryConfiguration.class,
   BasicApplicationBackSecurityConfiguration.class,
+  BasicApplicationBackFlywayConfiguration.class,
   BasicApplicationBackSchedulingConfiguration.class,
   BasicApplicationBackTaskManagementConfiguration.class,
   BasicApplicationBackNotificationConfiguration.class,

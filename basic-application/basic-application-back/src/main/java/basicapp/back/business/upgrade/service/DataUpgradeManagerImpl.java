@@ -1,7 +1,7 @@
 package basicapp.back.business.upgrade.service;
 
 import basicapp.back.business.upgrade.model.DataUpgradePackage;
-import basicapp.back.business.upgrade.model.DataUpgrade_InitDataFromExcel;
+import basicapp.back.business.upgrade.model.DataUpgrade_InitDataExcel;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import org.iglooproject.jpa.exception.SecurityServiceException;
@@ -32,7 +32,7 @@ public class DataUpgradeManagerImpl extends AbstractDataUpgradeServiceImpl
 
   @Override
   public List<IDataUpgrade> listDataUpgrades() {
-    return List.<IDataUpgrade>of(new DataUpgrade_InitDataFromExcel());
+    return List.<IDataUpgrade>of(new DataUpgrade_InitDataExcel());
   }
 
   @Override

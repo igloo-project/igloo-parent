@@ -4,6 +4,7 @@ import basicapp.back.business.notification.service.EmptyNotificationContentDescr
 import basicapp.back.business.notification.service.IBasicApplicationNotificationContentDescriptorFactory;
 import basicapp.back.config.BasicApplicationBackBaseConfiguration;
 import basicapp.back.config.BasicApplicationBackDifferenceConfiguration;
+import basicapp.back.config.BasicApplicationBackFlywayConfiguration;
 import basicapp.back.config.BasicApplicationBackJpaConfiguration;
 import basicapp.back.config.BasicApplicationBackManifestConfiguration;
 import basicapp.back.config.BasicApplicationBackNotificationConfiguration;
@@ -27,6 +28,7 @@ import test.core.TestBackPackage;
   BasicApplicationBackJpaConfiguration.class,
   BasicApplicationBackPropertyRegistryConfiguration.class,
   BasicApplicationBackSecurityConfiguration.class,
+  BasicApplicationBackFlywayConfiguration.class,
   BasicApplicationBackTaskManagementConfiguration.class,
   BasicApplicationBackNotificationConfiguration.class,
   BasicApplicationBackReferenceDataConfiguration.class,

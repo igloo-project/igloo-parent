@@ -1,0 +1,1 @@
+This directory houses all scripts executed manually as part of a deployment.
