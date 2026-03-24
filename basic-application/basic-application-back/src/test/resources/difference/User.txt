@@ -1,0 +1,8 @@
+ [DEEP]
+.emailAddress [SIMPLE]
+.enabled [SIMPLE]
+.firstName [SIMPLE]
+.lastName [SIMPLE]
+.locale [SIMPLE]
+.roles [SHALLOW]
+.username [SIMPLE]

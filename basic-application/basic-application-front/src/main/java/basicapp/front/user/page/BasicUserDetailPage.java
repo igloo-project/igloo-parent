@@ -17,7 +17,7 @@ import basicapp.front.BasicApplicationSession;
 import basicapp.front.common.util.BootstrapTabsUtils;
 import basicapp.front.navigation.link.LinkFactory;
 import basicapp.front.user.component.tab.BasicUserDetailTabGeneralPanel;
-import basicapp.front.user.component.tab.BasicUserDetailTabSecurityPanel;
+import basicapp.front.user.component.tab.BasicUserDetailTabHistoryPanel;
 import basicapp.front.user.popup.UserPasswordEditPopup;
 import basicapp.front.user.renderer.UserEnabledRenderer;
 import basicapp.front.user.template.UserTemplate;
@@ -77,9 +77,9 @@ public class BasicUserDetailPage extends UserTemplate {
   public static final String TAB_GENERAL_PANEL_ID = "general";
   public static final String TAB_GENERAL_TAB_ID =
       BootstrapTabsUtils.getTabMarkupId(TAB_GENERAL_PANEL_ID);
-  public static final String TAB_SECURITY_PANEL_ID = "security";
-  public static final String TAB_SECURITY_TAB_ID =
-      BootstrapTabsUtils.getTabMarkupId(TAB_SECURITY_PANEL_ID);
+  public static final String TAB_HISTORY_PANEL_ID = "history";
+  public static final String TAB_HISTORY_TAB_ID =
+      BootstrapTabsUtils.getTabMarkupId(TAB_HISTORY_PANEL_ID);
 
   @SpringBean protected IUserControllerService userControllerService;
 
@@ -216,10 +216,10 @@ public class BasicUserDetailPage extends UserTemplate {
 
     add(
         BootstrapTabsUtils.build(
-            TAB_SECURITY_TAB_ID,
-            TAB_SECURITY_PANEL_ID,
-            new WebMarkupContainer("securityTab"),
-            new BasicUserDetailTabSecurityPanel("security", userModel),
+            TAB_HISTORY_TAB_ID,
+            TAB_HISTORY_PANEL_ID,
+            new WebMarkupContainer("historyTab"),
+            new BasicUserDetailTabHistoryPanel("history", userModel),
             () -> false));
   }
 

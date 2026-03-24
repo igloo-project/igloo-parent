@@ -21,13 +21,13 @@ import org.iglooproject.wicket.more.markup.html.sort.TableSortLink.CycleMode;
 import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel.AddInPlacement;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.DataTableBuilder;
 
-public class UserDetailSecurityHistoryLogsPanel extends GenericPanel<User> {
+public class UserDetailHistoryHistoryLogsPanel extends GenericPanel<User> {
 
-  private static final long serialVersionUID = -5322394816999794266L;
+  private static final long serialVersionUID = 1L;
 
   @SpringBean private IPropertyService propertyService;
 
-  public UserDetailSecurityHistoryLogsPanel(String id, final IModel<? extends User> userModel) {
+  public UserDetailHistoryHistoryLogsPanel(String id, final IModel<? extends User> userModel) {
     super(id, userModel);
     setOutputMarkupPlaceholderTag(true);
 
@@ -48,16 +48,16 @@ public class UserDetailSecurityHistoryLogsPanel extends GenericPanel<User> {
     add(
         DataTableBuilder.start(dataProvider, dataProvider.getSortModel())
             .addLabelColumn(
-                new ResourceModel("business.history.date"), Bindings.historyLog().date())
+                new ResourceModel("business.historyLog.date"), Bindings.historyLog().date())
             .withSort(HistoryLogSort.DATE, SortIconStyle.DEFAULT, CycleMode.DEFAULT_REVERSE)
             .withClass("cell-w-150")
             .addLabelColumn(
-                new ResourceModel("business.history.subject"), Bindings.historyLog().subject())
+                new ResourceModel("business.historyLog.subject"), Bindings.historyLog().subject())
             .withClass("cell-w-250")
             .addColumn(new HistoryLogDetailColumn())
             .withClass("cell-w-500")
             .bootstrapCard()
-            .title("user.detail.security.historyLogs.title")
+            .title("user.detail.history.historyLogs.title")
             .ajaxPager(AddInPlacement.FOOTER_RIGHT)
             .build("history", propertyService.get(PORTFOLIO_ITEMS_PER_PAGE)));
   }

@@ -1,6 +1,7 @@
 package basicapp.app.config;
 
 import basicapp.back.config.BasicApplicationBackBaseConfiguration;
+import basicapp.back.config.BasicApplicationBackDifferenceConfiguration;
 import basicapp.back.config.BasicApplicationBackFlywayJavaMigrationConfiguration;
 import basicapp.back.config.BasicApplicationBackJpaConfiguration;
 import basicapp.back.config.BasicApplicationBackManifestConfiguration;
@@ -33,6 +34,7 @@ import org.springframework.context.annotation.Import;
   BasicApplicationBackTaskManagementConfiguration.class,
   BasicApplicationBackNotificationConfiguration.class,
   BasicApplicationBackReferenceDataConfiguration.class,
+  BasicApplicationBackDifferenceConfiguration.class,
   BasicApplicationFrontPropertyRegistryConfiguration.class,
   BasicApplicationFrontSecurityConfiguration.class,
   BasicApplicationFrontServletConfiguration.class,

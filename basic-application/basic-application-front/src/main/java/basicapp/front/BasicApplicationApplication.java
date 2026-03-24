@@ -150,6 +150,7 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
     converterLocator.set(LocalTime.class, LocalTimeConverter.get());
     converterLocator.set(Instant.class, InstantRenderer.get());
     converterLocator.set(Locale.class, LocaleRenderer.get());
+    converterLocator.set(boolean.class, BooleanRenderer.get());
     converterLocator.set(Boolean.class, BooleanRenderer.get());
 
     converterLocator.set(EmailAddress.class, EmailAddressConverter.get());

@@ -3,6 +3,7 @@ package test.core.config;
 import basicapp.back.business.notification.service.EmptyNotificationContentDescriptorFactoryImpl;
 import basicapp.back.business.notification.service.IBasicApplicationNotificationContentDescriptorFactory;
 import basicapp.back.config.BasicApplicationBackBaseConfiguration;
+import basicapp.back.config.BasicApplicationBackDifferenceConfiguration;
 import basicapp.back.config.BasicApplicationBackJpaConfiguration;
 import basicapp.back.config.BasicApplicationBackManifestConfiguration;
 import basicapp.back.config.BasicApplicationBackNotificationConfiguration;
@@ -29,6 +30,7 @@ import test.core.TestBackPackage;
   BasicApplicationBackTaskManagementConfiguration.class,
   BasicApplicationBackNotificationConfiguration.class,
   BasicApplicationBackReferenceDataConfiguration.class,
+  BasicApplicationBackDifferenceConfiguration.class,
   BasicApplicationBackTestBaseConfiguration.class,
   PsqlTestContainerConfiguration.class
 })
