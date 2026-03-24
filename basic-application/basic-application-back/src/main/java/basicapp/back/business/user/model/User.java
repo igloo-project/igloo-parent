@@ -33,7 +33,6 @@ import jakarta.persistence.Transient;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.SortedSet;
 import org.bindgen.Bindable;
 import org.hibernate.annotations.NaturalId;
@@ -176,11 +175,6 @@ public class User extends GenericEntity<Long, User> implements IUser, INotificat
 
   public void setPasswordHash(String passwordHash) {
     this.passwordHash = passwordHash;
-  }
-
-  @Transient
-  public boolean hasPasswordHash() {
-    return !Objects.equals(getPasswordHash(), EMPTY_PASSWORD_HASH);
   }
 
   public UserPasswordInformation getPasswordInformation() {

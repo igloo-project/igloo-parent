@@ -38,7 +38,6 @@ public class BasicApplicationBackDifferenceConfiguration {
     differenceIntrospector.addIgnoredPaths(Bindings.user().notificationEmailAddress());
     differenceIntrospector.addIgnoredPaths(Bindings.user().notificationEnabled());
     differenceIntrospector.addIgnoredPaths(Bindings.user().passwordHash());
-    differenceIntrospector.addIgnoredPaths(Bindings.user().hasPasswordHash());
     differenceIntrospector.addIgnoredPaths(Bindings.user().passwordInformation());
     differenceIntrospector.addIgnoredPaths(Bindings.user().passwordRecoveryRequest());
     differenceIntrospector.addIgnoredPaths(Bindings.user().announcementInformation());

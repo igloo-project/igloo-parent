@@ -1,5 +1,7 @@
 package basicapp.back.business.user.service.business;
 
+import static org.iglooproject.jpa.security.service.CoreJpaUserDetailsServiceImpl.EMPTY_PASSWORD_HASH;
+
 import basicapp.back.business.common.model.EmailAddress;
 import basicapp.back.business.history.model.atomic.HistoryLogEventType;
 import basicapp.back.business.history.model.bean.HistoryLogAdditionalInformationBean;
@@ -152,7 +154,7 @@ public class UserServiceImpl extends GenericEntityServiceImpl<Long, User> implem
   }
 
   @Override
-  public void setPasswords(User user, String rawPassword)
+  public void setPassword(User user, String rawPassword)
       throws ServiceException, SecurityServiceException {
     Preconditions.checkArgument(StringUtils.hasText(rawPassword));
 
@@ -165,6 +167,12 @@ public class UserServiceImpl extends GenericEntityServiceImpl<Long, User> implem
   }
 
   @Override
+  public boolean hasPassword(User user) {
+    Objects.requireNonNull(user);
+    return !Objects.equals(user.getPasswordHash(), EMPTY_PASSWORD_HASH);
+  }
+
+  @Override
   public void initPasswordRecoveryRequest(EmailAddress emailAddress)
       throws SecurityServiceException, ServiceException {
     User user = getByEmailAddressCaseInsensitive(emailAddress);
@@ -172,7 +180,7 @@ public class UserServiceImpl extends GenericEntityServiceImpl<Long, User> implem
     if (user != null && user.isEnabled() && user.isNotificationEnabled()) {
       securityManagementService.initiatePasswordRecoveryRequest(
           user,
-          user.hasPasswordHash()
+          hasPassword(user)
               ? UserPasswordRecoveryRequestType.RESET
               : UserPasswordRecoveryRequestType.CREATION,
           UserPasswordRecoveryRequestInitiator.USER);

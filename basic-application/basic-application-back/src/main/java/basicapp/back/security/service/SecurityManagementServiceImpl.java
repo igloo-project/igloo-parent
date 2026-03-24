@@ -59,7 +59,7 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
       return;
     }
 
-    userService.setPasswords(user, password);
+    userService.setPassword(user, password);
     user.getPasswordInformation().setLastUpdateDate(Instant.now());
 
     if (getSecurityOptions(user).isPasswordHistoryEnabled()) {
