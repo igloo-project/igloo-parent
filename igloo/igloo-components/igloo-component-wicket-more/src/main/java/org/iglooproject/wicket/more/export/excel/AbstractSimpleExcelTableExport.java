@@ -3,7 +3,6 @@ package org.iglooproject.wicket.more.export.excel;
 import com.google.common.base.Joiner;
 import igloo.wicket.model.CountMessageModel;
 import java.util.Locale;
-import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -98,31 +97,6 @@ public abstract class AbstractSimpleExcelTableExport extends AbstractExcelTableE
 
   protected <N extends Number> String localizeCount(String resourceKey, N value) {
     return new CountMessageModel(resourceKey, Model.of(value)).getObject();
-  }
-
-  @Override
-  protected void initColors() {
-    setHeaderBackgroundColor("#0062CC");
-    setHeaderFontColor("#FFFFFF");
-    super.initColors();
-  }
-
-  @Override
-  protected void initFonts() {
-    setFontName("Calibri");
-    super.initFonts();
-  }
-
-  @Override
-  protected void initStyles() {
-    super.initStyles();
-
-    CellStyle header = getStyle(STYLE_HEADER_NAME);
-    header.setWrapText(true);
-    CellStyle standardOdd = getStyle(STYLE_STANDARD_NAME + ROW_ODD_NAME);
-    standardOdd.setWrapText(true);
-    CellStyle standardEven = getStyle(STYLE_STANDARD_NAME + ROW_EVEN_NAME);
-    standardEven.setWrapText(true);
   }
 
   @Override

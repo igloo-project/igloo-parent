@@ -2,6 +2,7 @@ package basicapp.front.user.export;
 
 import basicapp.back.business.user.model.User;
 import basicapp.back.business.user.model.UserBinding;
+import basicapp.front.common.export.AbstractBasicApplicationSimpleExcelTableExport;
 import basicapp.front.user.renderer.UserRenderer;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -19,9 +20,8 @@ import org.apache.wicket.Component;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.iglooproject.export.excel.ColumnInformation;
 import org.iglooproject.jpa.util.HibernateUtils;
-import org.iglooproject.wicket.more.export.excel.AbstractSimpleExcelTableExport;
 
-public class UserExcelTableExport extends AbstractSimpleExcelTableExport {
+public class UserExcelTableExport extends AbstractBasicApplicationSimpleExcelTableExport {
 
   private static final String SHEET_NAME_RESOURCE_KEY = "user.common.export.excel.sheetName";
 
