@@ -25,7 +25,6 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
-import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
@@ -75,10 +74,6 @@ public class AnnouncementSavePopup extends AbstractAjaxModalPopupPanel<Announcem
   protected Component createBody(String wicketId) {
     DelegatedMarkupPanel body = new DelegatedMarkupPanel(wicketId, getClass());
 
-    Condition typeServiceInterruptionCondition =
-        Condition.predicate(
-            getModel(), AnnouncementPredicates.type(AnnouncementType.SERVICE_INTERRUPTION));
-
     form = new CacheWritingForm<>("form", bindableModel);
     body.add(form);
 
@@ -106,38 +101,35 @@ public class AnnouncementSavePopup extends AbstractAjaxModalPopupPanel<Announcem
                             target.add(formContainer);
                           }
                         })),
-        new EnclosureContainer("interruptionContainer")
-            .condition(typeServiceInterruptionCondition)
+        new EnclosureContainer("notificationContainer")
+            .condition(
+                Condition.predicate(
+                    getModel(), AnnouncementPredicates.type(AnnouncementType.NOTIFICATION)))
             .add(
-                new CoreLabel(
-                    "interruptionDateTitle",
-                    new ResourceModel("business.announcement.interruption.dates")),
-                new LocalDateTimeRangePickerVueField(
-                        "interruptionDate",
-                        bindableModel.bind(Bindings.announcement().interruption().startDateTime()),
-                        bindableModel.bind(Bindings.announcement().interruption().endDateTime()))
+                new TextArea<>(
+                        "contentFr", bindableModel.bind(Bindings.announcement().content().fr()))
+                    .setLabel(new ResourceModel("business.announcement.content.fr"))
+                    .setRequired(true)
+                    .add(new UpdateOnChangeAjaxEventBehavior()),
+                new TextArea<>(
+                        "contentEn", bindableModel.bind(Bindings.announcement().content().en()))
+                    .setLabel(new ResourceModel("business.announcement.content.en"))
                     .setRequired(true)
                     .add(new UpdateOnChangeAjaxEventBehavior())),
-        new EnclosureContainer("descriptionContainer")
-            .condition(typeServiceInterruptionCondition.negate())
+        new EnclosureContainer("unavailabilityContainer")
+            .condition(
+                Condition.predicate(
+                    getModel(), AnnouncementPredicates.type(AnnouncementType.UNAVAILABILITY)))
             .add(
-                new TextField<>("titleFr", bindableModel.bind(Bindings.announcement().title().fr()))
-                    .setLabel(new ResourceModel("business.announcement.title.fr"))
-                    .setRequired(typeServiceInterruptionCondition.negate().applies())
-                    .add(new UpdateOnChangeAjaxEventBehavior()),
-                new TextField<>("titleEn", bindableModel.bind(Bindings.announcement().title().en()))
-                    .setLabel(new ResourceModel("business.announcement.title.en"))
-                    .setRequired(typeServiceInterruptionCondition.negate().applies())
-                    .add(new UpdateOnChangeAjaxEventBehavior()),
-                new TextArea<>(
-                        "descriptionFr",
-                        bindableModel.bind(Bindings.announcement().description().fr()))
-                    .setLabel(new ResourceModel("business.announcement.description.fr"))
-                    .add(new UpdateOnChangeAjaxEventBehavior()),
-                new TextArea<>(
-                        "descriptionEn",
-                        bindableModel.bind(Bindings.announcement().description().en()))
-                    .setLabel(new ResourceModel("business.announcement.description.en"))
+                new CoreLabel(
+                    "unavailabilityDatesLabel",
+                    new ResourceModel("business.announcement.unavailability.dates")),
+                new LocalDateTimeRangePickerVueField(
+                        "unavailabilityDates",
+                        bindableModel.bind(
+                            Bindings.announcement().unavailability().startDateTime()),
+                        bindableModel.bind(Bindings.announcement().unavailability().endDateTime()))
+                    .setRequired(true)
                     .add(new UpdateOnChangeAjaxEventBehavior())),
         new CoreLabel(
             "publicationDateTitle", new ResourceModel("business.announcement.publication.dates")),

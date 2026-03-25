@@ -20,56 +20,36 @@
 								</div>
 							</div>
 						</div>
-						<wicket:container wicket:id="interruptionContainer">
+						<wicket:container wicket:id="notificationContainer">
 							<div class="col-12">
 								<div class="row row-form-group form-group">
-									<div class="col-md-4">
-										<label wicket:for="interruptionDate" class="col-form-label form-label"><span wicket:id="interruptionDateTitle"/></label>
+									<div class="col-12">
+										<label wicket:for="contentFr" class="col-form-label form-label"><wicket:label /></label>
 									</div>
-									<div class="col-md-8">
-										<vue-date-picker wicket:id="interruptionDate" type="text"/>
+									<div class="col-12">
+										<textarea wicket:id="contentFr" class="form-control" type="text" rows="10" />
+									</div>
+								</div>
+							</div>
+							<div class="col-12">
+								<div class="row row-form-group form-group">
+									<div class="col-12">
+										<label wicket:for="contentEn" class="col-form-label form-label"><wicket:label /></label>
+									</div>
+									<div class="col-12">
+										<textarea wicket:id="contentEn" class="form-control" type="text" rows="10" />
 									</div>
 								</div>
 							</div>
 						</wicket:container>
-						<wicket:container wicket:id="descriptionContainer">
+						<wicket:container wicket:id="unavailabilityContainer">
 							<div class="col-12">
 								<div class="row row-form-group form-group">
 									<div class="col-md-4">
-										<label wicket:for="titleFr" class="col-form-label form-label"><wicket:label /></label>
+										<label wicket:for="unavailabilityDates" class="col-form-label form-label"><span wicket:id="unavailabilityDatesLabel"/></label>
 									</div>
 									<div class="col-md-8">
-										<input wicket:id="titleFr" class="form-control" type="text" />
-									</div>
-								</div>
-							</div>
-							<div class="col-12">
-								<div class="row row-form-group form-group">
-									<div class="col-md-4">
-										<label wicket:for="titleEn" class="col-form-label form-label"><wicket:label /></label>
-									</div>
-									<div class="col-md-8">
-										<input wicket:id="titleEn" class="form-control" type="text" />
-									</div>
-								</div>
-							</div>
-							<div class="col-12">
-								<div class="row row-form-group form-group">
-									<div class="col-md-4">
-										<label wicket:for="descriptionFr" class="col-form-label form-label"><wicket:label /></label>
-									</div>
-									<div class="col-md-8">
-										<textarea wicket:id="descriptionFr" class="form-control" rows="4" />
-									</div>
-								</div>
-							</div>
-							<div class="col-12">
-								<div class="row row-form-group form-group">
-									<div class="col-md-4">
-										<label wicket:for="descriptionEn" class="col-form-label form-label"><wicket:label /></label>
-									</div>
-									<div class="col-md-8">
-										<textarea wicket:id="descriptionEn" class="form-control" rows="4" />
+										<vue-date-picker wicket:id="unavailabilityDates" type="text"/>
 									</div>
 								</div>
 							</div>

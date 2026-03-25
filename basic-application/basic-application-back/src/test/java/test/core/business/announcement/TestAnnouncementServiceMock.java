@@ -45,7 +45,7 @@ public class TestAnnouncementServiceMock {
     @Test
     void testSaveAnnouncement_new_callCreate() throws SecurityServiceException, ServiceException {
       Announcement announcement = new Announcement();
-      announcement.setType(AnnouncementType.SERVICE_INTERRUPTION);
+      announcement.setType(AnnouncementType.UNAVAILABILITY);
       Mockito.doNothing().when(announcementService).cleanAnnouncement(announcement);
       Mockito.doNothing().when(announcementService).create(announcement);
 
@@ -60,7 +60,7 @@ public class TestAnnouncementServiceMock {
     void testSaveAnnouncement_notNew_callUpdate()
         throws SecurityServiceException, ServiceException {
       Announcement announcement = new Announcement();
-      announcement.setType(AnnouncementType.SERVICE_INTERRUPTION);
+      announcement.setType(AnnouncementType.UNAVAILABILITY);
       announcement.setId(-1L);
       Mockito.doNothing().when(announcementService).cleanAnnouncement(announcement);
       Mockito.doNothing().when(announcementService).update(announcement);
@@ -94,7 +94,7 @@ public class TestAnnouncementServiceMock {
     @Test
     void cleanWithoutSaving_withType_callCleanAnnoucement() {
       Announcement announcement = new Announcement();
-      announcement.setType(AnnouncementType.SERVICE_INTERRUPTION);
+      announcement.setType(AnnouncementType.UNAVAILABILITY);
       Assertions.assertThatCode(() -> announcementService.cleanWithoutSaving(announcement))
           .doesNotThrowAnyException();
       Mockito.verify(announcementService).cleanAnnouncement(announcement);
@@ -115,35 +115,31 @@ public class TestAnnouncementServiceMock {
     @Test
     void cleanAnnouncement_typeServiceInterruption_cleanTitleAndDescription() {
       Announcement announcement = new Announcement();
-      announcement.setType(AnnouncementType.SERVICE_INTERRUPTION);
-      announcement.getTitle().setFr("title");
-      announcement.getDescription().setFr("description");
-      announcement.getInterruption().setStartDateTime(LocalDateTime.of(2024, 1, 1, 10, 0));
-      announcement.getInterruption().setEndDateTime(LocalDateTime.of(2024, 1, 2, 10, 0));
+      announcement.setType(AnnouncementType.UNAVAILABILITY);
+      announcement.getContent().setFr("content");
+      announcement.getUnavailability().setStartDateTime(LocalDateTime.of(2024, 1, 1, 10, 0));
+      announcement.getUnavailability().setEndDateTime(LocalDateTime.of(2024, 1, 2, 10, 0));
       announcementService.cleanAnnouncement(announcement);
 
-      Assertions.assertThat(announcement.getTitle().getFr()).isNull();
-      Assertions.assertThat(announcement.getDescription().getFr()).isNull();
-      Assertions.assertThat(announcement.getInterruption().getStartDateTime())
+      Assertions.assertThat(announcement.getContent().getFr()).isNull();
+      Assertions.assertThat(announcement.getUnavailability().getStartDateTime())
           .isEqualTo(LocalDateTime.of(2024, 1, 1, 10, 0));
-      Assertions.assertThat(announcement.getInterruption().getEndDateTime())
+      Assertions.assertThat(announcement.getUnavailability().getEndDateTime())
           .isEqualTo(LocalDateTime.of(2024, 1, 2, 10, 0));
     }
 
     @Test
     void cleanAnnouncement_typeOther_cleanDates() {
       Announcement announcement = new Announcement();
-      announcement.setType(AnnouncementType.OTHER);
-      announcement.getTitle().setFr("title");
-      announcement.getDescription().setFr("description");
-      announcement.getInterruption().setStartDateTime(LocalDateTime.of(2024, 1, 1, 10, 0));
-      announcement.getInterruption().setEndDateTime(LocalDateTime.of(2024, 1, 2, 10, 0));
+      announcement.setType(AnnouncementType.NOTIFICATION);
+      announcement.getContent().setFr("content");
+      announcement.getUnavailability().setStartDateTime(LocalDateTime.of(2024, 1, 1, 10, 0));
+      announcement.getUnavailability().setEndDateTime(LocalDateTime.of(2024, 1, 2, 10, 0));
       announcementService.cleanAnnouncement(announcement);
 
-      Assertions.assertThat(announcement.getTitle().getFr()).isEqualTo("title");
-      Assertions.assertThat(announcement.getDescription().getFr()).isEqualTo("description");
-      Assertions.assertThat(announcement.getInterruption().getStartDateTime()).isNull();
-      Assertions.assertThat(announcement.getInterruption().getEndDateTime()).isNull();
+      Assertions.assertThat(announcement.getContent().getFr()).isEqualTo("content");
+      Assertions.assertThat(announcement.getUnavailability().getStartDateTime()).isNull();
+      Assertions.assertThat(announcement.getUnavailability().getEndDateTime()).isNull();
     }
   }
 

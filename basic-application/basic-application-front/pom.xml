@@ -171,6 +171,11 @@
       <artifactId>jul-to-slf4j</artifactId>
       <scope>runtime</scope>
     </dependency>
+    <dependency>
+      <groupId>org.commonmark</groupId>
+      <artifactId>commonmark</artifactId>
+      <version>${commonmark.version}</version>
+    </dependency>
     <!-- Wicket debug bar -->
     <dependency>
       <groupId>org.apache.wicket</groupId>

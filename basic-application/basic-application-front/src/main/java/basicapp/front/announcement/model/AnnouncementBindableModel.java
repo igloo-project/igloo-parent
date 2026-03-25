@@ -20,10 +20,9 @@ public class AnnouncementBindableModel extends BindableModel<Announcement> {
     super(mainModel);
 
     bindWithCache(Bindings.announcement().type(), new Model<>());
-    bindWithCache(Bindings.announcement().interruption().startDateTime(), new Model<>());
-    bindWithCache(Bindings.announcement().interruption().endDateTime(), new Model<>());
-    bindWithCache(Bindings.announcement().title(), new Model<>());
-    bindWithCache(Bindings.announcement().description(), new Model<>());
+    bindWithCache(Bindings.announcement().content(), new Model<>());
+    bindWithCache(Bindings.announcement().unavailability().startDateTime(), new Model<>());
+    bindWithCache(Bindings.announcement().unavailability().endDateTime(), new Model<>());
     bindWithCache(Bindings.announcement().publication().startDateTime(), new Model<>());
     bindWithCache(Bindings.announcement().publication().endDateTime(), new Model<>());
     bindWithCache(Bindings.announcement().enabled(), new Model<>());
@@ -36,7 +35,7 @@ public class AnnouncementBindableModel extends BindableModel<Announcement> {
     }
 
     if (announcement.getType() == null) {
-      announcement.setType(AnnouncementType.SERVICE_INTERRUPTION);
+      announcement.setType(AnnouncementType.NOTIFICATION);
     }
 
     super.setObject(announcement);

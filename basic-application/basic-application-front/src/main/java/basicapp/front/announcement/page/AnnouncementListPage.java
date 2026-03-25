@@ -103,7 +103,7 @@ public class AnnouncementListPage extends AnnouncementTemplate {
             .withClass("cell-w-100")
             .addColumn(
                 new AbstractCoreColumn<Announcement, AnnouncementSort>(
-                    new ResourceModel("business.announcement.message")) {
+                    new ResourceModel("business.announcement.content")) {
                   private static final long serialVersionUID = 1L;
 
                   @Override
