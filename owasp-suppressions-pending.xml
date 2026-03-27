@@ -34,6 +34,24 @@
     <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring-security-core.*$</packageUrl>
     <vulnerabilityName>CVE-2026-22732</vulnerabilityName>
   </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-boot-actuator-3.5.9.jar
+   on ne déclare pas de custom health group dans les projets
+   fix dans la version spring-boot 4.0.4
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring-boot-actuator.*$</packageUrl>
+    <vulnerabilityName>CVE-2026-22731</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-boot-actuator-autoconfigure-3.5.9.jar
+   on n'utilise pas Cloud Foundry actuator
+    fix dans la version spring-boot 4.0.4
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring-boot-actuator-autoconfigure@.*$</packageUrl>
+    <vulnerabilityName>CVE-2026-22733</vulnerabilityName>
+  </suppress>
   
 	<!--                                                              -->
 	<!--                   IGLOO 6.20.0                               -->
