@@ -1,4 +1,4 @@
-package igloo.console.common.form;
+package igloo.console.common.popup;
 
 import igloo.bootstrap.modal.AbstractAjaxModalPopupPanel;
 import igloo.console.common.component.PropertyIdListPanel;

@@ -30,6 +30,22 @@ public class HibernateSearchServiceImpl implements IHibernateSearchService {
   }
 
   @Override
+  public Set<Class<?>> getIndexedRootEntities() throws ServiceException {
+    return hibernateSearchDao.getIndexedRootEntities(Object.class);
+  }
+
+  @Override
+  public Set<Class<?>> getIndexedRootEntities(Collection<Class<?>> classes)
+      throws ServiceException {
+    if (classes != null && !classes.isEmpty()) {
+      return hibernateSearchDao.getIndexedRootEntities(
+          classes.toArray(new Class<?>[classes.size()]));
+    } else {
+      return Sets.newHashSet();
+    }
+  }
+
+  @Override
   public <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> void reindexEntity(
       E entity) {
     hibernateSearchDao.reindexEntity(entity);
@@ -48,19 +64,21 @@ public class HibernateSearchServiceImpl implements IHibernateSearchService {
   }
 
   @Override
-  public Set<Class<?>> getIndexedRootEntities() throws ServiceException {
-    return hibernateSearchDao.getIndexedRootEntities(Object.class);
+  public <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> void deleteEntity(
+      E entity) {
+    hibernateSearchDao.deleteEntity(entity);
   }
 
   @Override
-  public Set<Class<?>> getIndexedRootEntities(Collection<Class<?>> classes)
-      throws ServiceException {
-    if (classes != null && !classes.isEmpty()) {
-      return hibernateSearchDao.getIndexedRootEntities(
-          classes.toArray(new Class<?>[classes.size()]));
-    } else {
-      return Sets.newHashSet();
-    }
+  public <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> void deleteEntity(
+      GenericEntityReference<K, E> reference) {
+    hibernateSearchDao.deleteEntity(entityService.getEntity(reference));
+  }
+
+  @Override
+  public <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> void deleteEntity(
+      Class<E> clazz, K id) {
+    hibernateSearchDao.deleteEntity(entityService.getEntity(clazz, id));
   }
 
   @Override

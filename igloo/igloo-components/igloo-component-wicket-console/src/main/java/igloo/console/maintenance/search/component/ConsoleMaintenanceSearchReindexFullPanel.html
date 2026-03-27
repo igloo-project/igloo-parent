@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+<wicket:panel>
+	<div wicket:id="loadingPopup" />
+	
+	<div class="card card-main">
+		<div class="card-header">
+			<div class="card-header-title">
+				<div class="row g-3">
+					<div class="col">
+						<wicket:message key="console.maintenance.search.reindex.full.title" />
+					</div>
+					<div class="col-auto">
+						<button wicket:id="all" class="btn btn-primary" type="button">
+							<span class="fa fa-fw fa-check-double" />
+							<wicket:message key="common.action.select.all" />
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="card-body">
+			<form wicket:id="form">
+				<div class="row g-3">
+					<div wicket:id="choicesContainer" class="col-lg">
+						<div class="row g-2">
+							<div class="col-12">
+								<form wicket:id="search">
+									<label wicket:for="term" class="visually-hidden"><wicket:label /></label>
+									<div class="input-group">
+										<span class="input-group-text"><span class="fa fa-fw fa-magnifying-glass" /></span>
+										<input wicket:id="term" class="form-control" type="text" />
+									</div>
+								</form>
+							</div>
+							<div class="col-12">
+								<select wicket:id="choices" class="form-control" size="20" />
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-auto align-self-center">
+						<button wicket:id="add" class="btn btn-primary" type="button">
+							<span class="fa fa-fw fa-chevron-right d-none d-lg-inline" />
+							<span class="fa fa-fw fa-chevron-down d-lg-none" />
+							<span class="visually-hidden"><wicket:message key="common.action.add" /></span>
+						</button>
+					</div>
+					<div wicket:id="selectionContainer" class="col-lg">
+						<div wicket:id="selection" />
+						<div class="card-action card-action-bottom">
+							<div class="row row-action justify-content-end">
+								<div class="col-auto">
+									<button wicket:id="reindex" class="btn btn-danger" type="button">
+										<span class="fa fa-fw fa-sync" />
+										<wicket:message key="console.maintenance.search.reindex.common.action.reindex" />
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	
+	<wicket:fragment wicket:id="selectionActionHeaderFragment">
+		<button wicket:id="removeAll" class="btn btn-danger btn-xs" type="button" wicket:message="title:common.action.remove">
+			<span class="fa fa-fw fa-times" />
+			<span class="visually-hidden"><wicket:message key="common.action.remove" /></span>
+		</button>
+	</wicket:fragment>
+	
+	<wicket:fragment wicket:id="selectionActionFragment">
+		<button wicket:id="remove" class="btn btn-outline-danger btn-xs" type="button" wicket:message="title:common.action.remove">
+			<span class="fa fa-fw fa-times" />
+			<span class="visually-hidden"><wicket:message key="common.action.remove" /></span>
+		</button>
+	</wicket:fragment>
+</wicket:panel>
+</html>
