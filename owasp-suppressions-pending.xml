@@ -7,6 +7,24 @@
 
   <suppress>
     <notes><![CDATA[
+   file name: swagger-ui-5.31.0.jar: swagger-ui-es-bundle.js
+   Les accès aux pages de doc des API sont protégées. Peu de risque.
+    fix dans version 5.32.1
+   ]]></notes>
+    <packageUrl regex="true">^pkg:javascript/DOMPurify@.*$</packageUrl>
+    <cve>CVE-2026-0540</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: swagger-ui-5.31.0.jar: swagger-ui-es-bundle.js
+      Les accès aux pages de doc des API sont protégées. Peu de risque.
+    fix dans version 5.32.1
+   ]]></notes>
+    <packageUrl regex="true">^pkg:javascript/DOMPurify@.*$</packageUrl>
+    <cve>CVE-2025-15599</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
    file name: spring-webmvc-7.0.2.jar
    On n'utilise pas de moteurs de scripts java ni de mapping vers "/**"
     fix dans version 7.0.6
