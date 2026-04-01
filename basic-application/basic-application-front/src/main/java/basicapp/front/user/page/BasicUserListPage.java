@@ -12,6 +12,7 @@ import basicapp.back.business.user.search.IUserSearchQuery;
 import basicapp.back.business.user.search.UserSort;
 import basicapp.back.business.user.service.controller.IUserControllerService;
 import basicapp.back.util.binding.Bindings;
+import basicapp.front.pagelink.PageLinkDescriptorBuilder;
 import basicapp.front.user.component.BasicUserListSearchPanel;
 import basicapp.front.user.export.UserExcelTableExport;
 import basicapp.front.user.model.UserDataProvider;
@@ -38,7 +39,6 @@ import org.iglooproject.functional.Predicates2;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.more.excel.AbstractExcelExportAjaxLink;
 import org.iglooproject.wicket.more.excel.ExcelExportWorkInProgressModalPopupPanel;
-import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.link.model.PageModel;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
@@ -54,11 +54,14 @@ public class BasicUserListPage extends UserTemplate {
 
   private static final long serialVersionUID = 1L;
 
-  public static IPageLinkDescriptor linkDescriptor() {
+  public static org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor linkDescriptor() {
     return LinkDescriptorBuilder.start()
         .validator(Condition.permission(GLOBAL_USER_READ))
         .page(BasicUserListPage.class);
   }
+
+  public static basicapp.front.pagelink.base.IPageLinkDescriptor<BasicUserListPage, ?> DESCRIPTOR =
+      PageLinkDescriptorBuilder.create(BasicUserListPage.class, () -> null).build();
 
   @SpringBean private IUserSearchQuery userSearchQuery;
 

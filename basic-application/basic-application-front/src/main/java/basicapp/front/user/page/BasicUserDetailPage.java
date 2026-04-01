@@ -9,6 +9,7 @@ import static basicapp.back.security.model.BasicApplicationPermissionConstants.U
 import basicapp.back.business.user.model.User;
 import basicapp.back.business.user.model.atomic.UserPasswordRecoveryRequestInitiator;
 import basicapp.back.business.user.model.atomic.UserPasswordRecoveryRequestType;
+import basicapp.back.business.user.model.atomic.UserType;
 import basicapp.back.business.user.predicate.UserPredicates;
 import basicapp.back.business.user.service.controller.IUserControllerService;
 import basicapp.back.security.service.controller.ISecurityManagementControllerService;
@@ -16,8 +17,11 @@ import basicapp.back.util.binding.Bindings;
 import basicapp.front.BasicApplicationSession;
 import basicapp.front.common.util.BootstrapTabsUtils;
 import basicapp.front.navigation.link.LinkFactory;
+import basicapp.front.pagelink.PageLinkDescriptorBuilder;
+import basicapp.front.pagelink.base.IPageLinkDescriptor;
 import basicapp.front.user.component.tab.BasicUserDetailTabGeneralPanel;
 import basicapp.front.user.component.tab.BasicUserDetailTabHistoryPanel;
+import basicapp.front.user.dto.UserPageLinkDataDto;
 import basicapp.front.user.popup.UserPasswordEditPopup;
 import basicapp.front.user.renderer.UserEnabledRenderer;
 import basicapp.front.user.template.UserTemplate;
@@ -38,10 +42,10 @@ import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.link.descriptor.mapper.ITwoParameterLinkDescriptorMapper;
 import org.iglooproject.wicket.more.link.descriptor.parameter.CommonParameters;
@@ -59,20 +63,22 @@ public class BasicUserDetailPage extends UserTemplate {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(BasicUserDetailPage.class);
 
-  public static final ITwoParameterLinkDescriptorMapper<IPageLinkDescriptor, User, Page> MAPPER =
-      LinkDescriptorBuilder.start()
-          .model(User.class)
-          .permission(USER_READ)
-          .model(Page.class)
-          .pickFirst()
-          .map(CommonParameters.ID)
-          .mandatory()
-          .pickFirst()
-          .validator(UserPredicates.basic())
-          .pickSecond()
-          .map(CommonParameters.SOURCE_PAGE_ID)
-          .optional()
-          .page(BasicUserDetailPage.class);
+  public static final ITwoParameterLinkDescriptorMapper<
+          org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor, User, Page>
+      MAPPER =
+          LinkDescriptorBuilder.start()
+              .model(User.class)
+              .permission(USER_READ)
+              .model(Page.class)
+              .pickFirst()
+              .map(CommonParameters.ID)
+              .mandatory()
+              .pickFirst()
+              .validator(UserPredicates.basic())
+              .pickSecond()
+              .map(CommonParameters.SOURCE_PAGE_ID)
+              .optional()
+              .page(BasicUserDetailPage.class);
 
   public static final String TAB_GENERAL_PANEL_ID = "general";
   public static final String TAB_GENERAL_TAB_ID =
@@ -80,6 +86,34 @@ public class BasicUserDetailPage extends UserTemplate {
   public static final String TAB_HISTORY_PANEL_ID = "history";
   public static final String TAB_HISTORY_TAB_ID =
       BootstrapTabsUtils.getTabMarkupId(TAB_HISTORY_PANEL_ID);
+
+  public static final IPageLinkDescriptor<BasicUserDetailPage, UserPageLinkDataDto> DESCRIPTOR =
+      PageLinkDescriptorBuilder.create(BasicUserDetailPage.class, UserPageLinkDataDto::new)
+          .mapping(
+              m ->
+                  m.map(
+                          a ->
+                              a.name("id")
+                                  .mapLong(UserPageLinkDataDto::getId, UserPageLinkDataDto::setId)
+                                  .required())
+                      .map(
+                          a ->
+                              a.name("username")
+                                  .mapString(
+                                      UserPageLinkDataDto::getUsername,
+                                      UserPageLinkDataDto::setUsername))
+                      .map(
+                          a ->
+                              a.name("type")
+                                  .mapEnum(
+                                      UserPageLinkDataDto::getType,
+                                      UserPageLinkDataDto::setType,
+                                      UserType.class))
+                      .renderInUrl(
+                          "data",
+                          dataDto -> "%s-%s".formatted(dataDto.getId(), dataDto.getUsername())))
+          .permission("USER_READ")
+          .build();
 
   @SpringBean protected IUserControllerService userControllerService;
 
@@ -91,6 +125,28 @@ public class BasicUserDetailPage extends UserTemplate {
 
   public BasicUserDetailPage(PageParameters parameters) {
     super(parameters);
+
+    IModel<UserPageLinkDataDto> extractorUserPageLinkDataDtoModel =
+        Model.of(
+            DESCRIPTOR
+                .extractor()
+                .getSafely(
+                    parameters,
+                    e -> {
+                      Session.get().error(getString("common.error.unexpected"));
+                      throw BasicUserListPage.DESCRIPTOR
+                          .generator(Model.of())
+                          .restartResponseException();
+                    }));
+
+    IModel<UserPageLinkDataDto> generatorUserPageLinkDataDtoModel =
+        () -> new UserPageLinkDataDto(10L, UserType.BASIC, "toto");
+
+    add(
+        DESCRIPTOR.generator(generatorUserPageLinkDataDtoModel).link("link").hideIfInvalid(),
+        new CoreLabel("url", () -> DESCRIPTOR.generator(generatorUserPageLinkDataDtoModel).url()),
+        new CoreLabel(
+            "fullUrl", () -> DESCRIPTOR.generator(generatorUserPageLinkDataDtoModel).fullUrl()));
 
     addBreadCrumbElement(
         new BreadCrumbElement(
