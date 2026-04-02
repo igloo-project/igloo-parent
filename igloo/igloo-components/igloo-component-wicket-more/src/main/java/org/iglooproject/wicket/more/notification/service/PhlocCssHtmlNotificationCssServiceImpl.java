@@ -1,14 +1,12 @@
 package org.iglooproject.wicket.more.notification.service;
 
 import com.google.common.collect.Maps;
-import com.helger.commons.io.IHasInputStream;
-import com.helger.css.ECSSVersion;
+import com.helger.base.io.iface.IHasInputStream;
 import com.helger.css.decl.CascadingStyleSheet;
 import com.helger.css.reader.CSSReader;
 import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.Charset;
 import java.time.Instant;
 import java.util.Map;
 import javax.annotation.Nullable;
@@ -96,9 +94,7 @@ public class PhlocCssHtmlNotificationCssServiceImpl implements IHtmlNotification
       throws ServiceException {
     CascadingStyleSheet sheet =
         CSSReader.readFromStream(
-            new WicketResourceStreamToPhlocInputStreamProviderWrapper(resourceStream),
-            Charset.defaultCharset(),
-            ECSSVersion.CSS30);
+            new WicketResourceStreamToPhlocInputStreamProviderWrapper(resourceStream));
 
     if (sheet == null) {
       throw new ServiceException(

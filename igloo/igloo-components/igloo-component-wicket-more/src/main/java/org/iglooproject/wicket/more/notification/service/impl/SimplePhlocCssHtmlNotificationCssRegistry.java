@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
 import com.helger.css.CCSS;
-import com.helger.css.ECSSVersion;
 import com.helger.css.ICSSWriterSettings;
 import com.helger.css.decl.CSSDeclaration;
 import com.helger.css.decl.CSSSelector;
@@ -46,8 +45,7 @@ public class SimplePhlocCssHtmlNotificationCssRegistry implements IHtmlNotificat
   private static final ICSSWriterSettings STYLE_ATTRIBUTE_WRITER_SETTINGS;
 
   static {
-    CSSWriterSettings settings = new CSSWriterSettings(ECSSVersion.CSS30, true);
-    STYLE_ATTRIBUTE_WRITER_SETTINGS = settings;
+    STYLE_ATTRIBUTE_WRITER_SETTINGS = new CSSWriterSettings(true);
   }
 
   private final CascadingStyleSheet styleSheet;
@@ -83,9 +81,7 @@ public class SimplePhlocCssHtmlNotificationCssRegistry implements IHtmlNotificat
     for (CSSStyleRule rule : styleSheet.getAllStyleRules()) {
       Collection<CSSSelector> matchedSelectors = getMatchedSelectors(matchableTag, rule);
       Collection<CssSelectorSpecificity> matchedSelectorsSpecificities =
-          matchedSelectors.stream()
-              .map(input -> computeSpecificity(input))
-              .collect(Collectors.toList());
+          matchedSelectors.stream().map(this::computeSpecificity).collect(Collectors.toList());
       if (!matchedSelectorsSpecificities.isEmpty()) {
         matchedRules.put(rule, Ordering.natural().max(matchedSelectorsSpecificities));
       }
@@ -130,9 +126,7 @@ public class SimplePhlocCssHtmlNotificationCssRegistry implements IHtmlNotificat
       }
     }
 
-    return mergedDeclarations.values().stream()
-        .map(input -> input.getLeft())
-        .collect(Collectors.toList());
+    return mergedDeclarations.values().stream().map(Pair::getLeft).collect(Collectors.toList());
   }
 
   private CssSelectorSpecificity computeSpecificity(CSSSelector selector) {
