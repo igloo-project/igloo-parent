@@ -11,7 +11,7 @@ import picocli.CommandLine;
 @Import(BasicApplicationBackJpaModelConfiguration.class) // entity/model scanning
 public class SqlExporterCommand extends BaseSqlExporterCommand implements Callable<Integer> {
 
-  public static void main(String[] args) {
+  static void main(String[] args) {
     CommandLine cl = new CommandLine(new SqlExporterCommand());
     System.exit(cl.execute(args));
   }

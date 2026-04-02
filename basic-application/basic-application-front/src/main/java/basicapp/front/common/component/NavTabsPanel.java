@@ -17,8 +17,8 @@ public class NavTabsPanel extends Panel {
 
   private static final long serialVersionUID = -2317592648347012891L;
 
-  private RepeatingView tabsRepeatingView;
-  private RepeatingView panelsRepeatingView;
+  private final RepeatingView tabsRepeatingView;
+  private final RepeatingView panelsRepeatingView;
 
   public NavTabsPanel(String id) {
     super(id);

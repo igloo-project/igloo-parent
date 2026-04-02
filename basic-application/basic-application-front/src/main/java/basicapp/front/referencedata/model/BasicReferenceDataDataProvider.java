@@ -56,7 +56,7 @@ public class BasicReferenceDataDataProvider<T extends ReferenceData<? super T>>
       Class<T> clazz, IModel<BasicReferenceDataSearchQueryData<T>> dataModel) {
     super(dataModel);
     this.searchQueryLookupCache =
-        SpringBeanLookupCache.<IBasicReferenceDataSearchQuery<T>>of(
+        SpringBeanLookupCache.of(
             () -> CoreWicketApplication.get().getApplicationContext(),
             IBasicReferenceDataSearchQuery.class,
             clazz);

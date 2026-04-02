@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 public class AnnouncementDaoImpl extends GenericEntityDaoImpl<Long, Announcement>
     implements IAnnouncementDao {
 
-  private QAnnouncement qAnnouncement = QAnnouncement.announcement;
+  private final QAnnouncement qAnnouncement = QAnnouncement.announcement;
 
   @Override
   public List<Announcement> listEnabled() {

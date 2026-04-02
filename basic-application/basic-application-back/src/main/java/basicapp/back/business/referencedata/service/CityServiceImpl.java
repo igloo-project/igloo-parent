@@ -4,15 +4,13 @@ import basicapp.back.business.common.model.PostalCode;
 import basicapp.back.business.referencedata.dao.ICityDao;
 import basicapp.back.business.referencedata.model.City;
 import org.iglooproject.jpa.business.generic.service.GenericEntityServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CityServiceImpl extends GenericEntityServiceImpl<Long, City> implements ICityService {
 
-  private ICityDao dao;
-
-  @Autowired
+  private final ICityDao dao;
+  
   public CityServiceImpl(ICityDao dao) {
     super(dao);
     this.dao = dao;

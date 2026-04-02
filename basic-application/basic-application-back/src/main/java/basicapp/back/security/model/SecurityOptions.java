@@ -99,7 +99,7 @@ public final class SecurityOptions {
     private SecurityOptionsMode passwordUserUpdate = SecurityOptionsMode.DISABLED;
     private SecurityOptionsMode passwordUserRecovery = SecurityOptionsMode.DISABLED;
 
-    private Set<Rule> passwordRules = Sets.newHashSet();
+    private final Set<Rule> passwordRules = Sets.newHashSet();
 
     private Builder() {}
 

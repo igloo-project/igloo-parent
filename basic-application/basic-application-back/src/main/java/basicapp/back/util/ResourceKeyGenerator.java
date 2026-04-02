@@ -17,7 +17,7 @@ public final class ResourceKeyGenerator implements Serializable {
     this.base = base;
   }
 
-  protected String join(CharSequence... operands) {
+  private String join(CharSequence... operands) {
     return Joiners.onDot().skipNulls().join(operands);
   }
 

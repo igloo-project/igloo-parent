@@ -1,5 +1,6 @@
 package basicapp.back.business.upgrade.service;
 
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +24,11 @@ public class DataUpgradeApplicationListener implements ApplicationListener<Conte
   /** Automatically launches data upgrades at startup */
   @Override
   public void onApplicationEvent(ContextRefreshedEvent event) {
-    if (event != null
-        && event.getSource() != null
-        && AbstractApplicationContext.class.isAssignableFrom(event.getSource().getClass())
-        && ((AbstractApplicationContext) event.getSource()).getParent() == null) {
-      init();
-    }
+    Optional.ofNullable(event)
+        .map(ContextRefreshedEvent::getSource)
+        .filter(s -> AbstractApplicationContext.class.isAssignableFrom(s.getClass()))
+        .filter(s -> s.getParent() == null)
+        .ifPresent(_ -> init());
   }
 
   private void init() {

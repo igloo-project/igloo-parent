@@ -13,6 +13,7 @@ import com.google.common.base.Converter;
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Longs;
 import java.time.Instant;
+import java.util.Optional;
 import org.iglooproject.functional.Suppliers2;
 import org.iglooproject.functional.converter.StringCollectionConverter;
 import org.iglooproject.spring.config.IPropertyRegistryConfiguration;
@@ -27,11 +28,7 @@ public class BasicApplicationBackPropertyRegistryConfiguration
   public void register(IPropertyRegistry registry) {
     registry.register(
         BUILD_DATE,
-        input -> {
-          Long epochMilli =
-              java.util.Optional.ofNullable(Longs.tryParse(input)).orElse((Long) null);
-          return Instant.ofEpochMilli(epochMilli != null ? epochMilli : 0);
-        });
+        input -> Instant.ofEpochMilli(Optional.ofNullable(Longs.tryParse(input)).orElse(0L)));
     registry.registerString(BUILD_SHA);
 
     registry.registerEnum(ENVIRONMENT, Environment.class, Environment.production);
@@ -41,8 +38,7 @@ public class BasicApplicationBackPropertyRegistryConfiguration
     registry.registerBoolean(SECURITY_PASSWORD_VALIDATOR_ENABLED, true);
     registry.register(
         SECURITY_PASSWORD_USER_FORBIDDEN_PASSWORDS,
-        new StringCollectionConverter<>(
-            Converter.<String>identity(), Suppliers2.<String>arrayList()),
-        Lists.<String>newArrayList());
+        new StringCollectionConverter<>(Converter.identity(), Suppliers2.arrayList()),
+        Lists.newArrayList());
   }
 }

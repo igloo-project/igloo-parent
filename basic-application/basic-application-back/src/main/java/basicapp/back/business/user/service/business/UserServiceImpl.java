@@ -39,7 +39,7 @@ public class UserServiceImpl extends GenericEntityServiceImpl<Long, User> implem
   private final IUserDao dao;
   private final IUserDifferenceService userDifferenceService;
   private final IHistoryLogService historyLogService;
-  private IHistoryEventSummaryService historyEventSummaryService;
+  private final IHistoryEventSummaryService historyEventSummaryService;
   private final IPropertyService propertyService;
   private final IBasicApplicationAuthenticationService authenticationService;
   private final ISecurityManagementService securityManagementService;

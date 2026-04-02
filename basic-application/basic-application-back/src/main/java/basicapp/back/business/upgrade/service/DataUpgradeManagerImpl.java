@@ -32,7 +32,7 @@ public class DataUpgradeManagerImpl extends AbstractDataUpgradeServiceImpl
 
   @Override
   public List<IDataUpgrade> listDataUpgrades() {
-    return List.<IDataUpgrade>of(new DataUpgrade_InitDataExcel());
+    return List.of(new DataUpgrade_InitDataExcel());
   }
 
   @Override

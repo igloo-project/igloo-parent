@@ -52,7 +52,7 @@ public class ReferenceDataAjaxDropDownMultipleChoice<
     public ChoiceProvider(Class<T> clazz) {
       super(clazz, ReferenceDataRenderer.get());
       this.referenceDataSearchQueryLookupCache =
-          SpringBeanLookupCache.<IBasicReferenceDataSearchQuery<T>>of(
+          SpringBeanLookupCache.of(
               () -> CoreWicketApplication.get().getApplicationContext(),
               IBasicReferenceDataSearchQuery.class,
               clazz);

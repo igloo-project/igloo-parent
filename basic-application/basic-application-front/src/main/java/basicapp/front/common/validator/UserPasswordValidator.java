@@ -12,7 +12,6 @@ import com.google.common.collect.Lists;
 import igloo.wicket.model.Detachables;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.Map;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponent;
@@ -110,7 +109,7 @@ public class UserPasswordValidator implements IFormModelValidator {
           passwordFormComponent.error(
               new ValidationError()
                   .addKey(errorCodeKey(detail.getErrorCode()))
-                  .setVariables((Map<String, Object>) detail.getParameters()));
+                  .setVariables(detail.getParameters()));
         }
       }
     }

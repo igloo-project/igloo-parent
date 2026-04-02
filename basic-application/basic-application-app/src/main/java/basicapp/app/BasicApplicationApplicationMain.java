@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Import;
 @Import(BasicApplicationApplicationMainConfiguration.class)
 public class BasicApplicationApplicationMain extends SpringBootServletInitializer {
 
-  public static void main(String[] args) {
+  static void main(String[] args) {
     doConfigure(new SpringApplicationBuilder()).run(args);
   }
 

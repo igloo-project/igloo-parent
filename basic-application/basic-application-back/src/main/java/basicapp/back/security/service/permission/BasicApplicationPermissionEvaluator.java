@@ -29,16 +29,14 @@ public class BasicApplicationPermissionEvaluator extends AbstractCorePermissionE
       user = HibernateUtils.unwrap(user); // NOSONAR
     }
 
-    if (targetDomainObject instanceof User targetUser) {
-      return userPermissionEvaluator.hasPermission(user, targetUser, permission);
-    } else if (targetDomainObject instanceof ReferenceData<?> referenceData) {
-      return referenceDataPermissionEvaluator.hasPermission(user, referenceData, permission);
-    } else if (targetDomainObject instanceof Announcement announcement) {
-      return announcementPermissionEvaluator.hasPermission(user, announcement, permission);
-    } else if (targetDomainObject instanceof Role role) {
-      return rolePermissionEvaluator.hasPermission(user, role, permission);
-    }
-
-    return false;
+    return switch (targetDomainObject) {
+      case User targetUser -> userPermissionEvaluator.hasPermission(user, targetUser, permission);
+      case ReferenceData<?> referenceData ->
+          referenceDataPermissionEvaluator.hasPermission(user, referenceData, permission);
+      case Announcement announcement ->
+          announcementPermissionEvaluator.hasPermission(user, announcement, permission);
+      case Role role -> rolePermissionEvaluator.hasPermission(user, role, permission);
+      case null, default -> false;
+    };
   }
 }
