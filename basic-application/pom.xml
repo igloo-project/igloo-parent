@@ -21,6 +21,8 @@
   <properties>
     <versionPlaceholderDoNotRemove/>
     <commonmark.version>0.27.1</commonmark.version>
+    <java.version>25</java.version>
+    <maven.compiler.release>25</maven.compiler.release>
   </properties>
   <build>
     <pluginManagement>
