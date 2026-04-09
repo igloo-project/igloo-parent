@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.iglooproject.webjars</groupId>
     <artifactId>igloo-webjars</artifactId>
-    <version>${revision}</version>
+    <version>7.1.0-UPDATE-SNAPSHOT</version>
   </parent>
   <artifactId>bootstrap-print</artifactId>
   <packaging>jar</packaging>

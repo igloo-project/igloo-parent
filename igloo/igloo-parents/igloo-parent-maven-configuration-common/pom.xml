@@ -4,16 +4,16 @@
   <parent>
     <groupId>org.iglooproject</groupId>
     <artifactId>plugins-all</artifactId>
-    <version>7.1.0-SNAPSHOT</version>
+    <version>7.1.0-UPDATE-SNAPSHOT</version>
     <relativePath/>
   </parent>
   <groupId>org.iglooproject.parents</groupId>
   <artifactId>igloo-parent-maven-configuration-common</artifactId>
-  <version>${revision}</version>
+  <version>7.1.0-UPDATE-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Igloo - Parent - Maven configuration - Common</name>
   <properties>
-    <revision>7.1.0-SNAPSHOT</revision>
+    <revision>7.1.0-UPDATE-SNAPSHOT</revision>
     <productionBranchName>main</productionBranchName>
   </properties>
   <build>

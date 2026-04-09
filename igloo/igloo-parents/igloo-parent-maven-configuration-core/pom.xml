@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.iglooproject.parents</groupId>
     <artifactId>igloo-parent-maven-configuration-common</artifactId>
-    <version>${revision}</version>
+    <version>7.1.0-UPDATE-SNAPSHOT</version>
     <relativePath>../igloo-parent-maven-configuration-common/pom.xml</relativePath>
   </parent>
   <artifactId>igloo-parent-maven-configuration-core</artifactId>
@@ -12,8 +12,8 @@
   <name>Igloo - Parent - Maven configuration - Core</name>
   <properties>
     <igloo.version>${project.version}</igloo.version>
-    <igloo-maven.version>7.1.0-SNAPSHOT</igloo-maven.version>
-    <igloo-commons.version>7.1.0-SNAPSHOT</igloo-commons.version>
+    <igloo-maven.version>7.1.0-UPDATE-SNAPSHOT</igloo-maven.version>
+    <igloo-commons.version>7.1.0-UPDATE-SNAPSHOT</igloo-commons.version>
     <igloo.log4j.major-version>2</igloo.log4j.major-version>
     <igloo.logging.artifact>igloo-component-core-logging-log4j${igloo.log4j.major-version}</igloo.logging.artifact>
   </properties>

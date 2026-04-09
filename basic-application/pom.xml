@@ -4,12 +4,12 @@
   <parent>
     <groupId>org.iglooproject.parents</groupId>
     <artifactId>igloo-parent-core-project</artifactId>
-    <version>${revision}</version>
+    <version>7.1.0-UPDATE-SNAPSHOT</version>
     <relativePath>../igloo/igloo-parents/igloo-parent-core-project/pom.xml</relativePath>
   </parent>
   <groupId>org.iglooproject.archetype</groupId>
   <artifactId>basic-application</artifactId>
-  <version>${revision}</version>
+  <version>7.1.0-UPDATE-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Basic Application</name>
   <modules>
