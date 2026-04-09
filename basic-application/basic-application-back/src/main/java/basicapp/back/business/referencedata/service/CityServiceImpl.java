@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 public class CityServiceImpl extends GenericEntityServiceImpl<Long, City> implements ICityService {
 
   private final ICityDao dao;
-  
+
   public CityServiceImpl(ICityDao dao) {
     super(dao);
     this.dao = dao;
