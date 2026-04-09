@@ -2,7 +2,7 @@ image:
   name: igloo-containers.tools.kobalt.fr/containers/maven-igloo:3.9-eclipse-temurin-25
 
 variables:
-  MAVEN_OPTS: "-Xmx2g"
+  MAVEN_OPTS: "-Xmx2g -Xms1g -XX:+UseG1GC -XX:-UseGCOverheadLimit -Dstyle.color=never"
   JAVA_TOOL_OPTIONS: "-Duser.language=fr -Duser.country=FR -Duser.timezone=Europe/Paris -Dfile.encoding=UTF-8"
 
 stages:
