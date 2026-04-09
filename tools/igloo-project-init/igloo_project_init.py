@@ -25,8 +25,11 @@ Once archetype is generated, provided configuration (package, application name, 
 generate a new project. It is needed to fix some pom settings not handled by archetype plugin
 (parent for ARTIFACT-app, package name in pom.xml)."""
 
+import click
+import colorlog
 import glob
 import logging
+import lxml.etree as ET  # noqa: N812
 import os
 import pathlib
 import re
@@ -34,10 +37,6 @@ import shutil
 import subprocess
 import tempfile
 import typing
-
-import click
-import colorlog
-import lxml.etree as ET  # noqa: N812
 
 __version__ = "0.1.0"
 logger = logging.getLogger("igloo")
@@ -552,6 +551,7 @@ def generate_archetype(igloo_clone: pathlib.Path) -> pathlib.Path:
             "archetype:create-from-project",
             "-Darchetype.properties=archetype.properties",
             "-Darchetype.preserveCData",
+            "-Dstyle.color=never",
         ],
         cwd=basic_application,
         **subprocess_args(),
