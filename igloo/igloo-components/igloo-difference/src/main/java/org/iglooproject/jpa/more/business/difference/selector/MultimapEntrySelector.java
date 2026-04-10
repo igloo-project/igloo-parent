@@ -5,7 +5,7 @@ import de.danielbechler.diff.selector.ElementSelector;
 import de.danielbechler.util.Strings;
 import java.util.Map;
 import java.util.Map.Entry;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
+import java.util.Objects;
 
 public class MultimapEntrySelector<K, V> extends ElementSelector implements IKeyAwareSelector<K> {
 
@@ -20,23 +20,8 @@ public class MultimapEntrySelector<K, V> extends ElementSelector implements IKey
   }
 
   @Override
-  @SuppressWarnings("unchecked")
-  public boolean equals(final Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o instanceof MultimapEntrySelector) {
-      MultimapEntrySelector<?, ?> other = (MultimapEntrySelector<?, ?>) o;
-      return entryEquivalence.equals(other.entryEquivalence)
-          && entryEquivalence.equivalent(entry, (Entry<K, V>) other.entry);
-    }
-
-    return false;
-  }
-
-  @Override
-  public int hashCode() {
-    return new HashCodeBuilder().append(entryEquivalence.hash(entry)).build();
+  public K getKey() {
+    return entry.getKey();
   }
 
   @Override
@@ -45,7 +30,20 @@ public class MultimapEntrySelector<K, V> extends ElementSelector implements IKey
   }
 
   @Override
-  public K getKey() {
-    return entry.getKey();
+  @SuppressWarnings("unchecked")
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (!(obj instanceof MultimapEntrySelector<?, ?> other)) {
+      return false;
+    }
+    return Objects.equals(entryEquivalence, other.entryEquivalence)
+        && entryEquivalence.equivalent(entry, (Entry<K, V>) other.entry);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(entryEquivalence, entryEquivalence.hash(entry));
   }
 }

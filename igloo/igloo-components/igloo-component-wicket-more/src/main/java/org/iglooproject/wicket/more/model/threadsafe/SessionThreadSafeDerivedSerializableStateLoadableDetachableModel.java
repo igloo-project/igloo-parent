@@ -1,12 +1,11 @@
 package org.iglooproject.wicket.more.model.threadsafe;
 
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.poi.ss.formula.functions.T;
 import org.apache.wicket.Session;
 import org.apache.wicket.model.LoadableDetachableModel;
-import org.apache.wicket.util.lang.Objects;
 import org.iglooproject.wicket.more.model.threadsafe.impl.AbstractThreadSafeLoadableDetachableModel;
 import org.iglooproject.wicket.more.model.threadsafe.impl.LoadableDetachableModelThreadContext;
 
@@ -129,7 +128,7 @@ public abstract class SessionThreadSafeDerivedSerializableStateLoadableDetachabl
     // Write to the shared context ONLY if a change occurred in this thread.
     // This prevents the model to overwrite a serializable object that has been set in another
     // thread if there was no change in this thread.
-    if (!Objects.equal(
+    if (!Objects.equals(
         attachedObjectSerializableState, threadContext.lastSharedSerializableState)) {
       threadContext.lastSharedSerializableState = attachedObjectSerializableState;
       sharedSerializableState.set(attachedObjectSerializableState);
@@ -144,7 +143,7 @@ public abstract class SessionThreadSafeDerivedSerializableStateLoadableDetachabl
     // Write to the shared context ONLY if a change occurred in this thread.
     // This prevents the model to overwrite a serializable object that has been set in another
     // thread if there was no change in this thread.
-    if (!Objects.equal(normalizedState, sharedState)) {
+    if (!Objects.equals(normalizedState, sharedState)) {
       sharedSerializableState.set(normalizedState);
       // No need to update the threadContext here: we're in detached state.
     }
@@ -165,24 +164,18 @@ public abstract class SessionThreadSafeDerivedSerializableStateLoadableDetachabl
 
   @Override
   public boolean equals(Object obj) {
-    if (obj == null) {
-      return false;
-    }
-    if (obj == this) {
+    if (this == obj) {
       return true;
     }
-    if (!(obj instanceof SessionThreadSafeDerivedSerializableStateLoadableDetachableModel)) {
+    if (!(obj
+        instanceof SessionThreadSafeDerivedSerializableStateLoadableDetachableModel<?, ?> other)) {
       return false;
     }
-    SessionThreadSafeDerivedSerializableStateLoadableDetachableModel<?, ?> other =
-        (SessionThreadSafeDerivedSerializableStateLoadableDetachableModel<?, ?>) obj;
-    return new EqualsBuilder()
-        .append(sharedSerializableState.get(), other.sharedSerializableState.get())
-        .isEquals();
+    return Objects.equals(sharedSerializableState.get(), other.sharedSerializableState.get());
   }
 
   @Override
   public int hashCode() {
-    return new HashCodeBuilder().append(sharedSerializableState.get()).toHashCode();
+    return Objects.hash(sharedSerializableState.get());
   }
 }

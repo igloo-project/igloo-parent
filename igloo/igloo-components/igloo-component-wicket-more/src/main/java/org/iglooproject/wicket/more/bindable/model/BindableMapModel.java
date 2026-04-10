@@ -7,8 +7,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.wicket.model.IModel;
 import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.functional.SerializableSupplier2;
@@ -38,16 +36,6 @@ public class BindableMapModel<K, V, M extends Map<K, V>> extends BindableModel<M
       IItemModelAwareMapModel<K, V, M, IBindableModel<K>, IBindableModel<V>> delegate) {
     super(delegate);
     this.mainModel = delegate;
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    return new EqualsBuilder().appendSuper(super.equals(obj)).isEquals();
-  }
-
-  @Override
-  public int hashCode() {
-    return new HashCodeBuilder().appendSuper(super.hashCode()).hashCode();
   }
 
   @Override

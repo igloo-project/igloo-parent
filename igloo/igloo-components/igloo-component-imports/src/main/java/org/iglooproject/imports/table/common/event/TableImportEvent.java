@@ -1,5 +1,7 @@
 package org.iglooproject.imports.table.common.event;
 
+import java.util.Objects;
+
 public class TableImportEvent {
 
   public static final ExcelImportErrorEvent FATAL =
@@ -42,24 +44,19 @@ public class TableImportEvent {
   }
 
   @Override
-  public boolean equals(Object object) {
-    if (object == null) {
-      return false;
-    }
-    if (object == this) {
+  public boolean equals(Object obj) {
+    if (this == obj) {
       return true;
     }
-    if (!(object instanceof TableImportEvent)) {
+    if (!(obj instanceof TableImportEvent other)) {
       return false;
     }
-
-    TableImportEvent other = (TableImportEvent) object;
-    return getClass().equals(other.getClass()) && name.equals(other.name);
+    return Objects.equals(getClass(), other.getClass()) && Objects.equals(name, other.name);
   }
 
   @Override
   public int hashCode() {
-    return name.hashCode();
+    return Objects.hash(getClass(), name);
   }
 
   @Override

@@ -3,7 +3,7 @@ package org.iglooproject.jpa.more.business.difference.selector;
 import com.google.common.base.Equivalence;
 import de.danielbechler.diff.selector.ElementSelector;
 import de.danielbechler.util.Strings;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
+import java.util.Objects;
 import org.iglooproject.functional.Function2;
 
 public class CollectionItemByKeySelector<T, K> extends ElementSelector
@@ -29,28 +29,8 @@ public class CollectionItemByKeySelector<T, K> extends ElementSelector
   }
 
   @Override
-  @SuppressWarnings("unchecked")
-  public boolean equals(final Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o instanceof CollectionItemByKeySelector) {
-      CollectionItemByKeySelector<?, ?> other = (CollectionItemByKeySelector<?, ?>) o;
-      return keyFunction.equals(other.keyFunction)
-          && equivalence.equals(other.equivalence)
-          && equivalence.equivalent(key, (K) other.key);
-    }
-
-    return false;
-  }
-
-  @Override
-  public int hashCode() {
-    return new HashCodeBuilder()
-        .append(keyFunction)
-        .append(equivalence)
-        .append(equivalence.hash(key))
-        .build();
+  public K getKey() {
+    return key;
   }
 
   @Override
@@ -59,7 +39,21 @@ public class CollectionItemByKeySelector<T, K> extends ElementSelector
   }
 
   @Override
-  public K getKey() {
-    return key;
+  @SuppressWarnings("unchecked")
+  public boolean equals(final Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (!(obj instanceof CollectionItemByKeySelector<?, ?> other)) {
+      return false;
+    }
+    return Objects.equals(this.keyFunction, other.keyFunction)
+        && Objects.equals(this.equivalence, other.equivalence)
+        && this.equivalence.equivalent(this.key, (K) other.key);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(keyFunction, equivalence, equivalence.hash(key));
   }
 }

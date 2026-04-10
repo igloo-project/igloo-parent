@@ -8,6 +8,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.IDN;
 import java.nio.charset.Charset;
 import java.util.List;
+import java.util.Objects;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.iglooproject.mail.api.INotificationRecipient;
 import org.iglooproject.spring.notification.exception.InvalidNotificationTargetException;
@@ -100,13 +101,13 @@ public class NotificationTarget implements Serializable {
 
   @Override
   public boolean equals(Object obj) {
-    if (obj == this) {
+    if (this == obj) {
       return true;
     }
-    if (!(obj instanceof NotificationTarget)) {
+    if (!(obj instanceof NotificationTarget other)) {
       return false;
     }
-    return address.equals(((NotificationTarget) obj).getAddress());
+    return Objects.equals(address, other.address);
   }
 
   @Override

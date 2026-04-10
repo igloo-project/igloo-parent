@@ -4,8 +4,7 @@ import com.google.common.collect.Lists;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
+import java.util.Objects;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.functional.SerializableSupplier2;
@@ -167,27 +166,21 @@ public abstract class AbstractSessionThreadSafeGenericEntityCollectionModel<
     @SuppressWarnings("unchecked")
     @Override
     public boolean equals(Object obj) {
-      if (obj == null) {
-        return false;
-      }
-      if (obj == this) {
+      if (this == obj) {
         return true;
       }
       if (!(obj
-          instanceof AbstractSessionThreadSafeGenericEntityCollectionModel.SerializableState)) {
+          instanceof
+          AbstractSessionThreadSafeGenericEntityCollectionModel<?, ?, ?>.SerializableState other)) {
         return false;
       }
-      SerializableState other = (SerializableState) obj;
-
-      return new EqualsBuilder()
-          .append(idList, other.idList)
-          .append(unsavedEntityList, other.unsavedEntityList)
-          .build();
+      return Objects.equals(idList, other.idList)
+          && Objects.equals(unsavedEntityList, other.unsavedEntityList);
     }
 
     @Override
     public int hashCode() {
-      return new HashCodeBuilder().append(idList).append(unsavedEntityList).toHashCode();
+      return Objects.hash(idList, unsavedEntityList);
     }
 
     public SerializableState copy() {

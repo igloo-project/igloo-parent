@@ -3,8 +3,7 @@ package org.iglooproject.spring.notification.service.impl;
 import com.google.common.collect.Maps;
 import java.util.Locale;
 import java.util.Map;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
+import java.util.Objects;
 import org.apache.commons.lang3.function.Failable;
 import org.iglooproject.mail.api.INotificationRecipient;
 import org.iglooproject.spring.notification.exception.NotificationContentRenderingException;
@@ -112,22 +111,18 @@ public class ExplicitelyDefinedNotificationContentDescriptorImpl
 
     @Override
     public boolean equals(Object obj) {
-      if (obj instanceof Wrapper) {
-        if (obj == this) {
-          return true;
-        }
-        Wrapper other = (Wrapper) obj;
-        return new EqualsBuilder()
-            .append(wrapped, other.wrapped)
-            .append(locale, other.locale)
-            .build();
+      if (this == obj) {
+        return true;
       }
-      return false;
+      if (!(obj instanceof Wrapper other)) {
+        return false;
+      }
+      return Objects.equals(wrapped, other.wrapped) && Objects.equals(locale, other.locale);
     }
 
     @Override
     public int hashCode() {
-      return new HashCodeBuilder().append(wrapped).append(locale).build();
+      return Objects.hash(wrapped, locale);
     }
 
     @Override

@@ -1,8 +1,7 @@
 package org.iglooproject.spring.property.model;
 
 import com.google.common.base.Preconditions;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
+import java.util.Objects;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public abstract class PropertyId<T> implements IPropertyRegistryKey<T> {
@@ -55,26 +54,20 @@ public abstract class PropertyId<T> implements IPropertyRegistryKey<T> {
 
   @Override
   public boolean equals(Object obj) {
-    if (obj == null) {
-      return false;
-    }
-    if (obj == this) {
+    if (this == obj) {
       return true;
     }
-    if (!(obj instanceof PropertyId)) {
+    if (!(obj instanceof PropertyId<?> other)) {
       return false;
     }
-    PropertyId<?> other = (PropertyId<?>) obj;
-    return new EqualsBuilder()
-        .append(getClass(), obj.getClass())
-        .append(key, other.key)
-        .append(template, other.template)
-        .isEquals();
+    return Objects.equals(getClass(), other.getClass())
+        && Objects.equals(key, other.key)
+        && Objects.equals(template, other.template);
   }
 
   @Override
   public int hashCode() {
-    return new HashCodeBuilder().append(getClass()).append(key).append(template).build();
+    return Objects.hash(getClass(), key, template);
   }
 
   @Override

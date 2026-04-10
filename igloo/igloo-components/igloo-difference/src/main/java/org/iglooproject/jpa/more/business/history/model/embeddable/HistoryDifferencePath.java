@@ -6,8 +6,7 @@ import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Embedded;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
+import java.util.Objects;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.bindgen.Bindable;
 import org.hibernate.Length;
@@ -51,17 +50,18 @@ public class HistoryDifferencePath {
 
   @Override
   public boolean equals(Object obj) {
-    if (obj instanceof HistoryDifferencePath) {
-      HistoryDifferencePath other = (HistoryDifferencePath) obj;
-      return new EqualsBuilder().append(path, other.path).append(key, other.key).build();
-    } else {
+    if (this == obj) {
+      return true;
+    }
+    if (!(obj instanceof HistoryDifferencePath other)) {
       return false;
     }
+    return Objects.equals(path, other.path) && Objects.equals(key, other.key);
   }
 
   @Override
   public int hashCode() {
-    return new HashCodeBuilder().append(path).append(key).build();
+    return Objects.hash(path, key);
   }
 
   @Override

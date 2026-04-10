@@ -8,8 +8,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
+import java.util.Objects;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
@@ -91,29 +90,20 @@ public class GenericEntityCollectionReference<
 
   @Override
   public boolean equals(Object obj) {
-    if (obj == null) {
-      return false;
-    }
-    if (obj == this) {
+    if (this == obj) {
       return true;
     }
-    if (!(obj instanceof GenericEntityCollectionReference)) {
+    if (!(obj instanceof GenericEntityCollectionReference<?, ?> other)) {
       return false;
     }
-    GenericEntityCollectionReference<?, ? extends GenericEntity<?, ?>> other =
-        (GenericEntityCollectionReference<?, ?>) obj;
-    return new EqualsBuilder()
-        .append(getEntityIdList(), other.getEntityIdList())
-        .append(getUpperEntityClass(getEntityClass()), getUpperEntityClass(other.getEntityClass()))
-        .build();
+    return Objects.equals(getEntityIdList(), other.getEntityIdList())
+        && Objects.equals(
+            getUpperEntityClass(getEntityClass()), getUpperEntityClass(other.getEntityClass()));
   }
 
   @Override
   public int hashCode() {
-    return new HashCodeBuilder()
-        .append(getEntityIdList())
-        .append(getUpperEntityClass(getEntityClass()))
-        .build();
+    return Objects.hash(getEntityIdList(), getUpperEntityClass(getEntityClass()));
   }
 
   @Override

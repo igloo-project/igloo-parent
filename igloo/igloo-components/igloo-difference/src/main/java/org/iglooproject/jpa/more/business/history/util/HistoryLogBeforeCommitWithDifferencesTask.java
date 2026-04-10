@@ -71,19 +71,4 @@ public class HistoryLogBeforeCommitWithDifferencesTask<
       handler.handle(mainObject, difference, historyLog);
     }
   }
-
-  @Override
-  public boolean equals(Object obj) {
-    if (obj instanceof HistoryLogBeforeCommitWithDifferencesTask) {
-      return super.equals(obj);
-    }
-    return false;
-  }
-
-  @Override
-  public int hashCode() {
-    return super
-        .hashCode(); // NOSONAR : Sans cette implémentation, on a un avertissement de Sonar parce
-    // que equals() est implémenté mais pas HashCode.
-  }
 }

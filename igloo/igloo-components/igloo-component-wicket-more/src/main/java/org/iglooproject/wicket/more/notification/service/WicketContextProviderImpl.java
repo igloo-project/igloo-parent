@@ -4,6 +4,7 @@ import com.google.common.base.MoreObjects;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpSession;
 import java.util.Locale;
+import java.util.Objects;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.wicket.Application;
@@ -108,22 +109,19 @@ public class WicketContextProviderImpl implements IWicketContextProvider {
 
     @Override
     public boolean equals(Object obj) {
-      if (obj instanceof ApplicationExecutionContext) {
-        if (obj == this) {
-          return true;
-        }
-        ApplicationExecutionContext other = (ApplicationExecutionContext) this;
-        return new EqualsBuilder()
-            .append(application, other.application)
-            .append(getTargetApplication(), other.getTargetApplication())
-            .build();
+      if (this == obj) {
+        return true;
       }
-      return false;
+      if (!(obj instanceof ApplicationExecutionContext other)) {
+        return false;
+      }
+      return Objects.equals(application, other.application)
+          && Objects.equals(getTargetApplication(), other.getTargetApplication());
     }
 
     @Override
     public int hashCode() {
-      return new HashCodeBuilder().append(application).append(getTargetApplication()).build();
+      return Objects.hash(application, getTargetApplication());
     }
   }
 

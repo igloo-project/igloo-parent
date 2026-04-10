@@ -9,8 +9,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
+import java.util.Objects;
 import org.apache.wicket.Component;
 import org.apache.wicket.model.IComponentAssignedModel;
 import org.apache.wicket.model.IDetachable;
@@ -275,21 +274,18 @@ public final class Models {
 
     @Override
     public boolean equals(Object obj) {
-      if (!(obj instanceof MapModelValueModel<?, ?>)) {
+      if (this == obj) {
+        return true;
+      }
+      if (!(obj instanceof MapModelValueModel<?, ?> other)) {
         return false;
       }
-
-      MapModelValueModel<?, ?> other = (MapModelValueModel<?, ?>) obj;
-
-      return new EqualsBuilder()
-          .append(mapModel, other.mapModel)
-          .append(keyModel, other.keyModel)
-          .build();
+      return Objects.equals(mapModel, other.mapModel) && Objects.equals(keyModel, other.keyModel);
     }
 
     @Override
     public int hashCode() {
-      return new HashCodeBuilder().append(mapModel).append(keyModel).build();
+      return Objects.hash(mapModel, keyModel);
     }
   }
 }

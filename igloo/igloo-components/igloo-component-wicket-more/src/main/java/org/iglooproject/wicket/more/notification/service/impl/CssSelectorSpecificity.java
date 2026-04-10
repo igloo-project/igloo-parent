@@ -1,7 +1,7 @@
 package org.iglooproject.wicket.more.notification.service.impl;
 
+import java.util.Objects;
 import org.apache.commons.lang3.builder.CompareToBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -47,27 +47,22 @@ public class CssSelectorSpecificity implements Comparable<CssSelectorSpecificity
 
   @Override
   public boolean equals(Object obj) {
-    if (obj == null) {
-      return false;
-    }
-    if (obj == this) {
+    if (this == obj) {
       return true;
     }
-    if (!(obj instanceof CssSelectorSpecificity)) {
+    if (!(obj instanceof CssSelectorSpecificity other)) {
       return false;
     }
-    CssSelectorSpecificity other = (CssSelectorSpecificity) obj;
-    return compareTo(other) == 0;
+    return Objects.equals(isStyle, other.isStyle)
+        && Objects.equals(idSelectors, other.idSelectors)
+        && Objects.equals(classAndPseudoClassSelectors, other.classAndPseudoClassSelectors)
+        && Objects.equals(typeSelectorsAndPseudoElements, other.typeSelectorsAndPseudoElements);
   }
 
   @Override
   public int hashCode() {
-    return new HashCodeBuilder()
-        .append(isStyle)
-        .append(idSelectors)
-        .append(classAndPseudoClassSelectors)
-        .append(typeSelectorsAndPseudoElements)
-        .build();
+    return Objects.hash(
+        isStyle, idSelectors, classAndPseudoClassSelectors, typeSelectorsAndPseudoElements);
   }
 
   @Override

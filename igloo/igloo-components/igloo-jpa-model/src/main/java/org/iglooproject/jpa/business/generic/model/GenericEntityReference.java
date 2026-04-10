@@ -4,7 +4,7 @@ import com.google.common.base.Verify;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Transient;
 import java.io.Serializable;
-import org.apache.commons.lang3.builder.EqualsBuilder;
+import java.util.Objects;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -87,25 +87,17 @@ public class GenericEntityReference<
 
   @Override
   public boolean equals(Object obj) {
-    if (obj == null) {
-      return false;
-    }
-    if (obj == this) {
+    if (this == obj) {
       return true;
     }
-
     /* Caution here: we really need an instanceof, not a this.getClass() == other.getClass()
      * because some subclasses may simply be workarounds (for instance HistoryEntityReference in JPA-More)
      */
-    if (!(obj instanceof GenericEntityReference)) {
+    if (!(obj instanceof GenericEntityReference<?, ?> other)) {
       return false;
     }
-    GenericEntityReference<?, ? extends GenericEntity<?, ?>> other =
-        (GenericEntityReference<?, ?>) obj;
-    return new EqualsBuilder()
-        .append(getId(), other.getId())
-        .append(getUpperEntityClass(getType()), getUpperEntityClass(other.getType()))
-        .build();
+    return Objects.equals(getId(), other.getId())
+        && Objects.equals(getUpperEntityClass(getType()), getUpperEntityClass(other.getType()));
   }
 
   @Override

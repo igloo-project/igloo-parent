@@ -2,8 +2,7 @@ package org.iglooproject.spring.property.model;
 
 import com.google.common.base.Preconditions;
 import java.util.Locale;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
+import java.util.Objects;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /** Object to build a {@link PropertyId} on runtime to deal with computed key. */
@@ -45,22 +44,18 @@ public abstract class PropertyIdTemplate<T, P extends PropertyId<T>>
 
   @Override
   public boolean equals(Object obj) {
-    if (obj == null) {
-      return false;
-    }
-    if (obj == this) {
+    if (this == obj) {
       return true;
     }
-    if (!(obj instanceof PropertyIdTemplate)) {
+    if (!(obj instanceof PropertyIdTemplate<?, ?> other)) {
       return false;
     }
-    PropertyIdTemplate<?, ?> other = (PropertyIdTemplate<?, ?>) obj;
-    return new EqualsBuilder().append(format, other.format).isEquals();
+    return Objects.equals(format, other.format);
   }
 
   @Override
   public int hashCode() {
-    return new HashCodeBuilder().append(format).build();
+    return Objects.hash(format);
   }
 
   @Override

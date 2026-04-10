@@ -7,8 +7,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Embedded;
 import java.io.Serializable;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
+import java.util.Objects;
 import org.bindgen.Bindable;
 import org.hibernate.Length;
 import org.hibernate.search.mapper.pojo.bridge.mapping.annotation.ValueBridgeRef;
@@ -94,34 +93,30 @@ public class HistoryValue implements IHistoryValue, Serializable {
   }
 
   @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (!(obj instanceof HistoryValue other)) {
+      return false;
+    }
+    return Objects.equals(getLabel(), other.getLabel())
+        && Objects.equals(getSerialized(), other.getSerialized())
+        && Objects.equals(getReference(), other.getReference());
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(getLabel(), getSerialized(), getReference());
+  }
+
+  @Override
   public String toString() {
     if (reference != null) {
       return reference.toString();
     } else {
       return label;
     }
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    if (!(obj instanceof HistoryValue)) {
-      return false;
-    }
-    HistoryValue other = (HistoryValue) obj;
-    return new EqualsBuilder()
-        .append(getLabel(), other.getLabel())
-        .append(getSerialized(), other.getSerialized())
-        .append(getReference(), other.getReference())
-        .isEquals();
-  }
-
-  @Override
-  public int hashCode() {
-    return new HashCodeBuilder()
-        .append(getLabel())
-        .append(getSerialized())
-        .append(getReference())
-        .build();
   }
 
   public static final HistoryValue build(

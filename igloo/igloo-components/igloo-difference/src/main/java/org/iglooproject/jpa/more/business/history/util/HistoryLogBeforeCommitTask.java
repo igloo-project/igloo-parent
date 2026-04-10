@@ -2,8 +2,7 @@ package org.iglooproject.jpa.more.business.history.util;
 
 import java.time.Instant;
 import java.util.List;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
+import java.util.Objects;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.more.business.history.model.AbstractHistoryDifference;
@@ -69,32 +68,28 @@ public class HistoryLogBeforeCommitTask<
 
   @Override
   public boolean equals(Object obj) {
-    if (obj instanceof HistoryLogBeforeCommitTask) {
-      HistoryLogBeforeCommitTask<?, ?, ?, ?, ?> other =
-          (HistoryLogBeforeCommitTask<?, ?, ?, ?, ?>) obj;
-      boolean mergeGroupMode =
-          eventType != null
-              && eventType.getMergeGroup() != null
-              && other.eventType != null
-              && other.eventType.getMergeGroup() != null;
-
-      return new EqualsBuilder()
-          .append(
-              mergeGroupMode ? eventType.getMergeGroup() : eventType,
-              mergeGroupMode ? other.eventType.getMergeGroup() : other.eventType)
-          .append(mainObject, other.mainObject)
-          .build();
+    if (this == obj) {
+      return true;
     }
-    return false;
+    if (!(obj instanceof HistoryLogBeforeCommitTask<?, ?, ?, ?, ?> other)) {
+      return false;
+    }
+
+    boolean mergeGroupMode =
+        eventType != null
+            && eventType.getMergeGroup() != null
+            && other.eventType != null
+            && other.eventType.getMergeGroup() != null;
+
+    return Objects.equals(
+            mergeGroupMode ? eventType.getMergeGroup() : eventType,
+            mergeGroupMode ? other.eventType.getMergeGroup() : other.eventType)
+        && Objects.equals(mainObject, other.mainObject);
   }
 
   @Override
   public int hashCode() {
     boolean mergeGroupMode = eventType != null && eventType.getMergeGroup() != null;
-
-    return new HashCodeBuilder()
-        .append(mergeGroupMode ? eventType.getMergeGroup() : eventType)
-        .append(mainObject)
-        .build();
+    return Objects.hash(mergeGroupMode ? eventType.getMergeGroup() : eventType, mainObject);
   }
 }

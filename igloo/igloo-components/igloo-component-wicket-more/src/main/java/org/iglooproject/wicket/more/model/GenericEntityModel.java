@@ -21,8 +21,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
+import java.util.Objects;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -196,28 +195,19 @@ public class GenericEntityModel<
 
   @Override
   public boolean equals(Object obj) {
-    if (obj == null) {
-      return false;
-    }
-    if (obj == this) {
+    if (this == obj) {
       return true;
     }
-    if (!(obj instanceof GenericEntityModel)) {
+    if (!(obj instanceof GenericEntityModel<?, ?> other)) {
       return false;
     }
-    GenericEntityModel<?, ?> other = (GenericEntityModel<?, ?>) obj;
-    return new EqualsBuilder()
-        .append(persistedEntityReference, other.persistedEntityReference)
-        .append(notYetPersistedEntity, other.notYetPersistedEntity)
-        .isEquals();
+    return Objects.equals(persistedEntityReference, other.persistedEntityReference)
+        && Objects.equals(notYetPersistedEntity, other.notYetPersistedEntity);
   }
 
   @Override
   public int hashCode() {
-    return new HashCodeBuilder()
-        .append(persistedEntityReference)
-        .append(notYetPersistedEntity)
-        .toHashCode();
+    return Objects.hash(persistedEntityReference, notYetPersistedEntity);
   }
 
   private void readObject(ObjectInputStream in) throws ClassNotFoundException, IOException {

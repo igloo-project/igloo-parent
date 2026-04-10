@@ -6,8 +6,7 @@ import com.google.common.collect.Multimap;
 import igloo.wicket.model.Detachables;
 import java.util.Collection;
 import java.util.Map;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
+import java.util.Objects;
 import org.apache.wicket.model.AbstractPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
@@ -81,19 +80,18 @@ public class BindableModel<E> implements IBindableModel<E> {
 
   @Override
   public boolean equals(Object obj) {
-    if (obj == this) {
+    if (this == obj) {
       return true;
     }
-    if (!(obj instanceof BindableModel)) {
+    if (!(obj instanceof BindableModel<?> other)) {
       return false;
     }
-    BindableModel<?> other = (BindableModel<?>) obj;
-    return new EqualsBuilder().append(mainModel, other.mainModel).isEquals();
+    return Objects.equals(mainModel, other.mainModel);
   }
 
   @Override
   public int hashCode() {
-    return new HashCodeBuilder().append(mainModel).build();
+    return Objects.hash(mainModel);
   }
 
   @Override

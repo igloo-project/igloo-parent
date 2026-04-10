@@ -1,7 +1,5 @@
 package org.iglooproject.wicket.more.model;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.wicket.model.IModel;
 
 public class WorkingCopyModel<T> implements IModel<T> {
@@ -19,16 +17,6 @@ public class WorkingCopyModel<T> implements IModel<T> {
     this.reference = reference;
     this.workingCopy = workingCopy;
     read();
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    return new EqualsBuilder().appendSuper(super.equals(obj)).isEquals();
-  }
-
-  @Override
-  public int hashCode() {
-    return new HashCodeBuilder().appendSuper(super.hashCode()).hashCode();
   }
 
   @Override
