@@ -23,9 +23,6 @@
     <commonmark.version>0.27.1</commonmark.version>
     <java.version>25</java.version>
     <maven.compiler.release>25</maven.compiler.release>
-    <!--java25 spotless-->
-    <spotless.maven.plugin.version>3.4.0</spotless.maven.plugin.version>
-    <google.java.format.version>1.35.0</google.java.format.version>
   </properties>
   <build>
     <pluginManagement>

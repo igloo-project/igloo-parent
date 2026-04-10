@@ -7,19 +7,20 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Consumer;
-import org.passay.CharacterRule;
-import org.passay.DictionaryRule;
-import org.passay.EnglishCharacterData;
-import org.passay.EnglishSequenceData;
-import org.passay.IllegalCharacterRule;
-import org.passay.IllegalRegexRule;
-import org.passay.IllegalSequenceRule;
-import org.passay.LengthRule;
-import org.passay.Rule;
-import org.passay.UsernameRule;
-import org.passay.WhitespaceRule;
+import org.passay.UnicodeString;
+import org.passay.data.EnglishCharacterData;
+import org.passay.data.EnglishSequenceData;
 import org.passay.dictionary.ArrayWordList;
 import org.passay.dictionary.WordListDictionary;
+import org.passay.rule.CharacterRule;
+import org.passay.rule.DictionaryRule;
+import org.passay.rule.IllegalCharacterRule;
+import org.passay.rule.IllegalRegexRule;
+import org.passay.rule.IllegalSequenceRule;
+import org.passay.rule.LengthRule;
+import org.passay.rule.Rule;
+import org.passay.rule.UsernameRule;
+import org.passay.rule.WhitespaceRule;
 
 public final class SecurityPasswordRulesBuilder {
 
@@ -121,7 +122,7 @@ public final class SecurityPasswordRulesBuilder {
   }
 
   public SecurityPasswordRulesBuilder forbiddenCharacters(String characters) {
-    rules.add(new IllegalCharacterRule(characters.toCharArray()));
+    rules.add(new IllegalCharacterRule(new UnicodeString(characters)));
     return this;
   }
 
