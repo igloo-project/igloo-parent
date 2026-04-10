@@ -195,4 +195,20 @@
 		<packageUrl regex="true">^pkg:maven/org\.hibernate/hibernate-core@.*$</packageUrl>
 		<vulnerabilityName>CVE-2026-0603</vulnerabilityName>
 	</suppress>
+	<suppress>
+		<notes><![CDATA[
+   file name: spring-security-core-5.8.16.jar
+   The caches are managed by Wicket, we're not really affected.
+   ]]></notes>
+		<packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring-security-core.*$</packageUrl>
+		<vulnerabilityName>CVE-2026-22732</vulnerabilityName>
+	</suppress>
+	<suppress>
+		<notes><![CDATA[
+   file name: spring-web-5.3.39.jar
+   We don't use SSE (Server Sent Events)
+   ]]></notes>
+		<packageUrl regex="true">^pkg:maven/org\.springframework/spring.*$</packageUrl>
+		<vulnerabilityName>CVE-2026-22735</vulnerabilityName>
+	</suppress>
 </suppressions> 
