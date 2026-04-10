@@ -4,8 +4,6 @@ import igloo.wicket.model.CollectionCopyModel;
 import igloo.wicket.model.IItemModelAwareCollectionModel;
 import java.util.Collection;
 import java.util.Iterator;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.wicket.model.IModel;
 import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.functional.SerializableSupplier2;
@@ -32,16 +30,6 @@ public class BindableCollectionModel<T, C extends Collection<T>> extends Bindabl
       IItemModelAwareCollectionModel<T, C, IBindableModel<T>> delegate) {
     super(delegate);
     this.mainModel = delegate;
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    return new EqualsBuilder().appendSuper(super.equals(obj)).isEquals();
-  }
-
-  @Override
-  public int hashCode() {
-    return new HashCodeBuilder().appendSuper(super.hashCode()).hashCode();
   }
 
   @Override

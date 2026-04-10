@@ -1,8 +1,7 @@
 package org.iglooproject.imports.table.common.location;
 
 import java.io.Serializable;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
+import java.util.Objects;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class TableImportLocation implements Serializable {
@@ -44,32 +43,21 @@ public class TableImportLocation implements Serializable {
 
   @Override
   public boolean equals(Object obj) {
-    if (obj == null) {
-      return false;
-    }
-    if (obj == this) {
+    if (this == obj) {
       return true;
     }
-    if (!(obj instanceof TableImportLocation)) {
+    if (!(obj instanceof TableImportLocation other)) {
       return false;
     }
-    TableImportLocation other = (TableImportLocation) obj;
-    return new EqualsBuilder()
-        .append(fileName, other.fileName)
-        .append(tableName, other.tableName)
-        .append(rowIndexZeroBased, other.rowIndexZeroBased)
-        .append(cellAddress, other.cellAddress)
-        .isEquals();
+    return Objects.equals(fileName, other.fileName)
+        && Objects.equals(tableName, other.tableName)
+        && Objects.equals(rowIndexZeroBased, other.rowIndexZeroBased)
+        && Objects.equals(cellAddress, other.cellAddress);
   }
 
   @Override
   public int hashCode() {
-    return new HashCodeBuilder()
-        .append(fileName)
-        .append(tableName)
-        .append(rowIndexZeroBased)
-        .append(cellAddress)
-        .toHashCode();
+    return Objects.hash(fileName, tableName, rowIndexZeroBased, cellAddress);
   }
 
   @Override

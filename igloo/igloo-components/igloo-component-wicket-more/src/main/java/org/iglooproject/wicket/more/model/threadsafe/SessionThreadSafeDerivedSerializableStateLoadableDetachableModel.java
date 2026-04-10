@@ -1,12 +1,10 @@
 package org.iglooproject.wicket.more.model.threadsafe;
 
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.wicket.Session;
 import org.apache.wicket.model.LoadableDetachableModel;
-import org.apache.wicket.util.lang.Objects;
 import org.iglooproject.wicket.more.model.threadsafe.impl.AbstractThreadSafeLoadableDetachableModel;
 import org.iglooproject.wicket.more.model.threadsafe.impl.LoadableDetachableModelThreadContext;
 
@@ -37,13 +35,13 @@ import org.iglooproject.wicket.more.model.threadsafe.impl.LoadableDetachableMode
  * situations:
  *
  * <ul>
- *   <li>{@link #ThreadSafeLoadableDetachableModel(T)} is called
- *   <li>{@link #setObject(T)} is called
+ *   <li>{@link #SessionThreadSafeDerivedSerializableStateLoadableDetachableModel(Object)} is called
+ *   <li>{@link #setObject(Object)} is called
  *   <li>{@link #detach()} is called AND the model is attached AND the object returned by {@link
- *       #makeSerializable(T)} is not {@link #equals(Object) equal} to the one that was returned by
- *       {@code makeSerializable(currentModelObject)} on the last call to {@link
- *       #ThreadSafeLoadableDetachableModel(Object)}, {@link #setObject(Object)} or {@link
- *       #getObject()} (whichever happened last).
+ *       #makeSerializable(Object)} is not {@link #equals(Object) equal} to the one that was
+ *       returned by {@code makeSerializable(currentModelObject)} on the last call to {@link
+ *       #SessionThreadSafeDerivedSerializableStateLoadableDetachableModel(Object)}, {@link
+ *       #setObject(Object)} or {@link #getObject()} (whichever happened last).
  * </ul>
  *
  * The last criteria ensures that changes to the model object impacting its serializable form will
@@ -98,7 +96,7 @@ public abstract class SessionThreadSafeDerivedSerializableStateLoadableDetachabl
    *
    * @param serializableState The serializable state that was returned by {@link
    *     #makeSerializable(Object)}.
-   * @see #makeSerializable(T)
+   * @see #makeSerializable(Object)
    */
   protected abstract T load(S serializableState);
 
@@ -129,7 +127,7 @@ public abstract class SessionThreadSafeDerivedSerializableStateLoadableDetachabl
     // Write to the shared context ONLY if a change occurred in this thread.
     // This prevents the model to overwrite a serializable object that has been set in another
     // thread if there was no change in this thread.
-    if (!Objects.equal(
+    if (!Objects.equals(
         attachedObjectSerializableState, threadContext.lastSharedSerializableState)) {
       threadContext.lastSharedSerializableState = attachedObjectSerializableState;
       sharedSerializableState.set(attachedObjectSerializableState);
@@ -144,7 +142,7 @@ public abstract class SessionThreadSafeDerivedSerializableStateLoadableDetachabl
     // Write to the shared context ONLY if a change occurred in this thread.
     // This prevents the model to overwrite a serializable object that has been set in another
     // thread if there was no change in this thread.
-    if (!Objects.equal(normalizedState, sharedState)) {
+    if (!Objects.equals(normalizedState, sharedState)) {
       sharedSerializableState.set(normalizedState);
       // No need to update the threadContext here: we're in detached state.
     }
@@ -165,24 +163,18 @@ public abstract class SessionThreadSafeDerivedSerializableStateLoadableDetachabl
 
   @Override
   public boolean equals(Object obj) {
-    if (obj == null) {
-      return false;
-    }
-    if (obj == this) {
+    if (this == obj) {
       return true;
     }
-    if (!(obj instanceof SessionThreadSafeDerivedSerializableStateLoadableDetachableModel)) {
+    if (!(obj
+        instanceof SessionThreadSafeDerivedSerializableStateLoadableDetachableModel<?, ?> other)) {
       return false;
     }
-    SessionThreadSafeDerivedSerializableStateLoadableDetachableModel<?, ?> other =
-        (SessionThreadSafeDerivedSerializableStateLoadableDetachableModel<?, ?>) obj;
-    return new EqualsBuilder()
-        .append(sharedSerializableState.get(), other.sharedSerializableState.get())
-        .isEquals();
+    return Objects.equals(sharedSerializableState.get(), other.sharedSerializableState.get());
   }
 
   @Override
   public int hashCode() {
-    return new HashCodeBuilder().append(sharedSerializableState.get()).toHashCode();
+    return Objects.hash(sharedSerializableState.get());
   }
 }

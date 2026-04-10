@@ -1,6 +1,7 @@
 package org.iglooproject.jpa.sql;
 
 import jakarta.persistence.EntityManagerFactory;
+import java.util.Objects;
 import org.iglooproject.jpa.sql.SqlRunner.Action;
 
 /** Base implementation for {@link SchemaContributor}. */
@@ -34,21 +35,18 @@ public class BaseSchemaContributor implements SchemaContributor {
 
   @Override
   public boolean equals(Object obj) {
-    if (obj == null) {
+    if (this == obj) {
+      return true;
+    }
+    if (!(obj instanceof BaseSchemaContributor other)) {
       return false;
     }
-    if (this.getClass() != obj.getClass()) {
-      return false;
-    }
-    if (obj instanceof BaseSchemaContributor schemaContributor) {
-      return ((BaseSchemaContributor) obj).getName().equals(schemaContributor.getName());
-    }
-    return false;
+    return Objects.equals(name, other.name);
   }
 
   @Override
   public int hashCode() {
-    return getName().hashCode();
+    return Objects.hash(name);
   }
 
   @Override

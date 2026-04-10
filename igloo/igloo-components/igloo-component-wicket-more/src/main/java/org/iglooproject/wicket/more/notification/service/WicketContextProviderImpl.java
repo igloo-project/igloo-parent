@@ -4,8 +4,7 @@ import com.google.common.base.MoreObjects;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpSession;
 import java.util.Locale;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
+import java.util.Objects;
 import org.apache.wicket.Application;
 import org.apache.wicket.Session;
 import org.apache.wicket.ThreadContext;
@@ -108,22 +107,19 @@ public class WicketContextProviderImpl implements IWicketContextProvider {
 
     @Override
     public boolean equals(Object obj) {
-      if (obj instanceof ApplicationExecutionContext) {
-        if (obj == this) {
-          return true;
-        }
-        ApplicationExecutionContext other = (ApplicationExecutionContext) this;
-        return new EqualsBuilder()
-            .append(application, other.application)
-            .append(getTargetApplication(), other.getTargetApplication())
-            .build();
+      if (this == obj) {
+        return true;
       }
-      return false;
+      if (!(obj instanceof ApplicationExecutionContext other)) {
+        return false;
+      }
+      return Objects.equals(application, other.application)
+          && Objects.equals(getTargetApplication(), other.getTargetApplication());
     }
 
     @Override
     public int hashCode() {
-      return new HashCodeBuilder().append(application).append(getTargetApplication()).build();
+      return Objects.hash(application, getTargetApplication());
     }
   }
 
@@ -140,7 +136,6 @@ public class WicketContextProviderImpl implements IWicketContextProvider {
       ThreadContext.restore(initialContext);
     }
   }
-  ;
 
   private final class RequestCycleExecutionContext extends AbstractExecutionContext {
 
@@ -199,19 +194,18 @@ public class WicketContextProviderImpl implements IWicketContextProvider {
 
     @Override
     public boolean equals(Object obj) {
-      if (obj instanceof RequestCycleExecutionContext) {
-        if (obj == this) {
-          return true;
-        }
-        RequestCycleExecutionContext other = (RequestCycleExecutionContext) this;
-        return new EqualsBuilder().append(locale, other.locale).build();
+      if (this == obj) {
+        return true;
       }
-      return false;
+      if (!(obj instanceof RequestCycleExecutionContext other)) {
+        return false;
+      }
+      return Objects.equals(locale, other.locale);
     }
 
     @Override
     public int hashCode() {
-      return new HashCodeBuilder().append(locale).build();
+      return Objects.hash(locale);
     }
   }
 
@@ -254,19 +248,18 @@ public class WicketContextProviderImpl implements IWicketContextProvider {
 
     @Override
     public boolean equals(Object obj) {
-      if (obj instanceof SessionExecutionContext) {
-        if (obj == this) {
-          return true;
-        }
-        SessionExecutionContext other = (SessionExecutionContext) this;
-        return new EqualsBuilder().append(locale, other.locale).build();
+      if (this == obj) {
+        return true;
       }
-      return false;
+      if (!(obj instanceof SessionExecutionContext other)) {
+        return false;
+      }
+      return Objects.equals(locale, other.locale);
     }
 
     @Override
     public int hashCode() {
-      return new HashCodeBuilder().append(locale).build();
+      return Objects.hash(locale);
     }
   }
 

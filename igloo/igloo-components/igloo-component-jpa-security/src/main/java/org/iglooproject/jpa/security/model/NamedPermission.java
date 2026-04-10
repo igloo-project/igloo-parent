@@ -1,7 +1,6 @@
 package org.iglooproject.jpa.security.model;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
+import java.util.Objects;
 import org.springframework.security.acls.model.Permission;
 
 public class NamedPermission implements Permission {
@@ -41,22 +40,18 @@ public class NamedPermission implements Permission {
   }
 
   @Override
-  public boolean equals(Object object) {
-    if (object == null) {
-      return false;
-    }
-    if (object == this) {
+  public boolean equals(Object obj) {
+    if (this == obj) {
       return true;
     }
-    if (object instanceof NamedPermission) {
-      NamedPermission permission = (NamedPermission) object;
-      return new EqualsBuilder().append(name, permission.getName()).build();
+    if (!(obj instanceof NamedPermission other)) {
+      return false;
     }
-    return false;
+    return Objects.equals(name, other.name);
   }
 
   @Override
   public int hashCode() {
-    return new HashCodeBuilder().append(name).build();
+    return Objects.hash(name);
   }
 }

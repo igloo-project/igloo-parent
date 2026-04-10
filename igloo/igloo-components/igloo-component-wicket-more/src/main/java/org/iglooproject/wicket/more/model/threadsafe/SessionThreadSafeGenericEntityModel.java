@@ -1,8 +1,7 @@
 package org.iglooproject.wicket.more.model.threadsafe;
 
 import java.io.Serializable;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
+import java.util.Objects;
 import org.apache.wicket.Session;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -105,32 +104,21 @@ public class SessionThreadSafeGenericEntityModel<
       }
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public boolean equals(Object obj) {
-      if (obj == null) {
-        return false;
-      }
-      if (obj == this) {
+      if (this == obj) {
         return true;
       }
-      if (!(obj instanceof SerializableState)) {
+      if (!(obj instanceof SerializableState<?, ?> other)) {
         return false;
       }
-      SerializableState<K, E> other = (SerializableState<K, E>) obj;
-
-      return new EqualsBuilder()
-          .append(persistedEntityReference, other.persistedEntityReference)
-          .append(notYetPersistedEntity, other.notYetPersistedEntity)
-          .build();
+      return Objects.equals(persistedEntityReference, other.persistedEntityReference)
+          && Objects.equals(notYetPersistedEntity, other.notYetPersistedEntity);
     }
 
     @Override
     public int hashCode() {
-      return new HashCodeBuilder()
-          .append(persistedEntityReference)
-          .append(notYetPersistedEntity)
-          .toHashCode();
+      return Objects.hash(persistedEntityReference, notYetPersistedEntity);
     }
   }
 }

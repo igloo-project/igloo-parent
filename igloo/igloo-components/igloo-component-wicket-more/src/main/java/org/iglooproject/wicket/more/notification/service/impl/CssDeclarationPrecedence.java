@@ -3,8 +3,8 @@ package org.iglooproject.wicket.more.notification.service.impl;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Ordering;
 import java.util.Collection;
+import java.util.Objects;
 import org.apache.commons.lang3.builder.CompareToBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.util.Assert;
@@ -43,22 +43,19 @@ public class CssDeclarationPrecedence implements Comparable<CssDeclarationPreced
 
   @Override
   public boolean equals(Object obj) {
-    if (obj == null) {
-      return false;
-    }
-    if (obj == this) {
+    if (this == obj) {
       return true;
     }
-    if (!(obj instanceof CssDeclarationPrecedence)) {
+    if (!(obj instanceof CssDeclarationPrecedence other)) {
       return false;
     }
-    CssDeclarationPrecedence other = (CssDeclarationPrecedence) obj;
-    return compareTo(other) == 0;
+    return Objects.equals(isImportant, other.isImportant)
+        && Objects.equals(selectorSpecificity, other.selectorSpecificity);
   }
 
   @Override
   public int hashCode() {
-    return new HashCodeBuilder().append(isImportant).append(selectorSpecificity).build();
+    return Objects.hash(isImportant, selectorSpecificity);
   }
 
   @Override

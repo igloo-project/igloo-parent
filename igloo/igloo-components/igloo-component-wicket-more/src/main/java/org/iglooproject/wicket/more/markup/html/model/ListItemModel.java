@@ -1,8 +1,7 @@
 package org.iglooproject.wicket.more.markup.html.model;
 
 import java.util.List;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
+import java.util.Objects;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
@@ -25,26 +24,20 @@ public class ListItemModel<T> implements IModel<T> {
   }
 
   @Override
-  public int hashCode() {
-    return new HashCodeBuilder().append(listModel).append(indexModel).toHashCode();
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (!(obj instanceof ListItemModel<?> other)) {
+      return false;
+    }
+    return Objects.equals(listModel, other.listModel)
+        && Objects.equals(indexModel, other.indexModel);
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (obj == null) {
-      return false;
-    }
-    if (obj == this) {
-      return true;
-    }
-    if (!(obj instanceof ListItemModel)) {
-      return false;
-    }
-    ListItemModel<?> other = (ListItemModel<?>) obj;
-    return new EqualsBuilder()
-        .append(listModel, other.listModel)
-        .append(indexModel, other.indexModel)
-        .build();
+  public int hashCode() {
+    return Objects.hash(listModel, indexModel);
   }
 
   @Override

@@ -1,12 +1,11 @@
 package org.iglooproject.jpa.more.business.localization.model;
 
-import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import jakarta.persistence.Transient;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
+import java.util.Objects;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.bindgen.Bindable;
@@ -103,34 +102,24 @@ public abstract class AbstractLocalizedText implements ILocalizedText {
   @Override
   @Transient
   public boolean equals(Object obj) {
-    if (obj == null) {
-      return false;
-    }
-    if (obj == this) {
+    if (this == obj) {
       return true;
     }
-    if (!getClass().isInstance(obj)) {
+    if (!(obj instanceof AbstractLocalizedText other)) {
       return false;
     }
-    AbstractLocalizedText other = (AbstractLocalizedText) obj;
-
     for (Locale locale : getSupportedLocales()) {
-      if (!Objects.equal(get(locale), other.get(locale))) {
+      if (!Objects.equals(get(locale), other.get(locale))) {
         return false;
       }
     }
-
     return true;
   }
 
   @Override
   @Transient
   public int hashCode() {
-    HashCodeBuilder builder = new HashCodeBuilder();
-    for (Locale locale : getSupportedLocales()) {
-      builder = builder.append(get(locale));
-    }
-    return builder.build();
+    return Objects.hash(getSupportedLocales().stream().map(this::get).toArray());
   }
 
   @Override

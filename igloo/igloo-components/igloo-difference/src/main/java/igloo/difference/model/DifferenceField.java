@@ -1,6 +1,7 @@
 package igloo.difference.model;
 
 import java.util.List;
+import java.util.Objects;
 import org.bindgen.BindingRoot;
 import org.iglooproject.commons.util.fieldpath.FieldPath;
 import org.iglooproject.jpa.more.business.difference.differ.strategy.AbstractContainerDifferStrategy;
@@ -102,12 +103,18 @@ public class DifferenceField {
   }
 
   @Override
-  public boolean equals(Object value) {
-    return value instanceof DifferenceField field && field.getPath().equals(path);
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (!(obj instanceof DifferenceField other)) {
+      return false;
+    }
+    return Objects.equals(path, other.path);
   }
 
   @Override
   public int hashCode() {
-    return path.hashCode();
+    return Objects.hash(path);
   }
 }

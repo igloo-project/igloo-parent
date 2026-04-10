@@ -1,7 +1,6 @@
 package org.iglooproject.spring.notification.model;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
+import java.util.Objects;
 import org.iglooproject.commons.util.context.IExecutionContext;
 import org.iglooproject.commons.util.context.IExecutionContext.ITearDownHandle;
 import org.iglooproject.mail.api.INotificationRecipient;
@@ -27,23 +26,19 @@ public abstract class AbstractExecutionContextNotificationContentDescriptorWrapp
 
   @Override
   public boolean equals(Object obj) {
-    if (obj instanceof AbstractExecutionContextNotificationContentDescriptorWrapper) {
-      if (obj == this) {
-        return true;
-      }
-      AbstractExecutionContextNotificationContentDescriptorWrapper other =
-          (AbstractExecutionContextNotificationContentDescriptorWrapper) obj;
-      return new EqualsBuilder()
-          .append(wrapped, other.wrapped)
-          .append(excecutionContext, other.excecutionContext)
-          .build();
+    if (this == obj) {
+      return true;
     }
-    return false;
+    if (!(obj instanceof AbstractExecutionContextNotificationContentDescriptorWrapper other)) {
+      return false;
+    }
+    return Objects.equals(wrapped, other.wrapped)
+        && Objects.equals(excecutionContext, other.excecutionContext);
   }
 
   @Override
   public int hashCode() {
-    return new HashCodeBuilder().append(wrapped).append(excecutionContext).build();
+    return Objects.hash(wrapped, excecutionContext);
   }
 
   @Override

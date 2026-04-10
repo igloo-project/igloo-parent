@@ -31,6 +31,10 @@ public abstract class AbstractMaterializedPrimitiveValue<
     this.value = value;
   }
 
+  public final P getValue() {
+    return value;
+  }
+
   @Override
   public boolean equals(Object object) {
     if (object == null) {
@@ -48,10 +52,6 @@ public abstract class AbstractMaterializedPrimitiveValue<
 
     // "value" may not be null (see constructor)
     return value.equals(other.getValue());
-  }
-
-  public final P getValue() {
-    return value;
   }
 
   @Override

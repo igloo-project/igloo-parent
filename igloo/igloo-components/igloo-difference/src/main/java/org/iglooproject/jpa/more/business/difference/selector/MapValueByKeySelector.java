@@ -1,9 +1,8 @@
 package org.iglooproject.jpa.more.business.difference.selector;
 
-import com.google.common.base.Objects;
 import de.danielbechler.diff.selector.ElementSelector;
 import de.danielbechler.util.Strings;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
+import java.util.Objects;
 
 public class MapValueByKeySelector<K> extends ElementSelector implements IKeyAwareSelector<K> {
 
@@ -14,22 +13,8 @@ public class MapValueByKeySelector<K> extends ElementSelector implements IKeyAwa
   }
 
   @Override
-  @SuppressWarnings("unchecked")
-  public boolean equals(final Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o instanceof MapValueByKeySelector) {
-      MapValueByKeySelector<?> other = (MapValueByKeySelector<?>) o;
-      return Objects.equal(key, (K) other.key);
-    }
-
-    return false;
-  }
-
-  @Override
-  public int hashCode() {
-    return new HashCodeBuilder().append(key).build();
+  public K getKey() {
+    return key;
   }
 
   @Override
@@ -38,7 +23,19 @@ public class MapValueByKeySelector<K> extends ElementSelector implements IKeyAwa
   }
 
   @Override
-  public K getKey() {
-    return key;
+  @SuppressWarnings("unchecked")
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (!(obj instanceof MapValueByKeySelector<?> other)) {
+      return false;
+    }
+    return Objects.equals(key, (K) other.key);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(key);
   }
 }

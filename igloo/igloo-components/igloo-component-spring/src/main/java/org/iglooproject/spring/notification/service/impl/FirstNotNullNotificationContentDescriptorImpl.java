@@ -1,8 +1,7 @@
 package org.iglooproject.spring.notification.service.impl;
 
 import com.google.common.collect.ImmutableList;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
+import java.util.Objects;
 import org.apache.commons.lang3.mutable.MutableObject;
 import org.iglooproject.mail.api.INotificationRecipient;
 import org.iglooproject.spring.notification.exception.NotificationContentRenderingException;
@@ -66,20 +65,18 @@ public class FirstNotNullNotificationContentDescriptorImpl
 
   @Override
   public boolean equals(Object obj) {
-    if (obj instanceof FirstNotNullNotificationContentDescriptorImpl) {
-      if (obj == this) {
-        return true;
-      }
-      FirstNotNullNotificationContentDescriptorImpl other =
-          (FirstNotNullNotificationContentDescriptorImpl) obj;
-      return new EqualsBuilder().append(chainedDescriptors, other.chainedDescriptors).build();
+    if (this == obj) {
+      return true;
     }
-    return false;
+    if (!(obj instanceof FirstNotNullNotificationContentDescriptorImpl other)) {
+      return false;
+    }
+    return Objects.equals(chainedDescriptors, other.chainedDescriptors);
   }
 
   @Override
   public int hashCode() {
-    return new HashCodeBuilder().append(chainedDescriptors).build();
+    return Objects.hash(chainedDescriptors);
   }
 
   @Override

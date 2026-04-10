@@ -42,6 +42,6 @@ public class CacheManagerWrapper {
   }
 
   public void clearAll() {
-    cacheManager.getCacheNames().forEach(name -> cacheManager.getCache(name).clear());
+    cacheManager.getCacheNames().forEach(n -> cacheManager.getCache(n).clear());
   }
 }

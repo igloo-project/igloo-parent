@@ -1,7 +1,7 @@
 package org.iglooproject.jpa.more.business.difference.selector;
 
 import de.danielbechler.diff.selector.ElementSelector;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
+import java.util.Objects;
 
 public class CollectionItemByIndexSelector extends ElementSelector
     implements IKeyAwareSelector<Integer> {
@@ -13,21 +13,8 @@ public class CollectionItemByIndexSelector extends ElementSelector
   }
 
   @Override
-  public boolean equals(final Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o instanceof CollectionItemByIndexSelector) {
-      CollectionItemByIndexSelector other = (CollectionItemByIndexSelector) o;
-      return index == other.index;
-    }
-
-    return false;
-  }
-
-  @Override
-  public int hashCode() {
-    return new HashCodeBuilder().append(index).build();
+  public Integer getKey() {
+    return index;
   }
 
   @Override
@@ -36,7 +23,18 @@ public class CollectionItemByIndexSelector extends ElementSelector
   }
 
   @Override
-  public Integer getKey() {
-    return index;
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (!(obj instanceof CollectionItemByIndexSelector other)) {
+      return false;
+    }
+    return Objects.equals(index, other.index);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(index);
   }
 }

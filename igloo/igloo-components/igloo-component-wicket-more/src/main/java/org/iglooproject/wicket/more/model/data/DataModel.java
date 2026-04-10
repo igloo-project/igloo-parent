@@ -4,8 +4,6 @@ import igloo.wicket.model.Detachables;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.wicket.model.IDetachable;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
@@ -103,22 +101,18 @@ public class DataModel<T> extends LoadableDetachableModel<T> implements IDataMod
 
     @Override
     public boolean equals(Object obj) {
-      if (obj == null) {
-        return false;
-      }
-      if (obj == this) {
+      if (this == obj) {
         return true;
       }
-      if (!(obj instanceof DataModelProperty)) {
+      if (!(obj instanceof DataModelProperty<?, ?> other)) {
         return false;
       }
-      DataModelProperty<?, ?> other = (DataModelProperty<?, ?>) obj;
-      return new EqualsBuilder().append(binding.getPath(), other.binding.getPath()).isEquals();
+      return Objects.equals(binding.getPath(), other.binding.getPath());
     }
 
     @Override
     public int hashCode() {
-      return new HashCodeBuilder().append(binding.getPath()).toHashCode();
+      return Objects.hash(binding.getPath());
     }
   }
 }

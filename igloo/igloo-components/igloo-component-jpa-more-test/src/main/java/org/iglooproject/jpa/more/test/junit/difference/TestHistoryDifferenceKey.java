@@ -1,7 +1,6 @@
 package org.iglooproject.jpa.more.test.junit.difference;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
+import java.util.Objects;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.iglooproject.commons.util.fieldpath.FieldPath;
@@ -48,25 +47,21 @@ public class TestHistoryDifferenceKey {
   }
 
   @Override
-  public int hashCode() {
-    return new HashCodeBuilder()
-        .append(fieldPath)
-        .append(keyAsGenericEntityReference)
-        .append(keyAsString)
-        .build();
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (!(obj instanceof TestHistoryDifferenceKey other)) {
+      return false;
+    }
+    return Objects.equals(fieldPath, other.fieldPath)
+        && Objects.equals(keyAsGenericEntityReference, other.keyAsGenericEntityReference)
+        && Objects.equals(keyAsString, other.keyAsString);
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (obj instanceof TestHistoryDifferenceKey) {
-      TestHistoryDifferenceKey other = (TestHistoryDifferenceKey) obj;
-      return new EqualsBuilder()
-          .append(fieldPath, other.fieldPath)
-          .append(keyAsGenericEntityReference, other.keyAsGenericEntityReference)
-          .append(keyAsString, other.keyAsString)
-          .build();
-    }
-    return false;
+  public int hashCode() {
+    return Objects.hash(fieldPath, keyAsGenericEntityReference, keyAsString);
   }
 
   @Override

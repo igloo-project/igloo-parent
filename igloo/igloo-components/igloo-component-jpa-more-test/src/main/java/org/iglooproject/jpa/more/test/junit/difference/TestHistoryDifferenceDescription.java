@@ -3,8 +3,7 @@ package org.iglooproject.jpa.more.test.junit.difference;
 import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimap;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
+import java.util.Objects;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.bindgen.Binding;
@@ -45,20 +44,18 @@ public final class TestHistoryDifferenceDescription {
 
   @Override
   public boolean equals(Object obj) {
-    if (obj instanceof TestHistoryDifferenceDescription) {
-      TestHistoryDifferenceDescription other = (TestHistoryDifferenceDescription) obj;
-      return new EqualsBuilder()
-          .append(action, other.action)
-          .append(differences, other.differences)
-          .build();
-    } else {
+    if (this == obj) {
+      return true;
+    }
+    if (!(obj instanceof TestHistoryDifferenceDescription other)) {
       return false;
     }
+    return Objects.equals(action, other.action) && Objects.equals(differences, other.differences);
   }
 
   @Override
   public int hashCode() {
-    return new HashCodeBuilder().append(action).append(differences).build();
+    return Objects.hash(action, differences);
   }
 
   @Override

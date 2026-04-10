@@ -5,8 +5,6 @@ import com.google.common.collect.Iterables;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Objects;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.wicket.model.IModel;
 import org.iglooproject.functional.SerializablePredicate2;
 import org.iglooproject.functional.SerializableSupplier2;
@@ -34,20 +32,19 @@ class FilterByModelItemModelAwareCollectionModel<T, C extends Collection<T>, M e
 
   @Override
   public boolean equals(Object obj) {
-    if (obj == null || !obj.getClass().equals(getClass())) {
+    if (this == obj) {
+      return true;
+    }
+    if (!(obj instanceof FilterByModelItemModelAwareCollectionModel<?, ?, ?> other)) {
       return false;
     }
-    FilterByModelItemModelAwareCollectionModel<?, ?, ?> other =
-        (FilterByModelItemModelAwareCollectionModel<?, ?, ?>) obj;
-    return new EqualsBuilder()
-        .append(modelPredicate, other.modelPredicate)
-        .append(unfiltered, other.unfiltered)
-        .build();
+    return Objects.equals(modelPredicate, other.modelPredicate)
+        && Objects.equals(unfiltered, other.unfiltered);
   }
 
   @Override
   public int hashCode() {
-    return new HashCodeBuilder().append(modelPredicate).append(unfiltered).build();
+    return Objects.hash(modelPredicate, unfiltered);
   }
 
   @Override

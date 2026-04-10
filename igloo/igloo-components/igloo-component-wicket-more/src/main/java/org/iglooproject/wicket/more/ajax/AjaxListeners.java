@@ -12,9 +12,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Set;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.RestartResponseException;
@@ -127,19 +126,18 @@ public final class AjaxListeners {
 
     @Override
     public boolean equals(Object obj) {
-      if (obj == null) {
+      if (this == obj) {
+        return true;
+      }
+      if (!(obj instanceof RefreshNewAndRemovedItemsListener other)) {
         return false;
       }
-      if (!getClass().equals(obj.getClass())) {
-        return false;
-      }
-      RefreshNewAndRemovedItemsListener other = (RefreshNewAndRemovedItemsListener) obj;
-      return new EqualsBuilder().append(repeater, other.repeater).isEquals();
+      return Objects.equals(repeater, other.repeater);
     }
 
     @Override
     public int hashCode() {
-      return new HashCodeBuilder().append(repeater).toHashCode();
+      return Objects.hash(repeater);
     }
 
     @Override
