@@ -43,11 +43,11 @@ public final class HibernateUtils {
 
     // Initialize wrapped collections (Collections.unmodifiableCollection, for instance)
     if (proxy instanceof Collection) {
-      ((Collection<?>) proxy).iterator();
+      ((Collection<?>) proxy).iterator(); // NOSONAR
     }
     // Initialize wrapped maps
     if (proxy instanceof Map) {
-      ((Map<?, ?>) proxy).entrySet().iterator();
+      ((Map<?, ?>) proxy).entrySet().iterator(); // NOSONAR
     }
   }
 

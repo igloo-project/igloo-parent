@@ -1,5 +1,6 @@
 package igloo.cache.monitor;
 
+import java.util.Objects;
 import org.springframework.cache.CacheManager;
 
 /**
@@ -26,10 +27,18 @@ public class CacheManagerWrapper {
 
   @Override
   public boolean equals(Object obj) {
-    if (obj instanceof CacheManagerWrapper) {
-      return ((CacheManagerWrapper) obj).getCacheManager().equals(this.getCacheManager());
+    if (this == obj) {
+      return true;
     }
-    return false;
+    if (!(obj instanceof CacheManagerWrapper other)) {
+      return false;
+    }
+    return Objects.equals(cacheManager, other.cacheManager);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(cacheManager);
   }
 
   public void clearAll() {
