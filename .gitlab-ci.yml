@@ -2,7 +2,7 @@ image:
   name: igloo-containers.tools.kobalt.fr/containers/maven-igloo:3.9-eclipse-temurin-25
 
 variables:
-  MAVEN_OPTS: "-Xmx2g -Dstyle.color=never"
+  MAVEN_OPTS: "-Xmx1536m"
   JAVA_TOOL_OPTIONS: "-Duser.language=fr -Duser.country=FR -Duser.timezone=Europe/Paris -Dfile.encoding=UTF-8"
 
 stages:
@@ -52,6 +52,8 @@ maven-build:
 # Need to launched after deploy as igloo artifacts are needed.
 test-init:
   stage: init
+  variables:
+    MAVEN_OPTS: "-Xmx4g"
   needs: ['maven-deploy']
   script:
   - apt-get update
@@ -78,6 +80,8 @@ test-init:
 
 basic-application-init:
   stage: build
+  variables:
+    MAVEN_OPTS: "-Xmx4g"
   script:
   - apt-get update
   - apt-get install -y libxml2-utils
