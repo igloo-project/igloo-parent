@@ -12,6 +12,13 @@
     <dependencies>
       <dependency>
         <groupId>org.iglooproject</groupId>
+        <artifactId>dependencies-commons</artifactId>
+        <version>${igloo-maven.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.iglooproject</groupId>
         <artifactId>dependencies-logging</artifactId>
         <version>${igloo-maven.version}</version>
         <type>pom</type>
@@ -48,6 +55,11 @@
     <dependency>
       <groupId>io.micrometer</groupId>
       <artifactId>micrometer-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>jakarta.annotation</groupId>
+      <artifactId>jakarta.annotation-api</artifactId>
+      <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.iglooproject.components</groupId>

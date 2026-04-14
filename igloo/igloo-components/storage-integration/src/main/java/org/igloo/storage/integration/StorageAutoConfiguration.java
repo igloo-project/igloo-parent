@@ -309,9 +309,7 @@ public class StorageAutoConfiguration implements IPropertyRegistryConfiguration 
     @Bean
     public MicrometerConfig micrometerConfig(
         IStorageStatisticsService storageStatisticsService, MeterRegistry meterRegistry) {
-      MicrometerConfig c = new MicrometerConfig(storageStatisticsService, meterRegistry);
-      c.start();
-      return c;
+      return new MicrometerConfig(storageStatisticsService, meterRegistry);
     }
 
     /** Register wicket monitoring services. */

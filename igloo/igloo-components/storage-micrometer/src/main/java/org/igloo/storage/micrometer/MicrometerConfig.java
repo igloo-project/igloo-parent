@@ -4,6 +4,8 @@ import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.MultiGauge;
 import io.micrometer.core.instrument.MultiGauge.Row;
 import io.micrometer.core.instrument.Tags;
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
@@ -99,6 +101,8 @@ public class MicrometerConfig {
   private MultiGauge lastChecksumDuration;
   private MultiGauge lastMetric;
 
+  private ScheduledExecutorService executor;
+
   public MicrometerConfig(
       IStorageStatisticsService storageStatisticsService, MeterRegistry registry) {
     this.storageStatisticsService = storageStatisticsService;
@@ -149,8 +153,15 @@ public class MicrometerConfig {
             .register(registry);
   }
 
-  public void start() {
-    ScheduledExecutorService executor =
+  @PostConstruct
+  @SuppressWarnings("java:S2095")
+  public synchronized void start() {
+    if (executor != null) {
+      throw new IllegalStateException("MicrometerConfig.start() must be called only once");
+    }
+    LOGGER.info("Starting micrometer StorageStatistics job");
+    // resource must not be wrapped with try-with-resources, we want to use it outside current scope
+    executor =
         Executors.newSingleThreadScheduledExecutor(
             r -> {
               Thread t = new Thread(r, "StorageStatistics");
@@ -158,6 +169,14 @@ public class MicrometerConfig {
               return t;
             });
     executor.scheduleWithFixedDelay(this::refreshStatistics, 0, 120, TimeUnit.SECONDS);
+  }
+
+  @PreDestroy
+  public synchronized void stop() {
+    if (executor != null && !executor.isShutdown()) {
+      LOGGER.info("Stopping micrometer StorageStatistics job");
+      executor.shutdownNow();
+    }
   }
 
   public void refresh() {
