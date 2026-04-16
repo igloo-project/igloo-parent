@@ -3,7 +3,7 @@ image:
 
 variables:
   MAVEN_OPTS: "-Xmx1536m"
-  JAVA_TOOL_OPTIONS: "-Duser.language=fr -Duser.country=FR -Duser.timezone=Europe/Paris -Dfile.encoding=UTF-8"
+  JAVA_TOOL_OPTIONS: "-Xmx1536m -Duser.language=fr -Duser.country=FR -Duser.timezone=Europe/Paris -Dfile.encoding=UTF-8"
 
 stages:
   # build includes tests
@@ -51,9 +51,7 @@ maven-build:
 # Not done: test are not launched
 # Need to launched after deploy as igloo artifacts are needed.
 test-init:
-  stage: init
-  variables:
-    MAVEN_OPTS: "-Xmx4g"
+  stage: init 
   needs: ['maven-deploy']
   script:
   - apt-get update
@@ -80,8 +78,6 @@ test-init:
 
 basic-application-init:
   stage: build
-  variables:
-    MAVEN_OPTS: "-Xmx4g"
   script:
   - apt-get update
   - apt-get install -y libxml2-utils
