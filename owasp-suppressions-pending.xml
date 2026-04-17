@@ -8,7 +8,7 @@
   <!--                                                              -->
   <!--                    IGLOO 7.0.0                               -->
   <!--                                                              -->
-
+  
   <suppress>
     <notes><![CDATA[
    file name: log4j-layout-template-json-2.25.3.jar
@@ -97,7 +97,7 @@
    Les caches sont gérés par wicket, on est peu concerné
    fix dans la version 7.0.4
    ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring-security-core.*$
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring-security-.*$
     </packageUrl>
     <vulnerabilityName>CVE-2026-22732</vulnerabilityName>
   </suppress>
