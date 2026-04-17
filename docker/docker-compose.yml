@@ -1,0 +1,31 @@
+name: basic-application
+
+services:
+  bdd:
+    image: "igloo-containers.tools.kobalt.fr/containers/postgres-igloo:18"
+    ports:
+      - "127.0.0.1:1532:5432"
+    volumes:
+      - basic-application-bdd:/var/lib/postgresql
+    environment:
+      - POSTGRES_DB=basic_application
+      - POSTGRES_USER=basic_application
+      - POSTGRES_HOST_AUTH_METHOD=trust
+      - TZ=Europe/Paris
+      - PGTZ=Europe/Paris
+  bdd_test:
+    image: "igloo-containers.tools.kobalt.fr/containers/postgres-igloo:18"
+    ports:
+      - "127.0.0.1:1533:5432"
+    volumes:
+      - basic-application-test-bdd:/var/lib/postgresql
+    environment:
+      - POSTGRES_DB=basic_application_test
+      - POSTGRES_USER=basic_application_test
+      - POSTGRES_HOST_AUTH_METHOD=trust
+      - TZ=Europe/Paris
+      - PGTZ=Europe/Paris
+
+volumes:
+  basic-application-bdd:
+  basic-application-test-bdd:
