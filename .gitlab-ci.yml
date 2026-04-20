@@ -3,7 +3,7 @@ image:
 
 variables:
   MAVEN_OPTS: "-Xmx1536m"
-  JAVA_TOOL_OPTIONS: "-Xmx1536m -Duser.language=fr -Duser.country=FR -Duser.timezone=Europe/Paris -Dfile.encoding=UTF-8"
+  JAVA_TOOL_OPTIONS: "-Duser.language=fr -Duser.country=FR -Duser.timezone=Europe/Paris -Dfile.encoding=UTF-8"
 
 stages:
   # build includes tests
