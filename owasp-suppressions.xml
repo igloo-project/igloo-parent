@@ -40,16 +40,7 @@
    
    Only for JetBrains Kotlin before 1.4.21. We use version up or equal to 1.9.0
    ]]></notes>
-		<packageUrl regex="true">^pkg:maven/org\.jetbrains\.kotlin/kotlin-stdlib.*$</packageUrl>
+		<packageUrl regex="true">^pkg:maven/org\.jetbrains\.kotlin/kotlin-stdlib@.*$</packageUrl>
 		<cve>CVE-2020-29582</cve>
 	</suppress>
-  <suppress>
-    <notes><![CDATA[
-          file name: tomcat-embed-core-*.jar
-    
-          We don't integrate the jar into the product deliverable (optional=true, spring repackage skipped)
-      ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.apache\.tomcat.*/(tomcat-embed-|tomcat-util|tomcat-coyote).*$</packageUrl>
-    <vulnerabilityName regex="true">.*</vulnerabilityName>
-  </suppress>
 </suppressions>
