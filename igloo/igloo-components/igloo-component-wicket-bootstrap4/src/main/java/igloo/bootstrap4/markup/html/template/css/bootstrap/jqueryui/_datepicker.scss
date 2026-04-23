@@ -105,7 +105,7 @@ $ui-datepicker-footer-padding:							.5em .75em !default;
 					bottom: auto;
 					left: auto;
 					
-					widht: auto;
+					width: auto;
 					height: auto;
 					
 					text-indent: 0;
@@ -113,7 +113,7 @@ $ui-datepicker-footer-padding:							.5em .75em !default;
 					
 					background-image: none;
 					background-position: 0% 0%;
-					background28-repeat: repeat;
+					background-repeat: repeat;
 				}
 			}
 		}
@@ -319,7 +319,6 @@ $ui-datepicker-footer-padding:							.5em .75em !default;
 	.ui-datepicker-buttonpane {
 		background-image: none;
 		margin-top: .7em;
-		padding: 0 .2em;
 		border-left: 0;
 		border-right: 0;
 		border-bottom: 0;

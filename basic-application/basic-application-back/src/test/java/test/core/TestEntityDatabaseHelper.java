@@ -62,9 +62,9 @@ public class TestEntityDatabaseHelper {
       throws ServiceException, SecurityServiceException {
 
     Announcement announcement = new Announcement();
-    announcement.setType(AnnouncementType.SERVICE_INTERRUPTION);
-    announcement.getInterruption().setStartDateTime(LocalDateTime.of(2024, 1, 1, 10, 0));
-    announcement.getInterruption().setEndDateTime(LocalDateTime.of(2024, 1, 2, 10, 0));
+    announcement.setType(AnnouncementType.UNAVAILABILITY);
+    announcement.getUnavailability().setStartDateTime(LocalDateTime.of(2024, 1, 1, 10, 0));
+    announcement.getUnavailability().setEndDateTime(LocalDateTime.of(2024, 1, 2, 10, 0));
     announcement.getPublication().setStartDateTime(LocalDateTime.of(2024, 1, 1, 10, 0));
     announcement.getPublication().setEndDateTime(LocalDateTime.of(2024, 1, 2, 10, 0));
 

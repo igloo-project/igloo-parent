@@ -44,7 +44,7 @@ import org.iglooproject.functional.Supplier2;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.more.rendering.service.IRendererService;
 import org.iglooproject.sass.service.StaticResourceHelper;
-import org.iglooproject.spring.config.spring.IPropertyRegistryConfig;
+import org.iglooproject.spring.config.IPropertyRegistryConfiguration;
 import org.iglooproject.spring.property.service.IPropertyRegistry;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.spring.util.StringUtils;
@@ -75,7 +75,7 @@ import org.springframework.util.function.ThrowingSupplier;
     basePackageClasses = WicketMorePackage.class,
     excludeFilters = @Filter(Configuration.class))
 @ConditionalOnClass(WebApplication.class)
-public class WicketMoreAutoConfiguration implements IPropertyRegistryConfig {
+public class WicketMoreAutoConfiguration implements IPropertyRegistryConfiguration {
 
   @Autowired @Lazy private IPropertyService propertyService;
 

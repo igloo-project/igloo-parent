@@ -7,14 +7,14 @@ import org.iglooproject.jpa.more.business.history.service.AbstractHistoryLogServ
 import test.business.dao.ITestHistoryLogDao;
 import test.business.model.HistoryLogAdditionalInformationBean;
 import test.business.model.TestHistoryDifference;
-import test.business.model.TestHistoryEventType;
 import test.business.model.TestHistoryLog;
+import test.business.model.TestHistoryLogEventType;
 import test.business.model.TestUser;
 
 public class TestHistoryLogServiceImpl
     extends AbstractHistoryLogServiceImpl<
         TestHistoryLog,
-        TestHistoryEventType,
+        TestHistoryLogEventType,
         TestHistoryDifference,
         HistoryLogAdditionalInformationBean>
     implements ITestHistoryLogService {
@@ -29,7 +29,7 @@ public class TestHistoryLogServiceImpl
   @Override
   protected <T> TestHistoryLog newHistoryLog(
       Instant date,
-      TestHistoryEventType eventType,
+      TestHistoryLogEventType eventType,
       List<TestHistoryDifference> differences,
       T mainObject,
       HistoryLogAdditionalInformationBean additionalInformation) {

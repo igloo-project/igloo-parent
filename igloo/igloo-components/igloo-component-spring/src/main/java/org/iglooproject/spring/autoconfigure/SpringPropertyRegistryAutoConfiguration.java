@@ -28,11 +28,11 @@ import java.util.Set;
 import org.iglooproject.functional.Suppliers2;
 import org.iglooproject.functional.converter.StringCollectionConverter;
 import org.iglooproject.functional.converter.StringLocaleConverter;
-import org.iglooproject.spring.config.spring.IPropertyRegistryConfig;
-import org.iglooproject.spring.config.util.MailSenderBehavior;
+import org.iglooproject.spring.config.IPropertyRegistryConfiguration;
 import org.iglooproject.spring.notification.util.NotificationSendMode;
 import org.iglooproject.spring.property.SpringPropertyIds;
 import org.iglooproject.spring.property.service.IPropertyRegistry;
+import org.iglooproject.spring.util.notification.MailSenderBehavior;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
@@ -40,7 +40,7 @@ import org.springframework.context.annotation.Import;
 
 @Import(SecurityPropertyRegistryAutoConfiguration.class)
 @Configuration
-public class SpringPropertyRegistryAutoConfiguration implements IPropertyRegistryConfig {
+public class SpringPropertyRegistryAutoConfiguration implements IPropertyRegistryConfiguration {
 
   private static final Logger LOGGER =
       LoggerFactory.getLogger(SpringPropertyRegistryAutoConfiguration.class);

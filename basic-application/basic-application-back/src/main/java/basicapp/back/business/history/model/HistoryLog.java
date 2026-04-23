@@ -1,6 +1,6 @@
 package basicapp.back.business.history.model;
 
-import basicapp.back.business.history.model.atomic.HistoryEventType;
+import basicapp.back.business.history.model.atomic.HistoryLogEventType;
 import jakarta.persistence.Cacheable;
 import jakarta.persistence.Entity;
 import java.time.Instant;
@@ -12,7 +12,7 @@ import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryValue;
 @Bindable
 @Cacheable
 public class HistoryLog
-    extends AbstractHistoryLog<HistoryLog, HistoryEventType, HistoryDifference> {
+    extends AbstractHistoryLog<HistoryLog, HistoryLogEventType, HistoryDifference> {
 
   private static final long serialVersionUID = -8557932643510393694L;
 
@@ -20,7 +20,7 @@ public class HistoryLog
     // nothing to do
   }
 
-  public HistoryLog(Instant date, HistoryEventType eventType, HistoryValue mainObject) {
+  public HistoryLog(Instant date, HistoryLogEventType eventType, HistoryValue mainObject) {
     super(date, eventType, mainObject);
   }
 }

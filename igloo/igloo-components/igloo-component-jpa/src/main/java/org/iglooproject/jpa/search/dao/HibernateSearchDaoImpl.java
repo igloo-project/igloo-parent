@@ -109,6 +109,15 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
     }
   }
 
+  @Override
+  public <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> void deleteEntity(
+      E entity) {
+    if (entity != null) {
+      SearchSession session = Search.session(entityManager);
+      session.indexingPlan().delete(Hibernate.unproxy(entity));
+    }
+  }
+
   protected EntityManager getEntityManager() {
     return entityManager;
   }

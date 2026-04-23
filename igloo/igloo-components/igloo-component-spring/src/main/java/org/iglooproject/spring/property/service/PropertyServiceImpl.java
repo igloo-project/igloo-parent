@@ -49,7 +49,7 @@ import org.iglooproject.functional.converter.StringTimeConverter;
 import org.iglooproject.functional.converter.StringURIConverter;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.spring.config.spring.IPropertyRegistryConfig;
+import org.iglooproject.spring.config.IPropertyRegistryConfiguration;
 import org.iglooproject.spring.property.SpringPropertyIds;
 import org.iglooproject.spring.property.dao.IImmutablePropertyDao;
 import org.iglooproject.spring.property.dao.IMutablePropertyDao;
@@ -111,9 +111,9 @@ public class PropertyServiceImpl implements IConfigurablePropertyService {
   }
 
   @Autowired
-  public void init(Collection<IPropertyRegistryConfig> registryConfigs)
+  public void init(Collection<IPropertyRegistryConfiguration> registryConfigs)
       throws PropertyServiceIncompleteRegistrationException {
-    for (IPropertyRegistryConfig registryConfig : registryConfigs) {
+    for (IPropertyRegistryConfiguration registryConfig : registryConfigs) {
       registryConfig.register(this);
     }
     checkNoIncompleteRegistration();

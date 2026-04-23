@@ -1,6 +1,6 @@
 package basicapp.front.console.common.component;
 
-import basicapp.back.config.util.Environment;
+import basicapp.back.util.Environment;
 import basicapp.front.BasicApplicationSession;
 import igloo.wicket.behavior.ClassAttributeAppender;
 import igloo.wicket.markup.html.panel.GenericPanel;

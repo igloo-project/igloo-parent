@@ -23,14 +23,15 @@ import org.bindgen.Bindable;
 import org.hibernate.Length;
 import org.iglooproject.commons.util.collections.CollectionUtils;
 import org.iglooproject.commons.util.fieldpath.FieldPath;
+import org.iglooproject.jpa.more.business.history.model.atomic.IHistoryLogEventType;
 import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryValue;
 
 @Bindable
 @SuppressFBWarnings("squid:S00107")
 @MappedSuperclass
 public abstract class AbstractHistoryLog<
-        HL extends AbstractHistoryLog<HL, HET, HD>,
-        HET extends Enum<HET>,
+        HL extends AbstractHistoryLog<HL, HLET, HD>,
+        HLET extends Enum<HLET> & IHistoryLogEventType<HLET>,
         HD extends AbstractHistoryDifference<HD, HL>>
     extends AbstractHistoryElement<HL, HL> {
 
@@ -43,7 +44,7 @@ public abstract class AbstractHistoryLog<
 
   @Basic(optional = false)
   @Enumerated(EnumType.STRING)
-  private HET eventType;
+  private HLET eventType;
 
   @Embedded private HistoryValue subject;
 
@@ -73,7 +74,7 @@ public abstract class AbstractHistoryLog<
     // nothing to do
   }
 
-  protected AbstractHistoryLog(Instant date, HET eventType, HistoryValue mainObject) {
+  protected AbstractHistoryLog(Instant date, HLET eventType, HistoryValue mainObject) {
     this.date = date;
     this.eventType = eventType;
     this.mainObject = mainObject;
@@ -116,11 +117,11 @@ public abstract class AbstractHistoryLog<
     this.date = date;
   }
 
-  public HET getEventType() {
+  public HLET getEventType() {
     return eventType;
   }
 
-  public void setEventType(HET action) {
+  public void setEventType(HLET action) {
     this.eventType = action;
   }
 
@@ -190,6 +191,6 @@ public abstract class AbstractHistoryLog<
 
   @Override
   protected ToStringHelper toStringHelper() {
-    return super.toStringHelper().add("object1", object1.getLabel());
+    return super.toStringHelper().add("mainObject", mainObject.getLabel());
   }
 }

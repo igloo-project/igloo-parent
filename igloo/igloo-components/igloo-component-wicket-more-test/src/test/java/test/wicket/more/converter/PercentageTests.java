@@ -9,7 +9,7 @@ import java.util.Locale;
 import org.iglooproject.wicket.more.rendering.CoreRenderers;
 import org.junit.jupiter.api.Test;
 import test.wicket.more.AbstractWicketMoreTestCase;
-import test.wicket.more.config.spring.SpringBootTestWicketSimple;
+import test.wicket.more.config.SpringBootTestWicketSimple;
 
 @SpringBootTestWicketSimple
 class PercentageTests extends AbstractWicketMoreTestCase {

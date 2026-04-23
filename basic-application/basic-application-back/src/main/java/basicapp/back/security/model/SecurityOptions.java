@@ -8,7 +8,7 @@ import java.util.Set;
 import java.util.function.Consumer;
 import org.iglooproject.commons.util.collections.CollectionUtils;
 import org.iglooproject.jpa.security.password.rule.SecurityPasswordRulesBuilder;
-import org.passay.Rule;
+import org.passay.rule.Rule;
 
 public final class SecurityOptions {
 
@@ -99,7 +99,7 @@ public final class SecurityOptions {
     private SecurityOptionsMode passwordUserUpdate = SecurityOptionsMode.DISABLED;
     private SecurityOptionsMode passwordUserRecovery = SecurityOptionsMode.DISABLED;
 
-    private Set<Rule> passwordRules = Sets.newHashSet();
+    private final Set<Rule> passwordRules = Sets.newHashSet();
 
     private Builder() {}
 

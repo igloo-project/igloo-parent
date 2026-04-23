@@ -50,10 +50,10 @@ import test.jpa.more.business.AbstractJpaMoreTestCase;
 import test.jpa.more.business.entity.model.TestEntity;
 import test.jpa.more.business.history.model.TestHistoryDifference;
 import test.jpa.more.business.history.model.TestHistoryLog;
-import test.jpa.more.business.history.model.atomic.TestHistoryEventType;
+import test.jpa.more.business.history.model.atomic.TestHistoryLogEventType;
 import test.jpa.more.business.history.model.bean.TestHistoryLogAdditionalInformationBean;
 import test.jpa.more.business.history.service.ITestHistoryLogService;
-import test.jpa.more.config.spring.SpringBootTestJpaMoreHistoryLog;
+import test.jpa.more.config.SpringBootTestJpaMoreHistoryLog;
 
 @SpringBootTestJpaMoreHistoryLog
 @ExtendWith(MockitoExtension.class)
@@ -173,7 +173,7 @@ class TestHistoryLogService extends AbstractJpaMoreTestCase {
 
     historyLogService.logNow(
         DATE,
-        TestHistoryEventType.EVENT1,
+        TestHistoryLogEventType.EVENT1,
         differences,
         object,
         TestHistoryLogAdditionalInformationBean.of(secondaryObject));
@@ -193,7 +193,7 @@ class TestHistoryLogService extends AbstractJpaMoreTestCase {
     assertThat(log.getId()).isNotNull();
 
     assertThat(log.getDate()).isEqualTo(DATE);
-    assertThat(log.getEventType()).isEqualTo(TestHistoryEventType.EVENT1);
+    assertThat(log.getEventType()).isEqualTo(TestHistoryLogEventType.EVENT1);
     assertThat(log.getMainObject()).isEqualTo(expectedObjectHistoryValue);
     assertThat(log.getObject1()).isEqualTo(expectedSecondaryObjectHistoryValue);
     assertThat(log.getDifferences(), matchesExpectedDifferences());
@@ -234,7 +234,7 @@ class TestHistoryLogService extends AbstractJpaMoreTestCase {
           TestEntity secondaryObjectReloaded = entityService.getEntity(secondaryObject);
           try {
             historyLogService.logWithDifferences(
-                TestHistoryEventType.EVENT1,
+                TestHistoryLogEventType.EVENT1,
                 objectReloaded,
                 TestHistoryLogAdditionalInformationBean.of(secondaryObjectReloaded),
                 differenceGeneratorMock,
@@ -271,7 +271,7 @@ class TestHistoryLogService extends AbstractJpaMoreTestCase {
             return !item.isBefore(before) && !item.isAfter(after);
           }
         });
-    assertThat(log.getEventType()).isEqualTo(TestHistoryEventType.EVENT1);
+    assertThat(log.getEventType()).isEqualTo(TestHistoryLogEventType.EVENT1);
     assertThat(log.getMainObject()).isEqualTo(expectedObjectHistoryValue);
     assertThat(log.getObject1()).isEqualTo(expectedSecondaryObjectHistoryValue);
     assertThat(log.getDifferences(), matchesExpectedDifferences());
@@ -312,7 +312,7 @@ class TestHistoryLogService extends AbstractJpaMoreTestCase {
           TestEntity secondaryObjectReloaded = entityService.getEntity(secondaryObject);
           try {
             historyLogService.logWithDifferences(
-                TestHistoryEventType.EVENT1,
+                TestHistoryLogEventType.EVENT1,
                 objectReloaded,
                 TestHistoryLogAdditionalInformationBean.of(secondaryObjectReloaded),
                 differenceGeneratorMock,
@@ -355,7 +355,7 @@ class TestHistoryLogService extends AbstractJpaMoreTestCase {
             return !item.isBefore(before) && !item.isAfter(after);
           }
         });
-    assertThat(log.getEventType()).isEqualTo(TestHistoryEventType.EVENT1);
+    assertThat(log.getEventType()).isEqualTo(TestHistoryLogEventType.EVENT1);
     assertThat(log.getMainObject()).isEqualTo(expectedObjectHistoryValue);
     assertThat(log.getObject1()).isEqualTo(expectedSecondaryObjectHistoryValue);
     assertThat(log.getDifferences(), matchesExpectedDifferences());

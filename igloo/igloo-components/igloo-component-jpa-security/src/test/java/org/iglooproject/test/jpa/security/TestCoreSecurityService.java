@@ -2,7 +2,7 @@ package org.iglooproject.test.jpa.security;
 
 import org.assertj.core.api.Assertions;
 import org.iglooproject.test.AbstractJpaSecurityTestCase;
-import org.iglooproject.test.jpa.security.config.spring.SpringBootTestJpaSecurity;
+import org.iglooproject.test.jpa.security.config.SpringBootTestJpaSecurity;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.core.context.SecurityContextHolder;
 

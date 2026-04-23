@@ -4,11 +4,11 @@ import org.iglooproject.jpa.more.business.generic.model.search.EnabledFilter;
 
 public interface IAbstractBasicReferenceDataSearchQueryDataBindingInterface {
 
-  public String getLabel();
+  String getLabel();
 
-  public void setLabel(String label);
+  void setLabel(String label);
 
-  public EnabledFilter getEnabledFilter();
+  EnabledFilter getEnabledFilter();
 
-  public void setEnabledFilter(EnabledFilter enabledFilter);
+  void setEnabledFilter(EnabledFilter enabledFilter);
 }

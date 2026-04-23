@@ -26,6 +26,8 @@ public class FakeUtil {
       int batchSize,
       boolean useRelativePath,
       List<Long> fichierIds) {
+    // TODO java 25: use try-with-resources
+    @SuppressWarnings("java:S2095")
     ExecutorService executorService = Executors.newFixedThreadPool(parallelism);
 
     List<List<Long>> partitions = Lists.partition(fichierIds, batchSize);

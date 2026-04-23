@@ -43,12 +43,16 @@ __version__ = "0.1.0"
 logger = logging.getLogger("igloo")
 
 
+
 def init_logger():
     """Configure colored logs."""
     handler = colorlog.StreamHandler()
     handler.setFormatter(colorlog.ColoredFormatter("%(log_color)s%(levelname)s:%(name)s:%(message)s"))
     logger.addHandler(handler)
 
+# L16762: wokaround for custom version
+ARCHETYPE_PLUGIN_VERSION = "3.4.2-SNAPSHOT"
+ARCHETYPE_PLUGIN_VERSION_SUFFIX = f":{ARCHETYPE_PLUGIN_VERSION}"
 
 # defaults for archetype.properties
 FILTERED_EXTENSIONS = (
@@ -466,7 +470,7 @@ def generate_project(
     java_properties.update(definition.to_properties())
     java_args = [f"-D{k}={v}" for k, v in java_properties.items()]
     subprocess.check_call(
-        ["mvn", "archetype:generate", f"-DoutputDirectory={project}", *java_args], **subprocess_args()
+        ["mvn", f"archetype{ARCHETYPE_PLUGIN_VERSION_SUFFIX}:generate", f"-DoutputDirectory={project}", *java_args], **subprocess_args()
     )
     project_path = project.joinpath(definition.artifact_id)
     logger.info("Project %s:%s generated into %s", definition.group_id, definition.artifact_id, project_path)
@@ -542,6 +546,14 @@ def generate_archetype(igloo_clone: pathlib.Path) -> pathlib.Path:
     os.makedirs(archetype)
     env: dict[str, str] = {}
     env.update(os.environ)
+    # L16762: workaround for java 25 build; we need an updated maven-archetype-plugin
+    # https://github.com/codehaus-plexus/plexus-archiver/issues/399
+    # https://github.com/codehaus-plexus/plexus-archiver/pull/408
+    # https://github.com/apache/maven-archiver/issues/334
+    remote_repositories = "-DremoteRepositories=https://repository.apache.org/content/repositories/snapshots/"
+    subprocess.check_call(["mvn", "dependency:get", remote_repositories, "-DgroupId=org.apache.maven.plugins", "-DartifactId=maven-archetype-plugin", f"-Dversion={ARCHETYPE_PLUGIN_VERSION}"])
+    subprocess.check_call(["mvn", "dependency:get", remote_repositories, "-DgroupId=org.apache.maven.archetype", "-DartifactId=archetype-packaging", f"-Dversion={ARCHETYPE_PLUGIN_VERSION}"])
+
     # if remote debugging is needed
     # env.update({"JDK_JAVA_OPTIONS": "-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8000"})
     subprocess.check_call(
@@ -549,9 +561,10 @@ def generate_archetype(igloo_clone: pathlib.Path) -> pathlib.Path:
             "mvn",
             "-N",
             "-B",
-            "archetype:create-from-project",
+            f"archetype{ARCHETYPE_PLUGIN_VERSION_SUFFIX}:create-from-project",
             "-Darchetype.properties=archetype.properties",
             "-Darchetype.preserveCData",
+            "-Dstyle.color=never",
         ],
         cwd=basic_application,
         **subprocess_args(),

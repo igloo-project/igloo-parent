@@ -19,7 +19,7 @@ import org.iglooproject.wicket.more.model.GenericEntityModel;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import test.wicket.more.business.person.model.Person;
-import test.wicket.more.config.spring.SpringBootTestWicketSimple;
+import test.wicket.more.config.SpringBootTestWicketSimple;
 import test.wicket.more.model.TestGenericEntityValueMapCopyModel.KeyEnum;
 
 @SpringBootTestWicketSimple

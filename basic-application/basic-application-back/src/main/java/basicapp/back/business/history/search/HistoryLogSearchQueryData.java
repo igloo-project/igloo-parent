@@ -1,7 +1,7 @@
 package basicapp.back.business.history.search;
 
 import basicapp.back.business.history.model.HistoryLog;
-import basicapp.back.business.history.model.atomic.HistoryEventType;
+import basicapp.back.business.history.model.atomic.HistoryLogEventType;
 import basicapp.back.business.user.model.User;
 import java.time.Instant;
 import java.util.Collection;
@@ -20,7 +20,7 @@ public class HistoryLogSearchQueryData implements ISearchQueryData<HistoryLog> {
 
   private Instant dateMax;
 
-  private Set<HistoryEventType> eventTypes = EnumSet.noneOf(HistoryEventType.class);
+  private final Set<HistoryLogEventType> eventTypes = EnumSet.noneOf(HistoryLogEventType.class);
 
   private User subject;
 
@@ -36,8 +36,8 @@ public class HistoryLogSearchQueryData implements ISearchQueryData<HistoryLog> {
 
   private HistoryEntityReference object4;
 
-  private Collection<HistoryEventType> mandatoryDifferencesEventTypes =
-      EnumSet.noneOf(HistoryEventType.class);
+  private final Collection<HistoryLogEventType> mandatoryDifferencesEventTypes =
+      EnumSet.noneOf(HistoryLogEventType.class);
 
   public Instant getDateMin() {
     return dateMin;
@@ -55,15 +55,15 @@ public class HistoryLogSearchQueryData implements ISearchQueryData<HistoryLog> {
     this.dateMax = dateMax;
   }
 
-  public Set<HistoryEventType> getEventTypes() {
+  public Set<HistoryLogEventType> getEventTypes() {
     return Collections.unmodifiableSet(eventTypes);
   }
 
-  public void setEventTypes(Set<HistoryEventType> eventTypes) {
+  public void setEventTypes(Set<HistoryLogEventType> eventTypes) {
     CollectionUtils.replaceAll(this.eventTypes, eventTypes);
   }
 
-  public void addEventType(HistoryEventType eventType) {
+  public void addEventType(HistoryLogEventType eventType) {
     eventTypes.add(eventType);
   }
 
@@ -123,16 +123,16 @@ public class HistoryLogSearchQueryData implements ISearchQueryData<HistoryLog> {
     this.object4 = object4;
   }
 
-  public Collection<HistoryEventType> getMandatoryDifferencesEventTypes() {
+  public Collection<HistoryLogEventType> getMandatoryDifferencesEventTypes() {
     return Collections.unmodifiableCollection(mandatoryDifferencesEventTypes);
   }
 
   public void setMandatoryDifferencesEventTypes(
-      Collection<HistoryEventType> mandatoryDifferencesEventTypes) {
+      Collection<HistoryLogEventType> mandatoryDifferencesEventTypes) {
     CollectionUtils.replaceAll(this.mandatoryDifferencesEventTypes, mandatoryDifferencesEventTypes);
   }
 
-  public void addMandatoryDifferencesEventType(HistoryEventType eventType) {
+  public void addMandatoryDifferencesEventType(HistoryLogEventType eventType) {
     mandatoryDifferencesEventTypes.add(eventType);
   }
 }

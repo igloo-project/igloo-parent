@@ -1,11 +1,14 @@
 package basicapp.back.business.user.service.business;
 
+import static org.iglooproject.jpa.security.service.CoreJpaUserDetailsServiceImpl.EMPTY_PASSWORD_HASH;
+
 import basicapp.back.business.common.model.EmailAddress;
-import basicapp.back.business.history.model.atomic.HistoryEventType;
+import basicapp.back.business.history.model.atomic.HistoryLogEventType;
 import basicapp.back.business.history.model.bean.HistoryLogAdditionalInformationBean;
 import basicapp.back.business.history.service.IHistoryEventSummaryService;
 import basicapp.back.business.history.service.IHistoryLogService;
 import basicapp.back.business.user.dao.IUserDao;
+import basicapp.back.business.user.difference.service.IUserDifferenceService;
 import basicapp.back.business.user.model.User;
 import basicapp.back.business.user.model.atomic.UserPasswordRecoveryRequestInitiator;
 import basicapp.back.business.user.model.atomic.UserPasswordRecoveryRequestType;
@@ -34,28 +37,31 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl extends GenericEntityServiceImpl<Long, User> implements IUserService {
 
   private final IUserDao dao;
-  private final IBasicApplicationAuthenticationService authenticationService;
+  private final IUserDifferenceService userDifferenceService;
   private final IHistoryLogService historyLogService;
-  private IHistoryEventSummaryService historyEventSummaryService;
+  private final IHistoryEventSummaryService historyEventSummaryService;
   private final IPropertyService propertyService;
+  private final IBasicApplicationAuthenticationService authenticationService;
   private final ISecurityManagementService securityManagementService;
   private final PasswordEncoder passwordEncoder;
 
   @Autowired
   public UserServiceImpl(
       IUserDao dao,
-      @Lazy IBasicApplicationAuthenticationService authenticationService,
+      IUserDifferenceService userDifferenceService,
       @Lazy IHistoryLogService historyLogService,
       @Lazy IHistoryEventSummaryService historyEventSummaryService,
+      @Lazy IBasicApplicationAuthenticationService authenticationService,
       IPropertyService propertyService,
       @Lazy ISecurityManagementService securityManagementService,
       PasswordEncoder passwordEncoder) {
     super(dao);
     this.dao = dao;
-    this.authenticationService = authenticationService;
+    this.userDifferenceService = userDifferenceService;
     this.historyLogService = historyLogService;
     this.historyEventSummaryService = historyEventSummaryService;
     this.propertyService = propertyService;
+    this.authenticationService = authenticationService;
     this.securityManagementService = securityManagementService;
     this.passwordEncoder = passwordEncoder;
   }
@@ -64,13 +70,27 @@ public class UserServiceImpl extends GenericEntityServiceImpl<Long, User> implem
   protected void createEntity(User user) throws ServiceException, SecurityServiceException {
     historyEventSummaryService.refresh(user.getCreation());
     historyEventSummaryService.refresh(user.getModification());
+
     super.createEntity(user);
+
+    historyLogService.logWithDifferences(
+        HistoryLogEventType.CREATE,
+        user,
+        HistoryLogAdditionalInformationBean.empty(),
+        userDifferenceService);
   }
 
   @Override
   protected void updateEntity(User user) throws ServiceException, SecurityServiceException {
     historyEventSummaryService.refresh(user.getModification());
+
     super.updateEntity(user);
+
+    historyLogService.logWithDifferences(
+        HistoryLogEventType.UPDATE,
+        user,
+        HistoryLogAdditionalInformationBean.empty(),
+        userDifferenceService);
   }
 
   @Override
@@ -99,8 +119,6 @@ public class UserServiceImpl extends GenericEntityServiceImpl<Long, User> implem
 
     if (user.isNew()) {
       create(user);
-      historyLogService.log(
-          HistoryEventType.CREATE, user, HistoryLogAdditionalInformationBean.empty());
       if (StringUtils.hasText(password)) {
         securityManagementService.updatePassword(user, password, author);
       } else {
@@ -126,17 +144,17 @@ public class UserServiceImpl extends GenericEntityServiceImpl<Long, User> implem
   @Override
   public void onSignIn(User user) throws ServiceException, SecurityServiceException {
     historyLogService.log(
-        HistoryEventType.SIGN_IN, user, HistoryLogAdditionalInformationBean.empty());
+        HistoryLogEventType.SIGN_IN, user, HistoryLogAdditionalInformationBean.empty());
   }
 
   @Override
   public void onSignInFail(User user) throws ServiceException, SecurityServiceException {
     historyLogService.log(
-        HistoryEventType.SIGN_IN_FAIL, user, HistoryLogAdditionalInformationBean.empty());
+        HistoryLogEventType.SIGN_IN_FAIL, user, HistoryLogAdditionalInformationBean.empty());
   }
 
   @Override
-  public void setPasswords(User user, String rawPassword)
+  public void setPassword(User user, String rawPassword)
       throws ServiceException, SecurityServiceException {
     Preconditions.checkArgument(StringUtils.hasText(rawPassword));
 
@@ -149,6 +167,12 @@ public class UserServiceImpl extends GenericEntityServiceImpl<Long, User> implem
   }
 
   @Override
+  public boolean hasPassword(User user) {
+    Objects.requireNonNull(user);
+    return !Objects.equals(user.getPasswordHash(), EMPTY_PASSWORD_HASH);
+  }
+
+  @Override
   public void initPasswordRecoveryRequest(EmailAddress emailAddress)
       throws SecurityServiceException, ServiceException {
     User user = getByEmailAddressCaseInsensitive(emailAddress);
@@ -156,7 +180,7 @@ public class UserServiceImpl extends GenericEntityServiceImpl<Long, User> implem
     if (user != null && user.isEnabled() && user.isNotificationEnabled()) {
       securityManagementService.initiatePasswordRecoveryRequest(
           user,
-          user.hasPasswordHash()
+          hasPassword(user)
               ? UserPasswordRecoveryRequestType.RESET
               : UserPasswordRecoveryRequestType.CREATION,
           UserPasswordRecoveryRequestInitiator.USER);
@@ -170,7 +194,7 @@ public class UserServiceImpl extends GenericEntityServiceImpl<Long, User> implem
     user.setEnabled(true);
     update(user);
     historyLogService.log(
-        HistoryEventType.ENABLE, user, HistoryLogAdditionalInformationBean.empty());
+        HistoryLogEventType.ENABLE, user, HistoryLogAdditionalInformationBean.empty());
   }
 
   @Override
@@ -180,7 +204,7 @@ public class UserServiceImpl extends GenericEntityServiceImpl<Long, User> implem
     user.setEnabled(false);
     update(user);
     historyLogService.log(
-        HistoryEventType.DISABLE, user, HistoryLogAdditionalInformationBean.empty());
+        HistoryLogEventType.DISABLE, user, HistoryLogAdditionalInformationBean.empty());
   }
 
   @Override

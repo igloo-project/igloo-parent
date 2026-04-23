@@ -7,7 +7,7 @@ import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 import org.iglooproject.spring.util.StringUtils;
 import test.wicket.more.AbstractWicketMoreTestCase;
-import test.wicket.more.config.spring.SpringBootTestWicketLinkDescriptor;
+import test.wicket.more.config.SpringBootTestWicketLinkDescriptor;
 
 @SpringBootTestWicketLinkDescriptor
 public abstract class AbstractTestLinkDescriptor extends AbstractWicketMoreTestCase {

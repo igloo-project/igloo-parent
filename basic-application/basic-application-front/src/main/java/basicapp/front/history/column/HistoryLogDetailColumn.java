@@ -53,7 +53,7 @@ public class HistoryLogDetailColumn extends AbstractCoreColumn<HistoryLog, Histo
   }
 
   public HistoryLogDetailColumn(IHistoryComponentFactory historyComponentFactory) {
-    super(new ResourceModel("business.history.detail"));
+    super(new ResourceModel("business.historyLog.detail"));
     this.historyComponentFactory = historyComponentFactory;
   }
 

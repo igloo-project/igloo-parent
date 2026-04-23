@@ -37,10 +37,12 @@
 .#{$fa-css-prefix}-solid,
 .far,
 .#{$fa-css-prefix}-regular {
+  /* stylelint-disable-next-line font-family-no-missing-generic-family-keyword */
   font-family: 'Font Awesome 6 Free';
 }
 .#{$fa-css-prefix}-brands,
 .fab {
+  /* stylelint-disable-next-line font-family-no-missing-generic-family-keyword */
   font-family: 'Font Awesome 6 Brands';
 }
 

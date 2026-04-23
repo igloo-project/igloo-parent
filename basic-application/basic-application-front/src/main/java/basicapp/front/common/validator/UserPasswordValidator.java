@@ -4,7 +4,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import basicapp.back.business.user.model.User;
 import basicapp.back.business.user.model.atomic.UserType;
-import basicapp.back.property.BasicApplicationCorePropertyIds;
+import basicapp.back.property.BasicApplicationBackPropertyIds;
 import basicapp.back.security.service.controller.ISecurityManagementControllerService;
 import basicapp.back.util.binding.Bindings;
 import com.google.common.collect.Iterables;
@@ -12,7 +12,6 @@ import com.google.common.collect.Lists;
 import igloo.wicket.model.Detachables;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.Map;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponent;
@@ -23,13 +22,14 @@ import org.apache.wicket.validation.ValidationError;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.spring.util.StringUtils;
 import org.iglooproject.wicket.more.markup.html.form.validation.IFormModelValidator;
-import org.passay.LengthRule;
+import org.passay.DefaultPasswordValidator;
 import org.passay.PasswordData;
 import org.passay.PasswordValidator;
-import org.passay.Rule;
-import org.passay.RuleResult;
 import org.passay.RuleResultDetail;
-import org.passay.UsernameRule;
+import org.passay.ValidationResult;
+import org.passay.rule.LengthRule;
+import org.passay.rule.Rule;
+import org.passay.rule.UsernameRule;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 public class UserPasswordValidator implements IFormModelValidator {
@@ -74,7 +74,7 @@ public class UserPasswordValidator implements IFormModelValidator {
 
     if (Boolean.FALSE.equals(
             propertyService.get(
-                BasicApplicationCorePropertyIds.SECURITY_PASSWORD_VALIDATOR_ENABLED))
+                BasicApplicationBackPropertyIds.SECURITY_PASSWORD_VALIDATOR_ENABLED))
         || !StringUtils.hasText(password)) {
       return;
     }
@@ -84,7 +84,10 @@ public class UserPasswordValidator implements IFormModelValidator {
     User user = userModel != null ? userModel.getObject() : null;
     String username = Bindings.user().username().apply(user);
 
-    PasswordData passwordData = new PasswordData(password);
+    PasswordData passwordData =
+        StringUtils.hasText(username)
+            ? new PasswordData(username, password)
+            : new PasswordData(password);
 
     List<Rule> passwordRules =
         Lists.newArrayList(
@@ -92,15 +95,13 @@ public class UserPasswordValidator implements IFormModelValidator {
                 .getSecurityOptions(userTypeModel.getObject())
                 .getPasswordRules());
 
-    if (StringUtils.hasText(username)) {
-      passwordData.setUsername(username);
-    } else {
+    if (!StringUtils.hasText(username)) {
       passwordRules.removeAll(
           Lists.newArrayList(Iterables.filter(passwordRules, UsernameRule.class)));
     }
 
-    PasswordValidator validator = new PasswordValidator(passwordRules);
-    RuleResult result = validator.validate(passwordData);
+    PasswordValidator validator = new DefaultPasswordValidator(passwordRules);
+    ValidationResult result = validator.validate(passwordData);
 
     boolean valid = true;
     if (!result.isValid()) {
@@ -110,7 +111,7 @@ public class UserPasswordValidator implements IFormModelValidator {
           passwordFormComponent.error(
               new ValidationError()
                   .addKey(errorCodeKey(detail.getErrorCode()))
-                  .setVariables((Map<String, Object>) detail.getParameters()));
+                  .setVariables(detail.getParameters()));
         }
       }
     }

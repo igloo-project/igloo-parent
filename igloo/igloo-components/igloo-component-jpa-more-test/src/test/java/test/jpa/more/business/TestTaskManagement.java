@@ -38,7 +38,7 @@ import org.springframework.transaction.interceptor.TransactionAttribute;
 import org.springframework.transaction.support.TransactionTemplate;
 import test.jpa.more.business.task.config.TestTaskManagementConfig;
 import test.jpa.more.business.task.model.TestQueueId;
-import test.jpa.more.config.spring.SpringBootTestJpaMore;
+import test.jpa.more.config.SpringBootTestJpaMore;
 
 @SpringBootTestJpaMore
 @ContextConfiguration(classes = TestTaskManagementConfig.class)

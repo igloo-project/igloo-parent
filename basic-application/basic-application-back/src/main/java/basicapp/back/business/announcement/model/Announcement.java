@@ -15,6 +15,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import org.bindgen.Bindable;
+import org.hibernate.Length;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryEventSummary;
@@ -33,9 +34,17 @@ public class Announcement extends GenericEntity<Long, Announcement> {
   @Enumerated(EnumType.STRING)
   private AnnouncementType type;
 
-  @Embedded private LocalizedText title;
+  @Embedded
+  @AttributeOverride(name = "fr", column = @Column(length = Length.LONG32))
+  @AttributeOverride(name = "en", column = @Column(length = Length.LONG32))
+  private LocalizedText content;
 
-  @Embedded private LocalizedText description;
+  @Embedded private AnnouncementDate unavailability;
+
+  @Embedded
+  @AttributeOverride(name = "startDateTime", column = @Column(nullable = false))
+  @AttributeOverride(name = "endDateTime", column = @Column(nullable = false))
+  private AnnouncementDate publication;
 
   @Basic(optional = false)
   private boolean enabled = true;
@@ -43,13 +52,6 @@ public class Announcement extends GenericEntity<Long, Announcement> {
   @Embedded private HistoryEventSummary creation;
 
   @Embedded private HistoryEventSummary modification;
-
-  @Embedded
-  @AttributeOverride(name = "startDateTime", column = @Column(nullable = false))
-  @AttributeOverride(name = "endDateTime", column = @Column(nullable = false))
-  private AnnouncementDate publication;
-
-  @Embedded private AnnouncementDate interruption;
 
   @Override
   public Long getId() {
@@ -69,26 +71,37 @@ public class Announcement extends GenericEntity<Long, Announcement> {
     this.type = type;
   }
 
-  public LocalizedText getTitle() {
-    if (title == null) {
-      title = new LocalizedText();
+  public LocalizedText getContent() {
+    if (content == null) {
+      content = new LocalizedText();
     }
-    return title;
+    return content;
   }
 
-  public void setTitle(LocalizedText title) {
-    this.title = (title == null ? null : new LocalizedText(title));
+  public void setContent(LocalizedText content) {
+    this.content = (content == null ? null : new LocalizedText(content));
   }
 
-  public LocalizedText getDescription() {
-    if (description == null) {
-      description = new LocalizedText();
+  public AnnouncementDate getUnavailability() {
+    if (unavailability == null) {
+      unavailability = new AnnouncementDate();
     }
-    return description;
+    return unavailability;
   }
 
-  public void setDescription(LocalizedText description) {
-    this.description = (description == null ? null : new LocalizedText(description));
+  public void setUnavailability(AnnouncementDate unavailability) {
+    this.unavailability = unavailability;
+  }
+
+  public AnnouncementDate getPublication() {
+    if (publication == null) {
+      publication = new AnnouncementDate();
+    }
+    return publication;
+  }
+
+  public void setPublication(AnnouncementDate publication) {
+    this.publication = publication;
   }
 
   public boolean isEnabled() {
@@ -119,28 +132,6 @@ public class Announcement extends GenericEntity<Long, Announcement> {
 
   public void setModification(HistoryEventSummary modification) {
     this.modification = modification;
-  }
-
-  public AnnouncementDate getPublication() {
-    if (publication == null) {
-      publication = new AnnouncementDate();
-    }
-    return publication;
-  }
-
-  public void setPublication(AnnouncementDate publication) {
-    this.publication = publication;
-  }
-
-  public AnnouncementDate getInterruption() {
-    if (interruption == null) {
-      interruption = new AnnouncementDate();
-    }
-    return interruption;
-  }
-
-  public void setInterruption(AnnouncementDate interruption) {
-    this.interruption = interruption;
   }
 
   @Override

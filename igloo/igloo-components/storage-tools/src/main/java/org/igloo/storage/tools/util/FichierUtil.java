@@ -112,6 +112,8 @@ public class FichierUtil {
     LOGGER.info(
         "Fichier id listings (missing.txt, moved-not-updated.txt) written in {}",
         monitor.getTempDirectory());
+    // TODO java 25: use try-with-resources
+    @SuppressWarnings("java:S2095")
     ExecutorService executorService = Executors.newFixedThreadPool(executor.parallelism);
 
     List<List<Long>> partitions = Lists.partition(fichierIds, executor.batchSize);

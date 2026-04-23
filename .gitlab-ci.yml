@@ -1,5 +1,5 @@
 image:
-  name: igloo-containers.tools.kobalt.fr/containers/maven-igloo:3.9-eclipse-temurin-17
+  name: igloo-containers.tools.kobalt.fr/containers/maven-igloo:3.9-eclipse-temurin-25
 
 variables:
   MAVEN_OPTS: "-Xmx1536m"
@@ -51,7 +51,7 @@ maven-build:
 # Not done: test are not launched
 # Need to launched after deploy as igloo artifacts are needed.
 test-init:
-  stage: init
+  stage: init 
   needs: ['maven-deploy']
   script:
   - apt-get update

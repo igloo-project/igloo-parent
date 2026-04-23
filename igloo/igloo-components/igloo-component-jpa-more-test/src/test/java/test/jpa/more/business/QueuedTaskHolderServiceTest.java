@@ -6,7 +6,7 @@ import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.more.business.task.util.TaskStatus;
 import org.junit.jupiter.api.Test;
-import test.jpa.more.config.spring.SpringBootTestJpaMore;
+import test.jpa.more.config.SpringBootTestJpaMore;
 
 @SpringBootTestJpaMore
 class QueuedTaskHolderServiceTest extends AbstractJpaMoreTestCase {

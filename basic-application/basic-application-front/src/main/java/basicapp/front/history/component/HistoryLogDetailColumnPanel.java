@@ -41,7 +41,7 @@ public class HistoryLogDetailColumnPanel extends GenericPanel<HistoryLog> {
         };
 
     add(
-        new CoreLabel("action", BindingModel.of(model, Bindings.historyLog().eventType())),
+        new CoreLabel("eventType", BindingModel.of(model, Bindings.historyLog().eventType())),
         new HistoryDifferenceListPanel(
             "differences", historyDifferenceListModel, historyComponentFactory));
   }

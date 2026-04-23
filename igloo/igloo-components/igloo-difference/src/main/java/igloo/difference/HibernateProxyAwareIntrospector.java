@@ -36,6 +36,7 @@ public class HibernateProxyAwareIntrospector extends StandardIntrospector {
    * usage instead of {@link PropertyAccessor}. This private method is not called from other
    * superclass method, so overloading introspect and private internalInstrospect is fine
    */
+  @SuppressWarnings("java:S2177")
   private TypeInfo internalIntrospect(final Class<?> type) throws IntrospectionException {
     final TypeInfo typeInfo = new TypeInfo(type);
     final PropertyDescriptor[] descriptors = getBeanInfo(type).getPropertyDescriptors();

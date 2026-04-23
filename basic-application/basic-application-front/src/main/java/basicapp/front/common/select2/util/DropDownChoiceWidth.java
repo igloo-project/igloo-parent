@@ -7,7 +7,7 @@ public enum DropDownChoiceWidth implements IDropDownChoiceWidth {
 
   private final String width;
 
-  private DropDownChoiceWidth(String width) {
+  DropDownChoiceWidth(String width) {
     this.width = width;
   }
 

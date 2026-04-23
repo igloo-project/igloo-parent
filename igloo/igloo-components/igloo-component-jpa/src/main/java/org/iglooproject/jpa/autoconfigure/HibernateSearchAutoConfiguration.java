@@ -16,7 +16,7 @@ import org.iglooproject.jpa.search.dao.HibernateSearchDaoImpl;
 import org.iglooproject.jpa.search.dao.IHibernateSearchDao;
 import org.iglooproject.jpa.search.service.HibernateSearchServiceImpl;
 import org.iglooproject.jpa.search.service.IHibernateSearchService;
-import org.iglooproject.spring.config.spring.IPropertyRegistryConfig;
+import org.iglooproject.spring.config.IPropertyRegistryConfiguration;
 import org.iglooproject.spring.property.service.IPropertyRegistry;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
@@ -58,7 +58,7 @@ public class HibernateSearchAutoConfiguration {
   }
 
   @Configuration
-  public static class JpaSearchPropertyRegistryConfig implements IPropertyRegistryConfig {
+  public static class JpaSearchPropertyRegistryConfig implements IPropertyRegistryConfiguration {
     @Override
     public void register(IPropertyRegistry registry) {
       registry.register(

@@ -1,6 +1,6 @@
 package basicapp.back.util.init.service;
 
-import basicapp.back.business.BasicApplicationCoreCommonBusinessPackage;
+import basicapp.back.business.BasicApplicationBackCommonBusinessPackage;
 import basicapp.back.business.role.model.Role;
 import basicapp.back.business.user.model.User;
 import com.google.common.collect.Lists;
@@ -18,7 +18,7 @@ public class ImportDataServiceImpl extends AbstractImportDataServiceImpl {
   @Override
   protected List<String> getReferenceDataPackagesToScan() {
     return Lists.newArrayList(
-        BasicApplicationCoreCommonBusinessPackage.class.getPackage().getName());
+        BasicApplicationBackCommonBusinessPackage.class.getPackage().getName());
   }
 
   @Override

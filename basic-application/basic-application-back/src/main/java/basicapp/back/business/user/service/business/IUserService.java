@@ -20,8 +20,9 @@ public interface IUserService
 
   void onSignInFail(User user) throws ServiceException, SecurityServiceException;
 
-  void setPasswords(User user, String rawPassword)
-      throws ServiceException, SecurityServiceException;
+  void setPassword(User user, String rawPassword) throws ServiceException, SecurityServiceException;
+
+  boolean hasPassword(User user);
 
   void initPasswordRecoveryRequest(EmailAddress emailAddress)
       throws SecurityServiceException, ServiceException;

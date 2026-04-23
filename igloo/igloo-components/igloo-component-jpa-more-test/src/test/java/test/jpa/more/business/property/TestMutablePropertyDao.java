@@ -9,7 +9,7 @@ import org.iglooproject.spring.property.dao.IMutablePropertyDao;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import test.jpa.more.business.AbstractJpaMoreTestCase;
-import test.jpa.more.config.spring.SpringBootTestJpaMore;
+import test.jpa.more.config.SpringBootTestJpaMore;
 
 @SpringBootTestJpaMore
 class TestMutablePropertyDao extends AbstractJpaMoreTestCase {

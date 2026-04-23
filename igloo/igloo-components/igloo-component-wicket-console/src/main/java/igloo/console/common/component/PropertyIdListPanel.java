@@ -2,7 +2,7 @@ package igloo.console.common.component;
 
 import igloo.bootstrap.common.BootstrapColor;
 import igloo.bootstrap.modal.OneParameterModalOpenAjaxAction;
-import igloo.console.common.form.PropertyIdEditPopup;
+import igloo.console.common.popup.PropertyIdEditPopup;
 import igloo.wicket.condition.Condition;
 import igloo.wicket.model.Models;
 import java.util.Collection;

@@ -1,6 +1,6 @@
 package basicapp.front.common.template.theme.common;
 
-import basicapp.back.config.util.Environment;
+import basicapp.back.util.Environment;
 import basicapp.front.BasicApplicationSession;
 import igloo.wicket.component.EnclosureContainer;
 import igloo.wicket.condition.Condition;

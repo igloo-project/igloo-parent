@@ -14,6 +14,10 @@ public interface IHibernateSearchService extends ITransactionalAspectAwareServic
 
   void reindexClasses(Collection<Class<?>> classes) throws ServiceException;
 
+  Set<Class<?>> getIndexedRootEntities() throws ServiceException;
+
+  Set<Class<?>> getIndexedRootEntities(Collection<Class<?>> classes) throws ServiceException;
+
   <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> void reindexEntity(
       E entity);
 
@@ -23,9 +27,14 @@ public interface IHibernateSearchService extends ITransactionalAspectAwareServic
   <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> void reindexEntity(
       Class<E> clazz, K id);
 
-  Set<Class<?>> getIndexedRootEntities() throws ServiceException;
+  <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> void deleteEntity(
+      E entity);
 
-  Set<Class<?>> getIndexedRootEntities(Collection<Class<?>> classes) throws ServiceException;
+  <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> void deleteEntity(
+      GenericEntityReference<K, E> reference);
+
+  <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> void deleteEntity(
+      Class<E> clazz, K id);
 
   void flushToIndexes();
 }

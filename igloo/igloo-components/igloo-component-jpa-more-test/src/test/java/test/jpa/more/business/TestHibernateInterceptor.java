@@ -8,7 +8,7 @@ import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.junit.jupiter.api.Test;
 import test.jpa.more.business.entity.model.TestEntity;
-import test.jpa.more.config.spring.SpringBootTestJpaMore;
+import test.jpa.more.config.SpringBootTestJpaMore;
 
 @SpringBootTestJpaMore
 class TestHibernateInterceptor extends AbstractJpaMoreTestCase {

@@ -175,9 +175,12 @@ public interface IJuiceInliner {
               .method("GET", BodyPublishers.ofString(rawQuery))
               .header("Content-Type", "application/json")
               .timeout(requestTimeout());
-      if (token().isPresent()) {
-        httpRequestBuilder.header("Authorization", "Bearer %s".formatted(token().get()));
+
+      Optional<String> token = token();
+      if (token.isPresent()) {
+        httpRequestBuilder.header("Authorization", "Bearer %s".formatted(token.get()));
       }
+
       HttpRequest request = requestBuilderHandler().apply(httpRequestBuilder).build();
 
       HttpResponse<String> response =

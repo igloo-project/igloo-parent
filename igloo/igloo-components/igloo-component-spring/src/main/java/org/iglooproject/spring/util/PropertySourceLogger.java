@@ -185,10 +185,9 @@ public class PropertySourceLogger implements ApplicationListener<ContextRefreshe
         context
             .getEnvironment()
             .getProperty(PROPERTY_IGLOO_PROPERTY_SOURCE_OUTPUT_FILE_NAME, File.class);
-    try {
-      properties.store(
-          new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8),
-          skippedProperties.toString());
+    try (OutputStreamWriter writer =
+        new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8)) {
+      properties.store(writer, skippedProperties.toString());
     } catch (IOException e) {
       throw new IllegalStateException(
           String.format(

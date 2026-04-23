@@ -18,9 +18,9 @@ import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.jdbc.Sql;
 import test.core.AbstractBasicApplicationTestCase;
-import test.core.config.spring.SpringBootTestBasicApplication;
+import test.core.config.BasicApplicationBackSpringBootTest;
 
-@SpringBootTestBasicApplication
+@BasicApplicationBackSpringBootTest
 public class TestAnnouncementService extends AbstractBasicApplicationTestCase {
 
   @Autowired private IAnnouncementControllerService announcementControllerService;
@@ -37,8 +37,7 @@ public class TestAnnouncementService extends AbstractBasicApplicationTestCase {
       Announcement announcement =
           entityDatabaseHelper.createAnnouncement(
               a -> {
-                a.getTitle().setFr("testTitre");
-                a.getDescription().setFr("testDescription");
+                a.getContent().setFr("testContent");
               },
               false);
 
@@ -46,13 +45,11 @@ public class TestAnnouncementService extends AbstractBasicApplicationTestCase {
       entityManagerReset();
       Announcement announcementBdd = announcementService.getById(announcement.getId());
       Assertions.assertThat(announcementBdd).isNotNull();
-      Assertions.assertThat(announcementBdd.getType())
-          .isEqualTo(AnnouncementType.SERVICE_INTERRUPTION);
-      Assertions.assertThat(announcementBdd.getTitle().getFr()).isNull();
-      Assertions.assertThat(announcementBdd.getDescription().getFr()).isNull();
-      Assertions.assertThat(announcementBdd.getInterruption().getStartDateTime())
+      Assertions.assertThat(announcementBdd.getType()).isEqualTo(AnnouncementType.UNAVAILABILITY);
+      Assertions.assertThat(announcementBdd.getContent().getFr()).isNull();
+      Assertions.assertThat(announcementBdd.getUnavailability().getStartDateTime())
           .isEqualTo(LocalDateTime.of(2024, 1, 1, 10, 0));
-      Assertions.assertThat(announcementBdd.getInterruption().getEndDateTime())
+      Assertions.assertThat(announcementBdd.getUnavailability().getEndDateTime())
           .isEqualTo(LocalDateTime.of(2024, 1, 2, 10, 0));
       Assertions.assertThat(announcementBdd.getPublication().getStartDateTime())
           .isEqualTo(LocalDateTime.of(2024, 1, 1, 10, 0));
@@ -67,17 +64,16 @@ public class TestAnnouncementService extends AbstractBasicApplicationTestCase {
     @Sql(scripts = {"/scripts/announcement-test.sql"})
     void saveNewAnnouncement_update() throws SecurityServiceException, ServiceException {
       Announcement announcement = announcementService.getById(-1L);
-      announcement.setType(AnnouncementType.OTHER);
+      announcement.setType(AnnouncementType.NOTIFICATION);
       announcementService.saveAnnouncement(announcementService.getById(announcement.getId()));
       entityManagerReset();
 
       Announcement announcementBdd = announcementService.getById(announcement.getId());
       Assertions.assertThat(announcementBdd).isNotNull();
-      Assertions.assertThat(announcementBdd.getType()).isEqualTo(AnnouncementType.OTHER);
-      Assertions.assertThat(announcementBdd.getTitle().getFr()).isEqualTo("testTitre");
-      Assertions.assertThat(announcementBdd.getDescription().getFr()).isEqualTo("testDescription");
-      Assertions.assertThat(announcementBdd.getInterruption().getStartDateTime()).isNull();
-      Assertions.assertThat(announcementBdd.getInterruption().getEndDateTime()).isNull();
+      Assertions.assertThat(announcementBdd.getType()).isEqualTo(AnnouncementType.NOTIFICATION);
+      Assertions.assertThat(announcementBdd.getContent().getFr()).isEqualTo("testContent");
+      Assertions.assertThat(announcementBdd.getUnavailability().getStartDateTime()).isNull();
+      Assertions.assertThat(announcementBdd.getUnavailability().getEndDateTime()).isNull();
       Assertions.assertThat(announcementBdd.getPublication().getStartDateTime())
           .isEqualTo(LocalDateTime.of(2024, 1, 1, 10, 0));
       Assertions.assertThat(announcementBdd.getPublication().getEndDateTime())
@@ -157,12 +153,11 @@ public class TestAnnouncementService extends AbstractBasicApplicationTestCase {
   @Test
   void cleanWithoutSaving() throws SecurityServiceException, ServiceException {
     Announcement announcement = entityDatabaseHelper.createAnnouncement(null, true);
-    announcement.setType(AnnouncementType.OTHER);
+    announcement.setType(AnnouncementType.NOTIFICATION);
     announcementControllerService.cleanWithoutSaving(announcement);
     entityManagerReset();
     Announcement announcementBdd = announcementService.getById(announcement.getId());
-    Assertions.assertThat(announcementBdd.getType())
-        .isEqualTo(AnnouncementType.SERVICE_INTERRUPTION);
+    Assertions.assertThat(announcementBdd.getType()).isEqualTo(AnnouncementType.UNAVAILABILITY);
   }
 
   @Test

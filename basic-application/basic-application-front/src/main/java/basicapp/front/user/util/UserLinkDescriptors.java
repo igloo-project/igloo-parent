@@ -20,13 +20,13 @@ public final class UserLinkDescriptors {
   public static ITwoParameterLinkDescriptorMapper<? extends IPageLinkDescriptor, User, Page>
       detailMapper(UserType userType) {
     if (userType == null) {
-      return LinkDescriptors.<User, Page>invalidTwoParameterMapper();
+      return LinkDescriptors.invalidTwoParameterMapper();
     }
 
     return switch (userType) {
       case BASIC -> BasicUserDetailPage.MAPPER;
       case TECHNICAL -> TechnicalUserDetailPage.MAPPER;
-      default -> LinkDescriptors.<User, Page>invalidTwoParameterMapper();
+      default -> LinkDescriptors.invalidTwoParameterMapper();
     };
   }
 

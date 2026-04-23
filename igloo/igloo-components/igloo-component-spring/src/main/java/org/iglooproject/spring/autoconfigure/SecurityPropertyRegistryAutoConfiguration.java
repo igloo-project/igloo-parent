@@ -11,12 +11,12 @@ import com.google.common.collect.Lists;
 import java.util.List;
 import org.iglooproject.functional.Suppliers2;
 import org.iglooproject.functional.converter.StringCollectionConverter;
-import org.iglooproject.spring.config.spring.IPropertyRegistryConfig;
+import org.iglooproject.spring.config.IPropertyRegistryConfiguration;
 import org.iglooproject.spring.property.service.IPropertyRegistry;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class SecurityPropertyRegistryAutoConfiguration implements IPropertyRegistryConfig {
+public class SecurityPropertyRegistryAutoConfiguration implements IPropertyRegistryConfiguration {
 
   @Override
   public void register(IPropertyRegistry registry) {

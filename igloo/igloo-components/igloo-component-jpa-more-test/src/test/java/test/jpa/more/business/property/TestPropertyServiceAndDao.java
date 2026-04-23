@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.spring.config.spring.IPropertyRegistryConfig;
+import org.iglooproject.spring.config.IPropertyRegistryConfiguration;
 import org.iglooproject.spring.property.model.AbstractPropertyIds;
 import org.iglooproject.spring.property.model.IMutablePropertyValueMap;
 import org.iglooproject.spring.property.model.ImmutablePropertyId;
@@ -20,14 +20,14 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import test.jpa.more.business.AbstractJpaMoreTestCase;
 import test.jpa.more.business.property.TestPropertyServiceAndDao.TestPropertyServiceAndDaoConfig;
-import test.jpa.more.config.spring.SpringBootTestJpaMore;
+import test.jpa.more.config.SpringBootTestJpaMore;
 
 @SpringBootTestJpaMore
 @TestPropertySource(properties = {"property.string.value=MyValue", "property.long.value=1"})
 @ContextConfiguration(classes = TestPropertyServiceAndDaoConfig.class)
 class TestPropertyServiceAndDao extends AbstractJpaMoreTestCase {
 
-  public static class TestPropertyServiceAndDaoConfig implements IPropertyRegistryConfig {
+  public static class TestPropertyServiceAndDaoConfig implements IPropertyRegistryConfiguration {
     @Override
     public void register(IPropertyRegistry registry) {
       registry.registerString(PropertyIds.MUTABLE_STRING, "MyDefaultValue");

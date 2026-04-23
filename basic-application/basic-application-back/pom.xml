@@ -52,7 +52,6 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
-      <!--override checker-qual -->
       <dependency>
         <groupId>org.iglooproject</groupId>
         <artifactId>dependencies-quality-annotations</artifactId>
@@ -101,6 +100,11 @@
       <groupId>org.iglooproject.components</groupId>
       <artifactId>igloo-component-mail-api</artifactId>
       <version>${igloo-commons.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.iglooproject.components</groupId>
+      <artifactId>igloo-login-mdc</artifactId>
+      <version>${igloo.version}</version>
     </dependency>
     <dependency>
       <groupId>org.springframework.security</groupId>
@@ -183,6 +187,11 @@
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-slf4j2-impl</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-layout-template-json</artifactId>
       <scope>runtime</scope>
     </dependency>
     <dependency>

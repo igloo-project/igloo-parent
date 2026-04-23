@@ -3,7 +3,7 @@ package basicapp.front;
 import basicapp.back.business.common.model.EmailAddress;
 import basicapp.back.business.common.model.PhoneNumber;
 import basicapp.back.business.common.model.PostalCode;
-import basicapp.back.business.history.model.atomic.HistoryEventType;
+import basicapp.back.business.history.model.atomic.HistoryLogEventType;
 import basicapp.back.business.role.model.Role;
 import basicapp.back.business.user.model.User;
 import basicapp.front.announcement.page.AnnouncementListPage;
@@ -150,6 +150,7 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
     converterLocator.set(LocalTime.class, LocalTimeConverter.get());
     converterLocator.set(Instant.class, InstantRenderer.get());
     converterLocator.set(Locale.class, LocaleRenderer.get());
+    converterLocator.set(boolean.class, BooleanRenderer.get());
     converterLocator.set(Boolean.class, BooleanRenderer.get());
 
     converterLocator.set(EmailAddress.class, EmailAddressConverter.get());
@@ -161,7 +162,7 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 
     converterLocator.set(HistoryValue.class, IHistoryValueRenderer.get());
     converterLocator.set(HistoryEventValue.class, IHistoryValueRenderer.get());
-    converterLocator.set(HistoryEventType.class, EnumRenderer.get());
+    converterLocator.set(HistoryLogEventType.class, EnumRenderer.get());
 
     return new EnumClassAwareConverterLocator(
         new HibernateProxyAwareConverterLocator(converterLocator));

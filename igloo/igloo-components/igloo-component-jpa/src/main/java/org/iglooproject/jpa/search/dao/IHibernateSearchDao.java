@@ -16,5 +16,8 @@ public interface IHibernateSearchDao {
   <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> void reindexEntity(
       E entity);
 
+  <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> void deleteEntity(
+      E entity);
+
   void flushToIndexes();
 }

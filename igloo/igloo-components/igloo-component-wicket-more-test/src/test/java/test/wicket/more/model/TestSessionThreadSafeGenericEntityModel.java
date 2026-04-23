@@ -3,7 +3,7 @@ package test.wicket.more.model;
 import org.apache.wicket.model.IModel;
 import org.iglooproject.wicket.more.model.threadsafe.SessionThreadSafeGenericEntityModel;
 import test.wicket.more.business.person.model.Person;
-import test.wicket.more.config.spring.SpringBootTestWicketSimple;
+import test.wicket.more.config.SpringBootTestWicketSimple;
 
 @SpringBootTestWicketSimple
 public class TestSessionThreadSafeGenericEntityModel extends AbstractTestGenericEntityModel {

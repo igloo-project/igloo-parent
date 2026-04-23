@@ -10,14 +10,14 @@
   <packaging>war</packaging>
   <name>Basic Application - Spring Application</name>
   <properties>
-    <start-class>basicapp.app.SpringBootMain</start-class>
+    <start-class>basicapp.app.BasicApplicationApplicationMain</start-class>
   </properties>
   <dependencyManagement>
     <dependencies>
       <dependency>
         <groupId>org.iglooproject</groupId>
         <artifactId>dependencies-all</artifactId>
-        <version>7.0.0-SNAPSHOT</version>
+        <version>${revision}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -28,6 +28,10 @@
       <groupId>org.iglooproject.archetype</groupId>
       <artifactId>basic-application-front</artifactId>
       <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-webmvc</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -75,11 +79,6 @@
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-test</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-security-test</artifactId>
       <scope>test</scope>
     </dependency>
@@ -109,6 +108,27 @@
         <configuration>
           <skip>false</skip>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.diffplug.spotless</groupId>
+        <artifactId>spotless-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>default-cli</id>
+            <configuration>
+              <java>
+                <!-- These are the defaults, you can override if you want -->
+                <includes>
+                  <include>src/main/java/**/*.java</include>
+                  <include>src/test/java/**/*.java</include>
+                </includes>
+                <googleJavaFormat>
+                  <version>${google.java.format.version}</version>
+                </googleJavaFormat>
+              </java>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>

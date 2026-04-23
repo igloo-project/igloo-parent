@@ -22,7 +22,7 @@ import org.iglooproject.functional.Joiners;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.test.business.person.model.Person;
-import org.iglooproject.test.config.spring.SpringBootTestJpaBatchSearch;
+import org.iglooproject.test.config.SpringBootTestJpaBatchSearch;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

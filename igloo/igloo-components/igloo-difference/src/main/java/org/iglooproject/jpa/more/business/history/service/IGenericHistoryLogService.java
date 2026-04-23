@@ -9,28 +9,29 @@ import org.iglooproject.jpa.more.business.difference.util.IDifferenceFromReferen
 import org.iglooproject.jpa.more.business.difference.util.IHistoryDifferenceGenerator;
 import org.iglooproject.jpa.more.business.history.model.AbstractHistoryDifference;
 import org.iglooproject.jpa.more.business.history.model.AbstractHistoryLog;
+import org.iglooproject.jpa.more.business.history.model.atomic.IHistoryLogEventType;
 import org.iglooproject.jpa.more.business.history.model.bean.AbstractHistoryLogAdditionalInformationBean;
 import org.iglooproject.jpa.more.business.history.util.IHistoryDifferenceHandler;
 
 public interface IGenericHistoryLogService<
-    HL extends AbstractHistoryLog<HL, HET, HD>,
-    HET extends Enum<HET>,
+    HL extends AbstractHistoryLog<HL, HLET, HD>,
+    HLET extends Enum<HLET> & IHistoryLogEventType<HLET>,
     HD extends AbstractHistoryDifference<HD, HL>,
     HLAIB extends AbstractHistoryLogAdditionalInformationBean> {
 
   HL getById(Long id);
 
-  <T> void log(HET eventType, T mainObject, HLAIB additionalInformation);
+  <T> void log(HLET eventType, T mainObject, HLAIB additionalInformation);
 
   <T> void logWithDifferences(
-      HET eventType,
+      HLET eventType,
       T mainObject,
       HLAIB additionalInformation,
       IDifferenceService<T> differenceService);
 
   @SuppressWarnings("unchecked")
   <T> void logWithDifferences(
-      HET eventType,
+      HLET eventType,
       T mainObject,
       HLAIB additionalInformation,
       IDifferenceService<T> differenceService,
@@ -43,7 +44,7 @@ public interface IGenericHistoryLogService<
    */
   @SuppressWarnings("unchecked")
   <T> void logWithDifferences(
-      HET eventType,
+      HLET eventType,
       T mainObject,
       HLAIB additionalInformation,
       IDifferenceFromReferenceGenerator<T> differenceGenerator,
@@ -51,6 +52,6 @@ public interface IGenericHistoryLogService<
       IHistoryDifferenceHandler<? super T, ? super HL>... differenceHandlers);
 
   <T> HL logNow(
-      Instant date, HET eventType, List<HD> differences, T mainObject, HLAIB additionalInformation)
+      Instant date, HLET eventType, List<HD> differences, T mainObject, HLAIB additionalInformation)
       throws ServiceException, SecurityServiceException;
 }

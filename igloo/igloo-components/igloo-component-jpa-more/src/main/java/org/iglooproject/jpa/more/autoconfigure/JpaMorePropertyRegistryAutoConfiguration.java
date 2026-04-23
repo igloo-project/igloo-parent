@@ -6,7 +6,7 @@ import static org.iglooproject.jpa.more.property.JpaMorePropertyIds.MAINTENANCE;
 
 import java.io.File;
 import org.iglooproject.spring.autoconfigure.PropertyIdsAutoConfiguration;
-import org.iglooproject.spring.config.spring.IPropertyRegistryConfig;
+import org.iglooproject.spring.config.IPropertyRegistryConfiguration;
 import org.iglooproject.spring.property.service.IConfigurablePropertyService;
 import org.iglooproject.spring.property.service.IPropertyRegistry;
 import org.iglooproject.spring.util.StringUtils;
@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @AutoConfiguration(after = PropertyIdsAutoConfiguration.class)
 @ConditionalOnBean(IConfigurablePropertyService.class)
-public class JpaMorePropertyRegistryAutoConfiguration implements IPropertyRegistryConfig {
+public class JpaMorePropertyRegistryAutoConfiguration implements IPropertyRegistryConfiguration {
 
   @Override
   public void register(IPropertyRegistry registry) {

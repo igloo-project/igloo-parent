@@ -662,7 +662,7 @@ S2.define('select2/utils',[
     var chars = '';
 
     for (var i = 0; i < length; i++) {
-      var randomChar = Math.floor(Math.random() * 36);
+      var randomChar = Math.floor(Math.random() * 36); // NOSONAR
       chars += randomChar.toString(36);
     }
 
@@ -5034,7 +5034,7 @@ S2.define('select2/defaults',[
         return DIACRITICS[a] || a;
       }
 
-      return text.replace(/[^\u0000-\u007E]/g, match);
+      return text.replace(/[^\u0000-\u007E]/g, match); // NOSONAR
     }
 
     function matcher (params, data) {

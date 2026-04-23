@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+<wicket:panel>
+	<div wicket:id="loadingPopup" />
+	
+	<form wicket:id="form">
+		<div class="card card-main">
+			<div class="card-header">
+				<div class="card-header-title">
+					<wicket:message key="console.maintenance.search.reindex.partial.title" />
+				</div>
+			</div>
+			<div class="card-body">
+				<div class="row row-form">
+					<div class="col-12">
+						<div class="row row-form-group form-group">
+							<div class="col-12">
+								<select wicket:id="type" class="form-control" />
+							</div>
+						</div>
+					</div>
+					<div class="col-12">
+						<div class="row row-form-group form-group">
+							<div class="col-12">
+								<select wicket:id="entity" class="form-control" />
+							</div>
+						</div>
+					</div>
+					<div class="col-12">
+						<div class="row row-form-group form-group">
+							<div class="col-12">
+								<textarea wicket:id="ids" class="form-control" rows="15" />
+								<div class="form-text"><wicket:message key="console.maintenance.search.reindex.partial.form.ids.help" /></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="card-action card-action-bottom">
+					<div class="row row-action justify-content-end">
+						<div class="col-auto">
+							<button wicket:id="reindex" class="btn btn-warning" type="button">
+								<span class="fa fa-fw fa-sync" />
+								<wicket:message key="console.maintenance.search.reindex.common.action.reindex" />
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+</wicket:panel>
+</html>

@@ -37,7 +37,7 @@ public class RoleSavePermissionsPanel extends Panel {
         new CheckGroup<>(
                 "permissions",
                 BindingModel.of(roleModel, Bindings.role().permissions()),
-                Suppliers2.<String>hashSet())
+                Suppliers2.hashSet())
             .add(
                 new MapView<>(
                     "categories",

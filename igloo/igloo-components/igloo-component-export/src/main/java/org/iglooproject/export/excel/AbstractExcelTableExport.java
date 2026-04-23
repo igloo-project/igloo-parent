@@ -90,28 +90,28 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
   protected static final String STYLE_FILE_SIZE_NAME = "fileSize";
 
   /** Police utilisée dans le document */
-  private String fontName = "Verdana";
+  private String fontName = "Aptos Narrow";
 
   /** Taille de police utilisée dans le corps d'une table */
-  private short normalFontHeight = 9;
+  private short normalFontHeight = 11;
 
   /** Taille de police utilisée dans le header d'une table */
-  private short headerFontHeight = 9;
+  private short headerFontHeight = 11;
 
   /** Couleur des bordures */
-  private String borderColor = "#D1D1D1";
+  private String borderColor = "#dee2e6";
 
   /** Couleur de fond du header */
-  private String headerBackgroundColor = "#0062CC";
+  private String headerBackgroundColor = "#0d6efd";
 
   /** Couleur du texte du header */
-  private String headerFontColor = "#FFFFFF";
+  private String headerFontColor = "#ffffff";
 
   /** Couleur des liens */
-  private String linkFontColor = "#007BFF";
+  private String linkFontColor = "#0d6efd";
 
   /** Couleur des lignes paires */
-  private String evenRowBackgroundColor = "#EEEEEE";
+  private String evenRowBackgroundColor = "#f2f2f2";
 
   /** Format des pour les nombres entiers */
   private String integerDataFormat = "# ### ### ### ##0";
@@ -187,8 +187,8 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
   protected void initStyles() {
     CellStyle defaultStyle = workbook.createCellStyle();
     defaultStyle.setFont(getFont(FONT_NORMAL_NAME));
-    setStyleFillForegroundColor(defaultStyle, colorRegistry, HSSFColorPredefined.WHITE.getIndex());
     defaultStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+    setStyleFillForegroundColor(defaultStyle, colorRegistry, HSSFColorPredefined.WHITE.getIndex());
     defaultStyle.setBorderBottom(BorderStyle.THIN);
     setStyleBottomBorderColor(defaultStyle, colorRegistry, BORDER_COLOR_INDEX);
     defaultStyle.setBorderLeft(BorderStyle.THIN);
@@ -201,22 +201,11 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
     defaultStyle.setWrapText(true);
     registerStyle(STYLE_DEFAULT_NAME, defaultStyle);
 
-    CellStyle styleHeader = workbook.createCellStyle();
+    CellStyle styleHeader = cloneStyle(defaultStyle);
     styleHeader.setAlignment(HorizontalAlignment.CENTER);
     styleHeader.setFont(getFont(FONT_HEADER_NAME));
     setStyleFillForegroundColor(styleHeader, colorRegistry, HEADER_BACKGROUND_COLOR_INDEX);
-    styleHeader.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-    styleHeader.setBorderBottom(BorderStyle.THIN);
-    setStyleBottomBorderColor(styleHeader, colorRegistry, BORDER_COLOR_INDEX);
-    styleHeader.setBorderLeft(BorderStyle.THIN);
-    setStyleLeftBorderColor(styleHeader, colorRegistry, BORDER_COLOR_INDEX);
-    styleHeader.setBorderRight(BorderStyle.THIN);
-    setStyleRightBorderColor(styleHeader, colorRegistry, BORDER_COLOR_INDEX);
-    styleHeader.setBorderTop(BorderStyle.THIN);
-    setStyleTopBorderColor(styleHeader, colorRegistry, BORDER_COLOR_INDEX);
     styleHeader.setDataFormat((short) 0);
-    styleHeader.setVerticalAlignment(VerticalAlignment.CENTER);
-    styleHeader.setWrapText(true);
     registerStyle(STYLE_HEADER_NAME, styleHeader);
 
     CellStyle styleOdd = cloneStyle(defaultStyle);

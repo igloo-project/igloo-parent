@@ -16,7 +16,7 @@ Igloo.StringUtils = (function() {
 	var cleanDuplicateDashes = /--+/g;
 
 	var _trim = function(input) {
-		return input.replace(/^\s+/g, '').replace(/\s+$/g, '');
+		return input ? String(input).trim() : '';
 	};
 
 	var _sanitizeString = function(input, regexp) {

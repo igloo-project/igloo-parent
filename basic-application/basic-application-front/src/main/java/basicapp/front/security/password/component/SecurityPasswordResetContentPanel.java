@@ -1,6 +1,6 @@
 package basicapp.front.security.password.component;
 
-import static basicapp.back.property.BasicApplicationCorePropertyIds.SECURITY_PASSWORD_LENGTH_MIN;
+import static basicapp.back.property.BasicApplicationBackPropertyIds.SECURITY_PASSWORD_LENGTH_MIN;
 
 import basicapp.back.business.common.model.EmailAddress;
 import basicapp.back.business.user.model.User;

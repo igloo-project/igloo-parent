@@ -2,8 +2,8 @@ package test.jpa.more.business.task.config;
 
 import org.apache.commons.lang3.EnumUtils;
 import org.iglooproject.config.bootstrap.spring.annotations.IglooPropertySourcePriority;
-import org.iglooproject.jpa.more.config.spring.ImmutableTaskManagement.Builder;
-import org.iglooproject.jpa.more.config.spring.TaskManagementConfigurer;
+import org.iglooproject.jpa.more.config.ImmutableTaskManagement.Builder;
+import org.iglooproject.jpa.more.config.TaskManagementConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;

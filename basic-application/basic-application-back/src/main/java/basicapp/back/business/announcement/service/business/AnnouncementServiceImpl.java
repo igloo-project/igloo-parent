@@ -110,11 +110,8 @@ public class AnnouncementServiceImpl extends GenericEntityServiceImpl<Long, Anno
     Objects.requireNonNull(announcement);
     Objects.requireNonNull(announcement.getType());
     switch (announcement.getType()) {
-      case SERVICE_INTERRUPTION -> {
-        announcement.setTitle(null);
-        announcement.setDescription(null);
-      }
-      case OTHER -> announcement.setInterruption(null);
+      case NOTIFICATION -> announcement.setUnavailability(null);
+      case UNAVAILABILITY -> announcement.setContent(null);
       default -> throw new IllegalSwitchValueException(announcement.getType());
     }
   }

@@ -19,11 +19,11 @@ import org.iglooproject.jpa.more.business.task.service.IQueuedTaskHolderManager;
 import org.iglooproject.jpa.more.business.task.service.IQueuedTaskHolderService;
 import org.iglooproject.jpa.more.business.task.service.QueuedTaskHolderManagerImpl;
 import org.iglooproject.jpa.more.business.task.service.QueuedTaskHolderServiceImpl;
-import org.iglooproject.jpa.more.config.spring.ImmutableTaskManagement;
-import org.iglooproject.jpa.more.config.spring.TaskManagementConfigurer;
-import org.iglooproject.spring.config.spring.IPropertyRegistryConfig;
-import org.iglooproject.spring.config.util.TaskQueueStartMode;
+import org.iglooproject.jpa.more.config.ImmutableTaskManagement;
+import org.iglooproject.jpa.more.config.TaskManagementConfigurer;
+import org.iglooproject.spring.config.IPropertyRegistryConfiguration;
 import org.iglooproject.spring.property.service.IPropertyRegistry;
+import org.iglooproject.spring.util.task.TaskQueueStartMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ConditionalOnBean(TaskManagementConfigurer.class)
-public class TaskAutoConfiguration implements IPropertyRegistryConfig {
+public class TaskAutoConfiguration implements IPropertyRegistryConfiguration {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(TaskAutoConfiguration.class);
 
