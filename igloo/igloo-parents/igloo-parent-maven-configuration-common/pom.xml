@@ -13,7 +13,7 @@
   <packaging>pom</packaging>
   <name>Igloo - Parent - Maven configuration - Common</name>
   <properties>
-    <revision>7.1.0</revision>
+    <revision>7.2.0-SNAPSHOT</revision>
     <productionBranchName>main</productionBranchName>
   </properties>
   <build>
