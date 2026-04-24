@@ -8,7 +8,22 @@
   <!--                                                              -->
   <!--                    IGLOO 7.0.0                               -->
   <!--                                                              -->
-  
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-core-7.0.2.jar
+   Faille sur les serveurs windows, les app tournant sur igloo ne sont pas concernées
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring-core.*$</packageUrl>
+    <vulnerabilityName>CVE-2026-22745</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-web-7.0.2.jar
+   spring WebFlux only, igloo non concerné
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring-web.*$</packageUrl>
+    <vulnerabilityName>CVE-2026-22740</vulnerabilityName>
+  </suppress>
   <suppress>
     <notes><![CDATA[
    file name: log4j-layout-template-json-2.25.3.jar
