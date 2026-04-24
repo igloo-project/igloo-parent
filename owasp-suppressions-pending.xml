@@ -109,8 +109,11 @@
   <suppress>
     <notes><![CDATA[
    file name: spring-security-core-7.0.2.jar
-   Les caches sont gérés par wicket, on est peu concerné
-   fix dans la version 7.0.4
+      Igloo uses Wicket mechanism for security headers setup for browser/user web resources. Wicket behavior is not modified by this Spring Security issue (cache control, CORS).
+      When server-side API are implemented, we explicitly setup CORS setup if API are meant to be accessible by browsers.
+      HSTS headers are setup by application reverse proxy, as it manages TLS/SSL setup.
+      So Igloo application behavior for security headers does not rely on HeaderWriterFilter, and Igloo provides the same default behavior (cache-control, CORS, HSTS) than Spring-Security
+      fix in 7.0.4
    ]]></notes>
     <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring-security-.*$
     </packageUrl>
