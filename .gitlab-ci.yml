@@ -67,6 +67,12 @@ test-init:
     --igloo-url "$CI_PROJECT_DIR"
     basic-application org.iglooproject.archetype CURRENT_IGLOO_VERSION basicapp
     BasicApplication basicApplication "Basic Application" basic_application
+  - >
+    hatch run igloo-project-init
+    -v --debug --check-build
+    --igloo-url "$CI_PROJECT_DIR"
+    my-artifact my-group 0.0.1-SNAPSHOT my.myartifact
+    MyProject myProject "My project" my_project
   rules:
     - if: $CI_PIPELINE_SOURCE == "api"
       when: never
