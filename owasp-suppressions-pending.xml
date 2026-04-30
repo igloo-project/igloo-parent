@@ -5,6 +5,52 @@
   <!--                    FUTUR IGLOO RELEASE                       -->
   <!--                                                              -->
 
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-boot-4.0.5.jar
+   We don't use ${random.value} to create random property source
+   sera fix sur la 4.0.6
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring-boot.*$</packageUrl>
+    <vulnerabilityName>CVE-2026-40975</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-boot-4.0.5.jar
+   on drop les sessions au restart ; on ne surcharge pas la valeur de server.servlet.session.persistent et c'est false par défaut
+   sera fix sur la 4.0.6
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring-boot.*$</packageUrl>
+    <vulnerabilityName>CVE-2026-40973</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-boot-4.0.5.jar
+   on ne l'utilise pas ApplicationPidFileWriter 
+   sera fix sur la 4.0.6
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring-boot.*$</packageUrl>
+    <vulnerabilityName>CVE-2026-40977</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-boot-security-4.0.5.jar
+   on a toujours notre config de sécurité ET on ajoute ActuatorAutoConfiguration qui cale ses propres autorisations
+   sera fix sur la 4.0.6
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring-boot-security@.*$</packageUrl>
+    <vulnerabilityName>CVE-2026-40976</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-security-web-7.0.5.jar
+   On ne fait que du TLS en client pas en serveur
+   On n'est pas affecté en 7.0.5 -> 7.0.0 - 7.0.4
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring-security-web@.*$</packageUrl>
+    <vulnerabilityName>CVE-2026-22747</vulnerabilityName>
+  </suppress>
+
   <!--                                                              -->
   <!--                    IGLOO 7.0.0                               -->
   <!--                                                              -->
@@ -92,7 +138,7 @@
    On n'utilise pas de moteurs de scripts java ni de mapping vers "/**"
     fix dans version 7.0.6
    ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.springframework/spring-webmvc.*$</packageUrl>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring-.*$</packageUrl>
     <vulnerabilityName>CVE-2026-22737</vulnerabilityName>
   </suppress>
 
