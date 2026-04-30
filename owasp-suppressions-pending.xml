@@ -30,7 +30,7 @@
    Non concerné, on n'utilise pas de MapMessage dans nos projets
        sera corrigé dans la 2.25.4
    ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.apache\.logging\.log4j/log4j-layout-template-json.*$</packageUrl>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.logging\.log4j/log4j-.*$</packageUrl>
     <vulnerabilityName>CVE-2026-34481</vulnerabilityName>
   </suppress>
   <suppress>
@@ -38,7 +38,7 @@
    file name: log4j-core-2.25.3.jar
     Non concerné, on n'utilise pas de certificats TLS dans log4j
    ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.apache\.logging\.log4j/log4j-core@.*$</packageUrl>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.logging\.log4j/log4j-.*$</packageUrl>
     <vulnerabilityName>CVE-2026-34477</vulnerabilityName>
   </suppress>
   <suppress>
@@ -47,7 +47,7 @@
      Non concerné, on n'utilise pas Rfc5424Layout
     sera corrigé dans la 2.25.4
    ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.apache\.logging\.log4j/log4j-core.*$</packageUrl>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.logging\.log4j/log4j-.*$</packageUrl>
     <vulnerabilityName>CVE-2026-34478</vulnerabilityName>
   </suppress>
   <suppress>
@@ -56,7 +56,7 @@
    Non concerné, on n'utilise pas le formateur XML
    sera corrigé dans la 2.25.4
    ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.apache\.logging\.log4j/log4j-core.*$</packageUrl>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.logging\.log4j/log4j-.*$</packageUrl>
     <vulnerabilityName>CVE-2026-34479</vulnerabilityName>
   </suppress>
   <suppress>
@@ -65,7 +65,7 @@
    Non concerné, on n'utilise pas le formateur XML
    sera corrigé dans la 2.25.4
    ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.apache\.logging\.log4j/log4j-core@.*$</packageUrl>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.logging\.log4j/log4j-.*$</packageUrl>
     <vulnerabilityName>CVE-2026-34480</vulnerabilityName>
   </suppress>
   <suppress>
