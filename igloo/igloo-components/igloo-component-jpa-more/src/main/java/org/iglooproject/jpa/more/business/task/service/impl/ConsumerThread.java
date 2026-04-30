@@ -1,9 +1,7 @@
 package org.iglooproject.jpa.more.business.task.service.impl;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.primitives.Longs;
 import com.google.common.util.concurrent.RateLimiter;
-import java.io.IOException;
 import org.iglooproject.jpa.more.autoconfigure.TaskAutoConfiguration;
 import org.iglooproject.jpa.more.business.task.model.AbstractTask;
 import org.iglooproject.jpa.more.business.task.model.QueuedTaskHolder;
@@ -19,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * A consumer thread with the ability to try stopping gracefully.
@@ -208,7 +207,7 @@ class ConsumerThread extends Thread {
       runnableTask =
           queuedTaskHolderObjectMapper.readValue(
               queuedTaskHolder.getSerializedTask(), AbstractTask.class);
-    } catch (RuntimeException | IOException e) {
+    } catch (RuntimeException e) {
       LOGGER.error(
           "Error while trying to deserialize a task before run (holder: " + queuedTaskHolder + ").",
           e);

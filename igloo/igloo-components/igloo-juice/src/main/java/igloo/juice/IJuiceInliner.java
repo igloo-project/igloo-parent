@@ -1,7 +1,6 @@
 package igloo.juice;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.resilience4j.circuitbreaker.CircuitBreaker;
 import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig;
 import io.github.resilience4j.circuitbreaker.CircuitBreakerRegistry;
@@ -23,6 +22,8 @@ import java.time.Duration;
 import java.util.Optional;
 import java.util.function.UnaryOperator;
 import org.immutables.value.Value;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 @Value.Immutable
 @Value.Style(typeImmutable = "*", typeAbstract = "I*", jakarta = true)
@@ -51,7 +52,9 @@ public interface IJuiceInliner {
    */
   @Value.Default
   default ObjectMapper objectMapper() {
-    return new ObjectMapper().setDefaultPropertyInclusion(Include.NON_NULL);
+    return JsonMapper.builder()
+        .changeDefaultPropertyInclusion(incl -> incl.withValueInclusion(Include.NON_NULL))
+        .build();
   }
 
   /**

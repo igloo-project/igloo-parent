@@ -1,8 +1,6 @@
 package org.iglooproject.jpa.more.business.task.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.MoreObjects.ToStringHelper;
 import igloo.hibernateconfig.api.HibernateSearchAnalyzer;
 import igloo.hibernateconfig.api.HibernateSearchNormalizer;
@@ -29,6 +27,7 @@ import org.hibernate.type.descriptor.java.StringJavaType;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.more.business.task.util.TaskResult;
 import org.iglooproject.jpa.more.business.task.util.TaskStatus;
+import tools.jackson.databind.ObjectMapper;
 
 @Entity
 @Bindable
@@ -251,8 +250,7 @@ public class QueuedTaskHolder extends GenericEntity<Long, QueuedTaskHolder> {
 
   @JsonIgnore
   public void updateExecutionInformation(
-      TaskExecutionResult executionResult, ObjectMapper objectMapper)
-      throws JsonProcessingException {
+      TaskExecutionResult executionResult, ObjectMapper objectMapper) {
     if (executionResult != null) {
       setResult(executionResult.getResult());
       setStackTrace(executionResult.getStackTrace());

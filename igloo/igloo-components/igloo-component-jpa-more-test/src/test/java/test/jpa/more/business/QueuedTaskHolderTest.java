@@ -6,12 +6,12 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.iglooproject.jpa.more.business.task.model.BatchReportBean;
 import org.iglooproject.jpa.more.business.task.model.QueuedTaskHolder;
 import org.iglooproject.jpa.more.business.task.model.TaskExecutionResult;
 import org.iglooproject.jpa.more.business.task.util.TaskResult;
 import org.junit.jupiter.api.Test;
+import tools.jackson.databind.ObjectMapper;
 
 // import tools.jackson.databind.ObjectMapper;
 

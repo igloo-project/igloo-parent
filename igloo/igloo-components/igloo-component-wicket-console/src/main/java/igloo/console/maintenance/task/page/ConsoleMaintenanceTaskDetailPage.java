@@ -1,10 +1,5 @@
 package igloo.console.maintenance.task.page;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import igloo.bootstrap.common.BootstrapColor;
 import igloo.bootstrap.common.IBootstrapColor;
 import igloo.bootstrap.confirm.AjaxConfirmLink;
@@ -52,6 +47,12 @@ import org.iglooproject.wicket.more.rendering.TaskStatusRenderer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
+import tools.jackson.databind.DefaultTyping;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.SerializationFeature;
+import tools.jackson.databind.json.JsonMapper;
+import tools.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
+import tools.jackson.databind.jsontype.PolymorphicTypeValidator;
 
 public class ConsoleMaintenanceTaskDetailPage extends ConsoleMaintenanceTaskTemplate {
 
@@ -60,11 +61,14 @@ public class ConsoleMaintenanceTaskDetailPage extends ConsoleMaintenanceTaskTemp
   private static final Logger LOGGER =
       LoggerFactory.getLogger(ConsoleMaintenanceTaskDetailPage.class);
 
+  private static final PolymorphicTypeValidator TYPE_VALIDATOR =
+      BasicPolymorphicTypeValidator.builder().allowIfBaseType(Object.class).build();
+
   private static final ObjectMapper OBJECT_MAPPER =
-      new ObjectMapper()
-          .registerModule(new JavaTimeModule())
-          .activateDefaultTyping(LaissezFaireSubTypeValidator.instance, DefaultTyping.NON_FINAL)
-          .enable(SerializationFeature.INDENT_OUTPUT);
+      JsonMapper.builder()
+          .activateDefaultTyping(TYPE_VALIDATOR, DefaultTyping.NON_FINAL)
+          .enable(SerializationFeature.INDENT_OUTPUT)
+          .build();
 
   public static final ILinkDescriptorMapper<IPageLinkDescriptor, IModel<QueuedTaskHolder>> MAPPER =
       LinkDescriptorBuilder.start()

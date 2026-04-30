@@ -6,10 +6,6 @@ import static org.iglooproject.jpa.more.property.JpaMoreTaskPropertyIds.QUEUE_ST
 import static org.iglooproject.jpa.more.property.JpaMoreTaskPropertyIds.START_MODE;
 import static org.iglooproject.jpa.more.property.JpaMoreTaskPropertyIds.STOP_TIMEOUT;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
-import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.util.Collection;
 import java.util.TreeSet;
 import org.iglooproject.jpa.more.business.task.dao.IQueuedTaskHolderDao;
@@ -30,6 +26,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import tools.jackson.databind.DefaultTyping;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
+import tools.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
+import tools.jackson.databind.jsontype.PolymorphicTypeValidator;
 
 @Configuration
 @ConditionalOnBean(TaskManagementConfigurer.class)
@@ -45,9 +46,11 @@ public class TaskAutoConfiguration implements IPropertyRegistryConfiguration {
    */
   @Bean(name = OBJECT_MAPPER_BEAN_NAME)
   public ObjectMapper queuedTaskHolderObjectMapper() {
-    return new ObjectMapper()
-        .registerModule(new JavaTimeModule())
-        .activateDefaultTyping(LaissezFaireSubTypeValidator.instance, DefaultTyping.NON_FINAL);
+    PolymorphicTypeValidator typeValidator =
+        BasicPolymorphicTypeValidator.builder().allowIfBaseType(Object.class).build();
+    return JsonMapper.builder()
+        .activateDefaultTyping(typeValidator, DefaultTyping.NON_FINAL)
+        .build();
   }
 
   @Bean

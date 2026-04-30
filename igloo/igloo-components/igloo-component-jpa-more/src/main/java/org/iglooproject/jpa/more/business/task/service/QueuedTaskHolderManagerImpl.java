@@ -5,14 +5,12 @@ import static org.iglooproject.jpa.more.property.JpaMoreTaskPropertyIds.STOP_TIM
 import static org.iglooproject.jpa.more.property.JpaMoreTaskPropertyIds.queueNumberOfThreads;
 import static org.iglooproject.jpa.more.property.JpaMoreTaskPropertyIds.queueStartDelay;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 import jakarta.annotation.PreDestroy;
-import java.io.IOException;
 import java.time.Instant;
 import java.util.Collection;
 import java.util.Collections;
@@ -50,6 +48,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.util.Assert;
+import tools.jackson.databind.ObjectMapper;
 
 public class QueuedTaskHolderManagerImpl
     implements IQueuedTaskHolderManager, ApplicationListener<ContextRefreshedEvent> {
@@ -345,8 +344,6 @@ public class QueuedTaskHolderManagerImpl
               task.getTaskType(), serializedTask);
 
       queuedTaskHolderService.create(newQueuedTaskHolder);
-    } catch (IOException e) {
-      throw new ServiceException("Error while trying to serialize task " + task, e);
     } catch (RuntimeException | ServiceException | SecurityServiceException e) {
       throw new ServiceException("Error while creating and saving task " + task, e);
     }
