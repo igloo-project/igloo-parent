@@ -7,6 +7,15 @@
 
   <suppress>
     <notes><![CDATA[
+   file name: spring-security-core-5.8.16.jar
+   CVE low - timing attack sur  la vérif de password... On n'a pas d'user locked ou disabled via spring.
+   On n'est pas affecté en 7.0.5 -> 7.0.0 - 7.0.4 (mais présente sur spring 5)
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring-security-core@.*$</packageUrl>
+    <cve>CVE-2026-22746</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
    file name: spring-boot-4.0.5.jar
    We don't use ${random.value} to create random property source
    sera fix sur la 4.0.6
@@ -38,14 +47,15 @@
    on a toujours notre config de sécurité ET on ajoute ActuatorAutoConfiguration qui cale ses propres autorisations
    sera fix sur la 4.0.6
    ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring-boot-security@.*$</packageUrl>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring-boot.*$</packageUrl>
     <vulnerabilityName>CVE-2026-40976</vulnerabilityName>
   </suppress>
   <suppress>
     <notes><![CDATA[
    file name: spring-security-web-7.0.5.jar
    On ne fait que du TLS en client pas en serveur
-   On n'est pas affecté en 7.0.5 -> 7.0.0 - 7.0.4
+   On n'est pas affecté en 7.0.5 -> 7.0.0 - 7.0.4 (mais présente sur spring 5)
+  
    ]]></notes>
     <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring-security-web@.*$</packageUrl>
     <vulnerabilityName>CVE-2026-22747</vulnerabilityName>
@@ -181,7 +191,7 @@
     fix dans la version spring-boot 4.0.4
    ]]></notes>
     <packageUrl regex="true">
-      ^pkg:maven/org\.springframework\.boot/spring-boot-actuator-autoconfigure@.*$
+      ^pkg:maven/org\.springframework\.boot/spring-boot-.*$
     </packageUrl>
     <vulnerabilityName>CVE-2026-22733</vulnerabilityName>
   </suppress>
