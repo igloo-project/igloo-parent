@@ -7,6 +7,15 @@
 
   <suppress>
     <notes><![CDATA[
+   file name: spring-boot-2.7.18.jar
+   On n'utilise pas spring-boot-devtools
+   sera fix sur la 4.0.6
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring-boot.*$</packageUrl>
+    <cve>CVE-2026-40972</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
    file name: spring-security-core-5.8.16.jar
    CVE low - timing attack sur  la vérif de password... On n'a pas d'user locked ou disabled via spring.
    On n'est pas affecté en 7.0.5 -> 7.0.0 - 7.0.4 (mais présente sur spring 5)
