@@ -7,6 +7,14 @@
 
   <suppress>
     <notes><![CDATA[
+   file name: postgresql-42.7.10.jar
+   DDOS, peut attendre la prochaine campagne de mise à jour
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.postgresql/postgresql@.*$</packageUrl>
+    <cve>CVE-2026-42198</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
    file name: spring-boot-2.7.18.jar
    On n'utilise pas spring-boot-devtools
    sera fix sur la 4.0.6
