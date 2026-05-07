@@ -7,6 +7,43 @@
 
   <suppress>
     <notes><![CDATA[
+   file name: wicket-core-9.22.0.jar
+   on n'est pas concerné ; on n'utilise pas le composant
+   corrigé dans la 10.9.0
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.wicket/wicket-core@.*$</packageUrl>
+    <cve>CVE-2026-43975</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: wicket-core-9.22.0.jar
+   Link ou ExternalLink avec un PopupSettings, ou AutoCompleteTextField, qu'on n'utilise pas SAUF dans fafcea !
+   Dans FAFCEA, le lien (sans DossierFormationFicheAuditInterneAgrementPanel est généré par nos soins, donc pas d'injection par l'utilisateur)
+     corrigé dans la 10.9.0
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.wicket/wicket-core@.*$</packageUrl>
+    <cve>CVE-2026-42509</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: wicket-core-9.22.0.jar
+   Pas de données critiques dans ces fichiers
+     corrigé dans la 10.9.0 / PAS DE CORRECTION 9.X.X -> fix dans igloo 5.32.0-SNAPSHOT
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.wicket/wicket-core@.*$</packageUrl>
+    <cve>CVE-2026-43646</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: wicket-core-9.22.0.jar
+   c'est sur de la session fixation ; pas top, mais moins critique
+     corrigé dans la 10.9.0 / PAS DE CORRECTION 9.X.X (a voir si on fait une PR ou si on fix directement dans les projets)
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.wicket/wicket-core@.*$</packageUrl>
+    <cve>CVE-2026-40010</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
    file name: spring-core-5.3.39.jar
    On n'utilise pas resource chain support avec le cache enable
    ]]></notes>
