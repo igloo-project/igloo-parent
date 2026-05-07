@@ -27,6 +27,7 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import org.apache.commons.io.FileUtils;
 import org.apache.wicket.Application;
 import org.apache.wicket.Page;
@@ -124,6 +125,11 @@ public abstract class CoreWicketApplication extends WebApplication
     packageResourceGuard.addPattern("+*.scss");
     packageResourceGuard.addPattern("+*.json");
     packageResourceGuard.addPattern("+*.webmanifest");
+    // TODO A supprimer si wicket fait un correctif dans la 9.23.0
+    packageResourceGuard.getPattern().stream()
+        .filter(p -> Objects.equals(p.getPattern(), "+*.html"))
+        .findFirst()
+        .ifPresent(p -> packageResourceGuard.getPattern().remove(p));
 
     // utilisation des ressources minifiées que si on est en mode DEPLOYMENT
     getResourceSettings()
