@@ -28,7 +28,7 @@
    CVE low - timing attack sur  la vérif de password... On n'a pas d'user locked ou disabled via spring.
    On n'est pas affecté en 7.0.5 -> 7.0.0 - 7.0.4 (mais présente sur spring 5)
    ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring-security-core@.*$</packageUrl>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring-security.*$</packageUrl>
     <cve>CVE-2026-22746</cve>
   </suppress>
   <suppress>
@@ -86,7 +86,7 @@
    file name: spring-core-7.0.2.jar
    Faille sur les serveurs windows, les app tournant sur igloo ne sont pas concernées
    ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.springframework/spring-core.*$</packageUrl>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring.*$</packageUrl>
     <vulnerabilityName>CVE-2026-22745</vulnerabilityName>
   </suppress>
   <suppress>
@@ -94,7 +94,7 @@
    file name: spring-web-7.0.2.jar
    spring WebFlux only, igloo non concerné
    ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.springframework/spring-web.*$</packageUrl>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring.*$</packageUrl>
     <vulnerabilityName>CVE-2026-22740</vulnerabilityName>
   </suppress>
   <suppress>
@@ -208,7 +208,7 @@
     fix dans la version spring-boot 4.0.4
    ]]></notes>
     <packageUrl regex="true">
-      ^pkg:maven/org\.springframework\.boot/spring-boot-.*$
+      ^pkg:maven/org\.springframework\.boot/spring-boot.*$
     </packageUrl>
     <vulnerabilityName>CVE-2026-22733</vulnerabilityName>
   </suppress>
