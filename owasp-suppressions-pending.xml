@@ -7,6 +7,14 @@
 
   <suppress>
     <notes><![CDATA[
+   file name: spring-core-5.3.39.jar
+   On n'utilise pas resource chain support avec le cache enable
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring.*$</packageUrl>
+    <cve>CVE-2026-22741</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
    file name: postgresql-42.7.10.jar
    DDOS, peut attendre la prochaine campagne de mise à jour
    ]]></notes>
