@@ -7,6 +7,14 @@
 
   <suppress>
     <notes><![CDATA[
+   file name: httpclient5-5.6.jar
+   On n'utilise pas l'auth SCRAM-SHA-256
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.httpcomponents\.client5/httpclient5@.*$</packageUrl>
+    <cve>CVE-2026-40542</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
    file name: wicket-core-9.22.0.jar
    on n'est pas concerné ; on n'utilise pas le composant
    corrigé dans la 10.9.0
