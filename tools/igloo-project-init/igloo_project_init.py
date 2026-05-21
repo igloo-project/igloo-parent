@@ -43,12 +43,12 @@ __version__ = "0.1.0"
 logger = logging.getLogger("igloo")
 
 
-
 def init_logger():
     """Configure colored logs."""
     handler = colorlog.StreamHandler()
     handler.setFormatter(colorlog.ColoredFormatter("%(log_color)s%(levelname)s:%(name)s:%(message)s"))
     logger.addHandler(handler)
+
 
 # L16762: wokaround for custom version
 ARCHETYPE_PLUGIN_VERSION = "3.4.2-SNAPSHOT"
@@ -381,7 +381,7 @@ def override_versions(igloo_clone: pathlib.Path, igloo_version: str):
     # replace <versionPlaceholderDoNotRemove /> line with igloo.version declaration
     pom_file = igloo_clone.joinpath("basic-application", "pom.xml")
     basicapp_pom = pom_file.read_text()
-    igloo_version_sub = re.compile("^(.*)<versionPlaceholderDoNotRemove />.*$", re.MULTILINE)
+    igloo_version_sub = re.compile("^(.*)<versionPlaceholderDoNotRemove.?/>.*$", re.MULTILINE)
     updated_pom = igloo_version_sub.sub(
         f"\\1<igloo.version>{igloo_version}</igloo.version>\n\t\t<revision>{OVERRIDE_VERSION}</revision>", basicapp_pom
     )
@@ -470,7 +470,8 @@ def generate_project(
     java_properties.update(definition.to_properties())
     java_args = [f"-D{k}={v}" for k, v in java_properties.items()]
     subprocess.check_call(
-        ["mvn", f"archetype{ARCHETYPE_PLUGIN_VERSION_SUFFIX}:generate", f"-DoutputDirectory={project}", *java_args], **subprocess_args()
+        ["mvn", f"archetype{ARCHETYPE_PLUGIN_VERSION_SUFFIX}:generate", f"-DoutputDirectory={project}", *java_args],
+        **subprocess_args(),
     )
     project_path = project.joinpath(definition.artifact_id)
     logger.info("Project %s:%s generated into %s", definition.group_id, definition.artifact_id, project_path)
@@ -502,6 +503,24 @@ def fix_poms(project_path: pathlib.Path, version: str, artifact_id: str, package
         f".//pom:dependency/pom:artifactId[text()='{artifact_id}']",
         artifact_id + "-front",
     )
+
+    # 2026-04: parent is also broken, artifactId=basic-application (!?)
+    replace_xml(
+        project_path.joinpath(f"{artifact_id}-static/pom.xml"),
+        ".//pom:parent/pom:artifactId[text()='basic-application']",
+        artifact_id,
+    )
+    replace_xml(
+        project_path.joinpath(f"{artifact_id}-front/pom.xml"),
+        ".//pom:parent/pom:artifactId[text()='basic-application']",
+        artifact_id,
+    )
+    replace_xml(
+        project_path.joinpath(f"{artifact_id}-app/pom.xml"),
+        ".//pom:parent/pom:artifactId[text()='basic-application']",
+        artifact_id,
+    )
+
     # end workaround
     logger.info("Pom fixes applied (indentation, parent relative path, app parent, packages).")
 
@@ -551,8 +570,26 @@ def generate_archetype(igloo_clone: pathlib.Path) -> pathlib.Path:
     # https://github.com/codehaus-plexus/plexus-archiver/pull/408
     # https://github.com/apache/maven-archiver/issues/334
     remote_repositories = "-DremoteRepositories=https://repository.apache.org/content/repositories/snapshots/"
-    subprocess.check_call(["mvn", "dependency:get", remote_repositories, "-DgroupId=org.apache.maven.plugins", "-DartifactId=maven-archetype-plugin", f"-Dversion={ARCHETYPE_PLUGIN_VERSION}"])
-    subprocess.check_call(["mvn", "dependency:get", remote_repositories, "-DgroupId=org.apache.maven.archetype", "-DartifactId=archetype-packaging", f"-Dversion={ARCHETYPE_PLUGIN_VERSION}"])
+    subprocess.check_call(
+        [
+            "mvn",
+            "dependency:get",
+            remote_repositories,
+            "-DgroupId=org.apache.maven.plugins",
+            "-DartifactId=maven-archetype-plugin",
+            f"-Dversion={ARCHETYPE_PLUGIN_VERSION}",
+        ]
+    )
+    subprocess.check_call(
+        [
+            "mvn",
+            "dependency:get",
+            remote_repositories,
+            "-DgroupId=org.apache.maven.archetype",
+            "-DartifactId=archetype-packaging",
+            f"-Dversion={ARCHETYPE_PLUGIN_VERSION}",
+        ]
+    )
 
     # if remote debugging is needed
     # env.update({"JDK_JAVA_OPTIONS": "-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8000"})

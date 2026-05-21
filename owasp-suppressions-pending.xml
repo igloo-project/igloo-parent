@@ -4,18 +4,182 @@
   <!--                                                              -->
   <!--                    FUTUR IGLOO RELEASE                       -->
   <!--                                                              -->
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-boot-data-commons-4.0.1.jar
+   on n'utilise pas de serveur ElasticSearch ni d'autoconf spring boot elasticsearch
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring-boot-data-commons@.*$</packageUrl>
+    <cve>CVE-2026-40970</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-boot-data-commons-4.0.1.jar
+   on n'utilise pas RabbitMQ d'autoconf spring boot RabbitMQ
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring-boot.*$</packageUrl>
+    <cve>CVE-2026-40971</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-boot-data-commons-4.0.1.jar
+   on n'utilise pas Cassandrani d'autoconf spring boot cassandra
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring-boot.*$</packageUrl>
+    <cve>CVE-2026-40974</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: httpclient5-5.6.jar
+   On n'utilise pas l'auth SCRAM-SHA-256
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.httpcomponents\.client5/httpclient5.*$</packageUrl>
+    <cve>CVE-2026-40542</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: wicket-core-9.22.0.jar
+   on n'est pas concerné ; on n'utilise pas le composant
+   corrigé dans la 10.9.0
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.wicket/wicket.*$</packageUrl>
+    <cve>CVE-2026-43975</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: wicket-core-9.22.0.jar
+   Link ou ExternalLink avec un PopupSettings, ou AutoCompleteTextField, qu'on n'utilise pas SAUF dans fafcea !
+   Dans FAFCEA, le lien (sans DossierFormationFicheAuditInterneAgrementPanel est généré par nos soins, donc pas d'injection par l'utilisateur)
+     corrigé dans la 10.9.0
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.wicket/wicket.*$</packageUrl>
+    <cve>CVE-2026-42509</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: wicket-core-9.22.0.jar
+   Pas de données critiques dans ces fichiers
+     corrigé dans la 10.9.0 / PAS DE CORRECTION 9.X.X -> fix dans igloo 5.32.0-SNAPSHOT
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.wicket/wicket.*$</packageUrl>
+    <cve>CVE-2026-43646</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: wicket-core-9.22.0.jar
+   c'est sur de la session fixation ; pas top, mais moins critique
+     corrigé dans la 10.9.0 / PAS DE CORRECTION 9.X.X (a voir si on fait une PR ou si on fix directement dans les projets)
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.wicket/wicket.*$</packageUrl>
+    <cve>CVE-2026-40010</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-core-5.3.39.jar
+   On n'utilise pas resource chain support avec le cache enable
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring.*$</packageUrl>
+    <cve>CVE-2026-22741</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: postgresql-42.7.10.jar
+   DDOS, peut attendre la prochaine campagne de mise à jour
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.postgresql/postgresql@.*$</packageUrl>
+    <cve>CVE-2026-42198</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-boot-2.7.18.jar
+   On n'utilise pas spring-boot-devtools
+   sera fix sur la 4.0.6
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring-boot.*$</packageUrl>
+    <cve>CVE-2026-40972</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-security-core-5.8.16.jar
+   CVE low - timing attack sur  la vérif de password... On n'a pas d'user locked ou disabled via spring.
+   On n'est pas affecté en 7.0.5 -> 7.0.0 - 7.0.4 (mais présente sur spring 5)
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring-security.*$</packageUrl>
+    <cve>CVE-2026-22746</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-boot-4.0.5.jar
+   We don't use ${random.value} to create random property source
+   sera fix sur la 4.0.6
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring-boot.*$</packageUrl>
+    <vulnerabilityName>CVE-2026-40975</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-boot-4.0.5.jar
+   on drop les sessions au restart ; on ne surcharge pas la valeur de server.servlet.session.persistent et c'est false par défaut
+   sera fix sur la 4.0.6
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring-boot.*$</packageUrl>
+    <vulnerabilityName>CVE-2026-40973</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-boot-4.0.5.jar
+   on ne l'utilise pas ApplicationPidFileWriter 
+   sera fix sur la 4.0.6
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring-boot.*$</packageUrl>
+    <vulnerabilityName>CVE-2026-40977</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-boot-security-4.0.5.jar
+   on a toujours notre config de sécurité ET on ajoute ActuatorAutoConfiguration qui cale ses propres autorisations
+   sera fix sur la 4.0.6
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring-boot.*$</packageUrl>
+    <vulnerabilityName>CVE-2026-40976</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-security-web-7.0.5.jar
+   On ne fait que du TLS en client pas en serveur
+   On n'est pas affecté en 7.0.5 -> 7.0.0 - 7.0.4 (mais présente sur spring 5)
+  
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring-security-web@.*$</packageUrl>
+    <vulnerabilityName>CVE-2026-22747</vulnerabilityName>
+  </suppress>
 
   <!--                                                              -->
-  <!--                    IGLOO 7.0.0                               -->
+  <!--                    IGLOO 7.1.0                               -->
   <!--                                                              -->
-  
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-core-7.0.2.jar
+   Faille sur les serveurs windows, les app tournant sur igloo ne sont pas concernées
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring.*$</packageUrl>
+    <vulnerabilityName>CVE-2026-22745</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-web-7.0.2.jar
+   spring WebFlux only, igloo non concerné
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring.*$</packageUrl>
+    <vulnerabilityName>CVE-2026-22740</vulnerabilityName>
+  </suppress>
   <suppress>
     <notes><![CDATA[
    file name: log4j-layout-template-json-2.25.3.jar
    Non concerné, on n'utilise pas de MapMessage dans nos projets
        sera corrigé dans la 2.25.4
    ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.apache\.logging\.log4j/log4j-layout-template-json.*$</packageUrl>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.logging\.log4j/log4j-.*$</packageUrl>
     <vulnerabilityName>CVE-2026-34481</vulnerabilityName>
   </suppress>
   <suppress>
@@ -23,7 +187,7 @@
    file name: log4j-core-2.25.3.jar
     Non concerné, on n'utilise pas de certificats TLS dans log4j
    ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.apache\.logging\.log4j/log4j-core@.*$</packageUrl>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.logging\.log4j/log4j-.*$</packageUrl>
     <vulnerabilityName>CVE-2026-34477</vulnerabilityName>
   </suppress>
   <suppress>
@@ -32,7 +196,7 @@
      Non concerné, on n'utilise pas Rfc5424Layout
     sera corrigé dans la 2.25.4
    ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.apache\.logging\.log4j/log4j-core.*$</packageUrl>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.logging\.log4j/log4j-.*$</packageUrl>
     <vulnerabilityName>CVE-2026-34478</vulnerabilityName>
   </suppress>
   <suppress>
@@ -41,7 +205,7 @@
    Non concerné, on n'utilise pas le formateur XML
    sera corrigé dans la 2.25.4
    ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.apache\.logging\.log4j/log4j-core.*$</packageUrl>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.logging\.log4j/log4j-.*$</packageUrl>
     <vulnerabilityName>CVE-2026-34479</vulnerabilityName>
   </suppress>
   <suppress>
@@ -50,7 +214,7 @@
    Non concerné, on n'utilise pas le formateur XML
    sera corrigé dans la 2.25.4
    ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.apache\.logging\.log4j/log4j-core@.*$</packageUrl>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.logging\.log4j/log4j-.*$</packageUrl>
     <vulnerabilityName>CVE-2026-34480</vulnerabilityName>
   </suppress>
   <suppress>
@@ -77,7 +241,7 @@
    On n'utilise pas de moteurs de scripts java ni de mapping vers "/**"
     fix dans version 7.0.6
    ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.springframework/spring-webmvc.*$</packageUrl>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring-.*$</packageUrl>
     <vulnerabilityName>CVE-2026-22737</vulnerabilityName>
   </suppress>
 
@@ -94,8 +258,11 @@
   <suppress>
     <notes><![CDATA[
    file name: spring-security-core-7.0.2.jar
-   Les caches sont gérés par wicket, on est peu concerné
-   fix dans la version 7.0.4
+      Igloo uses Wicket mechanism for security headers setup for browser/user web resources. Wicket behavior is not modified by this Spring Security issue (cache control, CORS).
+      When server-side API are implemented, we explicitly setup CORS setup if API are meant to be accessible by browsers.
+      HSTS headers are setup by application reverse proxy, as it manages TLS/SSL setup.
+      So Igloo application behavior for security headers does not rely on HeaderWriterFilter, and Igloo provides the same default behavior (cache-control, CORS, HSTS) than Spring-Security
+      fix in 7.0.4
    ]]></notes>
     <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring-security-.*$
     </packageUrl>
@@ -117,7 +284,7 @@
     fix dans la version spring-boot 4.0.4
    ]]></notes>
     <packageUrl regex="true">
-      ^pkg:maven/org\.springframework\.boot/spring-boot-actuator-autoconfigure@.*$
+      ^pkg:maven/org\.springframework\.boot/spring-boot.*$
     </packageUrl>
     <vulnerabilityName>CVE-2026-22733</vulnerabilityName>
   </suppress>

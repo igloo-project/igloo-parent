@@ -91,6 +91,18 @@
 
 .navbar {
 	&.navbar-app {
+		.navbar-container {
+			@include make-container();
+			
+			@each $breakpoint, $container-max-width in $container-max-widths {
+				@if breakpoint-min($breakpoint) >= breakpoint-min($sidebar-expand) {
+					@include media-breakpoint-up($breakpoint) {
+						max-width: $container-max-width;
+					}
+				}
+			}
+		}
+		
 		.navbar-toggler {
 			display: inline-block;
 		}
