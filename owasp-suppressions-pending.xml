@@ -4,13 +4,36 @@
   <!--                                                              -->
   <!--                    FUTUR IGLOO RELEASE                       -->
   <!--                                                              -->
-
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-boot-data-commons-4.0.1.jar
+   on n'utilise pas de serveur ElasticSearch ni d'autoconf spring boot elasticsearch
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring-boot-data-commons@.*$</packageUrl>
+    <cve>CVE-2026-40970</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-boot-data-commons-4.0.1.jar
+   on n'utilise pas RabbitMQ d'autoconf spring boot RabbitMQ
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring-boot.*$</packageUrl>
+    <cve>CVE-2026-40971</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-boot-data-commons-4.0.1.jar
+   on n'utilise pas Cassandrani d'autoconf spring boot cassandra
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring-boot.*$</packageUrl>
+    <cve>CVE-2026-40974</cve>
+  </suppress>
   <suppress>
     <notes><![CDATA[
    file name: httpclient5-5.6.jar
    On n'utilise pas l'auth SCRAM-SHA-256
    ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.apache\.httpcomponents\.client5/httpclient5@.*$</packageUrl>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.httpcomponents\.client5/httpclient5.*$</packageUrl>
     <cve>CVE-2026-40542</cve>
   </suppress>
   <suppress>
@@ -132,7 +155,7 @@
   </suppress>
 
   <!--                                                              -->
-  <!--                    IGLOO 7.0.0                               -->
+  <!--                    IGLOO 7.1.0                               -->
   <!--                                                              -->
   <suppress>
     <notes><![CDATA[

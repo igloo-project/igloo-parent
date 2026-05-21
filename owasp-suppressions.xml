@@ -20,4 +20,21 @@
     </packageUrl>
     <vulnerabilityName regex="true">.*</vulnerabilityName>
   </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: micrometer-registry-prometheus-1.16.2.jar
+ 	False positive with Prometheus monitoring system version
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/io\.micrometer/micrometer-registry-prometheus.*$</packageUrl>
+    <cve>CVE-2026-42154</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+		file name: prometheus-metrics-core-1.2.1.jar
+
+		False positive with Prometheus monitoring system version
+		]]></notes>
+    <packageUrl regex="true">^pkg:maven/io\.prometheus/prometheus-metrics-.*$</packageUrl>
+    <cve>CVE-2019-3826</cve>
+  </suppress>
 </suppressions>
