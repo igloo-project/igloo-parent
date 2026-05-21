@@ -158,7 +158,8 @@ igloo-dependency-check:
       -DnodeAnalyzerEnabled=false -DyarnAuditAnalyzerEnabled=false -DassemblyAnalyzerEnabled=false 
       -DsuppressionFiles=$SUPPRESSION_FILES
       -DnvdApiKey=$OWASP_API_KEY
-      -DossIndexUsername=roland.foucher@kobalt.fr -DossIndexPassword=$OWASP_OSS_INDEX_TOKEN
+      # sonatype est devenue payant, voir L16947
+      # -DossIndexUsername=roland.foucher@kobalt.fr -DossIndexPassword=$OWASP_OSS_INDEX_TOKEN 
       -Dformats=HTML,JUNIT -DfailBuildOnCVSS=0 -DjunitFailOnCVSS=0'
   artifacts:
     when: always
