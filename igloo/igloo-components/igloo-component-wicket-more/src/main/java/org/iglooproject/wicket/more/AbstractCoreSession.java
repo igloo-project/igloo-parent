@@ -2,6 +2,7 @@ package org.iglooproject.wicket.more;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import igloo.security.CoreUserDetails;
 import igloo.security.UserDetails;
 import jakarta.annotation.Nonnull;
@@ -11,6 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.Collection;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.Set;
 import org.apache.wicket.Session;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.authroles.authorization.strategies.role.Roles;
@@ -36,6 +38,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.FactorGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -374,6 +377,8 @@ public abstract class AbstractCoreSession<U extends GenericEntity<Long, U> & IUs
    * <p>Update both Spring Security and Wicket contexts.
    */
   public void refreshAuthentication() {
+    Collection<? extends GrantedAuthority> originalAuthorities =
+        SecurityContextHolder.getContext().getAuthentication().getAuthorities();
     UserDetails userDetails = (UserDetails) userDetailsService.loadUserByUsername(getUsername());
     UserDetails targetUser =
         new CoreUserDetails(
@@ -381,10 +386,28 @@ public abstract class AbstractCoreSession<U extends GenericEntity<Long, U> & IUs
             "NO-PASSWORD",
             userDetails.getAuthorities(),
             userDetails.getPermissions());
+
+    // FactorGrantedAuthority-aware behavior:
+    // Some mechanism (like OIDC provider) relies on FactorGrantedAuthority to work correctly. If
+    // there currently is a FactorGrantedAuthority in current Authentication, we keep it in the
+    // newly generated Authentication.
+    // Authority is added only on Authentication, not on userDetails (like it is done at login time)
+    //
+    // (if missing, spring-security JWTGenerator used by OIDC provider for SSO fails as it cannot
+    // populate authenticationTime field)
+    Set<GrantedAuthority> authorities = Sets.newHashSet(userDetails.getAuthorities());
+    originalAuthorities.stream()
+        .filter(FactorGrantedAuthority.class::isInstance)
+        .findFirst()
+        .ifPresent(authorities::add);
+
     // create the new authentication token
     UsernamePasswordAuthenticationToken targetUserRequest =
         UsernamePasswordAuthenticationToken.authenticated(
-            targetUser, targetUser.getPassword(), targetUser.getAuthorities());
+            targetUser,
+            targetUser.getPassword(),
+            authorities // use merged authorities - cf FactorGrantedAuthority
+            );
     targetUserRequest.setDetails(targetUser);
     setSpringSecurityContext(targetUserRequest);
 
