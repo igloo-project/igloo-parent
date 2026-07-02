@@ -10,16 +10,21 @@ import igloo.wicket.model.ReadOnlyModel;
 import java.util.List;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.Page;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.wicket.more.link.descriptor.AbstractDynamicBookmarkableLink;
 import org.iglooproject.wicket.more.link.descriptor.generator.ILinkGenerator;
 import org.iglooproject.wicket.more.link.descriptor.mapper.ILinkDescriptorMapper;
+import org.iglooproject.wicket.more.link.dto.base.IPageLinkDescriptor;
+import org.iglooproject.wicket.more.link.dto.component.PageLinkBookmarkablePageLink;
+import org.iglooproject.wicket.more.link.dto.dto.IPageLinkDataDto;
 
 public class CoreBootstrapBadgeColumn<T, S extends ISort<?>, C> extends AbstractCoreColumn<T, S> {
 
@@ -41,6 +46,10 @@ public class CoreBootstrapBadgeColumn<T, S extends ISort<?>, C> extends Abstract
 
   private ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<T>>
       sideLinkGeneratorMapper;
+
+  private org.iglooproject.wicket.more.link.dto.base.IPageLinkDescriptor<
+          ? extends Page, ? super IPageLinkDataDto>
+      pageLinkDescriptor;
 
   private enum LinkBehaviorIfInvalid {
     THROW_EXCEPTION,
@@ -91,11 +100,18 @@ public class CoreBootstrapBadgeColumn<T, S extends ISort<?>, C> extends Abstract
                 .showTooltip(showTooltip);
           }
 
+          // TODO RFO DTO modifier come le coreLabelColumn
           @Override
           public MarkupContainer getLink(String wicketId, IModel<T> rowModel) {
+            if (rowModel.getObject() instanceof IPageLinkDataDto pageLinkDataDto
+                && pageLinkDescriptor != null) {
+              return decorate(
+                  pageLinkDescriptor.generator(Model.of(pageLinkDataDto)).link(wicketId));
+            }
             if (linkGeneratorMapper != null) {
               return decorate(linkGeneratorMapper.map(rowModel).link(wicketId));
             }
+
             return new InvisiblePanel(wicketId);
           }
 
@@ -120,6 +136,25 @@ public class CoreBootstrapBadgeColumn<T, S extends ISort<?>, C> extends Abstract
           break;
         case THROW_EXCEPTION:
           link.throwExceptionIfInvalid();
+          break;
+      }
+    }
+    for (Behavior linkBehavior : linkBehaviors) {
+      link.add(linkBehavior);
+    }
+    return link;
+  }
+
+  private PageLinkBookmarkablePageLink<? extends Page> decorate(
+      PageLinkBookmarkablePageLink<? extends Page> link) {
+    if (linkBehaviorIfInvalid != null) {
+      switch (linkBehaviorIfInvalid) {
+        case HIDE:
+          link.hideIfInvalid();
+          break;
+        case THROW_EXCEPTION:
+          // TODO RFO, voir ce qu'on fait dans ce cas
+          link.hideIfInvalid();
           break;
       }
     }
@@ -156,6 +191,19 @@ public class CoreBootstrapBadgeColumn<T, S extends ISort<?>, C> extends Abstract
       throw new IllegalStateException("link and side link cannot be both set.");
     }
     this.linkGeneratorMapper = linkGeneratorFactory;
+    return this;
+  }
+
+  public IPageLinkDescriptor<? extends Page, ? super IPageLinkDataDto> getPageLinkDescriptor() {
+    return pageLinkDescriptor;
+  }
+
+  public CoreBootstrapBadgeColumn<T, S, C> setPageLinkDescriptor(
+      IPageLinkDescriptor<? extends Page, ? super IPageLinkDataDto> linkGeneratorFactory) {
+    if (pageLinkDescriptor != null) {
+      throw new IllegalStateException("link and side link cannot be both set.");
+    }
+    this.pageLinkDescriptor = linkGeneratorFactory;
     return this;
   }
 

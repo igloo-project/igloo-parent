@@ -24,6 +24,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import org.apache.wicket.Component;
+import org.apache.wicket.Page;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
@@ -38,6 +39,9 @@ import org.iglooproject.wicket.more.link.descriptor.generator.ILinkGenerator;
 import org.iglooproject.wicket.more.link.descriptor.mapper.BindingOneParameterLinkDescriptorMapper;
 import org.iglooproject.wicket.more.link.descriptor.mapper.FunctionOneParameterLinkDescriptorMapper;
 import org.iglooproject.wicket.more.link.descriptor.mapper.ILinkDescriptorMapper;
+import org.iglooproject.wicket.more.link.dto.base.IPageLinkDescriptor;
+import org.iglooproject.wicket.more.link.dto.base.IPageLinkGenerator;
+import org.iglooproject.wicket.more.link.dto.dto.IPageLinkDataDto;
 import org.iglooproject.wicket.more.markup.html.factory.ComponentFactories;
 import org.iglooproject.wicket.more.markup.html.sort.ISortIconStyle;
 import org.iglooproject.wicket.more.markup.html.sort.SortIconStyle;
@@ -785,6 +789,14 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
     }
 
     @Override
+    public IAddedLabelColumnState<T, S> withLink(
+        SerializableFunction2<? super IModel<? extends T>, IPageLinkGenerator<? extends Page>>
+            pageLinkGeneratorFunction) {
+      getColumn().setPageLinkDescriptor(pageLinkGeneratorFunction);
+      return this;
+    }
+
+    @Override
     public IAddedLabelColumnState<T, S> withSideLink(
         ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<T>> linkGeneratorMapper) {
       getColumn().setSideLinkGeneratorMapper(linkGeneratorMapper);
@@ -932,6 +944,14 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
         ICoreBinding<? super T, E> binding,
         ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<E>> linkGeneratorMapper) {
       return withLink(new BindingOneParameterLinkDescriptorMapper<>(binding, linkGeneratorMapper));
+    }
+
+    @Override
+    public IAddedBootstrapBadgeColumnState<T, S, C> withLink(
+        IPageLinkDescriptor<? extends ILinkGenerator, ? super IPageLinkDataDto>
+            linkGeneratorMapper) {
+      getColumn().setPageLinkDescriptor(linkGeneratorMapper);
+      return this;
     }
 
     @Override

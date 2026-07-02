@@ -7,14 +7,18 @@ import igloo.wicket.renderer.Renderer;
 import java.util.List;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.Page;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
+import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.wicket.more.link.descriptor.AbstractDynamicBookmarkableLink;
 import org.iglooproject.wicket.more.link.descriptor.generator.ILinkGenerator;
 import org.iglooproject.wicket.more.link.descriptor.mapper.ILinkDescriptorMapper;
+import org.iglooproject.wicket.more.link.dto.base.IPageLinkGenerator;
+import org.iglooproject.wicket.more.link.dto.component.PageLinkBookmarkablePageLink;
 
 public abstract class CoreLabelColumn<T, S extends ISort<?>> extends AbstractCoreColumn<T, S> {
 
@@ -33,9 +37,12 @@ public abstract class CoreLabelColumn<T, S extends ISort<?>> extends AbstractCor
   private ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<T>>
       sideLinkGeneratorMapper;
 
+  private SerializableFunction2<? super IModel<? extends T>, IPageLinkGenerator<? extends Page>>
+      pageLinkGeneratorFunction;
+
   private boolean hideIfInvalid = false;
 
-  private List<Behavior> linkBehaviors = Lists.newArrayList();
+  private final List<Behavior> linkBehaviors = Lists.newArrayList();
 
   public CoreLabelColumn(IModel<String> displayModel) {
     super(displayModel);
@@ -69,6 +76,9 @@ public abstract class CoreLabelColumn<T, S extends ISort<?>> extends AbstractCor
 
           @Override
           public MarkupContainer getLink(String wicketId, IModel<T> rowModel) {
+            if (pageLinkGeneratorFunction != null) {
+              return decorate(pageLinkGeneratorFunction.apply(rowModel).link(wicketId));
+            }
             if (linkGeneratorMapper != null) {
               return decorate(linkGeneratorMapper.map(rowModel).link(wicketId));
             }
@@ -117,6 +127,17 @@ public abstract class CoreLabelColumn<T, S extends ISort<?>> extends AbstractCor
     return link;
   }
 
+  private PageLinkBookmarkablePageLink<? extends Page> decorate(
+      PageLinkBookmarkablePageLink<? extends Page> link) {
+    if (hideIfInvalid) {
+      link.hideIfInvalid();
+    }
+    for (Behavior linkBehavior : linkBehaviors) {
+      link.add(linkBehavior);
+    }
+    return link;
+  }
+
   public CoreLabelColumn<T, S> multiline() {
     this.multiline = true;
     return this;
@@ -156,6 +177,21 @@ public abstract class CoreLabelColumn<T, S extends ISort<?>> extends AbstractCor
       throw new IllegalStateException("link and side link cannot be both set.");
     }
     this.linkGeneratorMapper = linkGeneratorFactory;
+    return this;
+  }
+
+  public SerializableFunction2<? super IModel<? extends T>, IPageLinkGenerator<? extends Page>>
+      getPageLinkGeneratorFunction() {
+    return pageLinkGeneratorFunction;
+  }
+
+  public CoreLabelColumn<T, S> setPageLinkDescriptor(
+      SerializableFunction2<? super IModel<? extends T>, IPageLinkGenerator<? extends Page>>
+          pageLinkGeneratorFunction) {
+    if (this.pageLinkGeneratorFunction != null) {
+      throw new IllegalStateException("link and side link cannot be both set.");
+    }
+    this.pageLinkGeneratorFunction = pageLinkGeneratorFunction;
     return this;
   }
 

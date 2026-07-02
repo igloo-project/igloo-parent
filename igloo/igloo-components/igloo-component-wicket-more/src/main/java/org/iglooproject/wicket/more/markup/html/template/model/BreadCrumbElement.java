@@ -3,7 +3,7 @@ package org.iglooproject.wicket.more.markup.html.template.model;
 import java.io.Serializable;
 import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
-import org.iglooproject.wicket.more.link.descriptor.generator.ILinkGenerator;
+import org.iglooproject.wicket.more.link.descriptor.generator.IBasicPageLinkGenerator;
 import org.iglooproject.wicket.more.markup.html.template.component.LinkGeneratorBreadCrumbElementPanel;
 import org.iglooproject.wicket.more.markup.html.template.component.SimpleBreadCrumbElementPanel;
 
@@ -11,15 +11,15 @@ public class BreadCrumbElement implements Serializable {
 
   private static final long serialVersionUID = -44367801976105581L;
 
-  private IModel<String> labelModel;
+  private final IModel<String> labelModel;
 
-  private ILinkGenerator linkGenerator;
+  private IBasicPageLinkGenerator linkGenerator;
 
   public BreadCrumbElement(IModel<String> labelModel) {
     this.labelModel = labelModel;
   }
 
-  public BreadCrumbElement(IModel<String> labelModel, ILinkGenerator linkGenerator) {
+  public BreadCrumbElement(IModel<String> labelModel, IBasicPageLinkGenerator linkGenerator) {
     this.labelModel = labelModel;
     this.linkGenerator = linkGenerator;
   }
@@ -28,7 +28,7 @@ public class BreadCrumbElement implements Serializable {
     return labelModel;
   }
 
-  public ILinkGenerator getLinkGenerator() {
+  public IBasicPageLinkGenerator getLinkGenerator() {
     return linkGenerator;
   }
 
