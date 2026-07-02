@@ -2,6 +2,7 @@ package org.iglooproject.wicket.more.markup.repeater.table.builder.state;
 
 import igloo.wicket.condition.Condition;
 import igloo.wicket.renderer.Renderer;
+import org.apache.wicket.Page;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.model.IModel;
 import org.iglooproject.commons.util.binding.ICoreBinding;
@@ -9,6 +10,7 @@ import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.wicket.more.link.descriptor.generator.ILinkGenerator;
 import org.iglooproject.wicket.more.link.descriptor.mapper.ILinkDescriptorMapper;
+import org.iglooproject.wicket.more.link.dto.base.IPageLinkGenerator;
 import org.iglooproject.wicket.more.markup.html.sort.ISortIconStyle;
 import org.iglooproject.wicket.more.markup.html.sort.TableSortLink.CycleMode;
 
@@ -50,6 +52,10 @@ public interface IAddedLabelColumnState<T, S extends ISort<?>> extends IAddedCor
   <C> IAddedLabelColumnState<T, S> withLink(
       ICoreBinding<? super T, C> binding,
       ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<C>> linkGeneratorMapper);
+
+  IAddedLabelColumnState<T, S> withLink(
+      SerializableFunction2<? super IModel<? extends T>, IPageLinkGenerator<? extends Page>>
+          pageLinkGeneratorFunction);
 
   IAddedLabelColumnState<T, S> withSideLink(
       ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<T>> linkGeneratorMapper);

@@ -12,7 +12,7 @@ import org.apache.wicket.model.IDetachable;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.iglooproject.commons.util.collections.CollectionUtils;
-import org.iglooproject.wicket.more.link.descriptor.generator.IPageLinkGenerator;
+import org.iglooproject.wicket.more.link.descriptor.generator.IBasicPageLinkGenerator;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
 
 public class NavigationMenuItem implements IDetachable {
@@ -21,7 +21,7 @@ public class NavigationMenuItem implements IDetachable {
 
   private IModel<String> labelModel;
 
-  private IPageLinkGenerator pageLinkGenerator;
+  private IBasicPageLinkGenerator pageLinkGenerator;
 
   private IModel<String> cssClassesModel = Model.of("");
 
@@ -35,13 +35,13 @@ public class NavigationMenuItem implements IDetachable {
     this(labelModel, null);
   }
 
-  public NavigationMenuItem(IModel<String> labelModel, IPageLinkGenerator pageLinkGenerator) {
+  public NavigationMenuItem(IModel<String> labelModel, IBasicPageLinkGenerator pageLinkGenerator) {
     this(labelModel, pageLinkGenerator, List.of());
   }
 
   public NavigationMenuItem(
       IModel<String> labelModel,
-      IPageLinkGenerator pageLinkGenerator,
+      IBasicPageLinkGenerator pageLinkGenerator,
       Collection<NavigationMenuItem> subMenuItems) {
     label(labelModel);
     pageLinkGenerator(pageLinkGenerator);
@@ -50,7 +50,7 @@ public class NavigationMenuItem implements IDetachable {
 
   public AbstractLink link(String wicketId) {
     if (pageLinkGenerator != null) {
-      return pageLinkGenerator.link(wicketId);
+      return pageLinkGenerator.link(wicketId).hideIfInvalid();
     } else {
       return new BlankLink(wicketId);
     }
@@ -85,11 +85,11 @@ public class NavigationMenuItem implements IDetachable {
     return this;
   }
 
-  public IPageLinkGenerator getPageLinkGenerator() {
+  public IBasicPageLinkGenerator getPageLinkGenerator() {
     return pageLinkGenerator;
   }
 
-  public NavigationMenuItem pageLinkGenerator(IPageLinkGenerator pageLinkGenerator) {
+  public NavigationMenuItem pageLinkGenerator(IBasicPageLinkGenerator pageLinkGenerator) {
     this.pageLinkGenerator = pageLinkGenerator;
     return this;
   }

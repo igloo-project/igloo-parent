@@ -8,6 +8,8 @@ import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.wicket.more.link.descriptor.generator.ILinkGenerator;
 import org.iglooproject.wicket.more.link.descriptor.mapper.ILinkDescriptorMapper;
+import org.iglooproject.wicket.more.link.dto.base.IPageLinkDescriptor;
+import org.iglooproject.wicket.more.link.dto.dto.IPageLinkDataDto;
 import org.iglooproject.wicket.more.markup.html.sort.ISortIconStyle;
 import org.iglooproject.wicket.more.markup.html.sort.TableSortLink.CycleMode;
 
@@ -62,6 +64,9 @@ public interface IAddedBootstrapBadgeColumnState<T, S extends ISort<?>, C>
   <E> IAddedBootstrapBadgeColumnState<T, S, C> withLink(
       ICoreBinding<? super T, E> binding,
       ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<E>> linkGeneratorMapper);
+
+  IAddedBootstrapBadgeColumnState<T, S, C> withLink(
+      IPageLinkDescriptor<? extends ILinkGenerator, ? super IPageLinkDataDto> linkGeneratorMapper);
 
   IAddedBootstrapBadgeColumnState<T, S, C> withSideLink(
       ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<T>> linkGeneratorMapper);

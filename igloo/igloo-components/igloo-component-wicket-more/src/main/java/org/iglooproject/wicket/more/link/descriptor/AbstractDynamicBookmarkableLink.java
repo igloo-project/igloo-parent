@@ -31,7 +31,8 @@ import org.iglooproject.wicket.more.link.descriptor.parameter.validator.LinkPara
  * @see
  *     IValidatorState#validator(org.iglooproject.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator)
  */
-public abstract class AbstractDynamicBookmarkableLink extends Link<Void> {
+public abstract class AbstractDynamicBookmarkableLink extends Link<Void>
+    implements IBookmarkablePageLink {
 
   private static final long serialVersionUID = 1L;
 
@@ -72,7 +73,8 @@ public abstract class AbstractDynamicBookmarkableLink extends Link<Void> {
    *
    * <p>Default behavior is to automatically disable the link.
    */
-  public AbstractDynamicBookmarkableLink hideIfInvalid() {
+  @Override
+  public Link<Void> hideIfInvalid() {
     this.behaviorIfInvalid = BehaviorIfInvalid.HIDE;
     return this;
   }

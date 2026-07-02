@@ -27,7 +27,7 @@ import org.iglooproject.wicket.more.markup.html.template.model.NavigationMenuIte
  *
  * @see ILinkGenerator
  */
-public interface IPageLinkGenerator extends ILinkGenerator, IDetachable {
+public interface IPageLinkGenerator extends ILinkGenerator, IDetachable, IBasicPageLinkGenerator {
 
   /**
    * Creates an {@link AbstractDynamicBookmarkableLink} that points to the same page than this
@@ -153,6 +153,7 @@ public interface IPageLinkGenerator extends ILinkGenerator, IDetachable {
    *
    * @return
    */
+  @Override
   boolean isActive(Class<? extends Page> selectedPage);
 
   PageProvider newPageProvider()
