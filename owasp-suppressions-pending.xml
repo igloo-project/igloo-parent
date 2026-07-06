@@ -243,7 +243,31 @@
   <!--                                                              -->
   <!--                    IGLOO 7.2.0                               -->
   <!--                                                              -->
-  
+
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-security-core-6.5.1.jar
+   On n'utilise pas JdbcOneTimeTokenService
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring.*$</packageUrl>
+    <cve>CVE-2026-22751</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-security-core-6.5.1.jar
+   On n'utilise pas NimbusJwtDecoder ou NimbusReactiveJwtDecoder
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring.*$</packageUrl>
+    <cve>CVE-2026-22748</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: kotlin-stdlib-1.9.0.jar
+   Découle de resilience4j sur la version 2.3.0. On ne fait pas de kotlin et on n'utilise pas de dep resilience4j utilisant kotlin directement.
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.jetbrains\.kotlin/kotlin.*$</packageUrl>
+    <cve>CVE-2026-53914</cve>
+  </suppress>
   <suppress>
     <notes><![CDATA[
    file name: spring-boot-data-commons-4.0.1.jar
@@ -382,6 +406,15 @@
    ]]></notes>
     <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring-boot.*$</packageUrl>
     <vulnerabilityName>CVE-2026-40976</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-security-core-6.5.1.jar
+   On ne fait que du TLS en client pas en serveur
+   mlême chose que CVE-2026-22747 mais spring 6
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring.*$</packageUrl>
+    <cve>CVE-2026-47838</cve>
   </suppress>
   <suppress>
     <notes><![CDATA[
@@ -776,6 +809,22 @@
   <!--                                                       -->
   <!--                    IGLOO 5.28.0                       -->
   <!--                                                       -->
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-core-5.3.39.jar
+   On n'utilise pas Spring Webflux
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring.*$</packageUrl>
+    <cve>CVE-2026-41847</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-core-5.3.39.jar
+   On ne laisse pas un utilisateur entré des données évaluées en SpEL
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring.*$</packageUrl>
+    <cve>CVE-2026-41849</cve>
+  </suppress>
   <suppress>
     <notes><![CDATA[
         file name: wicket-core-9.21.0.jar: jquery-1.12.4.js
