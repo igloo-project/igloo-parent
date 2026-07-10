@@ -5,8 +5,7 @@
     "module": "ESNext",
     "target": "ESNext",
     "types": [],
-
-    "allowImportingTsExtensions": true,
+    
     "moduleResolution": "node",
     
     // Other Outputs
