@@ -18,7 +18,7 @@ On ne fait pas de connexion PostgreSQL en SCRAM-SHA-256-PLUS avec channelBinding
    file name: httpcore5-5.4.jar
       DOS qui peut attendre la campagne mise à jour. On ne fait que du client dans nos projets et on ne fait pas de HTTP/2
    ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.apache\.httpcomponents\.core5/httpcore5@.*$</packageUrl>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.httpcomponents\.core5/httpcore5.*$</packageUrl>
     <cve>CVE-2026-54428</cve>
   </suppress>
   <suppress>
@@ -26,8 +26,8 @@ On ne fait pas de connexion PostgreSQL en SCRAM-SHA-256-PLUS avec channelBinding
    file name: httpcore5-5.4.jar
    DOS qui peut attendre la campagne mise à jour. On ne fait que du client dans nos projets.
    ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.apache\.httpcomponents\.core5/httpcore5@.*$</packageUrl>
-    <cpe>cpe:/a:apache:httpcomponents_core</cpe>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.httpcomponents\.core5/httpcore5.*$</packageUrl>
+    <cve>CVE-2026-54399</cve>
   </suppress>
   <suppress>
     <notes><![CDATA[
