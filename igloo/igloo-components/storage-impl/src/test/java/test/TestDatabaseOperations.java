@@ -12,8 +12,10 @@ import java.math.BigInteger;
 import java.nio.file.Path;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.time.Clock;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -1186,8 +1188,11 @@ class TestDatabaseOperations extends AbstractTest {
             entityManagerFactory,
             em -> {
               StorageConsistencyCheck c = new StorageConsistencyCheck();
-              c.setCheckFinishedOn(LocalDateTime.now());
-              c.setCheckStartedOn(LocalDateTime.now());
+              // Round the results because the precision is different when comparing two
+              // `LocalDateTime`
+              Clock mClock = Clock.tickMillis(ZoneId.systemDefault());
+              c.setCheckFinishedOn(LocalDateTime.now(mClock));
+              c.setCheckStartedOn(LocalDateTime.now(mClock));
               c.setCheckType(StorageUnitCheckType.LISTING_SIZE);
               c.setStorageUnit(em.find(StorageUnit.class, storageUnit.getId()));
               databaseOperations.createConsistencyCheck(c);

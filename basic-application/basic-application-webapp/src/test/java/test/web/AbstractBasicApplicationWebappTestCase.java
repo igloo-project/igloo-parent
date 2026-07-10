@@ -70,6 +70,14 @@ public abstract class AbstractBasicApplicationWebappTestCase
     initUserGroups();
     initUsers();
 
+    /*
+       Par défaut, wicket utilise cglib mais il n'est plus maintenu pour java 17
+       Il faut donc indiquer à wicket qu'il faut utiliser byte buddy
+       Cela passe par l'ajout d'un argument dans la jvm mais il n'est pas pris en compte pour les tests
+       Pour éviter de changer la config de chaque test, on set la property en amont pour tous les tests
+    */
+    System.setProperty("wicket.ioc.useByteBuddy", "true");
+
     setWicketTester(new BasicApplicationWicketTester(application));
   }
 
