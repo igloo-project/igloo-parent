@@ -1,7 +1,5 @@
 package org.iglooproject.wicket.more.console.maintenance.task.model;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.IOException;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
@@ -12,6 +10,8 @@ import org.iglooproject.jpa.more.business.task.model.QueuedTaskHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 public class BatchReportBeanModel<B extends BatchReportBean> extends LoadableDetachableModel<B> {
 
@@ -61,7 +61,7 @@ public class BatchReportBeanModel<B extends BatchReportBean> extends LoadableDet
         if (reportBean != null && clazz.isAssignableFrom(reportBean.getClass())) {
           return (B) reportBean;
         }
-      } catch (IOException e) {
+      } catch (JacksonException e) {
         LOGGER.error("Error while reading serialized BatchReportBean.", e);
       }
     }

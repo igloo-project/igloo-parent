@@ -1,8 +1,6 @@
 package org.iglooproject.jpa.more.business.task.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Date;
@@ -29,6 +27,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
+import tools.jackson.databind.ObjectMapper;
 
 public abstract class AbstractTask implements Runnable, Serializable {
   private static final long serialVersionUID = 7734300264023051135L;
@@ -203,10 +202,7 @@ public abstract class AbstractTask implements Runnable, Serializable {
                       }
                       endTask(queuedTaskHolder, taskStatus);
                       return taskStatus;
-                    } catch (RuntimeException
-                        | JsonProcessingException
-                        | ServiceException
-                        | SecurityServiceException e) {
+                    } catch (RuntimeException | ServiceException | SecurityServiceException e) {
                       throw new RuntimeException(e);
                     }
                   }
@@ -298,10 +294,7 @@ public abstract class AbstractTask implements Runnable, Serializable {
                           queuedTaskHolderService.getById(queuedTaskHolderId);
                       endTask(queuedTaskHolder, TaskStatus.COMPLETED);
                       return TaskStatus.COMPLETED;
-                    } catch (RuntimeException
-                        | JsonProcessingException
-                        | ServiceException
-                        | SecurityServiceException e) {
+                    } catch (RuntimeException | ServiceException | SecurityServiceException e) {
                       throw new RuntimeException(e);
                     }
                   }
@@ -333,10 +326,7 @@ public abstract class AbstractTask implements Runnable, Serializable {
                       }
                       endTask(queuedTaskHolder, taskStatus);
                       return taskStatus;
-                    } catch (RuntimeException
-                        | JsonProcessingException
-                        | ServiceException
-                        | SecurityServiceException e) {
+                    } catch (RuntimeException | ServiceException | SecurityServiceException e) {
                       throw new RuntimeException(e);
                     }
                   }
@@ -412,7 +402,7 @@ public abstract class AbstractTask implements Runnable, Serializable {
   }
 
   private void endTask(QueuedTaskHolder queuedTaskHolder, TaskStatus endingStatus)
-      throws JsonProcessingException, ServiceException, SecurityServiceException {
+      throws ServiceException, SecurityServiceException {
     queuedTaskHolder.setStatus(endingStatus);
     queuedTaskHolder.setEndDate(Instant.now());
     queuedTaskHolder.updateExecutionInformation(taskExecutionResult, queuedTaskHolderObjectMapper);
