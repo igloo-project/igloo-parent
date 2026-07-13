@@ -1,5 +1,6 @@
 package org.iglooproject.jpa.hibernate.usertype;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.io.Serializable;
 import org.iglooproject.functional.SerializableFunction2;
 
@@ -24,6 +25,7 @@ public abstract class AbstractMaterializedPrimitiveValue<
 
   private final P value;
 
+  @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
   protected AbstractMaterializedPrimitiveValue(P value) {
     if (value == null) {
       throw new IllegalArgumentException("value must not be null");
