@@ -2,8 +2,6 @@ package test.jpa.more.business;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Date;
 import java.util.List;
 import org.iglooproject.commons.util.report.BatchReport;
@@ -21,6 +19,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import test.jpa.more.business.task.config.TestTaskManagementConfig;
 import test.jpa.more.config.SpringBootTestJpaMore;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * Tests Jackson serialization/deserialization of task-related objects using the real {@link
