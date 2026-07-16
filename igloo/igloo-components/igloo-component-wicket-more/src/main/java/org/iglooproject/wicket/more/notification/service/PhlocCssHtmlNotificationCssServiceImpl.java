@@ -1,17 +1,19 @@
 package org.iglooproject.wicket.more.notification.service;
 
 import com.google.common.collect.Maps;
-import com.helger.commons.io.IHasInputStream;
-import com.helger.css.ECSSVersion;
+import com.helger.base.io.iface.IHasInputStream;
 import com.helger.css.decl.CascadingStyleSheet;
 import com.helger.css.reader.CSSReader;
 import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.Charset;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.Map;
 import javax.annotation.Nullable;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.wicket.util.resource.IResourceStream;
 import org.apache.wicket.util.resource.ResourceStreamNotFoundException;
@@ -94,17 +96,24 @@ public class PhlocCssHtmlNotificationCssServiceImpl implements IHtmlNotification
 
   private IHtmlNotificationCssRegistry createRegistry(IResourceStream resourceStream)
       throws ServiceException {
-    CascadingStyleSheet sheet =
-        CSSReader.readFromStream(
-            new WicketResourceStreamToPhlocInputStreamProviderWrapper(resourceStream),
-            Charset.defaultCharset(),
-            ECSSVersion.CSS30);
+    new WicketResourceStreamToPhlocInputStreamProviderWrapper(resourceStream);
+    try (InputStream is =
+            new WicketResourceStreamToPhlocInputStreamProviderWrapper(resourceStream)
+                .getInputStream();
+        Reader reader = new InputStreamReader(is, StandardCharsets.UTF_8)) {
 
-    if (sheet == null) {
-      throw new ServiceException(
-          "An error occurred while parsing notification CSS; see the logs for details.");
-    } else {
-      return new SimplePhlocCssHtmlNotificationCssRegistry(sheet);
+      String css = IOUtils.toString(reader);
+      CascadingStyleSheet sheet = CSSReader.readFromString(css);
+
+      if (sheet == null) {
+        throw new ServiceException(
+            "An error occurred while parsing notification CSS; see the logs for details.");
+      } else {
+        return new SimplePhlocCssHtmlNotificationCssRegistry(sheet);
+      }
+
+    } catch (IOException e) {
+      throw new ServiceException(String.format("Error extracting css %s", resourceStream));
     }
   }
 
