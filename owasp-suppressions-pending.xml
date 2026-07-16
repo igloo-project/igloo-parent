@@ -6,6 +6,23 @@
   <!--                                                              -->
   <suppress>
     <notes><![CDATA[
+   file name: log4j-core-2.25.4.jar
+   On n'utilise pas MapMessage (suite de la CVE-2026-34481)
+   sera corrigé dans la 2.25.5 
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.logging\.log4j/log4j-core@.*$</packageUrl>
+    <cve>CVE-2026-49844</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-core-7.0.7.jar
+   On n'utilise pas webflux
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring-core@.*$</packageUrl>
+    <cve>CVE-2026-41839</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
    file name: postgresql-42.7.11.jar
    
 On ne fait pas de connexion PostgreSQL en SCRAM-SHA-256-PLUS avec channelBinding=require
