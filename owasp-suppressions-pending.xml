@@ -2,14 +2,320 @@
 <suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
 
   <!--                                                              -->
-  <!--                    FUTUR IGLOO RELEASE                       -->
+  <!--                    IGLOO 7.3.0                               -->
   <!--                                                              -->
+  <suppress>
+    <notes><![CDATA[
+   file name: log4j-core-2.25.4.jar
+   On n'utilise pas MapMessage (suite de la CVE-2026-34481)
+   sera corrigé dans la 2.25.5 
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.logging\.log4j/log4j-core@.*$</packageUrl>
+    <cve>CVE-2026-49844</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-core-7.0.7.jar
+   On n'utilise pas webflux
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring-core@.*$</packageUrl>
+    <cve>CVE-2026-41839</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: postgresql-42.7.11.jar
+   
+On ne fait pas de connexion PostgreSQL en SCRAM-SHA-256-PLUS avec channelBinding=require
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.postgresql/postgresql@.*$</packageUrl>
+    <cve>CVE-2026-54291</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: httpcore5-5.4.jar
+      DOS qui peut attendre la campagne mise à jour. On ne fait que du client dans nos projets et on ne fait pas de HTTP/2
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.httpcomponents\.core5/httpcore5.*$</packageUrl>
+    <cve>CVE-2026-54428</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: httpcore5-5.4.jar
+   DOS qui peut attendre la campagne mise à jour. On ne fait que du client dans nos projets.
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.httpcomponents\.core5/httpcore5.*$</packageUrl>
+    <cve>CVE-2026-54399</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: jackson-databind-2.21.2.jar
+   Non pertinente, on n'utilise pas cette désérialisation et l'exploitabilité pour dévoiler des informations pertinente est faible.
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/com\.fasterxml\.jackson\.core/jackson-databind@.*$</packageUrl>
+    <cve>CVE-2026-54518</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: jackson-databind-2.21.2.jar
+   medium à la marge, nous n'utilisons pas de manière conjointe les mécanismes de JsonView et le JsonUnwrapped. Classification mesurée.
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/com\.fasterxml\.jackson\.core/jackson-databind@.*$</packageUrl>
+    <cve>CVE-2026-54514</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: jackson-databind-2.21.2.jar
+    medium à la marge, sera fix lors de la prochaine cmapagne de MAJ
+    On est toujours sensible à la casse dans nos json
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/com\.fasterxml\.jackson\.core/jackson-databind@.*$</packageUrl>
+    <cve>CVE-2026-54515</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-core-7.0.7.jar
+         medium à la marge, sera fix lors de la prochaine cmapagne de MAJ
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring.*$</packageUrl>
+    <cve>CVE-2026-41854</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-core-7.0.7.jar
+      medium à la marge, sera fix lors de la prochaine cmapagne de MAJ
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring.*$</packageUrl>
+    <cve>CVE-2026-41841</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-core-7.0.7.jar
+    medium, sera fix lors de la prochaine cmapagne de MAJ
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring.*$</packageUrl>
+    <cve>CVE-2026-41853</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: jackson-databind-2.21.2.jar
+   medium à la marge, sera fix lors de la prochaine cmapagne de MAJ
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/com\.fasterxml\.jackson\.core/jackson-databind@.*$</packageUrl>
+    <cve>CVE-2026-54516</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: jackson-databind-2.21.2.jar
+   utilisation de @JsonView réstreinteà certains projets. les vérification de setter existants ont été faites
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/com\.fasterxml\.jackson\.core/jackson-databind@.*$</packageUrl>
+    <cve>CVE-2026-54517</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-core-7.0.7.jar
+   On ne fait pas de endpoint sur `/**` dans nos API
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring.*$</packageUrl>
+    <cve>CVE-2026-41844</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-core-7.0.7.jar
+   Pas d'utilisation de JavaScriptUtils.javaScriptEscape() dans nos projets
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring.*$</packageUrl>
+    <cve>CVE-2026-41845</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-core-7.0.7.jar
+   on ne fait pas de form avec des balise JSP
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring.*$</packageUrl>
+    <cve>CVE-2026-41846</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-core-7.0.7.jar
+   On n'utilise pas spring-webflux dans nos applications
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring.*$</packageUrl>
+    <cve>CVE-2026-41840</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-core-7.0.7.jar
+   on n'utilise pas de ressources versionnées et on ne va pas chercher de ressources dans les fichiers system
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring.*$</packageUrl>
+    <cve>CVE-2026-41843</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-core-7.0.7.jar
+    On ne laisse pas un utilisateur entré une expression SpEL
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring.*$</packageUrl>
+    <cve>CVE-2026-41852</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-security-core-7.0.5.jar
+   on utilise la version spring-boot-security-oauth2-authorization-server v4.0.6 qui contient spring-security-oauth2-authorization-server v7.0.5 dans les projets impactés
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring.*$</packageUrl>
+    <cve>CVE-2026-41008</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-security-core-7.0.5.jar
+   On n'utilise pas CookieRequestCache ni CookieServerRequestCache
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring.*$</packageUrl>
+    <cve>CVE-2026-41706</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-security-core-7.0.5.jar
+   on n'utilise pas SAML et donc pas RelyingPartyRegistration
+    on ne fait pas de génération de formulaire HTML par les filtres de spring-security
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring.*$</packageUrl>
+    <cve>CVE-2026-41003</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-security-core-7.0.5.jar
+   On n'utilise pas SAML dans nos projets
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring.*$</packageUrl>
+    <cve>CVE-2026-41694</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-core-7.0.7.jar
+   Rien à faire, on n'utilise pas AntPathMatcher dans nos projets
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring.*$</packageUrl>
+    <cve>CVE-2026-41848</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-core-7.0.7.jar
+   On n'a pas de versionning des resources dans nos projets.
+  On ne récupère pas de ressources dans le file system directement dans nos projets
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring.*$</packageUrl>
+    <cve>CVE-2026-41842</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-core-7.0.7.jar
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring.*$</packageUrl>
+    <cve>CVE-2026-41842</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-core-7.0.7.jar
+   On n'utilise jamais spring-websocket. On utilise l'implémentation tomcat.
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring.*$</packageUrl>
+    <cve>CVE-2026-41838</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: jackson-databind-2.21.2.jar
+   on n'utilise pas BasicPolymorphicTypeValidator.Builder.allowIfSubTypeIsArray() dans nos applications
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/com\.fasterxml\.jackson\.core/jackson-databind@.*$</packageUrl>
+    <cve>CVE-2026-54513</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: jackson-databind-2.21.2.jar
+    on ne déclare pas de liste blanche PolymorphicTypeValidator 
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/com\.fasterxml\.jackson\.core/jackson-databind@.*$</packageUrl>
+    <cve>CVE-2026-54512</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-core-7.0.7.jar
+   On ne laisse pas un utilisateur entré une expression SpEL
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring.*$</packageUrl>
+    <cve>CVE-2026-41850</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-core-7.0.7.jar
+   On ne laisse pas un utilisateur entré une expression SpEL
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring.*$</packageUrl>
+    <cve>CVE-2026-41851</cve>
+  </suppress>
+  <suppress>
+      <notes><![CDATA[
+   file name: spring-security-core-7.0.5.jar
+      on n'utilise pas saml2, non concerné sur nos projets
+   ]]></notes>
+      <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring.*$</packageUrl>
+      <cve>CVE-2026-40988</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-security-core-7.0.5.jar
+   on n'utilise pas saml2, non concerné sur nos projets
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring.*$</packageUrl>
+    <cve>CVE-2026-40993</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-core-7.0.7.jar
+   On n'utilise pas spring-jms, non concerné
+   sera corrigé lors de la monrté de version 7.0.8
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring.*$</packageUrl>
+    <cve>CVE-2026-41855</cve>
+  </suppress>
+  
+  <!--                                                              -->
+  <!--                    IGLOO 7.2.0                               -->
+  <!--                                                              -->
+
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-security-core-6.5.1.jar
+   On n'utilise pas JdbcOneTimeTokenService
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring.*$</packageUrl>
+    <cve>CVE-2026-22751</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-security-core-6.5.1.jar
+   On n'utilise pas NimbusJwtDecoder ou NimbusReactiveJwtDecoder
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring.*$</packageUrl>
+    <cve>CVE-2026-22748</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: kotlin-stdlib-1.9.0.jar
+   Découle de resilience4j sur la version 2.3.0. On ne fait pas de kotlin et on n'utilise pas de dep resilience4j utilisant kotlin directement.
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.jetbrains\.kotlin/kotlin.*$</packageUrl>
+    <cve>CVE-2026-53914</cve>
+  </suppress>
   <suppress>
     <notes><![CDATA[
    file name: spring-boot-data-commons-4.0.1.jar
    on n'utilise pas de serveur ElasticSearch ni d'autoconf spring boot elasticsearch
    ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring-boot-data-commons@.*$</packageUrl>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring-boot.*$</packageUrl>
     <cve>CVE-2026-40970</cve>
   </suppress>
   <suppress>
@@ -104,7 +410,7 @@
    CVE low - timing attack sur  la vérif de password... On n'a pas d'user locked ou disabled via spring.
    On n'est pas affecté en 7.0.5 -> 7.0.0 - 7.0.4 (mais présente sur spring 5)
    ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring-security.*$</packageUrl>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring.*$</packageUrl>
     <cve>CVE-2026-22746</cve>
   </suppress>
   <suppress>
@@ -142,6 +448,15 @@
    ]]></notes>
     <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring-boot.*$</packageUrl>
     <vulnerabilityName>CVE-2026-40976</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-security-core-6.5.1.jar
+   On ne fait que du TLS en client pas en serveur
+   mlême chose que CVE-2026-22747 mais spring 6
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring.*$</packageUrl>
+    <cve>CVE-2026-47838</cve>
   </suppress>
   <suppress>
     <notes><![CDATA[
@@ -400,7 +715,7 @@
            - annotation n'est usuellement pas déclarée sur des interfaces génériques
            - mise à jour igloo facile - corrigé sur version 6.2.11 
    ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.springframework/spring-core@.*$</packageUrl>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring.*$</packageUrl>
     <vulnerabilityName>CVE-2025-41249</vulnerabilityName>
   </suppress>
   <suppress>
@@ -410,7 +725,7 @@
            - mise à jour igloo facile - corrigé sur version 6.2.10 
    
    ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.springframework/spring-core@.*$</packageUrl>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring.*$</packageUrl>
     <vulnerabilityName>CVE-2025-41242</vulnerabilityName>
   </suppress>
   <suppress>
@@ -419,7 +734,7 @@
            - annotation n'est usuellement pas déclarée sur des interfaces génériques
            - mise à jour igloo facile - corrigé sur version 6.4.6 
    ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring-security-core@.*$
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring.*$
     </packageUrl>
     <vulnerabilityName>CVE-2025-41248</vulnerabilityName>
   </suppress>
@@ -509,7 +824,7 @@
             - on n'utilise pas l'annotation @EnableMethodSecurity en (mode=ASPECTJ)
             - mise à jour igloo facile - corrigé sur version 6.4.6 - igloo 6.11.0
        ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring-security-core@.*$
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring.*$
     </packageUrl>
     <vulnerabilityName>CVE-2025-41232</vulnerabilityName>
   </suppress>
@@ -536,6 +851,22 @@
   <!--                                                       -->
   <!--                    IGLOO 5.28.0                       -->
   <!--                                                       -->
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-core-5.3.39.jar
+   On n'utilise pas Spring Webflux
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring.*$</packageUrl>
+    <cve>CVE-2026-41847</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-core-5.3.39.jar
+   On ne laisse pas un utilisateur entré des données évaluées en SpEL
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring.*$</packageUrl>
+    <cve>CVE-2026-41849</cve>
+  </suppress>
   <suppress>
     <notes><![CDATA[
         file name: wicket-core-9.21.0.jar: jquery-1.12.4.js
