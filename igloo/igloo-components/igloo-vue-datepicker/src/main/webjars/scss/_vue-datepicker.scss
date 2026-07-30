@@ -1,7 +1,7 @@
 $dp-active-color: $component-active-color !default;
 $dp-active-bg:    $component-active-bg !default;
 
-.dp__theme_light {
+.dp--theme-light {
 	--dp-background-color: #{$input-bg};
 	--dp-text-color: #{$input-color};
 	--dp-hover-color: #{$gray-100};
@@ -38,18 +38,18 @@ $dp-active-bg:    $component-active-bg !default;
 	--dp-font-size: #{$font-size-base};
 }
 
-.dp__input_valid {
+.dp--input-valid {
 	box-shadow: none;
 }
 
-.dp__input_invalid {
+.dp--input-invalid {
 	box-shadow: none;
 }
 
-.dp__input.form-control {
+.dp--input.form-control {
 	padding-inline-end: 30px;
 	
-	&.dp__input_icon_pad {
+	&.dp--input-icon-pad {
 		padding-inline-start: var(--dp-input-icon-padding);
 	}
 	
@@ -62,35 +62,25 @@ $dp-active-bg:    $component-active-bg !default;
 	}
 }
 
-.dp__arrow_bottom {
+.dp--arrow-bottom {
 	z-index: -1;
 }
 
-.dp__active_date {
+.dp--active {
 	background: var(--dp-primary-color);
 	color: var(--dp-primary-text-color);
 }
 
-.dp__range_start {
-	background: var(--dp-primary-color);
-	color: var(--dp-primary-text-color);
-}
-
-.dp__range_end {
-	background: var(--dp-primary-color);
-	color: var(--dp-primary-text-color);
-}
-
-.dp__selection_preview {
+.dp--selection-preview {
 	display: none;
 }
 
-.dp__action_buttons {
+.dp--action-buttons {
 	display: flex;
 	gap: 5px;
 }
 
-.dp__action_button {
+.dp--action-button {
 	display: unset;
 	align-items: unset;
 	background: unset;
@@ -105,7 +95,7 @@ $dp-active-bg:    $component-active-bg !default;
 	font-family: unset;
 }
 
-.dp__action_cancel {
+.dp--action-cancel {
 	color: unset;
 	border: unset;
 	
@@ -115,7 +105,7 @@ $dp-active-bg:    $component-active-bg !default;
 	}
 }
 
-.dp__action_buttons .dp__action_select {
+.dp--action-buttons .dp--action-select {
 	background: unset;
 	color: unset;
 	
@@ -130,14 +120,14 @@ $dp-active-bg:    $component-active-bg !default;
 	}
 }
 
-.dp__menu_bs {
-	.dp__action_cancel {
+.dp--menu-bs {
+	.dp--action-cancel {
 		@extend .btn;
 		@include button-size($btn-padding-y-sm, $btn-padding-x-sm, $btn-font-size-sm, $btn-border-radius-sm);
 		@include button-outline-variant($secondary);
 	}
 	
-	.dp__action_buttons .dp__action_select {
+	.dp--action-buttons .dp--action-select {
 		@extend .btn;
 		@include button-size($btn-padding-y-sm, $btn-padding-x-sm, $btn-font-size-sm, $btn-border-radius-sm);
 		@include button-variant($dp-active-bg, $dp-active-bg);
