@@ -37,4 +37,20 @@
     <packageUrl regex="true">^pkg:maven/io\.prometheus/prometheus-metrics-.*$</packageUrl>
     <cve>CVE-2019-3826</cve>
   </suppress>
+  <suppress>
+    <notes><![CDATA[
+    file name: babel__helper-string-parser-8.0.0.jar
+    missmatch version entre la 7.x.x de babel et la 8.0.0 de  babel__helper-string-parser
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.webjars\.npm/babel__helper-string-parser@.*$</packageUrl>
+    <cve>CVE-2026-44728</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+    file name: babel__helper-string-parser-8.0.0.jar
+    missmatch version entre la 7.x.x de babel et la 8.0.0 de  babel__helper-string-parser
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.webjars\.npm/babel__helper-string-parser@.*$</packageUrl>
+    <cve>CVE-2026-49356</cve>
+  </suppress>
 </suppressions>
