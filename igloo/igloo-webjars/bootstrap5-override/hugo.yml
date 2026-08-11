@@ -1,6 +1,10 @@
 ---
 publishDir: target/hugo/
 title: Bootstrap examples
+security:
+  allowContent:
+    - ^text/html$
+    - ^text/markdown$
 module:
   mounts:
     - source: node_modules/bootstrap

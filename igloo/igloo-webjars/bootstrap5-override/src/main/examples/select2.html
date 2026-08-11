@@ -1,0 +1,315 @@
+---
+title: Select2
+---
+<h2 class="h5 mt-4">Basic</h2>
+<div class="row g-3">
+	<div class="col-md-6">
+		<label for="single" class="form-label">Single</label>
+		<select id="single" name="single" class="form-control js-select2" data-placeholder="Choose a state">
+			<option></option>
+			<option value="AL">Alabama</option>
+			<option value="CA">California</option>
+			<option value="WY">Wyoming</option>
+		</select>
+	</div>
+	<div class="col-md-6">
+		<label for="multiple" class="form-label">Multiple</label>
+		<select id="multiple" name="multiple" class="form-control js-select2" multiple data-placeholder="Choose some states">
+			<option value="AL" selected>Alabama</option>
+			<option value="CA" selected>California</option>
+			<option value="WY">Wyoming</option>
+		</select>
+	</div>
+</div>
+<h2 class="h5 mt-4">Clear</h2>
+<div class="row g-3">
+	<div class="col-md-6">
+		<label for="clear-single" class="form-label">Single</label>
+		<select id="clear-single" name="clear-single" class="form-control js-select2" data-placeholder="Choose a state" data-allow-clear="true">
+			<option></option>
+			<option value="AL" selected>Alabama</option>
+			<option value="CA">California</option>
+			<option value="WY">Wyoming</option>
+		</select>
+		<div class="form-text">An empty <code>&lt;option&gt;</code> is required for the placeholder and the clear button to show up.</div>
+	</div>
+	<div class="col-md-6">
+		<label for="clear-multiple" class="form-label">Multiple</label>
+		<select id="clear-multiple" name="clear-multiple" class="form-control js-select2" multiple data-placeholder="Choose some states" data-allow-clear="true">
+			<option value="AL" selected>Alabama</option>
+			<option value="CA" selected>California</option>
+			<option value="WY">Wyoming</option>
+		</select>
+	</div>
+</div>
+<h2 class="h5 mt-4">Ajax</h2>
+<div class="row g-3">
+	<div class="col-md-6">
+		<label for="ajax-single" class="form-label">Single</label>
+		<select id="ajax-single" name="ajax-single" class="form-control js-select2-ajax" data-placeholder="Search a state" data-allow-clear="true">
+			<option></option>
+		</select>
+	</div>
+	<div class="col-md-6">
+		<label for="ajax-multiple" class="form-label">Multiple</label>
+		<select id="ajax-multiple" name="ajax-multiple" class="form-control js-select2-ajax" multiple data-placeholder="Search some states"></select>
+	</div>
+</div>
+<h2 class="h5 mt-4">Sizing</h2>
+<div class="row g-3">
+	<div class="col-md-4">
+		<label for="size-sm" class="form-label">Small</label>
+		<select id="size-sm" name="size-sm" class="form-control form-control-sm js-select2">
+			<option value="AL">Alabama</option>
+			<option value="CA">California</option>
+			<option value="WY">Wyoming</option>
+		</select>
+	</div>
+	<div class="col-md-4">
+		<label for="size-md" class="form-label">Default</label>
+		<select id="size-md" name="size-md" class="form-control js-select2">
+			<option value="AL">Alabama</option>
+			<option value="CA">California</option>
+			<option value="WY">Wyoming</option>
+		</select>
+	</div>
+	<div class="col-md-4">
+		<label for="size-lg" class="form-label">Large</label>
+		<select id="size-lg" name="size-lg" class="form-control form-control-lg js-select2">
+			<option value="AL">Alabama</option>
+			<option value="CA">California</option>
+			<option value="WY">Wyoming</option>
+		</select>
+	</div>
+	<div class="col-md-4">
+		<label for="size-sm-multiple" class="form-label">Small (multiple)</label>
+		<select id="size-sm-multiple" name="size-sm-multiple" class="form-control form-control-sm js-select2" multiple>
+			<option value="AL" selected>Alabama</option>
+			<option value="CA" selected>California</option>
+			<option value="WY">Wyoming</option>
+		</select>
+	</div>
+	<div class="col-md-4">
+		<label for="size-md-multiple" class="form-label">Default (multiple)</label>
+		<select id="size-md-multiple" name="size-md-multiple" class="form-control js-select2" multiple>
+			<option value="AL" selected>Alabama</option>
+			<option value="CA" selected>California</option>
+			<option value="WY">Wyoming</option>
+		</select>
+	</div>
+	<div class="col-md-4">
+		<label for="size-lg-multiple" class="form-label">Large (multiple)</label>
+		<select id="size-lg-multiple" name="size-lg-multiple" class="form-control form-control-lg js-select2" multiple>
+			<option value="AL" selected>Alabama</option>
+			<option value="CA" selected>California</option>
+			<option value="WY">Wyoming</option>
+		</select>
+	</div>
+</div>
+<div class="form-text">Sizing relies on <code>containerCssClass: ':all:'</code>, which copies the <code>&lt;select&gt;</code> classes onto <code>.select2-selection</code>.</div>
+<h2 class="h5 mt-4">Enabled / disabled</h2>
+<div class="row g-3">
+	<div class="col-md-6">
+		<label for="enabled" class="form-label">Enabled</label>
+		<select id="enabled" name="enabled" class="form-control js-select2">
+			<option value="AL">Alabama</option>
+			<option value="CA">California</option>
+			<option value="WY">Wyoming</option>
+		</select>
+	</div>
+	<div class="col-md-6">
+		<label for="disabled" class="form-label">Disabled</label>
+		<select id="disabled" name="disabled" class="form-control js-select2" disabled>
+			<option value="AL" selected>Alabama</option>
+			<option value="CA">California</option>
+			<option value="WY">Wyoming</option>
+		</select>
+	</div>
+	<div class="col-md-6">
+		<label for="disabled-multiple" class="form-label">Disabled (multiple)</label>
+		<select id="disabled-multiple" name="disabled-multiple" class="form-control js-select2" multiple disabled>
+			<option value="AL" selected>Alabama</option>
+			<option value="CA" selected>California</option>
+			<option value="WY">Wyoming</option>
+		</select>
+	</div>
+	<div class="col-md-6">
+		<label for="disabled-option" class="form-label">Disabled option</label>
+		<select id="disabled-option" name="disabled-option" class="form-control js-select2">
+			<option value="AL">Alabama</option>
+			<option value="CA" disabled>California (disabled)</option>
+			<option value="WY">Wyoming</option>
+		</select>
+	</div>
+</div>
+<h2 class="h5 mt-4">Validation</h2>
+<div class="row g-3">
+	<div class="col-md-6">
+		<label for="valid" class="form-label">Valid</label>
+		<select id="valid" name="valid" class="form-control js-select2 is-valid">
+			<option value="AL" selected>Alabama</option>
+			<option value="CA">California</option>
+			<option value="WY">Wyoming</option>
+		</select>
+		<div class="valid-feedback">Looks good!</div>
+	</div>
+	<div class="col-md-6">
+		<label for="invalid" class="form-label">Invalid</label>
+		<select id="invalid" name="invalid" class="form-control js-select2 is-invalid" data-placeholder="Choose a state">
+			<option></option>
+			<option value="AL">Alabama</option>
+			<option value="CA">California</option>
+			<option value="WY">Wyoming</option>
+		</select>
+		<div class="invalid-feedback">Please choose a state.</div>
+	</div>
+	<div class="col-md-6">
+		<label for="invalid-multiple" class="form-label">Invalid (multiple)</label>
+		<select id="invalid-multiple" name="invalid-multiple" class="form-control js-select2 is-invalid" multiple data-placeholder="Choose some states">
+			<option value="AL" selected>Alabama</option>
+			<option value="CA">California</option>
+			<option value="WY">Wyoming</option>
+		</select>
+		<div class="invalid-feedback">Please choose at least two states.</div>
+	</div>
+</div>
+<h2 class="h5 mt-4">Input group</h2>
+<div class="row g-3">
+	<div class="col-md-6">
+		<label for="ig-prepend-text" class="form-label">Prepended text</label>
+		<div class="input-group">
+			<span class="input-group-text">State</span>
+			<select id="ig-prepend-text" name="ig-prepend-text" class="form-control js-select2">
+				<option value="AL">Alabama</option>
+				<option value="CA">California</option>
+				<option value="WY">Wyoming</option>
+			</select>
+		</div>
+	</div>
+	<div class="col-md-6">
+		<label for="ig-append-button" class="form-label">Appended button</label>
+		<div class="input-group">
+			<select id="ig-append-button" name="ig-append-button" class="form-control js-select2">
+				<option value="AL">Alabama</option>
+				<option value="CA">California</option>
+				<option value="WY">Wyoming</option>
+			</select>
+			<button class="btn btn-outline-secondary" type="button">Go</button>
+		</div>
+	</div>
+	<div class="col-md-6">
+		<label for="ig-prepend-checkbox" class="form-label">Prepended checkbox</label>
+		<div class="input-group">
+			<div class="input-group-text">
+				<input class="form-check-input mt-0" type="checkbox" value="" aria-label="Enable state">
+			</div>
+			<select id="ig-prepend-checkbox" name="ig-prepend-checkbox" class="form-control js-select2">
+				<option value="AL">Alabama</option>
+				<option value="CA">California</option>
+				<option value="WY">Wyoming</option>
+			</select>
+		</div>
+	</div>
+	<div class="col-md-6">
+		<label for="ig-both" class="form-label">Prepended text + appended button (multiple)</label>
+		<div class="input-group">
+			<span class="input-group-text">@</span>
+			<select id="ig-both" name="ig-both" class="form-control js-select2" multiple data-placeholder="Choose some states">
+				<option value="AL" selected>Alabama</option>
+				<option value="CA">California</option>
+				<option value="WY">Wyoming</option>
+			</select>
+			<button class="btn btn-outline-secondary" type="button">Go</button>
+		</div>
+	</div>
+	<div class="col-md-6">
+		<label for="ig-sm" class="form-label">Small</label>
+		<div class="input-group input-group-sm">
+			<span class="input-group-text">State</span>
+			<select id="ig-sm" name="ig-sm" class="form-control js-select2">
+				<option value="AL">Alabama</option>
+				<option value="CA">California</option>
+				<option value="WY">Wyoming</option>
+			</select>
+			<button class="btn btn-outline-secondary" type="button">Go</button>
+		</div>
+	</div>
+	<div class="col-md-6">
+		<label for="ig-lg" class="form-label">Large</label>
+		<div class="input-group input-group-lg">
+			<span class="input-group-text">State</span>
+			<select id="ig-lg" name="ig-lg" class="form-control js-select2">
+				<option value="AL">Alabama</option>
+				<option value="CA">California</option>
+				<option value="WY">Wyoming</option>
+			</select>
+			<button class="btn btn-outline-secondary" type="button">Go</button>
+		</div>
+	</div>
+	<div class="col-md-6">
+		<label for="ig-invalid" class="form-label">Invalid</label>
+		<div class="input-group">
+			<span class="input-group-text">State</span>
+			<select id="ig-invalid" name="ig-invalid" class="form-control js-select2 is-invalid" data-placeholder="Choose a state">
+				<option></option>
+				<option value="AL">Alabama</option>
+				<option value="CA">California</option>
+				<option value="WY">Wyoming</option>
+			</select>
+			<button class="btn btn-outline-secondary" type="button">Go</button>
+		</div>
+		<!-- Kept outside the .input-group, so it is not a sibling of the <select> and Bootstrap's
+		     .is-invalid ~ .invalid-feedback never fires: hence .d-block here, unlike the plain fields above. -->
+		<div class="invalid-feedback d-block">Please choose a state.</div>
+	</div>
+	<div class="col-md-6">
+		<label for="ig-disabled" class="form-label">Disabled</label>
+		<div class="input-group">
+			<span class="input-group-text">State</span>
+			<select id="ig-disabled" name="ig-disabled" class="form-control js-select2" disabled>
+				<option value="AL" selected>Alabama</option>
+				<option value="CA">California</option>
+				<option value="WY">Wyoming</option>
+			</select>
+			<button class="btn btn-outline-secondary" type="button" disabled>Go</button>
+		</div>
+	</div>
+</div>
+
+{{< partial "jquery.html" >}}
+{{< partial "select2.html" >}}
+<script>
+	const STATES = ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware",
+		"Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana",
+		"Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana",
+		"Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina",
+		"North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina",
+		"South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia",
+		"Wisconsin", "Wyoming"].map((text, id) => ({id: id + 1, text: text}))
+	const PAGE_SIZE = 10
+
+	function fakeTransport(params, success, failure) {
+		const term = (params.data.q || "").toLowerCase()
+		const page = params.data.page || 1
+		const matches = STATES.filter(state => state.text.toLowerCase().indexOf(term) !== -1)
+		const timeout = setTimeout(() => success({
+			results: matches.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE),
+			pagination: {more: page * PAGE_SIZE < matches.length}
+		}), 400)
+		return {abort: () => clearTimeout(timeout)}
+	}
+
+	$(function() {
+		$(".js-select2").select2()
+		$(".js-select2-ajax").select2({
+			ajax: {delay: 250, transport: fakeTransport}
+		})
+		
+		$(".is-invalid").next(".select2").addClass("is-invalid")
+		$(".is-valid").next(".select2").addClass("is-valid")
+
+		$(".js-select2, .js-select2-ajax").on("select2:select select2:unselect select2:clear", e => {
+			console.log(e.type + " on #" + e.target.id, e.params && e.params.data)
+		})
+	})
+</script>

@@ -7,5 +7,10 @@
 </style>
 <script src="/select2/dist/js/select2.full.js"></script>
 <script>
+$.fn.select2.defaults.set('width', 'style')
+$.fn.select2.defaults.set('minimumResultsForSearch', 2);
+$.fn.select2.defaults.set('allowClear', true);
+$.fn.select2.defaults.set('closeOnSelect', true);
 $.fn.select2.defaults.set('theme', 'bootstrap');
+$.fn.select2.defaults.set('containerCssClass', ':all:')
 </script>
