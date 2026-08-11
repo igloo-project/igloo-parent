@@ -238,6 +238,10 @@
     <!-- WebJars -->
     <dependency>
       <groupId>org.webjars.npm</groupId>
+      <artifactId>select2</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.webjars.npm</groupId>
       <artifactId>clipboard</artifactId>
     </dependency>
     <dependency>
