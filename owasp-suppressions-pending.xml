@@ -5,11 +5,27 @@
   <!--                                                              -->
   <suppress>
     <notes><![CDATA[
+   file name: wicket-core-10.8.0.jar
+    Peut attendre la prochaine campagne de MAJ
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.wicket/wicket.*$</packageUrl>
+    <cve>CVE-2026-66390</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: wicket-core-10.8.0.jar
+     Peut attendre la prochaine campagne de MAJ
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.wicket/wicket.*$</packageUrl>
+    <cve>CVE-2026-66391</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
    file name: httpclient5-5.6.1.jar
    Potentiel DoS si on a des réponses invalid dans le header 'Content-Encoding'.
    Peut attendre la prochaine campagne de MAJ
    ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.apache\.httpcomponents\.client5/httpclient5@.*$</packageUrl>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.httpcomponents\.client5/httpclient5.*$</packageUrl>
     <cve>CVE-2026-64607</cve>
   </suppress>
   <suppress>
@@ -17,7 +33,7 @@
    file name: httpclient5-5.6.1.jar
    On n'utilise pas la version asynchrone de httpclient 5
    ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.apache\.httpcomponents\.client5/httpclient5@.*$</packageUrl>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.httpcomponents\.client5/httpclient5.*$</packageUrl>
     <cve>CVE-2026-71290</cve>
   </suppress>
   
