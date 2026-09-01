@@ -661,7 +661,7 @@ S2.define('select2/utils',[
     var chars = '';
 
     for (var i = 0; i < length; i++) {
-      var randomChar = Math.floor(Math.random() * 36); // NOSONAR
+      var randomChar = Math.floor(Math.random() * 36);
       chars += randomChar.toString(36);
     }
 
@@ -1458,12 +1458,10 @@ S2.define('select2/selection/base',[
       this._tabindex = this.$element[0].getAttribute('tabindex');
     }
 
-    /*
     if(this.$element[0].getAttribute('title')) {
       $selection[0]
         .setAttribute('title', this.$element[0].getAttribute('title'));
     }
-    */
     $selection[0].setAttribute('tabindex', this._tabindex);
     $selection[0].setAttribute('aria-disabled', 'false');
 
@@ -1686,7 +1684,7 @@ S2.define('select2/selection/single',[
   SingleSelection.prototype.clear = function () {
     var $rendered = this.$selection.find('.select2-selection__rendered');
     $rendered.empty();
-    //$rendered[0].removeAttribute('title'); // clear tooltip on empty
+    $rendered[0].removeAttribute('title'); // clear tooltip on empty
   };
 
   SingleSelection.prototype.display = function (data, container) {
@@ -1715,13 +1713,11 @@ S2.define('select2/selection/single',[
 
     var title = selection.title || selection.text;
 
-    /*
     if (title) {
       $rendered[0].setAttribute('title', title);
     } else {
       $rendered[0].removeAttribute('title');
     }
-    */
   };
 
   return SingleSelection;
@@ -1763,11 +1759,6 @@ S2.define('select2/selection/multiple',[
     }
 
     this.$selection.on('click', function (evt) {
-      // Prevent dropdown toggle on clear.
-      if ($(evt.target).closest('.select2-selection__choice__remove').length) {
-        return;
-      }
-
       self.trigger('toggle', {
         originalEvent: evt
       });
@@ -1811,7 +1802,7 @@ S2.define('select2/selection/multiple',[
   MultipleSelection.prototype.clear = function () {
     var $rendered = this.$selection.find('.select2-selection__rendered');
     $rendered.empty();
-    //$rendered[0].removeAttribute('title');
+    $rendered[0].removeAttribute('title');
   };
 
   MultipleSelection.prototype.display = function (data, container) {
@@ -1868,17 +1859,15 @@ S2.define('select2/selection/multiple',[
 
       var title = selection.title || selection.text;
 
-      /*
       if (title) {
         $selection[0].setAttribute('title', title);
       }
-      */
 
       var removeItem = this.options.get('translations').get('removeItem');
 
       var remove = $selection.find('.select2-selection__choice__remove')[0];
 
-      //remove.setAttribute('title', removeItem());
+      remove.setAttribute('title', removeItem());
       remove.setAttribute('aria-label', removeItem());
       remove.setAttribute('aria-describedby', selectionId);
 
@@ -1922,7 +1911,6 @@ S2.define('select2/selection/placeholder',[
     $placeholder[0].classList.add('select2-selection__placeholder');
     $placeholder[0].classList.remove('select2-selection__choice');
 
-    /*
     var placeholderTitle = placeholder.title ||
       placeholder.text ||
       $placeholder.text();
@@ -1931,7 +1919,6 @@ S2.define('select2/selection/placeholder',[
       'title',
       placeholderTitle
     );
-    */
 
     return $placeholder;
   };
@@ -2034,8 +2021,7 @@ S2.define('select2/selection/allowClear',[
 
     this.$element.trigger('input').trigger('change');
 
-    // Prevent dropdown toggle on clear.
-    //this.trigger('toggle', {});
+    this.trigger('toggle', {});
   };
 
   AllowClear.prototype._handleKeyboardClear = function (_, evt, container) {
@@ -2072,7 +2058,7 @@ S2.define('select2/selection/allowClear',[
         '<span aria-hidden="true">&times;</span>' +
       '</button>'
     );
-    //$remove[0].setAttribute('title', removeAll());
+    $remove[0].setAttribute('title', removeAll());
     $remove[0].setAttribute('aria-label', removeAll());
     $remove[0].setAttribute('aria-describedby', selectionId);
     Utils.StoreData($remove[0], 'data', data);
@@ -4300,8 +4286,7 @@ S2.define('select2/dropdown/search',[
       self.$search.trigger('focus');
 
       window.setTimeout(function () {
-        //self.$search.trigger('focus');
-        self.$search.get(0)?.focus();
+        self.$search.trigger('focus');
       }, 0);
     });
 
@@ -5247,7 +5232,7 @@ S2.define('select2/defaults',[
         return DIACRITICS[a] || a;
       }
 
-      return text.replace(/[^\u0000-\u007E]/g, match); // NOSONAR
+      return text.replace(/[^\u0000-\u007E]/g, match);
     }
 
     function matcher (params, data) {

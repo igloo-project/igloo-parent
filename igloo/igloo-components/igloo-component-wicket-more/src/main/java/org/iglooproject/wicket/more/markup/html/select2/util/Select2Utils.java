@@ -15,7 +15,7 @@ public final class Select2Utils {
     settings.setAllowClear(true);
     settings.setCloseOnSelect(true);
     settings.setTheme("bootstrap");
-    settings.setContainerCssClass(":all:");
+    settings.setSelectionCssClass(":all:");
   }
 
   public static void setRequiredSettings(Settings settings) {

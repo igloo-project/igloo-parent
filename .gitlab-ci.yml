@@ -124,7 +124,7 @@ maven-deploy:
   tags:
     - docker
 
-sonar-analyze:
+sonar-old-analyze:
   needs: []
   stage: analyze
   environment: staging
@@ -133,6 +133,25 @@ sonar-analyze:
       -Dsonar.projectBranch=dev
       -DskipTests
       -Dsonar.host.url="https://sonar.tools.kobalt.fr"
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "api"
+      when: never
+    - if: $CI_COMMIT_BRANCH == "owasp"
+      when: never
+    - when: on_success
+  tags:
+    - docker
+
+sonar-analyze:
+  needs: []
+  stage: analyze
+  environment: staging
+  script:
+    - mvn -U verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
+      -Dsonar.projectBranch=dev
+      -DskipTests
+      -Dsonar.host.url="https://sonar2.tools.kobalt.fr"
+      -Dsonar.token="$SONAR_TOKEN"
   rules:
     - if: $CI_PIPELINE_SOURCE == "api"
       when: never
