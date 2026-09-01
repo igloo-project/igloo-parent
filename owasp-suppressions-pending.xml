@@ -5,6 +5,22 @@
   <!--                                                              -->
   <suppress>
     <notes><![CDATA[
+   file name: spring-core-7.0.7.jar
+   nos app sont toutes sur tomcat, on n'est pas impacté.
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring-core@.*$</packageUrl>
+    <cve>CVE-2026-59314</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-core-7.0.7.jar
+   On n'utilise pas spring SSE dans nos projets
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring-core@.*$</packageUrl>
+    <cve>CVE-2026-59313</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
    file name: wicket-core-10.8.0.jar
     Peut attendre la prochaine campagne de MAJ
    ]]></notes>
