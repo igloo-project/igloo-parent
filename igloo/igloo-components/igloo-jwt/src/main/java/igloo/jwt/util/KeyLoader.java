@@ -13,8 +13,8 @@ import java.security.interfaces.RSAPrivateKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.Base64;
 import java.util.function.Function;
-import org.apache.commons.codec.binary.Base64;
 
 /**
  * Key loading from RSA openssl generated keys.
@@ -40,7 +40,7 @@ public class KeyLoader {
           content.append(line).append('\n');
         }
       }
-      byte[] encoded = Base64.decodeBase64(content.toString());
+      byte[] encoded = Base64.getMimeDecoder().decode(content.toString());
       return keyParser.apply(encoded);
     }
   }

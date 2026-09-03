@@ -1,62 +1,67 @@
 package igloo.jwt.service;
 
+import igloo.jwt.exception.ExpiredTokenException;
 import igloo.jwt.exception.InvalidTokenException;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.JwtParserBuilder;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.Locator;
-import java.security.Key;
+import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Date;
-import java.util.UUID;
+import java.util.List;
+import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.convert.converter.Converter;
+import org.springframework.security.oauth2.core.OAuth2TokenValidator;
+import org.springframework.security.oauth2.jose.JwaAlgorithm;
+import org.springframework.security.oauth2.jose.jws.SignatureAlgorithm;
+import org.springframework.security.oauth2.jwt.JwsHeader;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.jwt.JwtClaimsSet;
+import org.springframework.security.oauth2.jwt.JwtEncoder;
+import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
+import org.springframework.security.oauth2.jwt.JwtException;
+import org.springframework.security.oauth2.jwt.JwtValidationException;
+import org.springframework.security.oauth2.jwt.JwtValidators;
+import org.springframework.security.oauth2.jwt.MappedJwtClaimSetConverter;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 
 public class JwtTokenServiceImpl<P> implements IJwtTokenService<P> {
 
   public static final Logger LOGGER = LoggerFactory.getLogger(JwtTokenServiceImpl.class);
 
   /** Customize JWT token generation. */
-  private final BiConsumer<P, JwtBuilder> jwtTokenBuilderConsumer;
-
-  /** Customize JWT token validation. */
-  private final Consumer<JwtParserBuilder> jwtParserBuilderConsumer;
-
-  /** Called for each generated token. */
-  private final BiConsumer<P, String> jwtCreationCallback;
+  private final BiConsumer<P, JwtClaimsSet.Builder> jwtTokenBuilderCustomizer;
 
   /**
-   * Called after each token validation. Must throw a {@link RuntimeException} if token validation
-   * must be cancelled. Reusing an appropriate subclass of {@link JwtException} is preferred.
+   * Customize JWT header generation.
+   *
+   * <p>jwsAlgorithm can be override with {@link
+   * org.springframework.security.oauth2.jwt.JoseHeader.AbstractBuilder#algorithm(JwaAlgorithm)}.
    */
-  private final Consumer<String> jwtValidationCallback;
+  private final BiConsumer<P, JwsHeader.Builder> jwtTokenHeaderCustomizer;
 
-  /** Key for token signature. May be overridden by {@link #jwtTokenBuilderConsumer}. */
-  private final Key signatureKey;
+  /** Encoder for token creation. May be null if only verification is needed. */
+  private final JwtEncoder jwtEncoder;
 
-  /** Key locator for token verification. May be overridden by {@link #jwtParserBuilderConsumer}. */
-  private final Locator<Key> keyLocator;
+  /** Decoder for token verification. */
+  private final NimbusJwtDecoder jwtDecoder;
 
-  public JwtTokenServiceImpl(
-      BiConsumer<P, JwtBuilder> jwtTokenBuilderConsumer,
-      Consumer<JwtParserBuilder> jwtParserBuilderConsumer,
-      BiConsumer<P, String> jwtCreationCallback,
-      Consumer<String> jwtValidationCallback,
-      Key signatureKey,
-      Locator<Key> keyLocator) {
-    this.jwtTokenBuilderConsumer = jwtTokenBuilderConsumer;
-    this.jwtParserBuilderConsumer = jwtParserBuilderConsumer;
-    this.jwtCreationCallback = jwtCreationCallback;
-    this.jwtValidationCallback = jwtValidationCallback;
-    this.signatureKey = signatureKey;
-    this.keyLocator = keyLocator;
+  private JwtTokenServiceImpl(
+      BiConsumer<P, JwtClaimsSet.Builder> jwtTokenBuilderCustomizer,
+      BiConsumer<P, JwsHeader.Builder> jwtTokenHeaderCustomizer,
+      JwtEncoder jwtEncoder,
+      NimbusJwtDecoder jwtDecoder) {
+    this.jwtTokenBuilderCustomizer = jwtTokenBuilderCustomizer;
+    this.jwtTokenHeaderCustomizer = jwtTokenHeaderCustomizer;
+    this.jwtEncoder = jwtEncoder;
+    this.jwtDecoder = jwtDecoder;
+  }
+
+  public static <P> Builder<P> builder(RSAPublicKey publicKey, RSAPrivateKey privateKey) {
+    return new Builder<>(publicKey, privateKey);
   }
 
   @Override
@@ -65,61 +70,109 @@ public class JwtTokenServiceImpl<P> implements IJwtTokenService<P> {
   }
 
   @Override
-  public String issueToken(P principal, Consumer<JwtBuilder> builderConsumer) {
-    String jwt = generateJwt(principal, builderConsumer);
-    jwtCreationCallback.accept(principal, jwt);
-    return jwt;
+  public String issueToken(P principal, Consumer<JwtClaimsSet.Builder> builderConsumer) {
+    if (jwtEncoder == null) {
+      throw new IllegalStateException("Cannot issue tokens: no private key configured.");
+    }
+    return generateJwt(principal, builderConsumer);
   }
 
-  private String generateJwt(P principal, Consumer<JwtBuilder> builderConsumer) {
+  private String generateJwt(P principal, Consumer<JwtClaimsSet.Builder> builderCustomizer) {
     Instant now = Instant.now();
     Instant expiration = now.plus(Duration.ofMinutes(5));
-    JwtBuilder builder =
-        Jwts.builder()
-            .issuedAt(new Date())
-            .expiration(Date.from(expiration))
-            // Add a random attribute to get rid of any duplicates
-            .header()
-            .add("guid", UUID.randomUUID().toString())
-            .and()
-            .signWith(signatureKey);
+
+    JwtClaimsSet.Builder claimsBuilder = JwtClaimsSet.builder().issuedAt(now).expiresAt(expiration);
+    JwsHeader.Builder headerBuilder = JwsHeader.with(SignatureAlgorithm.RS256);
+
     // apply general consumer
-    jwtTokenBuilderConsumer.accept(principal, builder);
+    jwtTokenBuilderCustomizer.accept(principal, claimsBuilder);
     // apply adhoc consumer
-    builderConsumer.accept(builder);
-    return builder.compact();
+    builderCustomizer.accept(claimsBuilder);
+
+    jwtTokenHeaderCustomizer.accept(principal, headerBuilder);
+
+    return jwtEncoder
+        .encode(JwtEncoderParameters.from(headerBuilder.build(), claimsBuilder.build()))
+        .getTokenValue();
   }
 
   @Override
-  public Jws<Claims> verifyToken(String jwt) throws ExpiredJwtException, InvalidTokenException {
+  public Jwt verifyToken(String jwt) throws InvalidTokenException {
     try {
-      // first: verify token
-      JwtParserBuilder builder = Jwts.parser().keyLocator(keyLocator);
-      jwtParserBuilderConsumer.accept(builder);
-      Jws<Claims> claims = builder.build().parseSignedClaims(jwt);
-
-      // second: invoke application verification; may perform nothing
-      jwtValidationCallback.accept(jwt);
-
-      return claims;
-    } catch (ExpiredJwtException e) {
-      // specifically handle expirations
-      LOGGER.info("Token is expired.");
-      throw e;
-    } catch (JwtException e) {
-      // allow debug level to track other exceptions
-      // JwtException rethrown as-is
+      // first: verify token (signature + expiration)
+      return jwtDecoder.decode(jwt);
+    } catch (JwtValidationException e) {
+      boolean expired =
+          e.getErrors().stream()
+              .anyMatch(
+                  error ->
+                      error.getDescription() != null && error.getDescription().contains("expired"));
+      if (expired) {
+        LOGGER.info("Token is expired.");
+        throw new ExpiredTokenException("Token is expired.", e);
+      }
       if (LOGGER.isDebugEnabled()) {
         LOGGER.debug("JWT validation exception.", e);
       }
-      throw e;
+      throw new InvalidTokenException("JWT validation failed.", e);
+    } catch (JwtException e) {
+      // covers BadJwtException and other JwtException subtypes
+      if (LOGGER.isDebugEnabled()) {
+        LOGGER.debug("JWT validation exception.", e);
+      }
+      throw new InvalidTokenException("JWT validation failed.", e);
     } catch (RuntimeException e) {
-      // allow debug level to track other exceptions
-      // all exceptions wrapped in InvalidTokenException
+      // all unexpected exceptions wrapped in InvalidTokenException
       if (LOGGER.isDebugEnabled()) {
         LOGGER.debug("JWT parsing exception.", e);
       }
       throw new InvalidTokenException("Unexpected exception during JWT validation.", e);
+    }
+  }
+
+  public static class Builder<P> {
+    private BiConsumer<P, JwtClaimsSet.Builder> jwtTokenBuilderCustomizer = (p, b) -> {};
+    private BiConsumer<P, JwsHeader.Builder> jwtTokenHeaderCustomizer = (p, b) -> {};
+    private final JwtEncoder jwtEncoder;
+    private final NimbusJwtDecoder jwtDecoder;
+
+    private Builder(RSAPublicKey publicKey, RSAPrivateKey privateKey) {
+      if (publicKey == null) {
+        throw new IllegalStateException("publicKey is required");
+      }
+      jwtEncoder =
+          privateKey != null ? NimbusJwtEncoder.withKeyPair(publicKey, privateKey).build() : null;
+      jwtDecoder =
+          NimbusJwtDecoder.withPublicKey(publicKey)
+              .signatureAlgorithm(SignatureAlgorithm.RS256)
+              .build();
+    }
+
+    public Builder<P> jwtTokenBuilderCustomizer(
+        BiConsumer<P, JwtClaimsSet.Builder> jwtTokenBuilderCustomizer) {
+      this.jwtTokenBuilderCustomizer = jwtTokenBuilderCustomizer;
+      return this;
+    }
+
+    public Builder<P> jwtTokenHeaderCustomizer(
+        BiConsumer<P, JwsHeader.Builder> jwtTokenHeaderCustomizer) {
+      this.jwtTokenHeaderCustomizer = jwtTokenHeaderCustomizer;
+      return this;
+    }
+
+    public Builder<P> jwtValidator(List<OAuth2TokenValidator<Jwt>> jwtValidator) {
+      jwtDecoder.setJwtValidator(JwtValidators.createDefaultWithValidators(jwtValidator));
+      return this;
+    }
+
+    public Builder<P> claimTypeConverters(Map<String, Converter<Object, ?>> claimTypeConverters) {
+      jwtDecoder.setClaimSetConverter(MappedJwtClaimSetConverter.withDefaults(claimTypeConverters));
+      return this;
+    }
+
+    public JwtTokenServiceImpl<P> build() {
+      return new JwtTokenServiceImpl<>(
+          jwtTokenBuilderCustomizer, jwtTokenHeaderCustomizer, jwtEncoder, jwtDecoder);
     }
   }
 }
