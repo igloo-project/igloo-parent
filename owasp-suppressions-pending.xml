@@ -13,7 +13,7 @@
    file name: spring-core-7.0.7.jar
    nos app sont toutes sur tomcat, on n'est pas impacté.
    ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.springframework/spring-core@.*$</packageUrl>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring.*$</packageUrl>
     <cve>CVE-2026-59314</cve>
   </suppress>
   <suppress>
@@ -21,7 +21,7 @@
    file name: spring-core-7.0.7.jar
    On n'utilise pas spring SSE dans nos projets
    ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.springframework/spring-core@.*$</packageUrl>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring.*$</packageUrl>
     <cve>CVE-2026-59313</cve>
   </suppress>
   <suppress>
@@ -38,7 +38,7 @@
     Peut attendre la prochaine campagne de MAJ
    ]]></notes>
     <packageUrl regex="true">^pkg:maven/org\.apache\.wicket/wicket.*$</packageUrl>
-    <cve>CVE-2026-76982 </cve>
+    <cve>CVE-2026-76982</cve>
   </suppress>
   <suppress>
     <notes><![CDATA[
@@ -46,7 +46,7 @@
     Peut attendre la prochaine campagne de MAJ
    ]]></notes>
     <packageUrl regex="true">^pkg:maven/org\.apache\.wicket/wicket.*$</packageUrl>
-    <cve>CVE-2026-76983 </cve>
+    <cve>CVE-2026-76983</cve>
   </suppress>
   <suppress>
     <notes><![CDATA[
