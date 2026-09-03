@@ -1,16 +1,15 @@
 package igloo.jwt.service;
 
 import igloo.jwt.exception.InvalidTokenException;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.JwtBuilder;
 import java.util.function.Consumer;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 
 public interface IJwtTokenService<P> {
 
-  Jws<Claims> verifyToken(String token) throws InvalidTokenException;
+  Jwt verifyToken(String token) throws InvalidTokenException;
 
   String issueToken(P principal);
 
-  String issueToken(P principal, Consumer<JwtBuilder> builderConsumer);
+  String issueToken(P principal, Consumer<JwtClaimsSet.Builder> builderConsumer);
 }
