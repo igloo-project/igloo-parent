@@ -1,9 +1,8 @@
 package igloo.jwt.service;
 
 import igloo.jwt.exception.ConvertTokenException;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
+import org.springframework.security.oauth2.jwt.Jwt;
 
 public interface IJwtToPrincipalConverter<P> {
-  P convert(Jws<Claims> claims) throws ConvertTokenException;
+  P convert(Jwt jwt) throws ConvertTokenException;
 }
