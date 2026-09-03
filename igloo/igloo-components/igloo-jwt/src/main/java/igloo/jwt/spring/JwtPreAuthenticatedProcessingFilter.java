@@ -4,14 +4,12 @@ import igloo.jwt.exception.ConvertTokenException;
 import igloo.jwt.exception.InvalidTokenException;
 import igloo.jwt.service.IJwtToPrincipalConverter;
 import igloo.jwt.service.IJwtTokenService;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jws;
 import jakarta.servlet.http.HttpServletRequest;
 import java.net.http.HttpRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 import org.springframework.security.web.context.NullSecurityContextRepository;
 
@@ -52,9 +50,9 @@ public abstract class JwtPreAuthenticatedProcessingFilter<P>
 
     // Token mapping
     try {
-      Jws<Claims> claims = jwtTokenService.verifyToken(token);
-      return jwtToPrincipalConverter.convert(claims);
-    } catch (ExpiredJwtException | InvalidTokenException | ConvertTokenException e) {
+      Jwt jwt = jwtTokenService.verifyToken(token);
+      return jwtToPrincipalConverter.convert(jwt);
+    } catch (InvalidTokenException | ConvertTokenException e) {
       LOGGER.info("Invalid or expired token.", e);
     } catch (RuntimeException e) {
       if (LOGGER.isDebugEnabled()) {
