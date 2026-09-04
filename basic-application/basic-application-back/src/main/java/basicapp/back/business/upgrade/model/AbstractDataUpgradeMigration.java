@@ -6,17 +6,12 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 import org.flywaydb.core.api.migration.BaseJavaMigration;
 import org.flywaydb.core.api.migration.Context;
-import org.iglooproject.jpa.more.business.upgrade.model.DataUpgradeRecord;
 import org.iglooproject.jpa.more.business.upgrade.model.IDataUpgrade;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 
 public abstract class AbstractDataUpgradeMigration extends BaseJavaMigration {
-
-  @Value("${db.schema}")
-  private String defaultSchema;
 
   @Override
   public void migrate(Context context) throws Exception {
@@ -25,16 +20,10 @@ public abstract class AbstractDataUpgradeMigration extends BaseJavaMigration {
 
     for (Class<? extends IDataUpgrade> dataUpgradeClass : getDataUpgradeClasses()) {
       Integer id =
-          jdbcTemplate.queryForObject(
-              String.format(
-                  "SELECT NEXTVAL('%s.%s_id_seq');",
-                  defaultSchema, DataUpgradeRecord.class.getSimpleName()),
-              Integer.class);
+          jdbcTemplate.queryForObject("SELECT NEXTVAL('DataUpgradeRecord_id_seq');", Integer.class);
 
       jdbcTemplate.execute(
-          String.format(
-              "INSERT INTO %s.%s (id, name, autoPerform, done) VALUES (?, ?, ?, ?)",
-              defaultSchema, DataUpgradeRecord.class.getSimpleName()),
+          "INSERT INTO DataUpgradeRecord (id, name, autoPerform, done) VALUES (?, ?, ?, ?)",
           new PreparedStatementCallback<Boolean>() {
             @Override
             public Boolean doInPreparedStatement(PreparedStatement ps) throws SQLException {
