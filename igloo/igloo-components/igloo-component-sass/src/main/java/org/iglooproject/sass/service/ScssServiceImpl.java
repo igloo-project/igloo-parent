@@ -105,7 +105,7 @@ public class ScssServiceImpl implements IScssService, IScopeResolver {
       // note: deprecation warnings are at level info of SassCompiler
       sassCompiler.setVerbose(true);
       sassCompiler.setQuietDeps(false);
-      WebjarsImporter webjarImporter = new WebjarsImporter();
+      WebjarsImporter webjarImporter = new WebjarsImporter(ScssServiceImpl.class.getClassLoader());
       IglooDartImporter iglooDartImporter = new IglooDartImporter(webjarImporter, this);
       sassCompiler.registerImporter(iglooDartImporter.autoCanonicalize());
       CompileSuccess compileSuccess = sassCompiler.compile(path);
