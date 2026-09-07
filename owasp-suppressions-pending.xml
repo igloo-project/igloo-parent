@@ -33,7 +33,7 @@
     file name: spring-core-7.0.8.jar
     On ne laisse pas l'utilisateur écrire injecter du contenue dans du SpEL
     ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.springframework/spring-core@.*$</packageUrl>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring.*$</packageUrl>
     <cve>CVE-2026-59283</cve>
   </suppress>
   <suppress>
@@ -41,7 +41,7 @@
     file name: spring-core-7.0.8.jar
     On n'utilise pas de list auto peuplante dans nos projets
     ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.springframework/spring-core@.*$</packageUrl>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring.*$</packageUrl>
     <cve>CVE-2026-59282</cve>
   </suppress>
   <suppress>
@@ -49,7 +49,7 @@
     file name: spring-core-7.0.8.jar
     on n'utilise pas Errors.getFieldErrors() or Errors.getFieldError() sans arguments ni EscapedErrors dans nos projets,
     ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.springframework/spring-core@.*$</packageUrl>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring.*$</packageUrl>
     <cve>CVE-2026-59281</cve>
   </suppress>
   <suppress>
@@ -57,7 +57,7 @@
     file name: spring-core-7.0.8.jar
     Pas d'utilisation de FreeMarcker dans des Vue WebMVC dans nos app
     ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.springframework/spring-core@.*$</packageUrl>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring.*$</packageUrl>
     <cve>CVE-2026-59280</cve>
   </suppress>
   <suppress>
@@ -65,7 +65,7 @@
     file name: spring-security-core-7.1.0.jar
     On n'a pas de server LDAP embarqué
     ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring-security-core@.*$</packageUrl>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring.*$</packageUrl>
     <cve>CVE-2026-59270</cve>
   </suppress>
   <suppress>
@@ -73,7 +73,7 @@
     file name: spring-security-core-7.1.0.jar
     On n'utilise pas webflux
     ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring-security-core@.*$</packageUrl>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring.*$</packageUrl>
     <cve>CVE-2026-47877</cve>
   </suppress>
   <suppress>
@@ -81,7 +81,7 @@
     file name: spring-security-core-7.1.0.jar
     On n'utilise aps la page de consentement de OAuth2 spring
     ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring-security-core@.*$</packageUrl>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring.*$</packageUrl>
     <cve>CVE-2026-47877</cve>
   </suppress>
   <suppress>
@@ -89,7 +89,7 @@
     file name: spring-core-7.0.8.jar
     Medium très difficile à exploité sur OAuth2. Sera corrigé lors de la prochaine update
     ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.springframework/spring-core@.*$</packageUrl>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring.*$</packageUrl>
     <cve>CVE-2026-47890</cve>
   </suppress>
   <suppress>
@@ -97,7 +97,7 @@
     file name: spring-core-7.0.8.jar
     On n'utilise pas InetAddressMatchers dans nos app
     ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.springframework/spring-core@.*$</packageUrl>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring.*$</packageUrl>
     <cve>CVE-2026-47890</cve>
   </suppress>
   <!--                                                              -->
