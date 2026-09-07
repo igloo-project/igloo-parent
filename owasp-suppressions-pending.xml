@@ -9,7 +9,7 @@
     file name: spring-security-core-7.1.0.jar
     On n'utilise pas Spring Security's WebAuthn
     ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring-security-core@.*$</packageUrl>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.(security|data)/spring.*$</packageUrl>
     <cve>CVE-2026-47841</cve>
   </suppress>
   <suppress>
@@ -17,7 +17,7 @@
     file name: spring-security-core-7.1.0.jar
     On n'utilise pas AesBytesEncryptor dans nos applications à ce jour
     ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring-security-core@.*$</packageUrl>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring.*$</packageUrl>
     <cve>CVE-2026-47842</cve>
   </suppress>
   <suppress>
@@ -41,7 +41,7 @@
     file name: spring-boot-data-jpa-4.1.0.jar
     On n'a pas le cas de Sort Spring Data Jpa dans un @NativeQuery dans nos projets
     ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring-boot.*$</packageUrl>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.(boot|data)/spring*$</packageUrl>
     <cve>CVE-2026-47834</cve>
   </suppress>
   <suppress>
