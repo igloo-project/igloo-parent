@@ -8,6 +8,14 @@
   <suppress>
     <notes><![CDATA[
     file name: spring-core-7.0.8.jar
+    On ne fait pas de webflux
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring.*$</packageUrl>
+    <cve>CVE-2026-47893</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+    file name: spring-core-7.0.8.jar
     On n'utilise pas SSE
     ]]></notes>
     <packageUrl regex="true">^pkg:maven/org\.springframework/spring.*$</packageUrl>
