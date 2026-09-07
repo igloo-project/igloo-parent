@@ -54,21 +54,9 @@
       <artifactId>error_prone_annotations</artifactId>
       <optional>true</optional>
     </dependency>
-    <!-- mockserver: use exclusions or no-dependencies packages to prevent any conflict -->
     <dependency>
       <groupId>org.mock-server</groupId>
-      <artifactId>mockserver-junit-jupiter</artifactId>
-      <scope>test</scope>
-      <!-- dependencies excluded from dependencymanagement -->
-    </dependency>
-    <dependency>
-      <groupId>org.mock-server</groupId>
-      <artifactId>mockserver-netty</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.mock-server</groupId>
-      <artifactId>mockserver-client-java</artifactId>
+      <artifactId>mockserver-netty-no-dependencies</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>

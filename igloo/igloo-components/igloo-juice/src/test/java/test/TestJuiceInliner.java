@@ -9,26 +9,29 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockserver.integration.ClientAndServer;
-import org.mockserver.junit.jupiter.MockServerExtension;
 import org.mockserver.matchers.Times;
 import org.mockserver.model.Delay;
 import org.mockserver.model.JsonBody;
 import org.mockserver.model.MediaType;
 import org.mockserver.verify.VerificationTimes;
 
-@ExtendWith(MockServerExtension.class)
 class TestJuiceInliner {
 
   private ClientAndServer server;
 
   @BeforeEach
-  public void initMockerServer(ClientAndServer server) {
-    this.server = server;
+  public void initMockerServer() {
+    this.server = ClientAndServer.startClientAndServer();
     server.reset();
+  }
+
+  @AfterEach
+  public void stopServer() {
+    server.stop();
   }
 
   /** Test a standard call. */
