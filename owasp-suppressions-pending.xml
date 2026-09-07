@@ -4,7 +4,14 @@
   <!--                                                              -->
   <!--                    IGLOO 7.6.0                               -->
   <!--                                                              -->
-
+  <suppress>
+    <notes><![CDATA[
+    file name: spring-boot-data-jpa-4.1.0.jar
+    On n'a pas le cas de Sort Spring Data Jpa dans un @NativeQuery dans nos projets
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring-boot-data-jpa@.*$</packageUrl>
+    <cve>CVE-2026-47834</cve>
+  </suppress>
   <suppress>
     <notes><![CDATA[
     file name: spring-core-7.0.8.jar
