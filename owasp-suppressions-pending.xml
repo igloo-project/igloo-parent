@@ -1198,4 +1198,24 @@ On ne fait pas de connexion PostgreSQL en SCRAM-SHA-256-PLUS avec channelBinding
     <packageUrl regex="true">^pkg:javascript/jquery@.*$</packageUrl>
     <vulnerabilityName>jquery issue: 11974</vulnerabilityName>
   </suppress>
+
+  <!--                                                              -->
+  <!--                    IGLOO 5                                   -->
+  <!--                                                              -->
+
+  <suppress>
+    <notes><![CDATA[
+    file name: spring-data-jpa-4.1.0.jar
+    On n'utilise pas Artemis et donc pas l'autoconf ArtemisEmbeddedConfigurationFactory
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.data/spring.*$</packageUrl>
+    <cve>CVE-2026-47834</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+    file name: opentelemetry-api-1.62.0.jar
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/io\.opentelemetry/opentelemetry-api@.*$</packageUrl>
+    <cve>CVE-2026-54285</cve>
+  </suppress>
 </suppressions>
