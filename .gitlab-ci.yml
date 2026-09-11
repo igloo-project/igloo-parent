@@ -160,6 +160,9 @@ sonar-analyze:
     - if: $CI_COMMIT_BRANCH == "owasp"
       when: never
     - when: on_success
+  variables:
+    # get rid of sonar Shallow clone detected... warning
+    GIT_DEPTH: 0
   tags:
     - docker
 
