@@ -150,7 +150,9 @@ public class HistoryEntityReferenceSchemaContributor extends BaseSchemaContribut
   protected List<String> listCurrentEnumValues(EntityManager em, String typeInSchemaName) {
     List<String> values =
         em.createNativeQuery(
-                "SELECT unnest(enum_range(NULL::%s))".formatted(typeInSchemaName), String.class)
+                "SELECT unnest(enum_range(NULL::%s))"
+                    .formatted(typeInSchemaName), // NOSONAR input is not user-controlled
+                String.class)
             .getResultList();
     LOGGER.info("historylog_reference_type current values: {}", values);
     return values;
