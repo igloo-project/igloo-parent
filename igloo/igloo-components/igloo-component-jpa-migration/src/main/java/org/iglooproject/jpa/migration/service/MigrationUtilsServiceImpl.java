@@ -20,10 +20,13 @@ public class MigrationUtilsServiceImpl implements IMigrationUtilsService {
     // TODO SDO : Trouver un moyen de vérifier de manière plus sûre
     if (Strings.CS.endsWith(clazz.getSimpleName().toLowerCase(), "user")) {
       // Cas particulier de la table User
-      newDatabaseJdbcTemplate.execute(String.format(SQL_UPDATE_SEQUENCE, "user_"));
+      newDatabaseJdbcTemplate.execute(
+          String.format(SQL_UPDATE_SEQUENCE, "user_")); // NOSONAR input is not user-controlled
     } else {
       newDatabaseJdbcTemplate.execute(
-          String.format(SQL_UPDATE_SEQUENCE, clazz.getSimpleName().toLowerCase()));
+          String.format(
+              SQL_UPDATE_SEQUENCE,
+              clazz.getSimpleName().toLowerCase())); // NOSONAR input is not user-controlled
     }
   }
 
