@@ -21,6 +21,10 @@
     <maven-project-info-reports-plugin.version>3.9.0</maven-project-info-reports-plugin.version>
     <igloo.owasp-maven-plugin.version>12.2.2</igloo.owasp-maven-plugin.version>
     <igloo.versions-maven-plugin.version>2.21.0</igloo.versions-maven-plugin.version>
+    <!-- Math.random is not used for security purpose  -->
+    <sonar.issue.ignore.multicriteria>e1</sonar.issue.ignore.multicriteria>
+    <sonar.issue.ignore.multicriteria.e1.ruleKey>javascript:S2245</sonar.issue.ignore.multicriteria.e1.ruleKey>
+    <sonar.issue.ignore.multicriteria.e1.resourceKey>**/select2.full.js</sonar.issue.ignore.multicriteria.e1.resourceKey>
   </properties>
   <build>
     <pluginManagement>

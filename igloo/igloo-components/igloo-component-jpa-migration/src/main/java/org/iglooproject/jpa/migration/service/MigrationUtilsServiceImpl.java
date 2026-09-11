@@ -16,17 +16,16 @@ public class MigrationUtilsServiceImpl implements IMigrationUtilsService {
   protected JdbcTemplate newDatabaseJdbcTemplate;
 
   @Override
+  // Make sure using a dynamically formatted SQL query is safe here. => input is not user-controlled
+  @SuppressWarnings("java:S2077")
   public void updateSequence(Class<?> clazz) {
     // TODO SDO : Trouver un moyen de vérifier de manière plus sûre
     if (Strings.CS.endsWith(clazz.getSimpleName().toLowerCase(), "user")) {
       // Cas particulier de la table User
-      newDatabaseJdbcTemplate.execute(
-          String.format(SQL_UPDATE_SEQUENCE, "user_")); // NOSONAR input is not user-controlled
+      newDatabaseJdbcTemplate.execute(String.format(SQL_UPDATE_SEQUENCE, "user_"));
     } else {
       newDatabaseJdbcTemplate.execute(
-          String.format(
-              SQL_UPDATE_SEQUENCE,
-              clazz.getSimpleName().toLowerCase())); // NOSONAR input is not user-controlled
+          String.format(SQL_UPDATE_SEQUENCE, clazz.getSimpleName().toLowerCase()));
     }
   }
 
