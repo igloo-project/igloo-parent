@@ -4,6 +4,7 @@ image:
 variables:
   MAVEN_OPTS: "-Xmx1536m"
   JAVA_TOOL_OPTIONS: "-Duser.language=fr -Duser.country=FR -Duser.timezone=Europe/Paris -Dfile.encoding=UTF-8"
+  SONAR_EXCLUSIONS: "**/*.png,**/*.jpg,**/*.ico,**/*.ttf,**/*.xlsx,**/*.zip,**/*.woff2"
 
 stages:
   # build includes tests
@@ -152,6 +153,7 @@ sonar-analyze:
       -DskipTests
       -Dsonar.host.url="https://sonar2.tools.kobalt.fr"
       -Dsonar.token="$SONAR_TOKEN"
+      -Dsonar.exclusions="$SONAR_EXCLUSIONS"
   rules:
     - if: $CI_PIPELINE_SOURCE == "api"
       when: never
