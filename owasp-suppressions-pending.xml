@@ -6,10 +6,17 @@
   <!--                                                              -->
   <suppress>
     <notes><![CDATA[
+    file name: freemarker-2.3.34.jar
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.freemarker/freemarker.*$</packageUrl>
+    <cve>CVE-2026-84939</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
     file name: spring-boot-2.7.18.jar
     On n'utilise pas ArtemisEmbeddedConfigurationFactory
     ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring-boot@.*$</packageUrl>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring.*$</packageUrl>
     <cve>CVE-2026-41001</cve>
   </suppress>
   <suppress>
@@ -17,7 +24,7 @@
     file name: spring-core-7.0.8.jar
     pas d'utilisation de UrlHandlerFilter dans nos projets 
     ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.springframework/spring-core@.*$</packageUrl>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring.*$</packageUrl>
     <cve>CVE-2026-47883</cve>
   </suppress>
   <suppress>
@@ -25,7 +32,7 @@
     file name: spring-core-7.0.8.jar
     pas d'utilisation de UrlFileNameViewController dans nos projets 
     ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.springframework/spring-core@.*$</packageUrl>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring.*$</packageUrl>
     <cve>CVE-2026-47887</cve>
   </suppress>
   <suppress>
@@ -33,7 +40,7 @@
     file name: spring-core-7.0.8.jar
     On n'utilise aps WebFlux
     ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.springframework/spring-core@.*$</packageUrl>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring.*$</packageUrl>
     <cve>CVE-2026-47889</cve>
   </suppress>
   <suppress>
@@ -41,7 +48,7 @@
     file name: spring-core-7.0.8.jar
     On n'a pas d'application RSocket
     ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.springframework/spring-core@.*$</packageUrl>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring.*$</packageUrl>
     <cve>CVE-2026-47888</cve>
   </suppress>
   <suppress>
