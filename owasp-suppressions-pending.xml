@@ -6,6 +6,70 @@
   <!--                                                              -->
   <suppress>
     <notes><![CDATA[
+    file name: spring-boot-2.7.18.jar
+    On n'utilise pas ArtemisEmbeddedConfigurationFactory
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring-boot@.*$</packageUrl>
+    <cve>CVE-2026-41001</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+    file name: spring-core-7.0.8.jar
+    pas d'utilisation de UrlHandlerFilter dans nos projets 
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring-core@.*$</packageUrl>
+    <cve>CVE-2026-47883</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+    file name: spring-core-7.0.8.jar
+    pas d'utilisation de UrlFileNameViewController dans nos projets 
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring-core@.*$</packageUrl>
+    <cve>CVE-2026-47887</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+    file name: spring-core-7.0.8.jar
+    On n'utilise aps WebFlux
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring-core@.*$</packageUrl>
+    <cve>CVE-2026-47889</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+    file name: spring-core-7.0.8.jar
+    On n'a pas d'application RSocket
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring-core@.*$</packageUrl>
+    <cve>CVE-2026-47888</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+    file name: spring-core-7.0.8.jar
+    On ne laisse pas un user entrer du SpEL
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring.*$</packageUrl>
+    <cve>CVE-2026-47886</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+    file name: spring-core-7.0.8.jar
+     On n'utilise pas Webflux
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring.*$</packageUrl>
+    <cve>CVE-2026-47885</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+    file name: spring-core-7.0.8.jar
+    On n'utilise pas XsltView
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring.*$</packageUrl>
+    <cve>CVE-2026-47884</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
     file name: spring-security-core-7.1.0.jar
     On n'utilise pas Spring Security's WebAuthn
     ]]></notes>
@@ -1202,20 +1266,12 @@ On ne fait pas de connexion PostgreSQL en SCRAM-SHA-256-PLUS avec channelBinding
   <!--                                                              -->
   <!--                    IGLOO 5                                   -->
   <!--                                                              -->
-
-  <suppress>
-    <notes><![CDATA[
-    file name: spring-data-jpa-4.1.0.jar
-    On n'utilise pas Artemis et donc pas l'autoconf ArtemisEmbeddedConfigurationFactory
-    ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.springframework\.data/spring.*$</packageUrl>
-    <cve>CVE-2026-47834</cve>
-  </suppress>
+  
   <suppress>
     <notes><![CDATA[
     file name: opentelemetry-api-1.62.0.jar
     ]]></notes>
-    <packageUrl regex="true">^pkg:maven/io\.opentelemetry/opentelemetry-api@.*$</packageUrl>
+    <packageUrl regex="true">^pkg:maven/io\.opentelemetry/opentelemetry.*$</packageUrl>
     <cve>CVE-2026-54285</cve>
   </suppress>
 </suppressions>
