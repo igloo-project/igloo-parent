@@ -83,8 +83,7 @@ public class HistoryEntityReferenceSchemaContributor extends BaseSchemaContribut
         continue;
       }
       if (previousExisting == null) {
-        LOGGER.debug(
-            "historylog_reference_type: add {} before {}", entity, values.get(0));
+        LOGGER.debug("historylog_reference_type: add {} before {}", entity, values.get(0));
         sb.append(
             "ALTER TYPE %s ADD VALUE '%s' BEFORE '%s';%n"
                 .formatted(typeName, entity, values.get(0)));
