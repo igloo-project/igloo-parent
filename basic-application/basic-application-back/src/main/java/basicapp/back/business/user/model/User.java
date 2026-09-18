@@ -240,7 +240,7 @@ public class User extends GenericEntity<Long, User> implements IUser, INotificat
 
   /**
    * Fournit la locale préférée de l'utilisateur. Il faut utiliser {@link
-   * CoreConfigurer##toAvailableLocale(Locale)} si la locale préférée de l'utilisateur doit être
+   * CoreConfigurer#toAvailableLocale(Locale)} si la locale préférée de l'utilisateur doit être
    * exploitée pour choisir des traductions. Cette méthode permet de mapper une locale quelconque
    * (incluant null) sur une locale qui sera obligatoirement reconnue pas le système (de manière à
    * avoir un fonctionnement prédictible).
