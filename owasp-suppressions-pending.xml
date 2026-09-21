@@ -356,6 +356,14 @@
   <!--                                                              -->
   <suppress>
     <notes><![CDATA[
+   file name: spring-boot-data-commons-4.0.6.jar
+   Non impacté, on utilise postfix pour générer le tls
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring-boot.*$</packageUrl>
+    <cve>CVE-2026-40992</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
    file name: babel__helper-string-parser-8.0.0.jar
    Babel n'est utilisé que comme outil de build de notre propre code, non concerné
    ]]></notes>
