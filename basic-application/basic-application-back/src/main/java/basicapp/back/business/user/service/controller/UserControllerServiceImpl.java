@@ -5,7 +5,6 @@ import basicapp.back.business.user.model.User;
 import basicapp.back.business.user.service.business.IUserService;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,7 +12,6 @@ public class UserControllerServiceImpl implements IUserControllerService {
 
   private final IUserService userService;
 
-  @Autowired
   public UserControllerServiceImpl(IUserService userService) {
     this.userService = userService;
   }

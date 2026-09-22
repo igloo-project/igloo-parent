@@ -23,13 +23,11 @@ import org.iglooproject.wicket.more.link.descriptor.mapper.ITwoParameterLinkDesc
 import org.iglooproject.wicket.more.model.GenericEntityModel;
 import org.iglooproject.wicket.more.notification.service.AbstractNotificationContentDescriptorFactory;
 import org.iglooproject.wicket.more.notification.service.IWicketContextProvider;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class BasicApplicationNotificationContentDescriptorFactoryImpl
     extends AbstractNotificationContentDescriptorFactory
     implements IBasicApplicationNotificationContentDescriptorFactory {
 
-  @Autowired
   public BasicApplicationNotificationContentDescriptorFactoryImpl(
       IWicketContextProvider contextProvider) {
     super(contextProvider);

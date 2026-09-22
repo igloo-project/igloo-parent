@@ -3,7 +3,6 @@ package basicapp.back.business.upgrade.service;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -16,10 +15,14 @@ public class DataUpgradeApplicationListener implements ApplicationListener<Conte
   private static final Logger LOGGER =
       LoggerFactory.getLogger(DataUpgradeApplicationListener.class);
 
-  @Autowired private IDataUpgradeManager dataUpgradeManager;
+  private final IDataUpgradeManager dataUpgradeManager;
 
   @Value("${spring.jpa.igloo.data-upgrade.enabled:true}")
   private boolean enabled;
+
+  public DataUpgradeApplicationListener(IDataUpgradeManager dataUpgradeManager) {
+    this.dataUpgradeManager = dataUpgradeManager;
+  }
 
   /** Automatically launches data upgrades at startup */
   @Override

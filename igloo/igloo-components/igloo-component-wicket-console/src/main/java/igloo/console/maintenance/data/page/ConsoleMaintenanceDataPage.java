@@ -24,7 +24,6 @@ import org.iglooproject.jpa.more.business.upgrade.model.DataUpgradeRecordBinding
 import org.iglooproject.jpa.more.business.upgrade.model.IDataUpgrade;
 import org.iglooproject.jpa.more.business.upgrade.service.IAbstractDataUpgradeService;
 import org.iglooproject.jpa.more.business.upgrade.service.IDataUpgradeRecordService;
-import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.more.markup.html.image.BooleanIcon;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
 import org.slf4j.Logger;
@@ -38,8 +37,6 @@ public class ConsoleMaintenanceDataPage extends ConsoleMaintenanceTemplate {
 
   private static final DataUpgradeRecordBinding dataUpgradeRecordBinding =
       new DataUpgradeRecordBinding();
-
-  @SpringBean private IPropertyService propertyService;
 
   @SpringBean private IDataUpgradeRecordService dataUpgradeRecordService;
 

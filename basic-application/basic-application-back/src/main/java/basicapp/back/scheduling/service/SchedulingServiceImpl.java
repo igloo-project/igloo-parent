@@ -9,7 +9,6 @@ import org.iglooproject.spring.property.SpringPropertyIds;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,7 +16,11 @@ public class SchedulingServiceImpl implements ISchedulingService {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(SchedulingServiceImpl.class);
 
-  @Autowired private IPropertyService propertyService;
+  private final IPropertyService propertyService;
+
+  public SchedulingServiceImpl(IPropertyService propertyService) {
+    this.propertyService = propertyService;
+  }
 
   @Override
   public void temporaryFilesCleaning() {

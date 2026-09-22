@@ -21,6 +21,7 @@ import org.springframework.transaction.interceptor.TransactionAttribute;
 import org.springframework.transaction.support.TransactionTemplate;
 
 @Service
+@SuppressWarnings("squid:S6813")
 public class DataUpgradeManagerImpl extends AbstractDataUpgradeServiceImpl
     implements IDataUpgradeManager {
 

@@ -15,7 +15,6 @@ import org.iglooproject.commons.util.exception.IllegalSwitchValueException;
 import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
 import org.iglooproject.jpa.security.business.user.model.IUser;
 import org.iglooproject.jpa.security.service.CoreJpaUserDetailsServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.acls.domain.PermissionFactory;
 import org.springframework.security.acls.model.Permission;
 import org.springframework.security.core.GrantedAuthority;
@@ -24,9 +23,14 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 public class BasicApplicationUserDetailsServiceImpl extends CoreJpaUserDetailsServiceImpl
     implements IBasicApplicationUserDetailsService {
 
-  @Autowired private IRoleService roleService;
+  private final IRoleService roleService;
+  private final PermissionFactory permissionFactory;
 
-  @Autowired private PermissionFactory permissionFactory;
+  public BasicApplicationUserDetailsServiceImpl(
+      IRoleService roleService, PermissionFactory permissionFactory) {
+    this.roleService = roleService;
+    this.permissionFactory = permissionFactory;
+  }
 
   @Override
   public Pair<Set<GrantedAuthority>, Set<Permission>> getAuthoritiesAndPermissions(

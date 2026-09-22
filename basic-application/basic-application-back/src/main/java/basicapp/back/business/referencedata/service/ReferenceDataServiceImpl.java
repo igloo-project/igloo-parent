@@ -1,6 +1,5 @@
 package basicapp.back.business.referencedata.service;
 
-import basicapp.back.business.referencedata.dao.IReferenceDataDao;
 import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.dsl.SimpleExpression;
 import com.querydsl.core.types.dsl.StringExpression;
@@ -9,17 +8,15 @@ import java.util.List;
 import org.iglooproject.jpa.more.business.generic.model.search.EnabledFilter;
 import org.iglooproject.jpa.more.business.referencedata.model.GenericReferenceData;
 import org.iglooproject.jpa.more.business.referencedata.service.IGenericReferenceDataService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ReferenceDataServiceImpl implements IReferenceDataService {
 
-  @Autowired private IGenericReferenceDataService genericReferenceDataService;
+  private final IGenericReferenceDataService genericReferenceDataService;
 
-  @Autowired
-  public ReferenceDataServiceImpl(IReferenceDataDao referenceDataDao) {
-    super();
+  public ReferenceDataServiceImpl(IGenericReferenceDataService genericReferenceDataService) {
+    this.genericReferenceDataService = genericReferenceDataService;
   }
 
   @Override

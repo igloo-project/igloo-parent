@@ -28,7 +28,6 @@ import org.iglooproject.jpa.util.HibernateUtils;
 import org.iglooproject.spring.property.SpringPropertyIds;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.spring.util.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -45,7 +44,6 @@ public class UserServiceImpl extends GenericEntityServiceImpl<Long, User> implem
   private final ISecurityManagementService securityManagementService;
   private final PasswordEncoder passwordEncoder;
 
-  @Autowired
   public UserServiceImpl(
       IUserDao dao,
       IUserDifferenceService userDifferenceService,
