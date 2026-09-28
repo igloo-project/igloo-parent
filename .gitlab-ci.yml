@@ -133,7 +133,7 @@ sonar-analyze:
     - mvn -U verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
       -Dsonar.projectBranch=dev
       -DskipTests
-      -Dsonar.host.url="https://sonar2.tools.kobalt.fr"
+      -Dsonar.host.url="https://sonar.tools.kobalt.fr"
       -Dsonar.token="$SONAR_TOKEN"
       -Dsonar.exclusions="$SONAR_EXCLUSIONS"
   rules:
