@@ -7,6 +7,14 @@
   <!--                                                              -->
   <suppress>
     <notes><![CDATA[
+    file name: spring-security-core-7.1.0.jar
+    Acun client n'emet de preuve DPoP à ce jour, pas impacté
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring.*$</packageUrl>
+    <cve>CVE-2026-41707</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
     file name: httpclient5-5.6.2.jar
     On n'utilise pas la version asynchrone de httpclient 
     ]]></notes>
