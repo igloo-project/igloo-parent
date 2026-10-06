@@ -29,6 +29,7 @@ import org.iglooproject.spring.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+@SuppressWarnings("squid:S6813")
 public class SecurityManagementServiceImpl implements ISecurityManagementService {
 
   @Autowired private IUserService userService;

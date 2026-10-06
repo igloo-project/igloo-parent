@@ -9,6 +9,7 @@ import org.iglooproject.jpa.util.HibernateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.acls.model.Permission;
 
+@SuppressWarnings("squid:S6813")
 public class BasicApplicationPermissionEvaluator extends AbstractCorePermissionEvaluator<User> {
 
   @Autowired private IUserPermissionEvaluator userPermissionEvaluator;

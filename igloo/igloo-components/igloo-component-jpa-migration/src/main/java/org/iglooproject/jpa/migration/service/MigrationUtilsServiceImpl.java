@@ -16,6 +16,8 @@ public class MigrationUtilsServiceImpl implements IMigrationUtilsService {
   protected JdbcTemplate newDatabaseJdbcTemplate;
 
   @Override
+  // Make sure using a dynamically formatted SQL query is safe here. => input is not user-controlled
+  @SuppressWarnings("java:S2077")
   public void updateSequence(Class<?> clazz) {
     // TODO SDO : Trouver un moyen de vérifier de manière plus sûre
     if (Strings.CS.endsWith(clazz.getSimpleName().toLowerCase(), "user")) {

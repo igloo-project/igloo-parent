@@ -11,7 +11,6 @@ import java.time.Instant;
 import java.util.List;
 import org.iglooproject.functional.Supplier2;
 import org.iglooproject.jpa.more.business.history.service.AbstractHistoryLogServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,13 +20,13 @@ public class HistoryLogServiceImpl
     implements IHistoryLogService {
 
   private static final Supplier2<HistoryDifference> HISTORY_DIFFERENCE_SUPPLIER =
-      () -> new HistoryDifference();
+      HistoryDifference::new;
 
-  @Autowired private IUserService userService;
+  private final IUserService userService;
 
-  @Autowired
-  public HistoryLogServiceImpl(IHistoryLogDao dao) {
+  public HistoryLogServiceImpl(IHistoryLogDao dao, IUserService userService) {
     super(dao);
+    this.userService = userService;
   }
 
   @Override

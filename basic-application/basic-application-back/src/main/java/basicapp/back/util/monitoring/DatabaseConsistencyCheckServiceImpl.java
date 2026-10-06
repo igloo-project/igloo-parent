@@ -4,13 +4,16 @@ import basicapp.back.business.user.service.business.IUserService;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.util.IDatabaseConsistencyCheckService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class DatabaseConsistencyCheckServiceImpl implements IDatabaseConsistencyCheckService {
 
-  @Autowired private IUserService userService;
+  private final IUserService userService;
+
+  public DatabaseConsistencyCheckServiceImpl(IUserService userService) {
+    this.userService = userService;
+  }
 
   @Override
   public void checkDatabaseAccess() {

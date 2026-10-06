@@ -28,7 +28,6 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.functional.Predicates2;
 import org.iglooproject.spring.property.model.PropertyId;
 import org.iglooproject.spring.property.service.IPropertyRegistry;
-import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.spring.util.PropertySourceLogger;
 import org.iglooproject.spring.util.StringUtils;
 import org.iglooproject.wicket.more.markup.html.form.LabelPlaceholderBehavior;
@@ -43,8 +42,6 @@ public class ConsoleMaintenancePropertiesPage extends ConsoleMaintenanceTemplate
   private static final String ENVIRONEMENT_PREFIX = "environment.";
 
   @SpringBean private IPropertyRegistry propertyRegistry;
-
-  @SpringBean private IPropertyService propertyService;
 
   @SpringBean private PropertySourceLogger propertySourceLogger;
 

@@ -8,7 +8,6 @@ import org.iglooproject.wicket.more.link.descriptor.generator.IPageLinkGenerator
 import org.iglooproject.wicket.more.model.GenericEntityModel;
 import org.iglooproject.wicket.more.notification.service.AbstractNotificationUrlBuilderServiceImpl;
 import org.iglooproject.wicket.more.notification.service.IWicketContextProvider;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * This service is used to generate the URL used in the text version of the notification emails.
@@ -19,7 +18,6 @@ public class BasicApplicationNotificationUrlBuilderServiceImpl
     extends AbstractNotificationUrlBuilderServiceImpl
     implements IBasicApplicationNotificationUrlBuilderService {
 
-  @Autowired
   public BasicApplicationNotificationUrlBuilderServiceImpl(IWicketContextProvider contextProvider) {
     super(contextProvider);
   }

@@ -9,13 +9,16 @@ import java.util.List;
 import org.iglooproject.jpa.more.business.generic.model.search.EnabledFilter;
 import org.iglooproject.jpa.more.business.referencedata.dao.IGenericReferenceDataDao;
 import org.iglooproject.jpa.more.business.referencedata.model.GenericReferenceData;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class ReferenceDataDaoImpl implements IReferenceDataDao {
 
-  @Autowired private IGenericReferenceDataDao genericReferenceDataDao;
+  private final IGenericReferenceDataDao genericReferenceDataDao;
+
+  public ReferenceDataDaoImpl(IGenericReferenceDataDao genericReferenceDataDao) {
+    this.genericReferenceDataDao = genericReferenceDataDao;
+  }
 
   @Override
   public <E extends GenericReferenceData<?, ?>> E getEntity(Class<E> clazz, Long id) {

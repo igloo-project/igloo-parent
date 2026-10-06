@@ -5,7 +5,6 @@ import java.time.Instant;
 import java.util.Date;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.spring.notification.service.AbstractNotificationServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,9 +14,15 @@ public class NotificationServiceImpl extends AbstractNotificationServiceImpl
   private static final String ERROR_EXCEPTION_MESSAGE =
       "Error during send mail process (to: %s, subject: %s)";
 
-  @Autowired private IBasicApplicationNotificationUrlBuilderService notificationUrlBuilderService;
+  private final IBasicApplicationNotificationUrlBuilderService notificationUrlBuilderService;
+  private final IBasicApplicationNotificationContentDescriptorFactory contentDescriptorFactory;
 
-  @Autowired private IBasicApplicationNotificationContentDescriptorFactory contentDescriptorFactory;
+  public NotificationServiceImpl(
+      IBasicApplicationNotificationUrlBuilderService notificationUrlBuilderService,
+      IBasicApplicationNotificationContentDescriptorFactory contentDescriptorFactory) {
+    this.notificationUrlBuilderService = notificationUrlBuilderService;
+    this.contentDescriptorFactory = contentDescriptorFactory;
+  }
 
   @Override
   public void sendExampleNotification(User user) throws ServiceException {

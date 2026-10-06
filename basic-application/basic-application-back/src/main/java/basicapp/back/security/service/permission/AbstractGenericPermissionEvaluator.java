@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.acls.domain.PermissionFactory;
 import org.springframework.security.acls.model.Permission;
 
+@SuppressWarnings("squid:S6813")
 public abstract class AbstractGenericPermissionEvaluator<T>
     implements IGenericPermissionEvaluator<User, T> {
 

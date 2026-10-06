@@ -5,7 +5,6 @@ import basicapp.back.business.role.service.IRoleService;
 import igloo.loginmdc.annotation.LogExecution;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,7 +12,6 @@ public class RoleControllerServiceImpl implements IRoleControllerService {
 
   private final IRoleService roleService;
 
-  @Autowired
   public RoleControllerServiceImpl(IRoleService roleService) {
     this.roleService = roleService;
   }

@@ -20,7 +20,7 @@ public class BasicApplicationFrontSecurityConfiguration {
 
   @Bean
   @Order(1)
-  public SecurityFilterChain consoleSecurityFilterChain(HttpSecurity http) throws Exception {
+  public SecurityFilterChain consoleSecurityFilterChain(HttpSecurity http) {
     return http.securityMatcher("/console/**")
         .headers(AbstractHttpConfigurer::disable)
         .csrf(AbstractHttpConfigurer::disable)
@@ -43,7 +43,7 @@ public class BasicApplicationFrontSecurityConfiguration {
 
   @Bean
   @Order(2)
-  public SecurityFilterChain ressourcesSecurityFilterChain(HttpSecurity http) throws Exception {
+  public SecurityFilterChain ressourcesSecurityFilterChain(HttpSecurity http) {
     return http.securityMatcher("/wicket/resource/**")
         .headers(AbstractHttpConfigurer::disable)
         .csrf(AbstractHttpConfigurer::disable)
@@ -70,7 +70,7 @@ public class BasicApplicationFrontSecurityConfiguration {
 
   @Bean
   @Order(3)
-  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+  public SecurityFilterChain securityFilterChain(HttpSecurity http) {
     return http.headers(AbstractHttpConfigurer::disable)
         .csrf(AbstractHttpConfigurer::disable)
         .formLogin(AbstractHttpConfigurer::disable)

@@ -4,7 +4,9 @@ import static basicapp.back.property.BasicApplicationBackPropertyIds.SECURITY_PA
 import static basicapp.back.property.BasicApplicationBackPropertyIds.SECURITY_PASSWORD_LENGTH_MIN;
 import static basicapp.back.property.BasicApplicationBackPropertyIds.SECURITY_PASSWORD_USER_FORBIDDEN_PASSWORDS;
 
+import basicapp.back.business.role.service.IRoleService;
 import basicapp.back.business.user.model.atomic.UserType;
+import basicapp.back.business.user.service.business.IUserService;
 import basicapp.back.security.model.BasicApplicationPermission;
 import basicapp.back.security.model.SecurityOptions;
 import basicapp.back.security.service.BasicApplicationAuthenticationServiceImpl;
@@ -38,15 +40,17 @@ public class BasicApplicationBackSecurityConfiguration {
   }
 
   @Bean
-  public IBasicApplicationAuthenticationService authenticationService() {
-    return new BasicApplicationAuthenticationServiceImpl();
+  public IBasicApplicationAuthenticationService authenticationService(IUserService userService) {
+    return new BasicApplicationAuthenticationServiceImpl(userService);
   }
 
   @Bean
   public IBasicApplicationUserDetailsService userDetailsService(
-      AuthenticationUsernameComparison authenticationUsernameComparison) {
+      AuthenticationUsernameComparison authenticationUsernameComparison,
+      IRoleService roleService,
+      PermissionFactory permissionFactory) {
     BasicApplicationUserDetailsServiceImpl userDetailsService =
-        new BasicApplicationUserDetailsServiceImpl();
+        new BasicApplicationUserDetailsServiceImpl(roleService, permissionFactory);
     userDetailsService.setAuthenticationUsernameComparison(authenticationUsernameComparison);
     return userDetailsService;
   }

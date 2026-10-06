@@ -83,8 +83,9 @@ public class HistoryEntityReferenceSchemaContributor extends BaseSchemaContribut
         continue;
       }
       if (previousExisting == null) {
-        LOGGER.debug(
-            "historylog_reference_type: add {} before {}", entity, values.get(0)); // NOSONAR
+        if (LOGGER.isDebugEnabled()) {
+          LOGGER.debug("historylog_reference_type: add {} before {}", entity, values.get(0));
+        }
         sb.append(
             "ALTER TYPE %s ADD VALUE '%s' BEFORE '%s';%n"
                 .formatted(typeName, entity, values.get(0)));
@@ -146,7 +147,8 @@ public class HistoryEntityReferenceSchemaContributor extends BaseSchemaContribut
   }
 
   /** List current enum values (database-side). */
-  @SuppressWarnings("unchecked")
+  // Make sure using a dynamically formatted SQL query is safe here. => input is not user-controlled
+  @SuppressWarnings({"unchecked", "java:S2077"})
   protected List<String> listCurrentEnumValues(EntityManager em, String typeInSchemaName) {
     List<String> values =
         em.createNativeQuery(

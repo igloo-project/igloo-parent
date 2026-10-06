@@ -4,6 +4,7 @@ image:
 variables:
   MAVEN_OPTS: "-Xmx1536m"
   JAVA_TOOL_OPTIONS: "-Duser.language=fr -Duser.country=FR -Duser.timezone=Europe/Paris -Dfile.encoding=UTF-8"
+  SONAR_EXCLUSIONS: "**/*.png,**/*.jpg,**/*.ico,**/*.ttf,**/*.xlsx,**/*.zip,**/*.woff2"
 
 stages:
   # build includes tests
@@ -124,24 +125,6 @@ maven-deploy:
   tags:
     - docker
 
-sonar-old-analyze:
-  needs: []
-  stage: analyze
-  environment: staging
-  script:
-    - mvn -U verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
-      -Dsonar.projectBranch=dev
-      -DskipTests
-      -Dsonar.host.url="https://sonar.tools.kobalt.fr"
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "api"
-      when: never
-    - if: $CI_COMMIT_BRANCH == "owasp"
-      when: never
-    - when: on_success
-  tags:
-    - docker
-
 sonar-analyze:
   needs: []
   stage: analyze
@@ -150,14 +133,18 @@ sonar-analyze:
     - mvn -U verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
       -Dsonar.projectBranch=dev
       -DskipTests
-      -Dsonar.host.url="https://sonar2.tools.kobalt.fr"
+      -Dsonar.host.url="https://sonar.tools.kobalt.fr"
       -Dsonar.token="$SONAR_TOKEN"
+      -Dsonar.exclusions="$SONAR_EXCLUSIONS"
   rules:
     - if: $CI_PIPELINE_SOURCE == "api"
       when: never
     - if: $CI_COMMIT_BRANCH == "owasp"
       when: never
     - when: on_success
+  variables:
+    # get rid of sonar Shallow clone detected... warning
+    GIT_DEPTH: 0
   tags:
     - docker
 

@@ -6,7 +6,6 @@ import igloo.loginmdc.annotation.LogExecution;
 import java.util.List;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,7 +13,6 @@ public class AnnouncementControllerServiceImpl implements IAnnouncementControlle
 
   private final IAnnouncementService announcementService;
 
-  @Autowired
   public AnnouncementControllerServiceImpl(IAnnouncementService announcementService) {
     this.announcementService = announcementService;
   }

@@ -90,6 +90,7 @@ import org.iglooproject.wicket.more.util.convert.HibernateProxyAwareConverterLoc
 import org.iglooproject.wicket.more.util.listener.FormInvalidDecoratorListener;
 import org.springframework.beans.factory.annotation.Autowired;
 
+@SuppressWarnings("squid:S6813")
 public class BasicApplicationApplication extends CoreWicketAuthenticatedApplication {
 
   public static final String NAME = "BasicApplicationApplication";

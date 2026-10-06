@@ -21,7 +21,6 @@ import basicapp.back.business.user.predicate.UserPredicates;
 import basicapp.back.security.service.ISecurityManagementService;
 import com.google.common.annotations.VisibleForTesting;
 import java.util.Objects;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.acls.model.Permission;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +30,6 @@ public class UserPermissionEvaluatorImpl extends AbstractGenericPermissionEvalua
 
   private final ISecurityManagementService securityManagementService;
 
-  @Autowired
   public UserPermissionEvaluatorImpl(ISecurityManagementService securityManagementService) {
     this.securityManagementService = securityManagementService;
   }

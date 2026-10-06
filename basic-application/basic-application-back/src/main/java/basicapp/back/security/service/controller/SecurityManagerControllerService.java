@@ -8,7 +8,6 @@ import basicapp.back.security.model.SecurityOptions;
 import basicapp.back.security.service.ISecurityManagementService;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,7 +15,6 @@ public class SecurityManagerControllerService implements ISecurityManagementCont
 
   private final ISecurityManagementService securityManagementService;
 
-  @Autowired
   public SecurityManagerControllerService(ISecurityManagementService securityManagementService) {
     this.securityManagementService = securityManagementService;
   }

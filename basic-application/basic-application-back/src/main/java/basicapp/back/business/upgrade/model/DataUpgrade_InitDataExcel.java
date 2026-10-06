@@ -10,7 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@SuppressWarnings("squid:S00101") // class named on purpose, skip class name rule
+@SuppressWarnings({"squid:S00101", "squid:S6813"}) // class named on purpose, skip class name rule
 public class DataUpgrade_InitDataExcel implements IDataUpgrade {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(DataUpgrade_InitDataExcel.class);
