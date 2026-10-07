@@ -47,6 +47,13 @@ public class SignInContentPanel extends Panel {
           @Override
           protected void onSubmit() {
             try {
+              if (BasicApplicationSession.get().isSignedIn()) {
+                BasicApplicationSession.get().invalidate();
+                throw BasicApplicationApplication.get()
+                    .getSignInPageLinkDescriptor()
+                    .newRestartResponseException();
+              }
+
               BasicApplicationSession.get()
                   .signIn(usernameModel.getObject(), passwordModel.getObject());
               onSuccess(BasicApplicationSession.get().getUser());

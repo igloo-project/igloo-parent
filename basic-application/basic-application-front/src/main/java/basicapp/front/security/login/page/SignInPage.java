@@ -3,6 +3,7 @@ package basicapp.front.security.login.page;
 import basicapp.front.common.template.ApplicationAccessTemplate;
 import basicapp.front.security.login.component.SignInContentPanel;
 import basicapp.front.security.login.component.SignInFooterPanel;
+import igloo.wicket.condition.Condition;
 import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
@@ -38,5 +39,10 @@ public class SignInPage extends ApplicationAccessTemplate {
   @Override
   protected Component getFooterComponent(String wicketId) {
     return new SignInFooterPanel(wicketId);
+  }
+
+  @Override
+  public Condition keepSignedIn() {
+    return Condition.alwaysFalse();
   }
 }

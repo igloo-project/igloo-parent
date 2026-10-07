@@ -2,6 +2,8 @@ package basicapp.front.security.password.component;
 
 import basicapp.back.business.common.model.EmailAddress;
 import basicapp.back.business.user.service.controller.IUserControllerService;
+import basicapp.front.BasicApplicationApplication;
+import basicapp.front.BasicApplicationSession;
 import basicapp.front.common.form.EmailAddressTextField;
 import igloo.wicket.feedback.FeedbackUtils;
 import igloo.wicket.model.Detachables;
@@ -51,6 +53,13 @@ public class SecurityPasswordRecoveryRequestResetContentPanel extends Panel {
           @Override
           protected void onSubmit(AjaxRequestTarget target) {
             try {
+              if (BasicApplicationSession.get().isSignedIn()) {
+                BasicApplicationSession.get().invalidate();
+                throw BasicApplicationApplication.get()
+                    .getSignInPageLinkDescriptor()
+                    .newRestartResponseException();
+              }
+
               userControllerService.initPasswordRecoveryRequest(emailAddressModel.getObject());
 
               Session.get()
