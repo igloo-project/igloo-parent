@@ -137,6 +137,12 @@
       <groupId>org.hibernate.search</groupId>
       <artifactId>hibernate-search-backend-lucene</artifactId>
     </dependency>
+    <dependency>
+      <!-- upper bound dependency issue (hibernate-core / hibernate-search) -->
+      <groupId>org.hibernate.models</groupId>
+      <artifactId>hibernate-models</artifactId>
+      <scope>runtime</scope>
+    </dependency>
     <!-- Bindgen -->
     <dependency>
       <groupId>org.bindgen</groupId>
