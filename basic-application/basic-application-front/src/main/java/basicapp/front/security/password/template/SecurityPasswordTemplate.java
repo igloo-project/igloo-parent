@@ -1,9 +1,6 @@
 package basicapp.front.security.password.template;
 
-import basicapp.front.BasicApplicationSession;
 import basicapp.front.common.template.ApplicationAccessTemplate;
-import igloo.wicket.condition.Condition;
-import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 public abstract class SecurityPasswordTemplate extends ApplicationAccessTemplate {
@@ -12,14 +9,5 @@ public abstract class SecurityPasswordTemplate extends ApplicationAccessTemplate
 
   protected SecurityPasswordTemplate(PageParameters parameters) {
     super(parameters);
-
-    if (!keepSignedIn().applies() && BasicApplicationSession.get().isSignedIn()) {
-      BasicApplicationSession.get().invalidate();
-      throw new RestartResponseException(getClass(), parameters);
-    }
-  }
-
-  public Condition keepSignedIn() {
-    return Condition.alwaysTrue();
   }
 }

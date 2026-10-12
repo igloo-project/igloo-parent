@@ -267,18 +267,18 @@ public final class LuceneUtils {
     if (booleanQuery.clauses().size() > 0) {
       StringBuilder booleanQuerySb = new StringBuilder();
       for (BooleanClause clause : booleanQuery.clauses()) {
-        if (clause.getQuery() != null) {
-          String query = queryToString(clause.getQuery());
+        if (clause.query() != null) {
+          String query = queryToString(clause.query());
 
           if (StringUtils.hasText(query)) {
-            if (Occur.SHOULD.equals(clause.getOccur())) {
+            if (Occur.SHOULD.equals(clause.occur())) {
               // dans Solr, on peut définir l'opérateur implicite en AND et il faut donc qu'on soit
               // précis
               if (booleanQuerySb.length() > 0) {
                 booleanQuerySb.append("OR ");
               }
             } else {
-              booleanQuerySb.append(clause.getOccur().toString());
+              booleanQuerySb.append(clause.occur().toString());
             }
             booleanQuerySb.append(query);
             booleanQuerySb.append(" ");

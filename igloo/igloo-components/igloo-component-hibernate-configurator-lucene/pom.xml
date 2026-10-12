@@ -35,7 +35,7 @@
     </dependency>
     <dependency>
       <groupId>org.hibernate.search</groupId>
-      <artifactId>hibernate-search-backend-lucene</artifactId>
+      <artifactId>hibernate-search-backend-lucene-next</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>

@@ -6,6 +6,8 @@ import basicapp.back.business.common.model.EmailAddress;
 import basicapp.back.business.user.model.User;
 import basicapp.back.security.service.controller.ISecurityManagementControllerService;
 import basicapp.back.util.binding.Bindings;
+import basicapp.front.BasicApplicationApplication;
+import basicapp.front.BasicApplicationSession;
 import basicapp.front.common.form.EmailAddressTextField;
 import basicapp.front.common.validator.UserPasswordValidator;
 import igloo.igloojs.showpassword.ShowPasswordBehavior;
@@ -93,6 +95,13 @@ public class SecurityPasswordCreationContentPanel extends GenericPanel<User> {
           @Override
           protected void onSubmit(AjaxRequestTarget target) {
             try {
+              if (BasicApplicationSession.get().isSignedIn()) {
+                BasicApplicationSession.get().invalidate();
+                throw BasicApplicationApplication.get()
+                    .getSignInPageLinkDescriptor()
+                    .newRestartResponseException();
+              }
+
               User user = SecurityPasswordCreationContentPanel.this.getModelObject();
               securityManagementController.updatePassword(user, passwordModel.getObject());
 

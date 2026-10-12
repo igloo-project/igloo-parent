@@ -12,8 +12,10 @@ import igloo.bootstrap.tooltip.BootstrapTooltipBehavior;
 import igloo.bootstrap.tooltip.BootstrapTooltipOptions;
 import igloo.wicket.behavior.ClassAttributeAppender;
 import igloo.wicket.component.CoreLabel;
+import igloo.wicket.condition.Condition;
 import igloo.wicket.markup.html.panel.InvisiblePanel;
 import org.apache.wicket.Component;
+import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
@@ -39,6 +41,11 @@ public abstract class ApplicationAccessTemplate extends AbstractWebPageTemplate 
 
   protected ApplicationAccessTemplate(PageParameters parameters) {
     super(parameters);
+
+    if (!keepSignedIn().applies() && BasicApplicationSession.get().isSignedIn()) {
+      BasicApplicationSession.get().invalidate();
+      throw new RestartResponseException(getClass(), parameters);
+    }
 
     if (Boolean.TRUE.equals(propertyService.get(MAINTENANCE))
         && !authenticationService.hasAdminRole()
@@ -101,6 +108,10 @@ public abstract class ApplicationAccessTemplate extends AbstractWebPageTemplate 
 
   protected IModel<BootstrapTooltipOptions> getBootstrapTooltipOptionsModel() {
     return BootstrapTooltipOptions::get;
+  }
+
+  public Condition keepSignedIn() {
+    return Condition.alwaysTrue();
   }
 
   @Override
