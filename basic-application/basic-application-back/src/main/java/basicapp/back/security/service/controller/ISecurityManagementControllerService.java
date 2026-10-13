@@ -1,10 +1,12 @@
 package basicapp.back.security.service.controller;
 
+import static basicapp.back.security.model.BasicApplicationSecurityExpressionConstants.USER_PASSWORD_RESET_ADMIN;
+import static basicapp.back.security.model.BasicApplicationSecurityExpressionConstants.USER_PASSWORD_UPDATE_USER;
+
+import basicapp.back.business.common.model.EmailAddress;
 import basicapp.back.business.user.model.User;
-import basicapp.back.business.user.model.atomic.UserPasswordRecoveryRequestInitiator;
 import basicapp.back.business.user.model.atomic.UserPasswordRecoveryRequestType;
 import basicapp.back.business.user.model.atomic.UserType;
-import basicapp.back.security.model.BasicApplicationSecurityExpressionConstants;
 import basicapp.back.security.model.SecurityOptions;
 import org.iglooproject.commons.util.security.PermissionObject;
 import org.iglooproject.jpa.exception.SecurityServiceException;
@@ -13,27 +15,20 @@ import org.springframework.security.access.prepost.PreAuthorize;
 
 public interface ISecurityManagementControllerService {
 
-  @PreAuthorize(BasicApplicationSecurityExpressionConstants.USER_EDIT_PASSWORD)
-  void updatePassword(@PermissionObject User user, String password)
+  @PreAuthorize(USER_PASSWORD_RESET_ADMIN)
+  void resetPasswordAdmin(@PermissionObject User user, UserPasswordRecoveryRequestType type)
       throws ServiceException, SecurityServiceException;
 
-  @PreAuthorize(BasicApplicationSecurityExpressionConstants.USER_RECOVERY_PASSWORD)
-  void initiatePasswordRecoveryRequest(
-      @PermissionObject User user,
-      UserPasswordRecoveryRequestType type,
-      UserPasswordRecoveryRequestInitiator initiator)
+  @PreAuthorize(USER_PASSWORD_UPDATE_USER)
+  void updatePasswordUser(@PermissionObject User user, String password)
       throws ServiceException, SecurityServiceException;
 
-  @PreAuthorize(BasicApplicationSecurityExpressionConstants.ADMIN_EDIT_PASSWORD)
-  void updatePassword(@PermissionObject User user, String password, User author)
-      throws ServiceException, SecurityServiceException;
+  void resetPasswordUser(EmailAddress emailAddress)
+      throws SecurityServiceException, ServiceException;
 
-  @PreAuthorize(BasicApplicationSecurityExpressionConstants.ADMIN_RECOVERY_PASSWORD)
-  void initiatePasswordRecoveryRequest(
-      @PermissionObject User user,
-      UserPasswordRecoveryRequestType type,
-      UserPasswordRecoveryRequestInitiator initiator,
-      User author)
+  boolean isPasswordRecoveryRequestValid(User user, String token);
+
+  void updatePasswordUserFromRecoveryRequest(User user, String token, String password)
       throws ServiceException, SecurityServiceException;
 
   boolean checkPassword(String password, User user)
@@ -41,7 +36,9 @@ public interface ISecurityManagementControllerService {
 
   boolean isPasswordExpired(User user);
 
-  boolean isPasswordRecoveryRequestExpired(User user);
+  void onSignIn(User user) throws ServiceException, SecurityServiceException;
+
+  void onSignInFail(String username) throws ServiceException, SecurityServiceException;
 
   SecurityOptions getSecurityOptions(UserType userType);
 

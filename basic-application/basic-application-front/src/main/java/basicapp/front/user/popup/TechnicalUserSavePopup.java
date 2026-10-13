@@ -1,21 +1,16 @@
 package basicapp.front.user.popup;
 
-import static basicapp.back.property.BasicApplicationBackPropertyIds.SECURITY_PASSWORD_LENGTH_MIN;
-
 import basicapp.back.business.user.model.User;
-import basicapp.back.business.user.model.atomic.UserType;
 import basicapp.back.business.user.service.controller.IUserControllerService;
 import basicapp.back.security.service.controller.ISecurityManagementControllerService;
 import basicapp.back.util.binding.Bindings;
 import basicapp.front.BasicApplicationSession;
 import basicapp.front.common.form.EmailAddressTextField;
 import basicapp.front.common.validator.EmailAddressUnicityValidator;
-import basicapp.front.common.validator.UserPasswordValidator;
 import basicapp.front.common.validator.UsernamePatternValidator;
 import basicapp.front.common.validator.UsernameUnicityValidator;
 import basicapp.front.user.page.TechnicalUserDetailPage;
 import igloo.bootstrap.modal.AbstractAjaxModalPopupPanel;
-import igloo.igloojs.showpassword.ShowPasswordBehavior;
 import igloo.wicket.component.CoreLabel;
 import igloo.wicket.component.EnclosureContainer;
 import igloo.wicket.condition.Condition;
@@ -30,7 +25,6 @@ import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.CheckBox;
-import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -42,12 +36,10 @@ import org.apache.wicket.validation.IValidationError;
 import org.apache.wicket.validation.ValidationError;
 import org.iglooproject.spring.property.SpringPropertyIds;
 import org.iglooproject.spring.property.service.IPropertyService;
-import org.iglooproject.spring.util.StringUtils;
 import org.iglooproject.wicket.more.markup.html.form.FormMode;
 import org.iglooproject.wicket.more.markup.html.form.LocaleDropDownChoice;
 import org.iglooproject.wicket.more.markup.html.form.ModelValidatingForm;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
-import org.iglooproject.wicket.more.model.ApplicationPropertyModel;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -79,8 +71,6 @@ public class TechnicalUserSavePopup extends AbstractAjaxModalPopupPanel<User> {
 
   private final IModel<FormMode> formModeModel = Model.of();
 
-  private final IModel<String> passwordModel = Model.of();
-
   private ModelValidatingForm<User> form;
 
   public TechnicalUserSavePopup(String id) {
@@ -102,16 +92,6 @@ public class TechnicalUserSavePopup extends AbstractAjaxModalPopupPanel<User> {
 
     form = new ModelValidatingForm<>("form", getModel());
     body.add(form);
-
-    boolean passwordRequired =
-        securityManagementcontrollerService
-                .getSecurityOptions(UserType.TECHNICAL)
-                .isPasswordAdminUpdateEnabled()
-            && !securityManagementcontrollerService
-                .getSecurityOptions(UserType.TECHNICAL)
-                .isPasswordUserRecoveryEnabled();
-
-    PasswordTextField password = new PasswordTextField("password", passwordModel);
 
     form.add(
         new TextField<String>("firstName", BindingModel.of(getModel(), Bindings.user().firstName()))
@@ -135,29 +115,9 @@ public class TechnicalUserSavePopup extends AbstractAjaxModalPopupPanel<User> {
         new EnclosureContainer("addContainer")
             .condition(addModeCondition())
             .add(
-                new EnclosureContainer("passwordContainer")
-                    .condition(
-                        Condition.isTrue(
-                            () ->
-                                securityManagementcontrollerService
-                                    .getSecurityOptions(UserType.TECHNICAL)
-                                    .isPasswordAdminUpdateEnabled()))
-                    .add(
-                        password
-                            .setLabel(new ResourceModel("business.user.password"))
-                            .setRequired(passwordRequired),
-                        new BlankLink("showPassword").add(new ShowPasswordBehavior(password)),
-                        new CoreLabel(
-                            "passwordHelp",
-                            new StringResourceModel("user.common.form.password.help")
-                                .setParameters(
-                                    ApplicationPropertyModel.of(SECURITY_PASSWORD_LENGTH_MIN)))),
                 new CheckBox("enabled", BindingModel.of(getModel(), Bindings.user().enabled()))
                     .setLabel(new ResourceModel("business.user.enabled"))
                     .setOutputMarkupId(true)));
-
-    form.add(
-        new UserPasswordValidator(Model.of(UserType.TECHNICAL), password).userModel(getModel()));
 
     return body;
   }
@@ -176,13 +136,12 @@ public class TechnicalUserSavePopup extends AbstractAjaxModalPopupPanel<User> {
               IModel<User> userModel = TechnicalUserSavePopup.this.getModel();
               User user = userModel.getObject();
               User authenticatedUser = BasicApplicationSession.get().getUser();
-              String password = passwordModel.getObject();
 
-              userControllerService.saveTechnicalUser(user, password);
+              userControllerService.saveTechnicalUserAdmin(user);
 
               Session.get().success(getString("common.success"));
 
-              if (addModeCondition().applies() && !StringUtils.hasText(password)) {
+              if (addModeCondition().applies()) {
                 Session.get().success(getString("user.add.success.notification"));
                 throw TechnicalUserDetailPage.MAPPER
                     .ignoreParameter2()
@@ -246,6 +205,6 @@ public class TechnicalUserSavePopup extends AbstractAjaxModalPopupPanel<User> {
   @Override
   protected void onDetach() {
     super.onDetach();
-    Detachables.detach(formModeModel, passwordModel);
+    Detachables.detach(formModeModel);
   }
 }

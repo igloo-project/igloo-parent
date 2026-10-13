@@ -89,7 +89,7 @@ public class UserRolesEditPopup extends AbstractAjaxModalPopupPanel<User> {
           protected void onSubmit(AjaxRequestTarget target) {
             try {
               User user = UserRolesEditPopup.this.getModelObject();
-              userControllerService.updateRoles(user);
+              userControllerService.updateRolesAdmin(user);
               Session.get().success(getString("common.success"));
               closePopup(target);
               target.add(getPage());

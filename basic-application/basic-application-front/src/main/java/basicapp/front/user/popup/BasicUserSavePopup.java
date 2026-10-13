@@ -1,16 +1,12 @@
 package basicapp.front.user.popup;
 
-import static basicapp.back.property.BasicApplicationBackPropertyIds.SECURITY_PASSWORD_LENGTH_MIN;
-
 import basicapp.back.business.user.model.User;
-import basicapp.back.business.user.model.atomic.UserType;
 import basicapp.back.business.user.service.controller.IUserControllerService;
 import basicapp.back.security.service.controller.ISecurityManagementControllerService;
 import basicapp.back.util.binding.Bindings;
 import basicapp.front.BasicApplicationSession;
 import basicapp.front.common.form.EmailAddressTextField;
 import basicapp.front.common.validator.EmailAddressUnicityValidator;
-import basicapp.front.common.validator.UserPasswordValidator;
 import basicapp.front.common.validator.UsernamePatternValidator;
 import basicapp.front.common.validator.UsernameUnicityValidator;
 import basicapp.front.user.page.BasicUserDetailPage;
@@ -29,7 +25,6 @@ import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.CheckBox;
-import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -41,12 +36,10 @@ import org.apache.wicket.validation.IValidationError;
 import org.apache.wicket.validation.ValidationError;
 import org.iglooproject.spring.property.SpringPropertyIds;
 import org.iglooproject.spring.property.service.IPropertyService;
-import org.iglooproject.spring.util.StringUtils;
 import org.iglooproject.wicket.more.markup.html.form.FormMode;
 import org.iglooproject.wicket.more.markup.html.form.LocaleDropDownChoice;
 import org.iglooproject.wicket.more.markup.html.form.ModelValidatingForm;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
-import org.iglooproject.wicket.more.model.ApplicationPropertyModel;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -78,8 +71,6 @@ public class BasicUserSavePopup extends AbstractAjaxModalPopupPanel<User> {
 
   private final IModel<FormMode> formModeModel = Model.of();
 
-  private final IModel<String> passwordModel = Model.of();
-
   private ModelValidatingForm<User> form;
 
   public BasicUserSavePopup(String id) {
@@ -102,16 +93,6 @@ public class BasicUserSavePopup extends AbstractAjaxModalPopupPanel<User> {
     form = new ModelValidatingForm<>("form", getModel());
     body.add(form);
 
-    boolean passwordRequired =
-        securityManagementControllerService
-                .getSecurityOptions(UserType.BASIC)
-                .isPasswordAdminUpdateEnabled()
-            && !securityManagementControllerService
-                .getSecurityOptions(UserType.BASIC)
-                .isPasswordUserRecoveryEnabled();
-
-    PasswordTextField password = new PasswordTextField("password", passwordModel);
-
     form.add(
         new RequiredTextField<>(
                 "firstName", BindingModel.of(getModel(), Bindings.user().firstName()))
@@ -132,27 +113,9 @@ public class BasicUserSavePopup extends AbstractAjaxModalPopupPanel<User> {
         new EnclosureContainer("addContainer")
             .condition(addModeCondition())
             .add(
-                new EnclosureContainer("passwordContainer")
-                    .condition(
-                        Condition.isTrue(
-                            () ->
-                                securityManagementControllerService
-                                    .getSecurityOptions(UserType.BASIC)
-                                    .isPasswordAdminUpdateEnabled()))
-                    .add(
-                        password
-                            .setLabel(new ResourceModel("business.user.password"))
-                            .setRequired(passwordRequired),
-                        new CoreLabel(
-                            "passwordHelp",
-                            new StringResourceModel("user.common.form.password.help")
-                                .setParameters(
-                                    ApplicationPropertyModel.of(SECURITY_PASSWORD_LENGTH_MIN)))),
                 new CheckBox("enabled", BindingModel.of(getModel(), Bindings.user().enabled()))
                     .setLabel(new ResourceModel("business.user.enabled"))
                     .setOutputMarkupId(true)));
-
-    form.add(new UserPasswordValidator(Model.of(UserType.BASIC), password).userModel(getModel()));
 
     return body;
   }
@@ -171,13 +134,12 @@ public class BasicUserSavePopup extends AbstractAjaxModalPopupPanel<User> {
               IModel<User> userModel = BasicUserSavePopup.this.getModel();
               User user = userModel.getObject();
               User authenticatedUser = BasicApplicationSession.get().getUser();
-              String password = passwordModel.getObject();
 
-              userControllerService.saveBasicUser(user, password);
+              userControllerService.saveBasicUserAdmin(user);
 
               Session.get().success(getString("common.success"));
 
-              if (addModeCondition().applies() && !StringUtils.hasText(password)) {
+              if (addModeCondition().applies()) {
                 Session.get().success(getString("user.add.success.notification"));
                 throw BasicUserDetailPage.MAPPER
                     .ignoreParameter2()
@@ -241,6 +203,6 @@ public class BasicUserSavePopup extends AbstractAjaxModalPopupPanel<User> {
   @Override
   protected void onDetach() {
     super.onDetach();
-    Detachables.detach(formModeModel, passwordModel);
+    Detachables.detach(formModeModel);
   }
 }

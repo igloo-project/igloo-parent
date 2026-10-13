@@ -1,6 +1,6 @@
 package basicapp.front.user.component;
 
-import static basicapp.back.security.model.BasicApplicationPermissionConstants.USER_TECHNICAL_WRITE;
+import static basicapp.back.security.model.BasicApplicationPermissionConstants.USER_TECHNICAL_WRITE_ADMIN;
 
 import basicapp.back.business.user.model.User;
 import basicapp.back.util.binding.Bindings;
@@ -64,6 +64,6 @@ public class TechnicalUserDetailGeneralDescriptionPanel extends GenericPanel<Use
                             editPopup.setUpEdit(getModelObject());
                           }
                         })
-                    .add(Condition.permission(userModel, USER_TECHNICAL_WRITE).thenShow())));
+                    .add(Condition.permission(userModel, USER_TECHNICAL_WRITE_ADMIN).thenShow())));
   }
 }

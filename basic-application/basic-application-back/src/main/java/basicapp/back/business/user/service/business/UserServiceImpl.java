@@ -1,7 +1,5 @@
 package basicapp.back.business.user.service.business;
 
-import static org.iglooproject.jpa.security.service.CoreJpaUserDetailsServiceImpl.EMPTY_PASSWORD_HASH;
-
 import basicapp.back.business.common.model.EmailAddress;
 import basicapp.back.business.history.model.atomic.HistoryLogEventType;
 import basicapp.back.business.history.model.bean.HistoryLogAdditionalInformationBean;
@@ -16,7 +14,6 @@ import basicapp.back.business.user.model.atomic.UserType;
 import basicapp.back.security.service.IBasicApplicationAuthenticationService;
 import basicapp.back.security.service.ISecurityManagementService;
 import com.google.common.base.Preconditions;
-import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.Locale;
 import java.util.Objects;
@@ -29,7 +26,6 @@ import org.iglooproject.spring.property.SpringPropertyIds;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.spring.util.StringUtils;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service("userService")
@@ -42,7 +38,6 @@ public class UserServiceImpl extends GenericEntityServiceImpl<Long, User> implem
   private final IPropertyService propertyService;
   private final IBasicApplicationAuthenticationService authenticationService;
   private final ISecurityManagementService securityManagementService;
-  private final PasswordEncoder passwordEncoder;
 
   public UserServiceImpl(
       IUserDao dao,
@@ -51,8 +46,7 @@ public class UserServiceImpl extends GenericEntityServiceImpl<Long, User> implem
       @Lazy IHistoryEventSummaryService historyEventSummaryService,
       @Lazy IBasicApplicationAuthenticationService authenticationService,
       IPropertyService propertyService,
-      @Lazy ISecurityManagementService securityManagementService,
-      PasswordEncoder passwordEncoder) {
+      @Lazy ISecurityManagementService securityManagementService) {
     super(dao);
     this.dao = dao;
     this.userDifferenceService = userDifferenceService;
@@ -61,7 +55,6 @@ public class UserServiceImpl extends GenericEntityServiceImpl<Long, User> implem
     this.propertyService = propertyService;
     this.authenticationService = authenticationService;
     this.securityManagementService = securityManagementService;
-    this.passwordEncoder = passwordEncoder;
   }
 
   @Override
@@ -92,96 +85,32 @@ public class UserServiceImpl extends GenericEntityServiceImpl<Long, User> implem
   }
 
   @Override
-  public void saveBasicUser(User user, String password)
-      throws SecurityServiceException, ServiceException {
+  public void saveBasicUser(User user) throws SecurityServiceException, ServiceException {
+    Objects.requireNonNull(user);
     user.setType(UserType.BASIC);
-    User author = getAuthenticatedUser();
-    saveUser(user, author, password);
+    saveUser(user);
   }
 
   @Override
-  public void saveTechnicalUser(User user, String password)
-      throws SecurityServiceException, ServiceException {
+  public void saveTechnicalUser(User user) throws SecurityServiceException, ServiceException {
+    Objects.requireNonNull(user);
     user.setType(UserType.TECHNICAL);
-    User author = getAuthenticatedUser();
-    saveUser(user, author, password);
+    saveUser(user);
   }
 
-  private void saveUser(User user, User author, String password)
-      throws SecurityServiceException, ServiceException {
-    Objects.requireNonNull(user);
-
+  private void saveUser(User user) throws SecurityServiceException, ServiceException {
     if (user.getLocale() == null) {
       user.setLocale(propertyService.get(SpringPropertyIds.DEFAULT_LOCALE));
     }
 
     if (user.isNew()) {
       create(user);
-      if (StringUtils.hasText(password)) {
-        securityManagementService.updatePassword(user, password, author);
-      } else {
-        securityManagementService.initiatePasswordRecoveryRequest(
-            user,
-            UserPasswordRecoveryRequestType.CREATION,
-            UserPasswordRecoveryRequestInitiator.ADMIN,
-            author);
-      }
+      securityManagementService.resetPassword(
+          user,
+          UserPasswordRecoveryRequestType.CREATION,
+          UserPasswordRecoveryRequestInitiator.ADMIN);
     } else {
       update(user);
-    }
-  }
-
-  /**
-   * Encode and set Password to user.
-   *
-   * <p>check that Password cannot be more than 72 bytes.
-   *
-   * @see <a href="https://spring.io/security/cve-2025-22228">CVE-2025-22228</a>
-   * @see org.springframework.security.crypto.bcrypt.BCrypt#hashpw(byte[], String, boolean)
-   */
-  @Override
-  public void onSignIn(User user) throws ServiceException, SecurityServiceException {
-    historyLogService.log(
-        HistoryLogEventType.SIGN_IN, user, HistoryLogAdditionalInformationBean.empty());
-  }
-
-  @Override
-  public void onSignInFail(User user) throws ServiceException, SecurityServiceException {
-    historyLogService.log(
-        HistoryLogEventType.SIGN_IN_FAIL, user, HistoryLogAdditionalInformationBean.empty());
-  }
-
-  @Override
-  public void setPassword(User user, String rawPassword)
-      throws ServiceException, SecurityServiceException {
-    Preconditions.checkArgument(StringUtils.hasText(rawPassword));
-
-    if (rawPassword.getBytes(StandardCharsets.UTF_8).length > 72) {
-      throw new SecurityServiceException("password cannot be more than 72 bytes");
-    }
-
-    user.setPasswordHash(passwordEncoder.encode(rawPassword));
-    update(user);
-  }
-
-  @Override
-  public boolean hasPassword(User user) {
-    Objects.requireNonNull(user);
-    return !Objects.equals(user.getPasswordHash(), EMPTY_PASSWORD_HASH);
-  }
-
-  @Override
-  public void initPasswordRecoveryRequest(EmailAddress emailAddress)
-      throws SecurityServiceException, ServiceException {
-    User user = getByEmailAddressCaseInsensitive(emailAddress);
-
-    if (user != null && user.isEnabled() && user.isNotificationEnabled()) {
-      securityManagementService.initiatePasswordRecoveryRequest(
-          user,
-          hasPassword(user)
-              ? UserPasswordRecoveryRequestType.RESET
-              : UserPasswordRecoveryRequestType.CREATION,
-          UserPasswordRecoveryRequestInitiator.USER);
     }
   }
 
@@ -200,6 +129,7 @@ public class UserServiceImpl extends GenericEntityServiceImpl<Long, User> implem
     Objects.requireNonNull(user);
     Preconditions.checkArgument(user.isEnabled());
     user.setEnabled(false);
+    user.getPasswordRecoveryRequest().reset();
     update(user);
     historyLogService.log(
         HistoryLogEventType.DISABLE, user, HistoryLogAdditionalInformationBean.empty());
@@ -207,6 +137,7 @@ public class UserServiceImpl extends GenericEntityServiceImpl<Long, User> implem
 
   @Override
   public void updateLastLoginDate(User user) throws ServiceException, SecurityServiceException {
+    Objects.requireNonNull(user);
     user.setLastLoginDate(Instant.now());
     updateEntity(user);
   }
@@ -214,6 +145,7 @@ public class UserServiceImpl extends GenericEntityServiceImpl<Long, User> implem
   @Override
   public void updateLocale(User user, Locale locale)
       throws ServiceException, SecurityServiceException {
+    Objects.requireNonNull(user);
     user.setLocale(locale);
     updateEntity(user);
   }

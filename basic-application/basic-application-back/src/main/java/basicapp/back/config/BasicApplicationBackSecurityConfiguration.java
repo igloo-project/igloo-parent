@@ -4,6 +4,8 @@ import static basicapp.back.property.BasicApplicationBackPropertyIds.SECURITY_PA
 import static basicapp.back.property.BasicApplicationBackPropertyIds.SECURITY_PASSWORD_LENGTH_MIN;
 import static basicapp.back.property.BasicApplicationBackPropertyIds.SECURITY_PASSWORD_USER_FORBIDDEN_PASSWORDS;
 
+import basicapp.back.business.history.service.IHistoryLogService;
+import basicapp.back.business.notification.service.INotificationService;
 import basicapp.back.business.role.service.IRoleService;
 import basicapp.back.business.user.model.atomic.UserType;
 import basicapp.back.business.user.service.business.IUserService;
@@ -29,6 +31,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.security.acls.domain.PermissionFactory;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 public class BasicApplicationBackSecurityConfiguration {
@@ -76,38 +79,34 @@ public class BasicApplicationBackSecurityConfiguration {
   /**
    * Password max byte length cannot be more than 72 bytes.
    *
-   * @see basicapp.back.business.user.service.business.UserServiceImpl#setPasswords
+   * @see SecurityManagementServiceImpl#setPassword(basicapp.back.business.user.model.User, String)
    * @see org.springframework.security.crypto.bcrypt.BCrypt#hashpw(byte[], String, boolean)
    */
   @Bean
-  public ISecurityManagementService securityManagementService(IPropertyService propertyService) {
+  public ISecurityManagementService securityManagementService(
+      IUserService userService,
+      INotificationService notificationService,
+      IPropertyService propertyService,
+      IHistoryLogService historyLogService,
+      PasswordEncoder passwordEncoder) {
     int passwordLengthMin = propertyService.get(SECURITY_PASSWORD_LENGTH_MIN);
     int passwordLengthMax = propertyService.get(SECURITY_PASSWORD_LENGTH_MAX);
 
     return new SecurityManagementServiceImpl(
-        SecurityOptions.create(
-            securityOptions ->
-                securityOptions
-                    .passwordUserRecovery()
-                    .passwordUserUpdate()
-                    .passwordRules(
-                        rules ->
-                            rules
-                                .minMaxLength(passwordLengthMin, passwordLengthMax)
-                                .forbiddenUsername()
-                                .forbiddenPasswords(
-                                    propertyService.get(
-                                        SECURITY_PASSWORD_USER_FORBIDDEN_PASSWORDS)))),
+        userService,
+        notificationService,
+        propertyService,
+        historyLogService,
+        passwordEncoder,
         ImmutableMap.<UserType, SecurityOptions>builder()
             .put(
                 UserType.TECHNICAL,
                 SecurityOptions.create(
                     securityOptions ->
                         securityOptions
+                            .passwordHistory()
                             .passwordAdminRecovery()
-                            .passwordAdminUpdate()
                             .passwordUserRecovery()
-                            .passwordUserUpdate()
                             .passwordRules(
                                 rules ->
                                     rules
@@ -121,10 +120,9 @@ public class BasicApplicationBackSecurityConfiguration {
                 SecurityOptions.create(
                     securityOptions ->
                         securityOptions
-                            .passwordExpiration()
                             .passwordHistory()
+                            .passwordAdminRecovery()
                             .passwordUserRecovery()
-                            .passwordUserUpdate()
                             .passwordRules(
                                 rules ->
                                     rules

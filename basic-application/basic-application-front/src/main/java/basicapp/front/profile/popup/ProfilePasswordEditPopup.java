@@ -1,23 +1,18 @@
-package basicapp.front.user.popup;
+package basicapp.front.profile.popup;
 
 import static basicapp.back.property.BasicApplicationBackPropertyIds.SECURITY_PASSWORD_LENGTH_MIN;
 
 import basicapp.back.business.user.model.User;
-import basicapp.back.business.user.predicate.UserPredicates;
 import basicapp.back.security.service.controller.ISecurityManagementControllerService;
 import basicapp.back.util.binding.Bindings;
-import basicapp.front.BasicApplicationSession;
 import basicapp.front.common.validator.UserPasswordValidator;
 import igloo.bootstrap.modal.AbstractAjaxModalPopupPanel;
 import igloo.igloojs.showpassword.ShowPasswordBehavior;
 import igloo.wicket.component.CoreLabel;
-import igloo.wicket.component.EnclosureContainer;
-import igloo.wicket.condition.Condition;
 import igloo.wicket.feedback.FeedbackUtils;
 import igloo.wicket.markup.html.panel.DelegatedMarkupPanel;
 import igloo.wicket.model.BindingModel;
 import igloo.wicket.model.Detachables;
-import java.util.Objects;
 import org.apache.wicket.Component;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -29,18 +24,17 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
 import org.iglooproject.wicket.more.markup.html.form.ModelValidatingForm;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
 import org.iglooproject.wicket.more.model.ApplicationPropertyModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class UserPasswordEditPopup extends AbstractAjaxModalPopupPanel<User> {
+public class ProfilePasswordEditPopup extends AbstractAjaxModalPopupPanel<User> {
 
   private static final long serialVersionUID = -4580284817084080271L;
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(UserPasswordEditPopup.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(ProfilePasswordEditPopup.class);
 
   @SpringBean private ISecurityManagementControllerService securityManagementControllerService;
 
@@ -49,16 +43,8 @@ public class UserPasswordEditPopup extends AbstractAjaxModalPopupPanel<User> {
   private final IModel<String> oldPasswordModel = Model.of("");
   private final IModel<String> newPasswordModel = Model.of("");
 
-  private final Condition isOldPasswordRequired;
-
-  public UserPasswordEditPopup(String id, IModel<User> userModel) {
+  public ProfilePasswordEditPopup(String id, IModel<User> userModel) {
     super(id, userModel);
-
-    this.isOldPasswordRequired =
-        Condition.or(
-                Condition.predicate(userModel, UserPredicates.technical()),
-                Condition.role(CoreAuthorityConstants.ROLE_ADMIN))
-            .negate();
   }
 
   @Override
@@ -68,7 +54,7 @@ public class UserPasswordEditPopup extends AbstractAjaxModalPopupPanel<User> {
 
   @Override
   protected Component createBody(String wicketId) {
-    DelegatedMarkupPanel body = new DelegatedMarkupPanel(wicketId, UserPasswordEditPopup.class);
+    DelegatedMarkupPanel body = new DelegatedMarkupPanel(wicketId, ProfilePasswordEditPopup.class);
 
     form = new ModelValidatingForm<>("form");
     body.add(form);
@@ -77,13 +63,8 @@ public class UserPasswordEditPopup extends AbstractAjaxModalPopupPanel<User> {
     TextField<String> newPassword = new PasswordTextField("newPassword", newPasswordModel);
 
     form.add(
-        new EnclosureContainer("oldPasswordContainer")
-            .condition(isOldPasswordRequired)
-            .add(
-                oldPassword
-                    .setLabel(new ResourceModel("business.user.oldPassword"))
-                    .setRequired(true),
-                new BlankLink("showOldPassword").add(new ShowPasswordBehavior(oldPassword))),
+        oldPassword.setLabel(new ResourceModel("business.user.oldPassword")).setRequired(true),
+        new BlankLink("showOldPassword").add(new ShowPasswordBehavior(oldPassword)),
         newPassword.setLabel(new ResourceModel("business.user.newPassword")).setRequired(true),
         new BlankLink("showNewPassword").add(new ShowPasswordBehavior(newPassword)),
         new CoreLabel(
@@ -100,7 +81,8 @@ public class UserPasswordEditPopup extends AbstractAjaxModalPopupPanel<User> {
 
   @Override
   protected Component createFooter(String wicketId) {
-    DelegatedMarkupPanel footer = new DelegatedMarkupPanel(wicketId, UserPasswordEditPopup.class);
+    DelegatedMarkupPanel footer =
+        new DelegatedMarkupPanel(wicketId, ProfilePasswordEditPopup.class);
 
     footer.add(
         new AjaxButton("save", form) {
@@ -109,20 +91,14 @@ public class UserPasswordEditPopup extends AbstractAjaxModalPopupPanel<User> {
           @Override
           protected void onSubmit(AjaxRequestTarget target) {
             try {
-              IModel<User> userModel = UserPasswordEditPopup.this.getModel();
+              IModel<User> userModel = ProfilePasswordEditPopup.this.getModel();
               User user = userModel.getObject();
 
               String oldPassword = oldPasswordModel.getObject();
               String newPassword = newPasswordModel.getObject();
 
-              if (!isOldPasswordRequired.applies()
-                  || securityManagementControllerService.checkPassword(oldPassword, user)) {
-                User author = BasicApplicationSession.get().getUser();
-                if (Objects.equals(user, author)) {
-                  securityManagementControllerService.updatePassword(user, newPassword);
-                } else {
-                  securityManagementControllerService.updatePassword(user, newPassword, author);
-                }
+              if (securityManagementControllerService.checkPassword(oldPassword, user)) {
+                securityManagementControllerService.updatePasswordUser(user, newPassword);
 
                 Session.get().success(getString("common.success"));
                 closePopup(target);
@@ -153,6 +129,6 @@ public class UserPasswordEditPopup extends AbstractAjaxModalPopupPanel<User> {
   @Override
   protected void onDetach() {
     super.onDetach();
-    Detachables.detach(oldPasswordModel, newPasswordModel, isOldPasswordRequired);
+    Detachables.detach(oldPasswordModel, newPasswordModel);
   }
 }

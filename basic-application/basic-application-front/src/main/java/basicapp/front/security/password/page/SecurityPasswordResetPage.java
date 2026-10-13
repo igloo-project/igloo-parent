@@ -9,7 +9,6 @@ import basicapp.front.security.password.template.SecurityPasswordTemplate;
 import igloo.wicket.condition.Condition;
 import igloo.wicket.model.Detachables;
 import org.apache.wicket.Component;
-import org.apache.wicket.Session;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
@@ -40,6 +39,8 @@ public class SecurityPasswordResetPage extends SecurityPasswordTemplate {
 
   private final IModel<User> userModel = new GenericEntityModel<>();
 
+  private final IModel<String> tokenModel = Model.of("");
+
   @SpringBean private ISecurityManagementControllerService securityManagementControllerService;
 
   public SecurityPasswordResetPage(PageParameters parameters) {
@@ -48,8 +49,6 @@ public class SecurityPasswordResetPage extends SecurityPasswordTemplate {
     addHeadPageTitlePrependedElement(
         new BreadCrumbElement(new ResourceModel("security.password.reset.title")));
 
-    final IModel<String> tokenModel = Model.of("");
-
     MAPPER
         .map(userModel, tokenModel)
         .extractSafely(
@@ -57,18 +56,9 @@ public class SecurityPasswordResetPage extends SecurityPasswordTemplate {
             BasicApplicationApplication.get().getHomePageLinkDescriptor(),
             getString("common.error.unexpected"));
 
-    if (!tokenModel
-        .getObject()
-        .equals(userModel.getObject().getPasswordRecoveryRequest().getToken())) {
-      Session.get().error(getString("security.password.reset.wrongToken"));
-      throw BasicApplicationApplication.get()
-          .getHomePageLinkDescriptor()
-          .newRestartResponseException();
-    }
-
-    if (securityManagementControllerService.isPasswordRecoveryRequestExpired(
-        userModel.getObject())) {
-      BasicApplicationSession.get().error(getString("security.password.reset.expired"));
+    if (!securityManagementControllerService.isPasswordRecoveryRequestValid(
+        userModel.getObject(), tokenModel.getObject())) {
+      BasicApplicationSession.get().error(getString("security.password.reset.error"));
       throw BasicApplicationApplication.get()
           .getHomePageLinkDescriptor()
           .newRestartResponseException();
@@ -82,7 +72,7 @@ public class SecurityPasswordResetPage extends SecurityPasswordTemplate {
 
   @Override
   protected Component getContentComponent(String wicketId) {
-    return new SecurityPasswordResetContentPanel(wicketId, userModel);
+    return new SecurityPasswordResetContentPanel(wicketId, userModel, tokenModel);
   }
 
   @Override
@@ -93,6 +83,6 @@ public class SecurityPasswordResetPage extends SecurityPasswordTemplate {
   @Override
   protected void onDetach() {
     super.onDetach();
-    Detachables.detach(userModel);
+    Detachables.detach(userModel, tokenModel);
   }
 }

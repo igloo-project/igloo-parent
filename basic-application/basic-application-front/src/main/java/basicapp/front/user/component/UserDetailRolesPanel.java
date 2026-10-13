@@ -1,6 +1,6 @@
 package basicapp.front.user.component;
 
-import static basicapp.back.security.model.BasicApplicationPermissionConstants.USER_WRITE;
+import static basicapp.back.security.model.BasicApplicationPermissionConstants.USER_WRITE_ADMIN;
 
 import basicapp.back.business.role.model.Role;
 import basicapp.back.business.user.model.User;
@@ -48,6 +48,6 @@ public class UserDetailRolesPanel extends GenericPanel<User> {
             .add(
                 new BlankLink("edit")
                     .add(new AjaxModalOpenBehavior(editPopup, MouseEvent.CLICK))
-                    .add(Condition.permission(userModel, USER_WRITE).thenShow())));
+                    .add(Condition.permission(userModel, USER_WRITE_ADMIN).thenShow())));
   }
 }

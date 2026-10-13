@@ -1,7 +1,7 @@
 package basicapp.front.security.login.component;
 
 import basicapp.back.business.user.model.User;
-import basicapp.back.business.user.service.controller.IUserControllerService;
+import basicapp.back.security.service.controller.ISecurityManagementControllerService;
 import basicapp.front.BasicApplicationApplication;
 import basicapp.front.BasicApplicationSession;
 import igloo.igloojs.showpassword.ShowPasswordBehavior;
@@ -32,7 +32,7 @@ public class SignInContentPanel extends Panel {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(SignInContentPanel.class);
 
-  @SpringBean private IUserControllerService userControllerService;
+  @SpringBean private ISecurityManagementControllerService securityManagementControllerService;
 
   public SignInContentPanel(String wicketId) {
     super(wicketId);
@@ -94,19 +94,16 @@ public class SignInContentPanel extends Panel {
   }
 
   private void onSuccess(User user) throws ServiceException, SecurityServiceException {
-    userControllerService.onSignIn(user);
+    securityManagementControllerService.onSignIn(user);
   }
 
   private void onBadCredentials(String username) {
-    User user = userControllerService.getByUsername(username);
-    if (user != null) {
-      try {
-        userControllerService.onSignInFail(user);
-      } catch (Exception e) {
-        LOGGER.error(
-            "Unknown error while trying to find the user associated with the username entered in the form",
-            e);
-      }
+    try {
+      securityManagementControllerService.onSignInFail(username);
+    } catch (Exception e) {
+      LOGGER.error(
+          "Unknown error while trying to find the user associated with the username entered in the form",
+          e);
     }
   }
 }

@@ -14,9 +14,7 @@ public final class SecurityOptions {
 
   private final SecurityOptionsMode passwordExpiration;
   private final SecurityOptionsMode passwordHistory;
-  private final SecurityOptionsMode passwordAdminUpdate;
   private final SecurityOptionsMode passwordAdminRecovery;
-  private final SecurityOptionsMode passwordUserUpdate;
   private final SecurityOptionsMode passwordUserRecovery;
 
   private final Set<Rule> passwordRules;
@@ -24,9 +22,7 @@ public final class SecurityOptions {
   private SecurityOptions(Builder builder) {
     this.passwordExpiration = builder.passwordExpiration;
     this.passwordHistory = builder.passwordHistory;
-    this.passwordAdminUpdate = builder.passwordAdminUpdate;
     this.passwordAdminRecovery = builder.passwordAdminRecovery;
-    this.passwordUserUpdate = builder.passwordUserUpdate;
     this.passwordUserRecovery = builder.passwordUserRecovery;
     this.passwordRules = ImmutableSet.copyOf(builder.passwordRules);
   }
@@ -45,23 +41,6 @@ public final class SecurityOptions {
 
   public boolean isPasswordHistoryEnabled() {
     return SecurityOptionsMode.ENABLED.equals(getPasswordHistory());
-  }
-
-  public SecurityOptionsMode getPasswordUserUpdate() {
-    return passwordUserUpdate;
-  }
-
-  public boolean isPasswordUserUpdateEnabled() {
-    return SecurityOptionsMode.ENABLED.equals(getPasswordUserUpdate());
-  }
-
-  public SecurityOptionsMode getPasswordAdminUpdate() {
-    return passwordAdminUpdate;
-  }
-
-  public boolean isPasswordAdminUpdateEnabled() {
-    return SecurityOptionsMode.ENABLED.equals(getPasswordAdminUpdate())
-        || SecurityOptionsMode.DISABLED.equals(getPasswordUserRecovery());
   }
 
   public SecurityOptionsMode getPasswordUserRecovery() {
@@ -94,9 +73,7 @@ public final class SecurityOptions {
 
     private SecurityOptionsMode passwordExpiration = SecurityOptionsMode.DISABLED;
     private SecurityOptionsMode passwordHistory = SecurityOptionsMode.DISABLED;
-    private SecurityOptionsMode passwordAdminUpdate = SecurityOptionsMode.DISABLED;
     private SecurityOptionsMode passwordAdminRecovery = SecurityOptionsMode.DISABLED;
-    private SecurityOptionsMode passwordUserUpdate = SecurityOptionsMode.DISABLED;
     private SecurityOptionsMode passwordUserRecovery = SecurityOptionsMode.DISABLED;
 
     private final Set<Rule> passwordRules = Sets.newHashSet();
@@ -117,18 +94,8 @@ public final class SecurityOptions {
       return this;
     }
 
-    public Builder passwordAdminUpdate() {
-      this.passwordAdminUpdate = SecurityOptionsMode.ENABLED;
-      return this;
-    }
-
     public Builder passwordAdminRecovery() {
       this.passwordAdminRecovery = SecurityOptionsMode.ENABLED;
-      return this;
-    }
-
-    public Builder passwordUserUpdate() {
-      this.passwordUserUpdate = SecurityOptionsMode.ENABLED;
       return this;
     }
 

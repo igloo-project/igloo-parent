@@ -75,9 +75,10 @@ public class SecurityPasswordExpirationContentPanel extends GenericPanel<User> {
           protected void onSubmit(AjaxRequestTarget target) {
             try {
               User user = BasicApplicationSession.get().getUser();
-              securityManagementControllerService.updatePassword(user, passwordModel.getObject());
+              securityManagementControllerService.updatePasswordUser(
+                  user, passwordModel.getObject());
 
-              Session.get().success(getString("security.password.expiration.validate.success"));
+              Session.get().success(getString("security.password.expiration.success"));
 
               throw LoginSuccessPage.linkDescriptor().newRestartResponseException();
             } catch (RestartResponseException e) {

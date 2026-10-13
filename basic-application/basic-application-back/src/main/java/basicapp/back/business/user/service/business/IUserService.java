@@ -11,21 +11,9 @@ import org.iglooproject.jpa.security.business.user.service.ICoreUserSecurityServ
 public interface IUserService
     extends ICoreUserSecurityService<User>, IGenericEntityService<Long, User> {
 
-  void saveBasicUser(User user, String password) throws SecurityServiceException, ServiceException;
+  void saveBasicUser(User user) throws SecurityServiceException, ServiceException;
 
-  void saveTechnicalUser(User user, String password)
-      throws SecurityServiceException, ServiceException;
-
-  void onSignIn(User user) throws ServiceException, SecurityServiceException;
-
-  void onSignInFail(User user) throws ServiceException, SecurityServiceException;
-
-  void setPassword(User user, String rawPassword) throws ServiceException, SecurityServiceException;
-
-  boolean hasPassword(User user);
-
-  void initPasswordRecoveryRequest(EmailAddress emailAddress)
-      throws SecurityServiceException, ServiceException;
+  void saveTechnicalUser(User user) throws SecurityServiceException, ServiceException;
 
   void enable(User user) throws ServiceException, SecurityServiceException;
 

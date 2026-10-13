@@ -11,30 +11,30 @@ import org.iglooproject.jpa.exception.ServiceException;
 
 public interface ISecurityManagementService extends ITransactionalAspectAwareService {
 
-  void updatePassword(User user, String password, User author)
-      throws ServiceException, SecurityServiceException;
+  void updatePassword(User user, String password) throws ServiceException, SecurityServiceException;
 
-  void initiatePasswordRecoveryRequest(
+  void resetPassword(
       User user,
       UserPasswordRecoveryRequestType type,
       UserPasswordRecoveryRequestInitiator initiator)
       throws ServiceException, SecurityServiceException;
 
-  void initiatePasswordRecoveryRequest(
-      User user,
-      UserPasswordRecoveryRequestType type,
-      UserPasswordRecoveryRequestInitiator initiator,
-      User author)
-      throws ServiceException, SecurityServiceException;
+  void setPassword(User user, String password) throws ServiceException, SecurityServiceException;
+
+  boolean hasPassword(User user);
 
   boolean checkPassword(String password, User user)
       throws ServiceException, SecurityServiceException;
 
   boolean isPasswordExpired(User user);
 
+  boolean isPasswordRecoveryRequestValid(User user, String token);
+
   boolean isPasswordRecoveryRequestExpired(User user);
 
-  SecurityOptions getSecurityOptionsDefault();
+  void onSignIn(User user) throws ServiceException, SecurityServiceException;
+
+  void onSignInFail(String username) throws ServiceException, SecurityServiceException;
 
   SecurityOptions getSecurityOptions(UserType userType);
 

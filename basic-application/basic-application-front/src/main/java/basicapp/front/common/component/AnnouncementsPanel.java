@@ -69,7 +69,7 @@ public class AnnouncementsPanel extends Panel {
                       openModel.setObject(Boolean.FALSE);
 
                       User user = BasicApplicationSession.get().getUser();
-                      userControllerService.closeAnnouncement(user);
+                      userControllerService.closeAnnouncementUser(user);
 
                       AjaxListeners.add(target, AjaxListeners.refresh(AnnouncementsPanel.this));
                     } catch (Exception e) {
@@ -88,7 +88,7 @@ public class AnnouncementsPanel extends Panel {
               openModel.setObject(Boolean.TRUE);
 
               User user = BasicApplicationSession.get().getUser();
-              userControllerService.openAnnouncement(user);
+              userControllerService.openAnnouncementUser(user);
 
               AjaxListeners.add(target, AjaxListeners.refresh(AnnouncementsPanel.this));
             } catch (Exception e) {

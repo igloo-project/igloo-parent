@@ -2,8 +2,6 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 <wicket:extend>
-	<div wicket:id="passwordEditPopup" />
-	
 	<div class="content-header-section">
 		<div class="content-header-container">
 			<div class="content-header">
@@ -31,16 +29,10 @@
 						</div>
 						<div wicket:id="actionsContainer" class="col-auto ms-auto">
 							<div class="row g-2 align-items-center">
-								<div wicket:enclosure-component="passwordEdit" class="col-auto">
-									<button wicket:id="passwordEdit" class="btn btn-primary" type="button">
-										<span class="fa fa-fw fa-key" />
-										<wicket:message key="user.common.action.password.edit" />
-									</button>
-								</div>
 								<div wicket:enclosure-component="passwordReset" class="col-auto">
 									<button wicket:id="passwordReset" class="btn btn-primary" type="button">
 										<span class="fa fa-fw fa-unlock-alt" />
-										<wicket:message key="user.common.action.password.recovery.reset" />
+										<wicket:message key="user.common.action.password.reset" />
 									</button>
 								</div>
 								<div wicket:enclosure-component="enable" class="col-auto">

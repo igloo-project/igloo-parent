@@ -1,7 +1,7 @@
 package basicapp.front.security.password.component;
 
 import basicapp.back.business.common.model.EmailAddress;
-import basicapp.back.business.user.service.controller.IUserControllerService;
+import basicapp.back.security.service.controller.ISecurityManagementControllerService;
 import basicapp.front.BasicApplicationApplication;
 import basicapp.front.BasicApplicationSession;
 import basicapp.front.common.form.EmailAddressTextField;
@@ -29,7 +29,7 @@ public class SecurityPasswordRecoveryRequestResetContentPanel extends Panel {
   private static final Logger LOGGER =
       LoggerFactory.getLogger(SecurityPasswordRecoveryRequestResetContentPanel.class);
 
-  @SpringBean private IUserControllerService userControllerService;
+  @SpringBean private ISecurityManagementControllerService securityManagementControllerService;
 
   private final IModel<EmailAddress> emailAddressModel = Model.of();
 
@@ -60,10 +60,9 @@ public class SecurityPasswordRecoveryRequestResetContentPanel extends Panel {
                     .newRestartResponseException();
               }
 
-              userControllerService.initPasswordRecoveryRequest(emailAddressModel.getObject());
+              securityManagementControllerService.resetPasswordUser(emailAddressModel.getObject());
 
-              Session.get()
-                  .success(getString("security.password.recovery.request.reset.validate.success"));
+              Session.get().success(getString("security.password.recovery.request.reset.success"));
 
               throw CoreWicketAuthenticatedApplication.get()
                   .getSignInPageLinkDescriptor()

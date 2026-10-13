@@ -1,12 +1,8 @@
 package basicapp.front.profile.component;
 
-import static basicapp.back.security.model.BasicApplicationPermissionConstants.USER_EDIT_PASSWORD;
-
 import basicapp.back.business.user.model.User;
 import basicapp.back.security.service.controller.ISecurityManagementControllerService;
 import basicapp.back.util.binding.Bindings;
-import basicapp.front.user.popup.UserPasswordEditPopup;
-import igloo.bootstrap.modal.AjaxModalOpenBehavior;
 import igloo.wicket.component.CoreLabel;
 import igloo.wicket.component.DefaultPlaceholderPanel;
 import igloo.wicket.condition.Condition;
@@ -16,8 +12,6 @@ import igloo.wicket.model.BindingModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.wicket.more.markup.html.image.BooleanIcon;
-import org.iglooproject.wicket.more.markup.html.link.BlankLink;
-import org.wicketstuff.wiquery.core.events.MouseEvent;
 
 public class ProfileDescriptionPanel extends GenericPanel<User> {
 
@@ -28,17 +22,10 @@ public class ProfileDescriptionPanel extends GenericPanel<User> {
   public ProfileDescriptionPanel(String id, IModel<User> userModel) {
     super(id, userModel);
 
-    UserPasswordEditPopup passwordEditPopup =
-        new UserPasswordEditPopup("passwordEditPopup", userModel);
-    add(passwordEditPopup);
-
     IModel<String> emailAddressValueModel =
         BindingModel.of(userModel, Bindings.user().emailAddress().value());
 
     add(
-        new BlankLink("passwordEdit")
-            .add(new AjaxModalOpenBehavior(passwordEditPopup, MouseEvent.CLICK))
-            .add(Condition.permission(userModel, USER_EDIT_PASSWORD).thenShow()),
         new CoreLabel("username", BindingModel.of(userModel, Bindings.user().username()))
             .showPlaceholder(),
         new BooleanIcon("enabled", BindingModel.of(userModel, Bindings.user().enabled())),

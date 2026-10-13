@@ -27,39 +27,42 @@ public class TestUserPermissions {
   @Mock private ISecurityManagementService securityManagementService;
 
   @Nested
-  class CanReadUser {
+  class CanReadAdmin {
     @Test
-    void canReadUser_technicalUser_userAdmin() {
+    void canReadAdmin_technicalUser_roleAdmin() {
       User authenticated = new User();
       authenticated.setType(UserType.TECHNICAL);
       User targetUser = new User();
       targetUser.setType(UserType.TECHNICAL);
       Mockito.doReturn(true).when(userPermissionEvaluator).hasRole(authenticated, ROLE_ADMIN);
-      Assertions.assertThat(userPermissionEvaluator.canReadUser(authenticated, targetUser))
+      Assertions.assertThat(userPermissionEvaluator.canReadAdmin(authenticated, targetUser))
           .isTrue();
     }
 
     @Test
-    void canReadUser_technicalUser_userBasic() {
+    void canReadAdmin_technicalUser_noRoleAdmin() {
       User authenticated = new User();
       authenticated.setType(UserType.BASIC);
       User targetUser = new User();
       targetUser.setType(UserType.TECHNICAL);
       Mockito.doReturn(false).when(userPermissionEvaluator).hasRole(authenticated, ROLE_ADMIN);
-      Assertions.assertThat(userPermissionEvaluator.canReadUser(authenticated, targetUser))
+      Assertions.assertThat(userPermissionEvaluator.canReadAdmin(authenticated, targetUser))
           .isFalse();
     }
 
     @Test
-    void canReadUser_basicUser_sameUser() {
+    void canReadAdmin_basicUser_sameUser_noPermission() {
       User authenticated = new User();
       authenticated.setType(UserType.BASIC);
-      Assertions.assertThat(userPermissionEvaluator.canReadUser(authenticated, authenticated))
-          .isTrue();
+      Mockito.doReturn(false)
+          .when(userPermissionEvaluator)
+          .hasPermission(authenticated, GLOBAL_USER_READ);
+      Assertions.assertThat(userPermissionEvaluator.canReadAdmin(authenticated, authenticated))
+          .isFalse();
     }
 
     @Test
-    void canReadUser_basicUser_hasPermission() {
+    void canReadAdmin_basicUser_hasPermission() {
       User authenticated = new User();
       authenticated.setType(UserType.BASIC);
       User targetUser = new User();
@@ -67,12 +70,12 @@ public class TestUserPermissions {
       Mockito.doReturn(true)
           .when(userPermissionEvaluator)
           .hasPermission(authenticated, GLOBAL_USER_READ);
-      Assertions.assertThat(userPermissionEvaluator.canReadUser(authenticated, targetUser))
+      Assertions.assertThat(userPermissionEvaluator.canReadAdmin(authenticated, targetUser))
           .isTrue();
     }
 
     @Test
-    void canReadUser_basicUser_noPermission() {
+    void canReadAdmin_basicUser_noPermission() {
       User authenticated = new User();
       authenticated.setType(UserType.BASIC);
       User targetUser = new User();
@@ -80,45 +83,48 @@ public class TestUserPermissions {
       Mockito.doReturn(false)
           .when(userPermissionEvaluator)
           .hasPermission(authenticated, GLOBAL_USER_READ);
-      Assertions.assertThat(userPermissionEvaluator.canReadUser(authenticated, targetUser))
+      Assertions.assertThat(userPermissionEvaluator.canReadAdmin(authenticated, targetUser))
           .isFalse();
     }
   }
 
   @Nested
-  class CanWriteUser {
+  class CanWriteAdmin {
     @Test
-    void canWriteUser_technicalUser_userAdmin() {
+    void canWriteAdmin_technicalUser_roleAdmin() {
       User authenticated = new User();
       authenticated.setType(UserType.TECHNICAL);
       User targetUser = new User();
       targetUser.setType(UserType.TECHNICAL);
       Mockito.doReturn(true).when(userPermissionEvaluator).hasRole(authenticated, ROLE_ADMIN);
-      Assertions.assertThat(userPermissionEvaluator.canWriteUser(authenticated, targetUser))
+      Assertions.assertThat(userPermissionEvaluator.canWriteAdmin(authenticated, targetUser))
           .isTrue();
     }
 
     @Test
-    void canWriteUser_technicalUser_userBasic() {
+    void canWriteAdmin_technicalUser_noRoleAdmin() {
       User authenticated = new User();
       authenticated.setType(UserType.BASIC);
       User targetUser = new User();
       targetUser.setType(UserType.TECHNICAL);
       Mockito.doReturn(false).when(userPermissionEvaluator).hasRole(authenticated, ROLE_ADMIN);
-      Assertions.assertThat(userPermissionEvaluator.canWriteUser(authenticated, targetUser))
+      Assertions.assertThat(userPermissionEvaluator.canWriteAdmin(authenticated, targetUser))
           .isFalse();
     }
 
     @Test
-    void canWriteUser_basicUser_sameUser() {
+    void canWriteAdmin_basicUser_sameUser_noPermission() {
       User authenticated = new User();
       authenticated.setType(UserType.BASIC);
-      Assertions.assertThat(userPermissionEvaluator.canWriteUser(authenticated, authenticated))
-          .isTrue();
+      Mockito.doReturn(false)
+          .when(userPermissionEvaluator)
+          .hasPermission(authenticated, GLOBAL_USER_WRITE);
+      Assertions.assertThat(userPermissionEvaluator.canWriteAdmin(authenticated, authenticated))
+          .isFalse();
     }
 
     @Test
-    void canWriteUser_basicUser_hasPermission() {
+    void canWriteAdmin_basicUser_hasPermission() {
       User authenticated = new User();
       authenticated.setType(UserType.BASIC);
       User targetUser = new User();
@@ -126,12 +132,12 @@ public class TestUserPermissions {
       Mockito.doReturn(true)
           .when(userPermissionEvaluator)
           .hasPermission(authenticated, GLOBAL_USER_WRITE);
-      Assertions.assertThat(userPermissionEvaluator.canWriteUser(authenticated, targetUser))
+      Assertions.assertThat(userPermissionEvaluator.canWriteAdmin(authenticated, targetUser))
           .isTrue();
     }
 
     @Test
-    void canWriteUser_basicUser_noPermission() {
+    void canWriteAdmin_basicUser_noPermission() {
       User authenticated = new User();
       authenticated.setType(UserType.BASIC);
       User targetUser = new User();
@@ -139,59 +145,59 @@ public class TestUserPermissions {
       Mockito.doReturn(false)
           .when(userPermissionEvaluator)
           .hasPermission(authenticated, GLOBAL_USER_WRITE);
-      Assertions.assertThat(userPermissionEvaluator.canWriteUser(authenticated, targetUser))
+      Assertions.assertThat(userPermissionEvaluator.canWriteAdmin(authenticated, targetUser))
           .isFalse();
     }
   }
 
   @Nested
-  class CanEnableUser {
+  class CanEnableAdmin {
     @Test
-    void canEnableUser_technicalUser_userEnable() {
+    void canEnableAdmin_technicalUser_alreadyEnabled() {
       User authenticated = new User();
       User targetUser = new User();
       targetUser.setType(UserType.TECHNICAL);
 
-      Assertions.assertThat(userPermissionEvaluator.canEnableUser(authenticated, targetUser))
+      Assertions.assertThat(userPermissionEvaluator.canEnableAdmin(authenticated, targetUser))
           .isFalse();
     }
 
     @Test
-    void canEnableUser_basicUser_userEnable() {
+    void canEnableAdmin_basicUser_alreadyEnabled() {
       User authenticated = new User();
       User targetUser = new User();
       targetUser.setType(UserType.BASIC);
 
-      Assertions.assertThat(userPermissionEvaluator.canEnableUser(authenticated, targetUser))
+      Assertions.assertThat(userPermissionEvaluator.canEnableAdmin(authenticated, targetUser))
           .isFalse();
     }
 
     @Test
-    void canEnableUser_technicalUser_userDisbale_withPermission() {
+    void canEnableAdmin_technicalUser_disabled_withPermission() {
       User authenticated = new User();
       User targetUser = new User();
       targetUser.setType(UserType.TECHNICAL);
       targetUser.setEnabled(false);
       Mockito.doReturn(true).when(userPermissionEvaluator).hasRole(authenticated, ROLE_ADMIN);
 
-      Assertions.assertThat(userPermissionEvaluator.canEnableUser(authenticated, targetUser))
+      Assertions.assertThat(userPermissionEvaluator.canEnableAdmin(authenticated, targetUser))
           .isTrue();
     }
 
     @Test
-    void canEnableUser_technicalUser_userDisable_withoutPermission() {
+    void canEnableAdmin_technicalUser_disabled_withoutPermission() {
       User authenticated = new User();
       User targetUser = new User();
       targetUser.setType(UserType.TECHNICAL);
       targetUser.setEnabled(false);
       Mockito.doReturn(false).when(userPermissionEvaluator).hasRole(authenticated, ROLE_ADMIN);
 
-      Assertions.assertThat(userPermissionEvaluator.canEnableUser(authenticated, targetUser))
+      Assertions.assertThat(userPermissionEvaluator.canEnableAdmin(authenticated, targetUser))
           .isFalse();
     }
 
     @Test
-    void canEnableUser_basicUser_userDisable_withPermission() {
+    void canEnableAdmin_basicUser_disabled_withPermission() {
       User authenticated = new User();
       User targetUser = new User();
       targetUser.setType(UserType.BASIC);
@@ -200,12 +206,12 @@ public class TestUserPermissions {
           .when(userPermissionEvaluator)
           .hasPermission(authenticated, GLOBAL_USER_WRITE);
 
-      Assertions.assertThat(userPermissionEvaluator.canEnableUser(authenticated, targetUser))
+      Assertions.assertThat(userPermissionEvaluator.canEnableAdmin(authenticated, targetUser))
           .isTrue();
     }
 
     @Test
-    void canEnableUser_basicUser_userDisable_withoutPermission() {
+    void canEnableAdmin_basicUser_disabled_withoutPermission() {
       User authenticated = new User();
       User targetUser = new User();
       targetUser.setType(UserType.BASIC);
@@ -214,68 +220,68 @@ public class TestUserPermissions {
           .when(userPermissionEvaluator)
           .hasPermission(authenticated, GLOBAL_USER_WRITE);
 
-      Assertions.assertThat(userPermissionEvaluator.canEnableUser(authenticated, targetUser))
+      Assertions.assertThat(userPermissionEvaluator.canEnableAdmin(authenticated, targetUser))
           .isFalse();
     }
   }
 
   @Nested
-  class CanDisableUser {
+  class CanDisableAdmin {
     @Test
-    void canDisableUser_technicalUser_userDisable() {
+    void canDisableAdmin_technicalUser_alreadyDisabled() {
       User authenticated = new User();
       User targetUser = new User();
       targetUser.setType(UserType.TECHNICAL);
       targetUser.setEnabled(false);
 
-      Assertions.assertThat(userPermissionEvaluator.canDisableUser(authenticated, targetUser))
+      Assertions.assertThat(userPermissionEvaluator.canDisableAdmin(authenticated, targetUser))
           .isFalse();
     }
 
     @Test
-    void canDisableUser_basicUser_userDisable() {
+    void canDisableAdmin_basicUser_alreadyDisabled() {
       User authenticated = new User();
       User targetUser = new User();
       targetUser.setType(UserType.BASIC);
       targetUser.setEnabled(false);
 
-      Assertions.assertThat(userPermissionEvaluator.canDisableUser(authenticated, targetUser))
+      Assertions.assertThat(userPermissionEvaluator.canDisableAdmin(authenticated, targetUser))
           .isFalse();
     }
 
     @Test
-    void canDisableUser_technicalUser_userActif_withPermission() {
+    void canDisableAdmin_technicalUser_enabled_withPermission() {
       User authenticated = new User();
       User targetUser = new User();
       targetUser.setType(UserType.TECHNICAL);
       Mockito.doReturn(true).when(userPermissionEvaluator).hasRole(authenticated, ROLE_ADMIN);
 
-      Assertions.assertThat(userPermissionEvaluator.canDisableUser(authenticated, targetUser))
+      Assertions.assertThat(userPermissionEvaluator.canDisableAdmin(authenticated, targetUser))
           .isTrue();
     }
 
     @Test
-    void canDisableUser_technicalUser_userActif_sameUser() {
+    void canDisableAdmin_technicalUser_enabled_sameUser() {
       User targetUser = new User();
       targetUser.setType(UserType.TECHNICAL);
 
-      Assertions.assertThat(userPermissionEvaluator.canDisableUser(targetUser, targetUser))
+      Assertions.assertThat(userPermissionEvaluator.canDisableAdmin(targetUser, targetUser))
           .isFalse();
     }
 
     @Test
-    void canDisableUser_technicalUser_userActif_withoutPermission() {
+    void canDisableAdmin_technicalUser_enabled_withoutPermission() {
       User authenticated = new User();
       User targetUser = new User();
       targetUser.setType(UserType.TECHNICAL);
       Mockito.doReturn(false).when(userPermissionEvaluator).hasRole(authenticated, ROLE_ADMIN);
 
-      Assertions.assertThat(userPermissionEvaluator.canDisableUser(authenticated, targetUser))
+      Assertions.assertThat(userPermissionEvaluator.canDisableAdmin(authenticated, targetUser))
           .isFalse();
     }
 
     @Test
-    void canDisableUser_basicUser_userActif_withPermission() {
+    void canDisableAdmin_basicUser_enabled_withPermission() {
       User authenticated = new User();
       User targetUser = new User();
       targetUser.setType(UserType.BASIC);
@@ -283,21 +289,21 @@ public class TestUserPermissions {
           .when(userPermissionEvaluator)
           .hasPermission(authenticated, GLOBAL_USER_WRITE);
 
-      Assertions.assertThat(userPermissionEvaluator.canDisableUser(authenticated, targetUser))
+      Assertions.assertThat(userPermissionEvaluator.canDisableAdmin(authenticated, targetUser))
           .isTrue();
     }
 
     @Test
-    void canDisableUser_basicUser_userActif_withPermission_sameUser() {
+    void canDisableAdmin_basicUser_enabled_sameUser() {
       User targetUser = new User();
       targetUser.setType(UserType.BASIC);
 
-      Assertions.assertThat(userPermissionEvaluator.canDisableUser(targetUser, targetUser))
+      Assertions.assertThat(userPermissionEvaluator.canDisableAdmin(targetUser, targetUser))
           .isFalse();
     }
 
     @Test
-    void canDisableUser_basicUser_userActif_withoutPermission() {
+    void canDisableAdmin_basicUser_enabled_withoutPermission() {
       User authenticated = new User();
       User targetUser = new User();
       targetUser.setType(UserType.BASIC);
@@ -305,151 +311,15 @@ public class TestUserPermissions {
           .when(userPermissionEvaluator)
           .hasPermission(authenticated, GLOBAL_USER_WRITE);
 
-      Assertions.assertThat(userPermissionEvaluator.canDisableUser(authenticated, targetUser))
+      Assertions.assertThat(userPermissionEvaluator.canDisableAdmin(authenticated, targetUser))
           .isFalse();
     }
   }
 
   @Nested
-  class CanUserEditPassword {
-
+  class CanResetPasswordAdmin {
     @Test
-    void canUserEditPassword_noUserConnected_passwordUserRecoveryEnabled() {
-      User targetUser = new User();
-      targetUser.setType(UserType.TECHNICAL);
-      SecurityOptions securityOptions =
-          SecurityOptions.create(SecurityOptions.Builder::passwordUserUpdate);
-      Mockito.when(securityManagementService.getSecurityOptions(targetUser))
-          .thenReturn(securityOptions);
-      Assertions.assertThat(userPermissionEvaluator.canUserEditPassword(null, targetUser)).isTrue();
-    }
-
-    @Test
-    void canUserEditPassword_noUserConnected_passwordUserRecoveryDisable() {
-      User targetUser = new User();
-      targetUser.setType(UserType.TECHNICAL);
-      SecurityOptions securityOptions =
-          SecurityOptions.create(SecurityOptions.Builder::passwordAdminUpdate);
-      Mockito.when(securityManagementService.getSecurityOptions(targetUser))
-          .thenReturn(securityOptions);
-      Assertions.assertThat(userPermissionEvaluator.canUserEditPassword(null, targetUser))
-          .isFalse();
-    }
-
-    @Test
-    void canUserEditPassword_userConnected_canWrite_passwordUserRecoveryEnabled() {
-      User targetUser = new User();
-      targetUser.setType(UserType.TECHNICAL);
-      User authenticated = new User();
-      SecurityOptions securityOptions =
-          SecurityOptions.create(SecurityOptions.Builder::passwordUserUpdate);
-      Mockito.when(securityManagementService.getSecurityOptions(targetUser))
-          .thenReturn(securityOptions);
-      Mockito.doReturn(true).when(userPermissionEvaluator).canWriteUser(authenticated, targetUser);
-      Assertions.assertThat(userPermissionEvaluator.canUserEditPassword(authenticated, targetUser))
-          .isTrue();
-    }
-
-    @Test
-    void canUserEditPassword_UserConnected_canWrite_passwordUserRecoveryDisable() {
-      User targetUser = new User();
-      targetUser.setType(UserType.TECHNICAL);
-      User authenticated = new User();
-      SecurityOptions securityOptions =
-          SecurityOptions.create(SecurityOptions.Builder::passwordAdminRecovery);
-      Mockito.when(securityManagementService.getSecurityOptions(targetUser))
-          .thenReturn(securityOptions);
-      Mockito.doReturn(true).when(userPermissionEvaluator).canWriteUser(authenticated, targetUser);
-      Assertions.assertThat(userPermissionEvaluator.canUserEditPassword(authenticated, targetUser))
-          .isFalse();
-    }
-
-    @Test
-    void canUserEditPassword_UserConnected_cannot_Write() {
-      User targetUser = new User();
-      targetUser.setType(UserType.TECHNICAL);
-      User authenticated = new User();
-
-      Mockito.doReturn(false).when(userPermissionEvaluator).canWriteUser(authenticated, targetUser);
-      Assertions.assertThat(userPermissionEvaluator.canUserEditPassword(authenticated, targetUser))
-          .isFalse();
-    }
-  }
-
-  @Nested
-  class CanUserRecoveryPassword {
-
-    @Test
-    void canUserRecoveryPassword_noUserConnected_passwordUserRecoveryEnabled() {
-      User targetUser = new User();
-      targetUser.setType(UserType.TECHNICAL);
-      SecurityOptions securityOptions =
-          SecurityOptions.create(SecurityOptions.Builder::passwordUserRecovery);
-      Mockito.when(securityManagementService.getSecurityOptions(targetUser))
-          .thenReturn(securityOptions);
-      Assertions.assertThat(userPermissionEvaluator.canUserRecoveryPassword(null, targetUser))
-          .isTrue();
-    }
-
-    @Test
-    void canUserRecoveryPassword_noUserConnected_passwordUserRecoveryDisable() {
-      User targetUser = new User();
-      targetUser.setType(UserType.TECHNICAL);
-      SecurityOptions securityOptions =
-          SecurityOptions.create(SecurityOptions.Builder::passwordAdminUpdate);
-      Mockito.when(securityManagementService.getSecurityOptions(targetUser))
-          .thenReturn(securityOptions);
-      Assertions.assertThat(userPermissionEvaluator.canUserRecoveryPassword(null, targetUser))
-          .isFalse();
-    }
-
-    @Test
-    void canUserRecoveryPassword_userConnected_canWrite_passwordUserRecoveryEnabled() {
-      User targetUser = new User();
-      targetUser.setType(UserType.TECHNICAL);
-      User authenticated = new User();
-      SecurityOptions securityOptions =
-          SecurityOptions.create(SecurityOptions.Builder::passwordUserRecovery);
-      Mockito.when(securityManagementService.getSecurityOptions(targetUser))
-          .thenReturn(securityOptions);
-      Mockito.doReturn(true).when(userPermissionEvaluator).canWriteUser(authenticated, targetUser);
-      Assertions.assertThat(
-              userPermissionEvaluator.canUserRecoveryPassword(authenticated, targetUser))
-          .isTrue();
-    }
-
-    @Test
-    void canUserRecoveryPassword_userConnected_canWrite_passwordUserRecoveryDisable() {
-      User targetUser = new User();
-      targetUser.setType(UserType.TECHNICAL);
-      User authenticated = new User();
-      SecurityOptions securityOptions =
-          SecurityOptions.create(SecurityOptions.Builder::passwordAdminRecovery);
-      Mockito.when(securityManagementService.getSecurityOptions(targetUser))
-          .thenReturn(securityOptions);
-      Mockito.doReturn(true).when(userPermissionEvaluator).canWriteUser(authenticated, targetUser);
-      Assertions.assertThat(
-              userPermissionEvaluator.canUserRecoveryPassword(authenticated, targetUser))
-          .isFalse();
-    }
-
-    @Test
-    void canUserRecoveryPassword_userConnected_cannot_Write() {
-      User targetUser = new User();
-      targetUser.setType(UserType.TECHNICAL);
-      User authenticated = new User();
-
-      Mockito.doReturn(false).when(userPermissionEvaluator).canWriteUser(authenticated, targetUser);
-      Assertions.assertThat(
-              userPermissionEvaluator.canUserRecoveryPassword(authenticated, targetUser))
-          .isFalse();
-    }
-  }
-
-  @Nested
-  class CanAdminRecoveryPassword {
-    @Test
-    void canAdminRecoveryPassword_passwordAdminRecoveryDisable() {
+    void canResetPasswordAdmin_passwordAdminRecoveryDisabled() {
       User authenticated = new User();
       User targetUser = new User();
       targetUser.setType(UserType.TECHNICAL);
@@ -458,14 +328,15 @@ public class TestUserPermissions {
           SecurityOptions.create(SecurityOptions.Builder::passwordUserRecovery);
       Mockito.when(securityManagementService.getSecurityOptions(targetUser))
           .thenReturn(securityOptions);
+      Mockito.doReturn(true).when(userPermissionEvaluator).hasRole(authenticated, ROLE_ADMIN);
 
       Assertions.assertThat(
-              userPermissionEvaluator.canAdminRecoveryPassword(authenticated, targetUser))
+              userPermissionEvaluator.canResetPasswordAdmin(authenticated, targetUser))
           .isFalse();
     }
 
     @Test
-    void canAdminRecoveryPassword_passwordAdminRecoveryEnabled_technicalUser() {
+    void canResetPasswordAdmin_passwordAdminRecoveryEnabled_technicalUser() {
       User authenticated = new User();
       User targetUser = new User();
       targetUser.setType(UserType.TECHNICAL);
@@ -477,29 +348,25 @@ public class TestUserPermissions {
       Mockito.doReturn(true).when(userPermissionEvaluator).hasRole(authenticated, ROLE_ADMIN);
 
       Assertions.assertThat(
-              userPermissionEvaluator.canAdminRecoveryPassword(authenticated, targetUser))
+              userPermissionEvaluator.canResetPasswordAdmin(authenticated, targetUser))
           .isTrue();
     }
 
     @Test
-    void canAdminRecoveryPassword_passwordAdminRecoveryEnabled_technicalUser_noPermission() {
+    void canResetPasswordAdmin_passwordAdminRecoveryEnabled_technicalUser_noPermission() {
       User authenticated = new User();
       User targetUser = new User();
       targetUser.setType(UserType.TECHNICAL);
 
-      SecurityOptions securityOptions =
-          SecurityOptions.create(SecurityOptions.Builder::passwordAdminRecovery);
-      Mockito.when(securityManagementService.getSecurityOptions(targetUser))
-          .thenReturn(securityOptions);
       Mockito.doReturn(false).when(userPermissionEvaluator).hasRole(authenticated, ROLE_ADMIN);
 
       Assertions.assertThat(
-              userPermissionEvaluator.canAdminRecoveryPassword(authenticated, targetUser))
+              userPermissionEvaluator.canResetPasswordAdmin(authenticated, targetUser))
           .isFalse();
     }
 
     @Test
-    void canAdminRecoveryPassword_passwordAdminRecoveryEnabled_basicUser() {
+    void canResetPasswordAdmin_passwordAdminRecoveryEnabled_basicUser() {
       User authenticated = new User();
       User targetUser = new User();
       targetUser.setType(UserType.BASIC);
@@ -513,72 +380,97 @@ public class TestUserPermissions {
           .hasPermission(authenticated, GLOBAL_USER_WRITE);
 
       Assertions.assertThat(
-              userPermissionEvaluator.canAdminRecoveryPassword(authenticated, targetUser))
+              userPermissionEvaluator.canResetPasswordAdmin(authenticated, targetUser))
           .isTrue();
     }
 
     @Test
-    void canAdminRecoveryPassword_passwordAdminRecoveryEnabled_basicUser_noPermission() {
+    void canResetPasswordAdmin_passwordAdminRecoveryEnabled_basicUser_noPermission() {
       User authenticated = new User();
       User targetUser = new User();
       targetUser.setType(UserType.BASIC);
 
-      SecurityOptions securityOptions =
-          SecurityOptions.create(SecurityOptions.Builder::passwordAdminRecovery);
-      Mockito.when(securityManagementService.getSecurityOptions(targetUser))
-          .thenReturn(securityOptions);
       Mockito.doReturn(false)
           .when(userPermissionEvaluator)
           .hasPermission(authenticated, GLOBAL_USER_WRITE);
 
       Assertions.assertThat(
-              userPermissionEvaluator.canAdminRecoveryPassword(authenticated, targetUser))
+              userPermissionEvaluator.canResetPasswordAdmin(authenticated, targetUser))
           .isFalse();
     }
   }
 
   @Nested
-  class CanOpenAnnouncement {
+  class CanUpdatePasswordUser {
     @Test
-    void canOpenAnnouncement_announcementClose_sameUser() {
+    void canUpdatePasswordUser_sameUser() {
       User user = new User();
-      Assertions.assertThat(userPermissionEvaluator.canOpenAnnouncement(user, user)).isTrue();
+      Assertions.assertThat(userPermissionEvaluator.canUpdatePasswordUser(user, user)).isTrue();
     }
 
     @Test
-    void canOpenAnnouncement_announcementOpen_sameUser() {
-      User user = new User();
-      Assertions.assertThat(userPermissionEvaluator.canOpenAnnouncement(user, user)).isTrue();
-    }
-
-    @Test
-    void canOpenAnnouncement_differentUser() {
+    void canUpdatePasswordUser_differentUser() {
       User authenticated = new User();
       User targetUser = new User();
-      Assertions.assertThat(userPermissionEvaluator.canOpenAnnouncement(authenticated, targetUser))
+      Assertions.assertThat(
+              userPermissionEvaluator.canUpdatePasswordUser(authenticated, targetUser))
+          .isFalse();
+    }
+
+    @Test
+    void canUpdatePasswordUser_noUserConnected() {
+      User targetUser = new User();
+      Assertions.assertThat(userPermissionEvaluator.canUpdatePasswordUser(null, targetUser))
           .isFalse();
     }
   }
 
   @Nested
-  class CanCloseAnnouncement {
+  class CanOpenAnnouncementUser {
     @Test
-    void canCloseAnnouncement_announcementOpen_sameUser() {
+    void canOpenAnnouncementUser_sameUser() {
       User user = new User();
-      Assertions.assertThat(userPermissionEvaluator.canCloseAnnouncement(user, user)).isTrue();
+      Assertions.assertThat(userPermissionEvaluator.canOpenAnnouncementUser(user, user)).isTrue();
     }
 
     @Test
-    void canCloseAnnouncement_announcementClose_sameUser() {
-      User user = new User();
-      Assertions.assertThat(userPermissionEvaluator.canCloseAnnouncement(user, user)).isTrue();
-    }
-
-    @Test
-    void canCloseAnnouncement_differentUser() {
+    void canOpenAnnouncementUser_differentUser() {
       User authenticated = new User();
       User targetUser = new User();
-      Assertions.assertThat(userPermissionEvaluator.canCloseAnnouncement(authenticated, targetUser))
+      Assertions.assertThat(
+              userPermissionEvaluator.canOpenAnnouncementUser(authenticated, targetUser))
+          .isFalse();
+    }
+
+    @Test
+    void canOpenAnnouncementUser_noUserConnected() {
+      User targetUser = new User();
+      Assertions.assertThat(userPermissionEvaluator.canOpenAnnouncementUser(null, targetUser))
+          .isFalse();
+    }
+  }
+
+  @Nested
+  class CanCloseAnnouncementUser {
+    @Test
+    void canCloseAnnouncementUser_sameUser() {
+      User user = new User();
+      Assertions.assertThat(userPermissionEvaluator.canCloseAnnouncementUser(user, user)).isTrue();
+    }
+
+    @Test
+    void canCloseAnnouncementUser_differentUser() {
+      User authenticated = new User();
+      User targetUser = new User();
+      Assertions.assertThat(
+              userPermissionEvaluator.canCloseAnnouncementUser(authenticated, targetUser))
+          .isFalse();
+    }
+
+    @Test
+    void canCloseAnnouncementUser_noUserConnected() {
+      User targetUser = new User();
+      Assertions.assertThat(userPermissionEvaluator.canCloseAnnouncementUser(null, targetUser))
           .isFalse();
     }
   }

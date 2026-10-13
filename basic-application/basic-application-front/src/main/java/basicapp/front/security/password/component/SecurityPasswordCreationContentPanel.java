@@ -50,8 +50,12 @@ public class SecurityPasswordCreationContentPanel extends GenericPanel<User> {
 
   private final IModel<String> passwordModel = Model.of();
 
-  public SecurityPasswordCreationContentPanel(String wicketId, IModel<User> userModel) {
+  private final IModel<String> tokenModel;
+
+  public SecurityPasswordCreationContentPanel(
+      String wicketId, IModel<User> userModel, IModel<String> tokenModel) {
     super(wicketId, userModel);
+    this.tokenModel = tokenModel;
 
     ModelValidatingForm<?> form = new ModelValidatingForm<>("form");
     add(form);
@@ -103,9 +107,10 @@ public class SecurityPasswordCreationContentPanel extends GenericPanel<User> {
               }
 
               User user = SecurityPasswordCreationContentPanel.this.getModelObject();
-              securityManagementController.updatePassword(user, passwordModel.getObject());
+              securityManagementController.updatePasswordUserFromRecoveryRequest(
+                  user, tokenModel.getObject(), passwordModel.getObject());
 
-              Session.get().success(getString("security.password.creation.validate.success"));
+              Session.get().success(getString("security.password.creation.success"));
 
               throw LoginSuccessPage.linkDescriptor().newRestartResponseException();
             } catch (RestartResponseException e) {
@@ -128,6 +133,6 @@ public class SecurityPasswordCreationContentPanel extends GenericPanel<User> {
   @Override
   protected void onDetach() {
     super.onDetach();
-    Detachables.detach(emailAddressModel, passwordModel);
+    Detachables.detach(emailAddressModel, passwordModel, tokenModel);
   }
 }

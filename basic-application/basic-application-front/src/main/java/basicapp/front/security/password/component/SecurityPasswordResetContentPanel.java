@@ -50,8 +50,12 @@ public class SecurityPasswordResetContentPanel extends GenericPanel<User> {
 
   private final IModel<String> passwordModel = Model.of();
 
-  public SecurityPasswordResetContentPanel(String wicketId, IModel<User> userModel) {
+  private final IModel<String> tokenModel;
+
+  public SecurityPasswordResetContentPanel(
+      String wicketId, IModel<User> userModel, IModel<String> tokenModel) {
     super(wicketId, userModel);
+    this.tokenModel = tokenModel;
 
     ModelValidatingForm<?> form = new ModelValidatingForm<>("form");
     add(form);
@@ -99,9 +103,10 @@ public class SecurityPasswordResetContentPanel extends GenericPanel<User> {
               }
 
               User user = SecurityPasswordResetContentPanel.this.getModelObject();
-              securityManagementControllerService.updatePassword(user, passwordModel.getObject());
+              securityManagementControllerService.updatePasswordUserFromRecoveryRequest(
+                  user, tokenModel.getObject(), passwordModel.getObject());
 
-              Session.get().success(getString("security.password.reset.validate.success"));
+              Session.get().success(getString("security.password.reset.success"));
 
               throw LoginSuccessPage.linkDescriptor().newRestartResponseException();
             } catch (RestartResponseException e) {
@@ -124,6 +129,6 @@ public class SecurityPasswordResetContentPanel extends GenericPanel<User> {
   @Override
   protected void onDetach() {
     super.onDetach();
-    Detachables.detach(emailAddressModel, passwordModel);
+    Detachables.detach(emailAddressModel, passwordModel, tokenModel);
   }
 }

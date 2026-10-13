@@ -4,81 +4,67 @@ import static org.iglooproject.commons.util.security.PermissionObject.DEFAULT_PE
 
 public final class BasicApplicationSecurityExpressionConstants {
 
-  public static final String USER_WRITE =
+  public static final String USER_WRITE_ADMIN =
       "hasPermission(#"
           + DEFAULT_PERMISSION_OBJECT_NAME
           + ", '"
-          + BasicApplicationPermissionConstants.USER_WRITE
+          + BasicApplicationPermissionConstants.USER_WRITE_ADMIN
           + "')";
 
-  public static final String USER_BASIC_WRITE =
+  public static final String USER_BASIC_WRITE_ADMIN =
       "hasPermission(#"
           + DEFAULT_PERMISSION_OBJECT_NAME
           + ", '"
-          + BasicApplicationPermissionConstants.USER_BASIC_WRITE
+          + BasicApplicationPermissionConstants.USER_BASIC_WRITE_ADMIN
           + "')";
 
-  public static final String USER_TECHNICAL_WRITE =
+  public static final String USER_TECHNICAL_WRITE_ADMIN =
       "hasPermission(#"
           + DEFAULT_PERMISSION_OBJECT_NAME
           + ", '"
-          + BasicApplicationPermissionConstants.USER_TECHNICAL_WRITE
+          + BasicApplicationPermissionConstants.USER_TECHNICAL_WRITE_ADMIN
           + "')";
 
-  public static final String USER_ENABLE =
+  public static final String USER_ENABLE_ADMIN =
       "hasPermission(#"
           + DEFAULT_PERMISSION_OBJECT_NAME
           + ", '"
-          + BasicApplicationPermissionConstants.USER_ENABLE
+          + BasicApplicationPermissionConstants.USER_ENABLE_ADMIN
           + "')";
 
-  public static final String USER_DISABLE =
+  public static final String USER_DISABLE_ADMIN =
       "hasPermission(#"
           + DEFAULT_PERMISSION_OBJECT_NAME
           + ", '"
-          + BasicApplicationPermissionConstants.USER_DISABLE
+          + BasicApplicationPermissionConstants.USER_DISABLE_ADMIN
           + "')";
 
-  public static final String USER_EDIT_PASSWORD =
+  public static final String USER_PASSWORD_RESET_ADMIN =
       "hasPermission(#"
           + DEFAULT_PERMISSION_OBJECT_NAME
           + ", '"
-          + BasicApplicationPermissionConstants.USER_EDIT_PASSWORD
+          + BasicApplicationPermissionConstants.USER_PASSWORD_RESET_ADMIN
           + "')";
 
-  public static final String USER_RECOVERY_PASSWORD =
+  public static final String USER_PASSWORD_UPDATE_USER =
       "hasPermission(#"
           + DEFAULT_PERMISSION_OBJECT_NAME
           + ", '"
-          + BasicApplicationPermissionConstants.USER_RECOVERY_PASSWORD
+          + BasicApplicationPermissionConstants.USER_PASSWORD_UPDATE_USER
           + "')";
 
-  public static final String ADMIN_EDIT_PASSWORD =
+  public static final String USER_ANNONCEMENT_OPEN_USER =
       "hasPermission(#"
           + DEFAULT_PERMISSION_OBJECT_NAME
           + ", '"
-          + BasicApplicationPermissionConstants.ADMIN_EDIT_PASSWORD
+          + BasicApplicationPermissionConstants.USER_ANNONCEMENT_OPEN_USER
           + "')";
 
-  public static final String ADMIN_RECOVERY_PASSWORD =
+  public static final String USER_ANNONCEMENT_CLOSE_USER =
       "hasPermission(#"
           + DEFAULT_PERMISSION_OBJECT_NAME
           + ", '"
-          + BasicApplicationPermissionConstants.ADMIN_RECOVERY_PASSWORD
-          + "')";
-
-  public static final String USER_OPEN_ANNONCEMENT =
-      "hasPermission(#"
-          + DEFAULT_PERMISSION_OBJECT_NAME
-          + ", '"
-          + BasicApplicationPermissionConstants.USER_OPEN_ANNONCEMENT
-          + "')";
-
-  public static final String USER_CLOSE_ANNONCEMENT =
-      "hasPermission(#"
-          + DEFAULT_PERMISSION_OBJECT_NAME
-          + ", '"
-          + BasicApplicationPermissionConstants.USER_CLOSE_ANNONCEMENT
+          + BasicApplicationPermissionConstants.USER_ANNONCEMENT_CLOSE_USER
           + "')";
 
   public static final String ROLE_WRITE =

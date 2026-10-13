@@ -1,28 +1,24 @@
 package basicapp.front.user.page;
 
-import static basicapp.back.security.model.BasicApplicationPermissionConstants.ADMIN_RECOVERY_PASSWORD;
-import static basicapp.back.security.model.BasicApplicationPermissionConstants.USER_DISABLE;
-import static basicapp.back.security.model.BasicApplicationPermissionConstants.USER_ENABLE;
-import static basicapp.back.security.model.BasicApplicationPermissionConstants.USER_READ;
+import static basicapp.back.security.model.BasicApplicationPermissionConstants.USER_DISABLE_ADMIN;
+import static basicapp.back.security.model.BasicApplicationPermissionConstants.USER_ENABLE_ADMIN;
+import static basicapp.back.security.model.BasicApplicationPermissionConstants.USER_PASSWORD_RESET_ADMIN;
+import static basicapp.back.security.model.BasicApplicationPermissionConstants.USER_READ_ADMIN;
 import static org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants.ROLE_ADMIN;
 
 import basicapp.back.business.user.model.User;
-import basicapp.back.business.user.model.atomic.UserPasswordRecoveryRequestInitiator;
 import basicapp.back.business.user.model.atomic.UserPasswordRecoveryRequestType;
 import basicapp.back.business.user.predicate.UserPredicates;
 import basicapp.back.business.user.service.controller.IUserControllerService;
 import basicapp.back.security.service.controller.ISecurityManagementControllerService;
 import basicapp.back.util.binding.Bindings;
-import basicapp.front.BasicApplicationSession;
 import basicapp.front.common.util.BootstrapTabsUtils;
 import basicapp.front.navigation.link.LinkFactory;
 import basicapp.front.user.component.tab.TechnicalUserDetailTabGeneralPanel;
 import basicapp.front.user.component.tab.TechnicalUserDetailTabHistoryPanel;
-import basicapp.front.user.popup.UserPasswordEditPopup;
 import basicapp.front.user.renderer.UserEnabledRenderer;
 import basicapp.front.user.template.UserTemplate;
 import igloo.bootstrap.confirm.AjaxConfirmLink;
-import igloo.bootstrap.modal.AjaxModalOpenBehavior;
 import igloo.bootstrap5.markup.html.bootstrap.component.BootstrapBadge;
 import igloo.wicket.action.IAjaxAction;
 import igloo.wicket.component.CoreLabel;
@@ -47,12 +43,10 @@ import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilde
 import org.iglooproject.wicket.more.link.descriptor.mapper.ITwoParameterLinkDescriptorMapper;
 import org.iglooproject.wicket.more.link.descriptor.parameter.CommonParameters;
 import org.iglooproject.wicket.more.link.model.PageModel;
-import org.iglooproject.wicket.more.markup.html.link.BlankLink;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.wicketstuff.wiquery.core.events.MouseEvent;
 
 @AuthorizeInstantiation(ROLE_ADMIN)
 public class TechnicalUserDetailPage extends UserTemplate {
@@ -64,7 +58,7 @@ public class TechnicalUserDetailPage extends UserTemplate {
   public static final ITwoParameterLinkDescriptorMapper<IPageLinkDescriptor, User, Page> MAPPER =
       LinkDescriptorBuilder.start()
           .model(User.class)
-          .permission(USER_READ)
+          .permission(USER_READ_ADMIN)
           .model(Page.class)
           .pickFirst()
           .map(CommonParameters.ID)
@@ -121,10 +115,6 @@ public class TechnicalUserDetailPage extends UserTemplate {
             .add(Condition.componentVisible(backToSourcePage).thenHide()),
         new CoreLabel("title", BindingModel.of(userModel, Bindings.user().fullName())));
 
-    UserPasswordEditPopup passwordEditPopup =
-        new UserPasswordEditPopup("passwordEditPopup", userModel);
-    add(passwordEditPopup);
-
     EnclosureContainer headerElementsSection = new EnclosureContainer("headerElementsSection");
     add(headerElementsSection.anyChildVisible());
 
@@ -138,11 +128,8 @@ public class TechnicalUserDetailPage extends UserTemplate {
         new EnclosureContainer("actionsContainer")
             .anyChildVisible()
             .add(
-                new BlankLink("passwordEdit")
-                    .add(new AjaxModalOpenBehavior(passwordEditPopup, MouseEvent.CLICK))
-                    .add(Condition.permission(userModel, ADMIN_RECOVERY_PASSWORD).thenShow()),
                 AjaxConfirmLink.<User>build()
-                    .title(new ResourceModel("user.password.recovery.reset.confirm.title"))
+                    .title(new ResourceModel("user.password.reset.title"))
                     .content(new ResourceModel("common.action.confirm.content"))
                     .confirm()
                     .onClick(
@@ -152,11 +139,8 @@ public class TechnicalUserDetailPage extends UserTemplate {
                           @Override
                           public void execute(AjaxRequestTarget target) {
                             try {
-                              securityManagementControllerService.initiatePasswordRecoveryRequest(
-                                  userModel.getObject(),
-                                  UserPasswordRecoveryRequestType.RESET,
-                                  UserPasswordRecoveryRequestInitiator.ADMIN,
-                                  BasicApplicationSession.get().getUser());
+                              securityManagementControllerService.resetPasswordAdmin(
+                                  userModel.getObject(), UserPasswordRecoveryRequestType.RESET);
                               Session.get().success(getString("common.success"));
                               target.add(getPage());
                             } catch (Exception e) {
@@ -168,14 +152,14 @@ public class TechnicalUserDetailPage extends UserTemplate {
                           }
                         })
                     .create("passwordReset", userModel)
-                    .add(Condition.permission(userModel, ADMIN_RECOVERY_PASSWORD).thenShow()),
+                    .add(Condition.permission(userModel, USER_PASSWORD_RESET_ADMIN).thenShow()),
                 new AjaxLink<>("enable", userModel) {
                   private static final long serialVersionUID = 1L;
 
                   @Override
                   public void onClick(AjaxRequestTarget target) {
                     try {
-                      userControllerService.enable(getModelObject());
+                      userControllerService.enableAdmin(getModelObject());
                       Session.get().success(getString("common.success"));
                       target.add(getPage());
                     } catch (Exception e) {
@@ -184,7 +168,7 @@ public class TechnicalUserDetailPage extends UserTemplate {
                     }
                     FeedbackUtils.refreshFeedback(target, getPage());
                   }
-                }.add(Condition.permission(userModel, USER_ENABLE).thenShow()),
+                }.add(Condition.permission(userModel, USER_ENABLE_ADMIN).thenShow()),
                 AjaxConfirmLink.<User>build()
                     .title(new ResourceModel("common.action.disable"))
                     .content(new ResourceModel("common.action.confirm.content"))
@@ -196,7 +180,7 @@ public class TechnicalUserDetailPage extends UserTemplate {
                           @Override
                           public void execute(AjaxRequestTarget target) {
                             try {
-                              userControllerService.disable(userModel.getObject());
+                              userControllerService.disableAdmin(userModel.getObject());
                               Session.get().success(getString("common.success"));
                             } catch (Exception e) {
                               LOGGER.error("Error occured while disabling user", e);
@@ -207,7 +191,7 @@ public class TechnicalUserDetailPage extends UserTemplate {
                           }
                         })
                     .create("disable", userModel)
-                    .add(Condition.permission(userModel, USER_DISABLE).thenShow())));
+                    .add(Condition.permission(userModel, USER_DISABLE_ADMIN).thenShow())));
 
     add(
         BootstrapTabsUtils.build(

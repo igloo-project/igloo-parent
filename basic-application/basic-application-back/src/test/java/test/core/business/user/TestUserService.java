@@ -4,10 +4,11 @@ import static basicapp.back.security.model.BasicApplicationPermissionConstants.G
 import static basicapp.back.security.model.BasicApplicationPermissionConstants.GLOBAL_REFERENCE_DATA_WRITE;
 import static basicapp.back.security.model.BasicApplicationPermissionConstants.GLOBAL_ROLE_READ;
 import static basicapp.back.security.model.BasicApplicationPermissionConstants.GLOBAL_ROLE_WRITE;
-import static basicapp.back.security.model.BasicApplicationPermissionConstants.USER_EDIT_PASSWORD;
 
 import basicapp.back.business.role.model.Role;
 import basicapp.back.business.user.model.User;
+import basicapp.back.business.user.model.atomic.UserPasswordRecoveryRequestInitiator;
+import basicapp.back.business.user.model.atomic.UserPasswordRecoveryRequestType;
 import basicapp.back.business.user.model.atomic.UserType;
 import basicapp.back.business.user.service.controller.IUserControllerService;
 import com.google.common.collect.ImmutableSortedSet;
@@ -47,7 +48,7 @@ class TestUserService extends AbstractBasicApplicationTestCase {
               },
               false);
 
-      userControllerService.saveTechnicalUser(user, USER_EDIT_PASSWORD);
+      userControllerService.saveTechnicalUserAdmin(user);
       entityManagerReset();
       User userBdd = userService.getById(user.getId());
       Assertions.assertThat(userBdd.getUsername()).isEqualTo("test");
@@ -59,8 +60,14 @@ class TestUserService extends AbstractBasicApplicationTestCase {
       Assertions.assertThat(userBdd.getLocale()).isEqualTo(Locale.FRENCH);
       Assertions.assertThat(new Date()).isInSameDayAs(userBdd.getCreation().getDate());
       Assertions.assertThat(new Date()).isInSameDayAs(userBdd.getModification().getDate());
+      Assertions.assertThat(userBdd.getPasswordInformation().getLastUpdateDate()).isNull();
+      Assertions.assertThat(userBdd.getPasswordRecoveryRequest().getToken()).isNotBlank();
+      Assertions.assertThat(userBdd.getPasswordRecoveryRequest().getType())
+          .isEqualTo(UserPasswordRecoveryRequestType.CREATION);
+      Assertions.assertThat(userBdd.getPasswordRecoveryRequest().getInitiator())
+          .isEqualTo(UserPasswordRecoveryRequestInitiator.ADMIN);
       Assertions.assertThat(new Date())
-          .isInSameDayAs(userBdd.getPasswordInformation().getLastUpdateDate());
+          .isInSameDayAs(userBdd.getPasswordRecoveryRequest().getCreationDate());
     }
 
     @WithUserDetails(
@@ -78,7 +85,7 @@ class TestUserService extends AbstractBasicApplicationTestCase {
               },
               false);
 
-      userControllerService.saveBasicUser(user, USER_EDIT_PASSWORD);
+      userControllerService.saveBasicUserAdmin(user);
       entityManagerReset();
       User userBdd = userService.getById(user.getId());
       Assertions.assertThat(userBdd.getUsername()).isEqualTo("test");
@@ -90,8 +97,14 @@ class TestUserService extends AbstractBasicApplicationTestCase {
       Assertions.assertThat(userBdd.getLocale()).isEqualTo(Locale.FRENCH);
       Assertions.assertThat(new Date()).isInSameDayAs(userBdd.getCreation().getDate());
       Assertions.assertThat(new Date()).isInSameDayAs(userBdd.getModification().getDate());
+      Assertions.assertThat(userBdd.getPasswordInformation().getLastUpdateDate()).isNull();
+      Assertions.assertThat(userBdd.getPasswordRecoveryRequest().getToken()).isNotBlank();
+      Assertions.assertThat(userBdd.getPasswordRecoveryRequest().getType())
+          .isEqualTo(UserPasswordRecoveryRequestType.CREATION);
+      Assertions.assertThat(userBdd.getPasswordRecoveryRequest().getInitiator())
+          .isEqualTo(UserPasswordRecoveryRequestInitiator.ADMIN);
       Assertions.assertThat(new Date())
-          .isInSameDayAs(userBdd.getPasswordInformation().getLastUpdateDate());
+          .isInSameDayAs(userBdd.getPasswordRecoveryRequest().getCreationDate());
     }
 
     @WithUserDetails(value = ADMIN_USERNAME, setupBefore = TestExecutionEvent.TEST_EXECUTION)
@@ -102,7 +115,7 @@ class TestUserService extends AbstractBasicApplicationTestCase {
       User user = userService.getById(-4L);
       user.setFirstName("updatedFirstname");
       user.setLastName("updatedFirstname");
-      userControllerService.saveTechnicalUser(user, "newPassword");
+      userControllerService.saveTechnicalUserAdmin(user);
       entityManagerReset();
       User userBdd = userService.getById(user.getId());
       Assertions.assertThat(userBdd.getUsername()).isEqualTo("test");
@@ -124,8 +137,8 @@ class TestUserService extends AbstractBasicApplicationTestCase {
     void testSaveTechnicalUser_userBasicAuthenticate_throwAuthorizationDeniedException() {
       Assertions.assertThatThrownBy(
               () ->
-                  userControllerService.saveTechnicalUser(
-                      entityDatabaseHelper.createUser(null, false), USER_EDIT_PASSWORD))
+                  userControllerService.saveTechnicalUserAdmin(
+                      entityDatabaseHelper.createUser(null, false)))
           .isInstanceOf(AuthorizationDeniedException.class);
     }
 
@@ -134,8 +147,8 @@ class TestUserService extends AbstractBasicApplicationTestCase {
     void testSaveBasicUser_adminUserAuthenticate_doesNotThrowException() {
       Assertions.assertThatCode(
               () ->
-                  userControllerService.saveBasicUser(
-                      entityDatabaseHelper.createUser(null, false), USER_EDIT_PASSWORD))
+                  userControllerService.saveBasicUserAdmin(
+                      entityDatabaseHelper.createUser(null, false)))
           .doesNotThrowAnyException();
     }
 
@@ -146,8 +159,8 @@ class TestUserService extends AbstractBasicApplicationTestCase {
     void testSaveBasicUser_userWithoutPermissionsAuthenticate_throwAuthorizationDeniedException() {
       Assertions.assertThatThrownBy(
               () ->
-                  userControllerService.saveBasicUser(
-                      entityDatabaseHelper.createUser(null, false), USER_EDIT_PASSWORD))
+                  userControllerService.saveBasicUserAdmin(
+                      entityDatabaseHelper.createUser(null, false)))
           .isInstanceOf(AuthorizationDeniedException.class);
     }
   }

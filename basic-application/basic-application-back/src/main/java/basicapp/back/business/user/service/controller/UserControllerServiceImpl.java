@@ -17,56 +17,38 @@ public class UserControllerServiceImpl implements IUserControllerService {
   }
 
   @Override
-  public void saveBasicUser(User user, String password)
-      throws SecurityServiceException, ServiceException {
-    userService.saveBasicUser(user, password);
+  public void saveBasicUserAdmin(User user) throws SecurityServiceException, ServiceException {
+    userService.saveBasicUser(user);
   }
 
   @Override
-  public void saveTechnicalUser(User user, String password)
-      throws SecurityServiceException, ServiceException {
-    userService.saveTechnicalUser(user, password);
+  public void saveTechnicalUserAdmin(User user) throws SecurityServiceException, ServiceException {
+    userService.saveTechnicalUser(user);
   }
 
   @Override
-  public void updateRoles(User user) throws SecurityServiceException, ServiceException {
+  public void updateRolesAdmin(User user) throws SecurityServiceException, ServiceException {
     userService.updateRoles(user);
   }
 
   @Override
-  public void enable(User user) throws SecurityServiceException, ServiceException {
+  public void enableAdmin(User user) throws SecurityServiceException, ServiceException {
     userService.enable(user);
   }
 
   @Override
-  public void disable(User user) throws SecurityServiceException, ServiceException {
+  public void disableAdmin(User user) throws SecurityServiceException, ServiceException {
     userService.disable(user);
   }
 
   @Override
-  public void openAnnouncement(User user) throws ServiceException, SecurityServiceException {
+  public void openAnnouncementUser(User user) throws ServiceException, SecurityServiceException {
     userService.openAnnouncement(user);
   }
 
   @Override
-  public void closeAnnouncement(User user) throws ServiceException, SecurityServiceException {
+  public void closeAnnouncementUser(User user) throws ServiceException, SecurityServiceException {
     userService.closeAnnouncement(user);
-  }
-
-  @Override
-  public void initPasswordRecoveryRequest(EmailAddress emailAddress)
-      throws SecurityServiceException, ServiceException {
-    userService.initPasswordRecoveryRequest(emailAddress);
-  }
-
-  @Override
-  public void onSignIn(User user) throws ServiceException, SecurityServiceException {
-    userService.onSignIn(user);
-  }
-
-  @Override
-  public void onSignInFail(User user) throws ServiceException, SecurityServiceException {
-    userService.onSignInFail(user);
   }
 
   @Override

@@ -1,6 +1,7 @@
 package basicapp.front.security.password.page;
 
 import basicapp.back.business.user.model.User;
+import basicapp.back.security.service.controller.ISecurityManagementControllerService;
 import basicapp.front.BasicApplicationApplication;
 import basicapp.front.BasicApplicationSession;
 import basicapp.front.security.password.component.SecurityPasswordCreationContentPanel;
@@ -12,6 +13,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.link.descriptor.mapper.ITwoParameterLinkDescriptorMapper;
@@ -37,13 +39,15 @@ public class SecurityPasswordCreationPage extends SecurityPasswordTemplate {
 
   private final IModel<User> userModel = new GenericEntityModel<>();
 
+  private final IModel<String> tokenModel = Model.of("");
+
+  @SpringBean private ISecurityManagementControllerService securityManagementControllerService;
+
   public SecurityPasswordCreationPage(PageParameters parameters) {
     super(parameters);
 
     addHeadPageTitlePrependedElement(
         new BreadCrumbElement(new ResourceModel("security.password.creation.title")));
-
-    final IModel<String> tokenModel = Model.of("");
 
     MAPPER
         .map(userModel, tokenModel)
@@ -52,10 +56,9 @@ public class SecurityPasswordCreationPage extends SecurityPasswordTemplate {
             BasicApplicationApplication.get().getHomePageLinkDescriptor(),
             getString("common.error.unexpected"));
 
-    if (!tokenModel
-        .getObject()
-        .equals(userModel.getObject().getPasswordRecoveryRequest().getToken())) {
-      BasicApplicationSession.get().error(getString("security.password.creation.wrongToken"));
+    if (!securityManagementControllerService.isPasswordRecoveryRequestValid(
+        userModel.getObject(), tokenModel.getObject())) {
+      BasicApplicationSession.get().error(getString("security.password.creation.error"));
       throw BasicApplicationApplication.get()
           .getHomePageLinkDescriptor()
           .newRestartResponseException();
@@ -69,7 +72,7 @@ public class SecurityPasswordCreationPage extends SecurityPasswordTemplate {
 
   @Override
   protected Component getContentComponent(String wicketId) {
-    return new SecurityPasswordCreationContentPanel(wicketId, userModel);
+    return new SecurityPasswordCreationContentPanel(wicketId, userModel, tokenModel);
   }
 
   @Override
@@ -80,6 +83,6 @@ public class SecurityPasswordCreationPage extends SecurityPasswordTemplate {
   @Override
   protected void onDetach() {
     super.onDetach();
-    Detachables.detach(userModel);
+    Detachables.detach(userModel, tokenModel);
   }
 }
