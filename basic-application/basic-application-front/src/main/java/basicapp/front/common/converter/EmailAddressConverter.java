@@ -35,7 +35,7 @@ public final class EmailAddressConverter extends AbstractConverter<EmailAddress>
     try {
       InternetAddress internetAddress = new InternetAddress(valueClean);
       internetAddress.validate();
-    } catch (AddressException e) {
+    } catch (AddressException _) {
       throw newConversionException("Invalid email address format", value, locale)
           .setResourceKey("common.validator.emailAddress");
     }

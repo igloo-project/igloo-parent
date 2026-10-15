@@ -111,7 +111,7 @@ public class UserSearchQueryImpl implements IUserSearchQuery {
             switch (data.getActive()) {
               case DISABLED_ONLY -> false;
               case ENABLED_ONLY -> true;
-              default -> throw new IllegalSwitchValueException(data.getActive());
+              case ALL -> throw new IllegalSwitchValueException(data.getActive());
             };
         root.add(f.match().field(User.ENABLED).matching(active));
       }

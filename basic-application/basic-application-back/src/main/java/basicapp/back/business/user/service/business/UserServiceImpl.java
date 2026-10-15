@@ -140,13 +140,13 @@ public class UserServiceImpl extends GenericEntityServiceImpl<Long, User> implem
    * @see org.springframework.security.crypto.bcrypt.BCrypt#hashpw(byte[], String, boolean)
    */
   @Override
-  public void onSignIn(User user) throws ServiceException, SecurityServiceException {
+  public void onSignIn(User user) {
     historyLogService.log(
         HistoryLogEventType.SIGN_IN, user, HistoryLogAdditionalInformationBean.empty());
   }
 
   @Override
-  public void onSignInFail(User user) throws ServiceException, SecurityServiceException {
+  public void onSignInFail(User user) {
     historyLogService.log(
         HistoryLogEventType.SIGN_IN_FAIL, user, HistoryLogAdditionalInformationBean.empty());
   }

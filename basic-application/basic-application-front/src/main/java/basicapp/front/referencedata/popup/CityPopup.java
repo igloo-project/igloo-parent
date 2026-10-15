@@ -28,7 +28,7 @@ public abstract class CityPopup extends AbstractReferenceDataPopup<City> {
 
     IModel<City> model = getModel();
 
-    form = new Form<City>("form", model);
+    form = new Form<>("form", model);
 
     TextField<String> labelFr =
         new TextField<>("labelFr", BindingModel.of(model, Bindings.city().label().fr()));

@@ -35,11 +35,7 @@ public class TestAnnouncementService extends AbstractBasicApplicationTestCase {
     @Test
     void saveAnnouncement_new() throws SecurityServiceException, ServiceException {
       Announcement announcement =
-          entityDatabaseHelper.createAnnouncement(
-              a -> {
-                a.getContent().setFr("testContent");
-              },
-              false);
+          entityDatabaseHelper.createAnnouncement(a -> a.getContent().setFr("testContent"), false);
 
       announcementControllerService.saveAnnouncement(announcement);
       entityManagerReset();

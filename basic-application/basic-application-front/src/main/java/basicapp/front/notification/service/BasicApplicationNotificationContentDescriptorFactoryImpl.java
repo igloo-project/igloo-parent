@@ -61,18 +61,11 @@ public class BasicApplicationNotificationContentDescriptorFactoryImpl
 
   @Override
   public INotificationContentDescriptor userPasswordRecoveryRequest(User user, Instant instant) {
-    ITwoParameterLinkDescriptorMapper<? extends IPageLinkGenerator, User, String> mapper;
-
-    switch (user.getPasswordRecoveryRequest().getType()) {
-      case CREATION:
-        mapper = SecurityPasswordCreationPage.MAPPER;
-        break;
-      case RESET:
-        mapper = SecurityPasswordResetPage.MAPPER;
-        break;
-      default:
-        throw new IllegalStateException("Recovery request type unknown.");
-    }
+    ITwoParameterLinkDescriptorMapper<? extends IPageLinkGenerator, User, String> mapper =
+        switch (user.getPasswordRecoveryRequest().getType()) {
+          case CREATION -> SecurityPasswordCreationPage.MAPPER;
+          case RESET -> SecurityPasswordResetPage.MAPPER;
+        };
 
     ResourceKeyGenerator keyGenerator =
         ResourceKeyGenerator.of("notification.panel.user.password.recovery.request")

@@ -28,25 +28,14 @@ public class SidebarUserPanel extends Panel {
   private static final Logger LOGGER = LoggerFactory.getLogger(SidebarUserPanel.class);
 
   private final IModel<Authentication> originalAuthenticationModel =
-      new LoadableDetachableModel<Authentication>() {
-        private static final long serialVersionUID = 1L;
-
-        @Override
-        protected Authentication load() {
-          return BasicApplicationSession.get().getOriginalAuthentication();
-        }
-      };
+      LoadableDetachableModel.of(() -> BasicApplicationSession.get().getOriginalAuthentication());
 
   private final IModel<String> originalAuthenticationNameModel =
-      new LoadableDetachableModel<String>() {
-        private static final long serialVersionUID = 1L;
-
-        @Override
-        protected String load() {
-          Authentication originalAuthentication = originalAuthenticationModel.getObject();
-          return originalAuthentication != null ? originalAuthentication.getName() : null;
-        }
-      };
+      LoadableDetachableModel.of(
+          () -> {
+            Authentication originalAuthentication = originalAuthenticationModel.getObject();
+            return originalAuthentication != null ? originalAuthentication.getName() : null;
+          });
 
   public SidebarUserPanel(String id) {
     super(id);

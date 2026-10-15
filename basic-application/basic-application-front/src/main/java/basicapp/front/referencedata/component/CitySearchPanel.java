@@ -44,21 +44,21 @@ public class CitySearchPanel extends Panel {
         });
 
     form.add(
-        new TextField<String>(
+        new TextField<>(
                 "label",
                 BindingModel.of(
                     dataProvider.getDataModel(), Bindings.citySearchQueryData().label()),
                 String.class)
             .setLabel(new ResourceModel("business.referenceData.label"))
             .add(new LabelPlaceholderBehavior()),
-        new TextField<PostalCode>(
+        new TextField<>(
                 "postalCode",
                 BindingModel.of(
                     dataProvider.getDataModel(), Bindings.citySearchQueryData().postalCode()),
                 PostalCode.class)
             .setLabel(new ResourceModel("business.city.postalCode"))
             .add(new LabelPlaceholderBehavior()),
-        new EnumDropDownSingleChoice<EnabledFilter>(
+        new EnumDropDownSingleChoice<>(
                 "enabledFilter",
                 BindingModel.of(
                     dataProvider.getDataModel(), Bindings.citySearchQueryData().enabledFilter()),

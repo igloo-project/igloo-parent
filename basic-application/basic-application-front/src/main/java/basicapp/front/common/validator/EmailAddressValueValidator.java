@@ -28,7 +28,7 @@ public class EmailAddressValueValidator implements IValidator<String> {
     try {
       InternetAddress internetAddress = new InternetAddress(value);
       internetAddress.validate();
-    } catch (AddressException e) {
+    } catch (AddressException _) {
       validatable.error(new ValidationError().addKey("common.validator.emailAddress"));
     }
   }

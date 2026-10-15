@@ -52,25 +52,21 @@ public final class DefaultHistoryDifferenceValueRenderer
             .build();
     String entityResourceKeyPart = getEntityResourceKeyPart(difference);
 
-    Optional<String> result =
-        getStringOptional(
+    return getStringOptional(
             JOINER.join(
                 HISTORY_DIFFERENCE_ROOT, entityResourceKeyPart, pathResourceKeyPart, ".value"),
             locale,
-            dataModel);
-    if (!result.isPresent()) {
-      result =
-          getStringOptional(
-              JOINER.join(HISTORY_DIFFERENCE_ROOT, ".common", pathResourceKeyPart, ".value"),
-              locale,
-              dataModel);
-    }
-
-    if (result.isPresent()) {
-      return result.get();
-    } else {
-      return getString(DEFAULT_KEY, locale, dataModel);
-    }
+            dataModel)
+        .toJavaUtil()
+        .or(
+            () ->
+                getStringOptional(
+                        JOINER.join(
+                            HISTORY_DIFFERENCE_ROOT, ".common", pathResourceKeyPart, ".value"),
+                        locale,
+                        dataModel)
+                    .toJavaUtil())
+        .orElseGet(() -> getString(DEFAULT_KEY, locale, dataModel));
   }
 
   private IModel<Map<String, Object>> createChildrenMap(HistoryDifference difference) {

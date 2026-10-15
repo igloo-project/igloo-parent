@@ -45,9 +45,9 @@ public interface IUserControllerService {
   void initPasswordRecoveryRequest(EmailAddress emailAddress)
       throws SecurityServiceException, ServiceException;
 
-  void onSignIn(User user) throws ServiceException, SecurityServiceException;
+  void onSignIn(User user);
 
-  void onSignInFail(User user) throws ServiceException, SecurityServiceException;
+  void onSignInFail(User user);
 
   User getByEmailAddressCaseInsensitive(EmailAddress emailAddress);
 

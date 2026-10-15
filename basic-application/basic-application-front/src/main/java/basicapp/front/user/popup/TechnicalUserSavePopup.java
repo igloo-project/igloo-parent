@@ -114,13 +114,13 @@ public class TechnicalUserSavePopup extends AbstractAjaxModalPopupPanel<User> {
     PasswordTextField password = new PasswordTextField("password", passwordModel);
 
     form.add(
-        new TextField<String>("firstName", BindingModel.of(getModel(), Bindings.user().firstName()))
+        new TextField<>("firstName", BindingModel.of(getModel(), Bindings.user().firstName()))
             .setLabel(new ResourceModel("business.user.firstName"))
             .setRequired(true),
-        new TextField<String>("lastName", BindingModel.of(getModel(), Bindings.user().lastName()))
+        new TextField<>("lastName", BindingModel.of(getModel(), Bindings.user().lastName()))
             .setLabel(new ResourceModel("business.user.lastName"))
             .setRequired(true),
-        new TextField<String>("username", BindingModel.of(getModel(), Bindings.user().username()))
+        new TextField<>("username", BindingModel.of(getModel(), Bindings.user().username()))
             .setLabel(new ResourceModel("business.user.username"))
             .setRequired(true)
             .add(USERNAME_PATTERN_VALIDATOR)

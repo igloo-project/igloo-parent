@@ -35,39 +35,37 @@ public final class HistoryDifferencePathRenderer
     IModel<?> keyDataModel = Models.transientModel(difference.getPath());
     String entityResourceKeyPart = getEntityResourceKeyPart(difference);
 
-    Optional<String> result =
-        getStringOptional(
+    return getStringOptional(
             JOINER.join(HISTORY_DIFFERENCE_ROOT, entityResourceKeyPart, pathResourceKeyPart),
             locale,
-            keyDataModel);
-    if (!result.isPresent()) {
-      result =
-          getStringOptional(
-              JOINER.join(BUSINESS_ROOT, entityResourceKeyPart, pathResourceKeyPart),
-              locale,
-              keyDataModel);
-      if (!result.isPresent()) {
-        result =
-            getStringOptional(
-                JOINER.join(HISTORY_DIFFERENCE_ROOT, ".common", pathResourceKeyPart),
-                locale,
-                keyDataModel);
-        if (!result.isPresent()) {
-          result =
-              getStringOptional(
-                  JOINER.join(BUSINESS_ROOT, pathResourceKeyPart), locale, keyDataModel);
-        }
-      }
-    }
-
-    if (result.isPresent()) {
-      return result.get();
-    } else {
-      LOGGER.error(
-          "Unable to find a localization key for the HistoryDifference (entity : '{}', path : '{}')",
-          entityResourceKeyPart,
-          pathResourceKeyPart);
-      return pathResourceKeyPart;
-    }
+            keyDataModel)
+        .toJavaUtil()
+        .or(
+            () ->
+                getStringOptional(
+                        JOINER.join(BUSINESS_ROOT, entityResourceKeyPart, pathResourceKeyPart),
+                        locale,
+                        keyDataModel)
+                    .toJavaUtil())
+        .or(
+            () ->
+                getStringOptional(
+                        JOINER.join(HISTORY_DIFFERENCE_ROOT, ".common", pathResourceKeyPart),
+                        locale,
+                        keyDataModel)
+                    .toJavaUtil())
+        .or(
+            () ->
+                getStringOptional(
+                        JOINER.join(BUSINESS_ROOT, pathResourceKeyPart), locale, keyDataModel)
+                    .toJavaUtil())
+        .orElseGet(
+            () -> {
+              LOGGER.error(
+                  "Unable to find a localization key for the HistoryDifference (entity : '{}', path : '{}')",
+                  entityResourceKeyPart,
+                  pathResourceKeyPart);
+              return pathResourceKeyPart;
+            });
   }
 }

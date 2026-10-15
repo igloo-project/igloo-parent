@@ -13,7 +13,7 @@ public enum UserSort implements ISort<Function<SearchSortFactory, SortFinalStep>
   SCORE {
     @Override
     public List<Function<SearchSortFactory, SortFinalStep>> getSortFields(SortOrder sortOrder) {
-      return List.of(f -> f.score());
+      return List.of(SearchSortFactory::score);
     }
 
     @Override

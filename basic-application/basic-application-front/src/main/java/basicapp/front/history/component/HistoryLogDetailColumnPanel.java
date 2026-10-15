@@ -25,7 +25,7 @@ public class HistoryLogDetailColumnPanel extends GenericPanel<HistoryLog> {
     super(id, model);
 
     IModel<List<HistoryDifference>> historyDifferenceListModel =
-        new IModel<List<HistoryDifference>>() {
+        new IModel<>() {
           private static final long serialVersionUID = 1L;
 
           @Override

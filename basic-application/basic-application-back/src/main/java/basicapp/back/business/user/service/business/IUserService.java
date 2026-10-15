@@ -16,9 +16,9 @@ public interface IUserService
   void saveTechnicalUser(User user, String password)
       throws SecurityServiceException, ServiceException;
 
-  void onSignIn(User user) throws ServiceException, SecurityServiceException;
+  void onSignIn(User user);
 
-  void onSignInFail(User user) throws ServiceException, SecurityServiceException;
+  void onSignInFail(User user);
 
   void setPassword(User user, String rawPassword) throws ServiceException, SecurityServiceException;
 

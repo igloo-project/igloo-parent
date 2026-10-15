@@ -21,13 +21,12 @@ public class DatabaseConsistencyCheckServiceImpl implements IDatabaseConsistency
   }
 
   @Override
-  public void checkDatabaseConsistency() throws ServiceException, SecurityServiceException {
+  public void checkDatabaseConsistency() {
     // rien
   }
 
   @Override
-  public void checkOnStartup(boolean allowCreateMissingElements)
-      throws ServiceException, SecurityServiceException {
+  public void checkOnStartup(boolean allowCreateMissingElements) {
     // rien
   }
 }

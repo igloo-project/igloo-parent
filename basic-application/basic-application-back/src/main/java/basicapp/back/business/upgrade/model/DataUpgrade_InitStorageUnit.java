@@ -17,7 +17,7 @@ public class DataUpgrade_InitStorageUnit implements IDataUpgrade {
   }
 
   @Override
-  public void perform() throws ServiceException, SecurityServiceException {
+  public void perform() {
     LOGGER.info("Performing StorageUnit init upgrade");
 
     // Complete here

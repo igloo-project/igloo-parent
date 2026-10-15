@@ -32,8 +32,7 @@ public class TestUserDetailsService extends AbstractBasicApplicationTestCase {
   @Autowired private IRoleService roleService;
 
   @Test
-  void testGetAuthoritiesAndPermissions_technicalUser()
-      throws SecurityServiceException, ServiceException {
+  void testGetAuthoritiesAndPermissions_technicalUser() {
 
     UserDetails userDetails = userDetailsService.loadUserByUsername(ADMIN_USERNAME);
     Assertions.assertThat(userDetails).isNotNull();
@@ -44,8 +43,9 @@ public class TestUserDetailsService extends AbstractBasicApplicationTestCase {
         .containsExactlyInAnyOrder(ROLE_ADMIN, ROLE_ANONYMOUS, ROLE_AUTHENTICATED);
     List<String> permissions =
         userDetails.getPermissions().stream()
-            .filter(permission -> permission instanceof NamedPermission)
-            .map(permission -> ((NamedPermission) permission).getName())
+            .filter(NamedPermission.class::isInstance)
+            .map(NamedPermission.class::cast)
+            .map(NamedPermission::getName)
             .toList();
 
     Assertions.assertThat(permissions)
@@ -84,8 +84,9 @@ public class TestUserDetailsService extends AbstractBasicApplicationTestCase {
         .containsExactlyInAnyOrder(ROLE_ANONYMOUS, ROLE_AUTHENTICATED);
     List<String> permissions =
         userDetails.getPermissions().stream()
-            .filter(permission -> permission instanceof NamedPermission)
-            .map(permission -> ((NamedPermission) permission).getName())
+            .filter(NamedPermission.class::isInstance)
+            .map(NamedPermission.class::cast)
+            .map(NamedPermission::getName)
             .toList();
 
     Assertions.assertThat(permissions)

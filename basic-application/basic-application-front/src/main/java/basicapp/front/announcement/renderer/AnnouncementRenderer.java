@@ -25,14 +25,10 @@ public abstract class AnnouncementRenderer extends Renderer<Announcement> {
             return null;
           }
 
-          switch (value.getType()) {
-            case NOTIFICATION:
-              return value.getContent().get(locale);
-            case UNAVAILABILITY:
-              return getUnavailabilityContent(value, locale);
-          }
-
-          return null;
+          return switch (value.getType()) {
+            case NOTIFICATION -> value.getContent().get(locale);
+            case UNAVAILABILITY -> getUnavailabilityContent(value, locale);
+          };
         }
       }.nullsAsNull();
 

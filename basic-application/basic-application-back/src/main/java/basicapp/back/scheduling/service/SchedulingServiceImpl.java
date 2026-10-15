@@ -34,7 +34,7 @@ public class SchedulingServiceImpl implements ISchedulingService {
       Instant instant = Instant.now().minus(3, ChronoUnit.DAYS);
       FileUtils.cleanDirectory(file, instant);
     } catch (IOException e) {
-      LOGGER.error("Erreur lors du nettoyage du répertoire " + file, e);
+      LOGGER.error("Erreur lors du nettoyage du répertoire {}", file, e);
     }
   }
 }

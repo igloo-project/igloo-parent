@@ -12,9 +12,9 @@ public enum DateTimePattern implements IDateTimePattern {
   YEAR("datetime.pattern.year"),
   TIME("datetime.pattern.time");
 
-  private String key;
+  private final String key;
 
-  private DateTimePattern(String key) {
+  DateTimePattern(String key) {
     this.key = Objects.requireNonNull(key);
   }
 

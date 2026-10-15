@@ -60,12 +60,12 @@ public class UserControllerServiceImpl implements IUserControllerService {
   }
 
   @Override
-  public void onSignIn(User user) throws ServiceException, SecurityServiceException {
+  public void onSignIn(User user) {
     userService.onSignIn(user);
   }
 
   @Override
-  public void onSignInFail(User user) throws ServiceException, SecurityServiceException {
+  public void onSignInFail(User user) {
     userService.onSignInFail(user);
   }
 
