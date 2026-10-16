@@ -53,4 +53,9 @@
     <packageUrl regex="true">^pkg:maven/org\.webjars\.npm/babel__helper-string-parser@.*$</packageUrl>
     <cve>CVE-2026-49356</cve>
   </suppress>
+  <suppress>
+    <notes>Faux positif : CPE ada:ada déduit du hash git 7214a1a (Implementation-Build du manifest, buildnumber-maven-plugin) des jars Igloo 7.8.0</notes>
+    <packageUrl regex="true">^pkg:maven/org\.iglooproject(\.[^/]+)?/.*@.*$</packageUrl>
+    <cpe>cpe:/a:ada:ada</cpe>
+  </suppress>
 </suppressions>
