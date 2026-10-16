@@ -5,7 +5,6 @@ import igloo.log4j2jmx.servlet.JakartaLog4j2LoggingManagerListener;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.SessionTrackingMode;
 import java.nio.charset.StandardCharsets;
-import java.util.Collections;
 import java.util.Set;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.context.annotation.Configuration;

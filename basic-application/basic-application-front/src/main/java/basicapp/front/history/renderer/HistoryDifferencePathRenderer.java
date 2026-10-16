@@ -1,7 +1,6 @@
 package basicapp.front.history.renderer;
 
 import basicapp.back.business.history.model.HistoryDifference;
-import com.google.common.base.Optional;
 import igloo.wicket.model.Models;
 import java.util.Locale;
 import org.apache.wicket.model.IModel;

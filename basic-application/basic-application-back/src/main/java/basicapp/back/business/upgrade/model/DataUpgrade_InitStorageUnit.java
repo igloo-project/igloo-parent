@@ -1,7 +1,5 @@
 package basicapp.back.business.upgrade.model;
 
-import org.iglooproject.jpa.exception.SecurityServiceException;
-import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.more.business.upgrade.model.IDataUpgrade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

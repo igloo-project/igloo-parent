@@ -15,8 +15,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.iglooproject.jpa.exception.SecurityServiceException;
-import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.wicket.more.markup.html.form.LabelPlaceholderBehavior;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
 import org.iglooproject.wicket.more.security.page.LoginSuccessPage;

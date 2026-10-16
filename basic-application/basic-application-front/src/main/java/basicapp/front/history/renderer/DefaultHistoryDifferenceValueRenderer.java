@@ -2,7 +2,6 @@ package basicapp.front.history.renderer;
 
 import basicapp.back.business.history.model.HistoryDifference;
 import basicapp.back.util.binding.Bindings;
-import com.google.common.base.Optional;
 import igloo.wicket.model.Models;
 import igloo.wicket.model.Models.MapModelBuilder;
 import igloo.wicket.renderer.Renderer;
