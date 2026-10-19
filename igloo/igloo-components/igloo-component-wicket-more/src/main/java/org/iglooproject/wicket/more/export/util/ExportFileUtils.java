@@ -1,23 +1,20 @@
 package org.iglooproject.wicket.more.export.util;
 
-import igloo.wicket.model.BindingModel;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import org.apache.wicket.Application;
 import org.apache.wicket.model.IModel;
-import org.iglooproject.commons.util.mime.MediaType;
-import org.iglooproject.wicket.more.util.binding.CoreWicketMoreBindings;
+import org.iglooproject.commons.util.mime.IMediaType;
 
 public class ExportFileUtils {
 
   public static final String FILE_NAME_DATE_PATTERN_KEY = "common.action.export.file.datePattern";
 
   public static IModel<String> getFileNameMediaTypeModel(
-      IModel<String> fileNamePrefixModel, IModel<MediaType> mediaTypeModel) {
+      IModel<String> fileNamePrefixModel, IModel<? extends IMediaType> mediaTypeModel) {
     return getFileNameExtensionModel(
-        fileNamePrefixModel,
-        BindingModel.of(mediaTypeModel, CoreWicketMoreBindings.mediaType().extension()));
+        fileNamePrefixModel, mediaTypeModel.map(IMediaType::extension));
   }
 
   public static IModel<String> getFileNameExtensionModel(

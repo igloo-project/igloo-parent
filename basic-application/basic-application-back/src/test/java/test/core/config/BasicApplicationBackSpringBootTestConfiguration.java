@@ -7,6 +7,7 @@ import basicapp.back.config.BasicApplicationBackDifferenceConfiguration;
 import basicapp.back.config.BasicApplicationBackFlywayConfiguration;
 import basicapp.back.config.BasicApplicationBackJpaConfiguration;
 import basicapp.back.config.BasicApplicationBackManifestConfiguration;
+import basicapp.back.config.BasicApplicationBackMediaTypeConfiguration;
 import basicapp.back.config.BasicApplicationBackNotificationConfiguration;
 import basicapp.back.config.BasicApplicationBackPropertyRegistryConfiguration;
 import basicapp.back.config.BasicApplicationBackReferenceDataConfiguration;
@@ -33,6 +34,7 @@ import test.core.TestBackPackage;
   BasicApplicationBackNotificationConfiguration.class,
   BasicApplicationBackReferenceDataConfiguration.class,
   BasicApplicationBackDifferenceConfiguration.class,
+  BasicApplicationBackMediaTypeConfiguration.class,
   BasicApplicationBackTestBaseConfiguration.class,
   PsqlTestContainerConfiguration.class
 })

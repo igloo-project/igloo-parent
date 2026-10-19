@@ -5,7 +5,7 @@ import igloo.bootstrap.modal.WorkInProgressPopup;
 import java.io.File;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.iglooproject.commons.util.mime.MediaType;
+import org.iglooproject.commons.util.mime.IMediaType;
 import org.iglooproject.wicket.more.export.util.ExportFileUtils;
 import org.javatuples.LabelValue;
 
@@ -16,7 +16,7 @@ public abstract class SimpleFileDownloadAjaxLink extends AbstractFileDownloadAja
   private final IModel<String> fileNameModel;
 
   public SimpleFileDownloadAjaxLink(
-      String id, WorkInProgressPopup loadingPopup, String fileNamePrefix, MediaType mediaType) {
+      String id, WorkInProgressPopup loadingPopup, String fileNamePrefix, IMediaType mediaType) {
     this(id, loadingPopup, Model.of(fileNamePrefix), Model.of(mediaType));
   }
 
@@ -24,7 +24,7 @@ public abstract class SimpleFileDownloadAjaxLink extends AbstractFileDownloadAja
       String id,
       WorkInProgressPopup loadingPopup,
       IModel<String> fileNamePrefixModel,
-      IModel<MediaType> mediaTypeModel) {
+      IModel<? extends IMediaType> mediaTypeModel) {
     this(
         id,
         loadingPopup,
