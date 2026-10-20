@@ -35,17 +35,17 @@ public enum QueuedTaskHolderSort implements ISort<Function<SearchSortFactory, So
   CREATION_DATE {
     @Override
     public List<Function<SearchSortFactory, SortFinalStep>> getSortFields(SortOrder sortOrder) {
-      //			return List.of(
-      //				SortUtils.luceneStringSortField(this, sortOrder, QueuedTaskHolder.END_DATE,
-      // NullSortValue.GREATEST),
-      //				SortUtils.luceneStringSortField(this, sortOrder, QueuedTaskHolder.START_DATE,
-      // NullSortValue.GREATEST),
-      //				SortUtils.luceneSortField(this, sortOrder, SortField.Type.STRING,
-      // QueuedTaskHolder.CREATION_DATE)
-      //			);
       return List.of(
-          f -> f.field(QueuedTaskHolder.END_DATE).order(toSortOrder(this, sortOrder)),
-          f -> f.field(QueuedTaskHolder.START_DATE).order(toSortOrder(this, sortOrder)),
+          f ->
+              f.field(QueuedTaskHolder.END_DATE)
+                  .order(toSortOrder(this, sortOrder))
+                  .missing()
+                  .highest(),
+          f ->
+              f.field(QueuedTaskHolder.START_DATE)
+                  .order(toSortOrder(this, sortOrder))
+                  .missing()
+                  .highest(),
           f -> f.field(QueuedTaskHolder.CREATION_DATE).order(toSortOrder(this, sortOrder)));
     }
 
