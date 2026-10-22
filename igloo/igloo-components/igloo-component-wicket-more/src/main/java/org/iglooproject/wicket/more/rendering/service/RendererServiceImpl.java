@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import igloo.wicket.renderer.Renderer;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import org.apache.wicket.Application;
 import org.apache.wicket.Localizer;
 import org.apache.wicket.Session;
@@ -15,6 +16,8 @@ import org.bindgen.BindingRoot;
 import org.iglooproject.commons.util.context.IExecutionContext;
 import org.iglooproject.commons.util.context.IExecutionContext.ITearDownHandle;
 import org.iglooproject.commons.util.fieldpath.FieldPath;
+import org.iglooproject.jpa.more.rendering.IRenderable;
+import org.iglooproject.jpa.more.rendering.RenderableTypes;
 import org.iglooproject.jpa.more.rendering.service.IRendererService;
 import org.iglooproject.wicket.more.notification.service.IWicketContextProvider;
 import org.iglooproject.wicket.more.rendering.EnumRenderer;
@@ -80,7 +83,39 @@ public class RendererServiceImpl implements IRendererService, IRendererRegistry 
     if (renderer != null) {
       return renderer;
     }
+    renderer = findRendererInHierarchy(rootType, path, valueType);
+    if (renderer != null) {
+      return renderer;
+    }
     return findDefaultRenderer(valueType);
+  }
+
+  /**
+   * Looks for a renderer registered on an interface extending {@link IRenderable} implemented by
+   * {@code type} (or one of its super-interfaces), then on its superclasses (recursively).
+   */
+  private <T> Renderer<? super T> findRendererInHierarchy(
+      Class<?> rootType, FieldPath path, Class<?> type) {
+    return RenderableTypes.hierarchy(type)
+        .<Renderer<? super T>>map(candidate -> findRendererForType(rootType, path, candidate))
+        .filter(Objects::nonNull)
+        .findFirst()
+        .orElse(null);
+  }
+
+  @SuppressWarnings("unchecked")
+  private <T> Renderer<? super T> findRendererForType(
+      Class<?> rootType, FieldPath path, Class<?> type) {
+    Renderer<? super T> renderer =
+        (Renderer<? super T>) renderers.get(Triplet.with(rootType, path, type));
+    if (renderer != null) {
+      return renderer;
+    }
+    renderer = (Renderer<? super T>) renderers.get(Triplet.with(rootType, null, type));
+    if (renderer != null) {
+      return renderer;
+    }
+    return (Renderer<? super T>) renderers.get(Triplet.with(null, null, type));
   }
 
   private <T> Renderer<? super T> findDefaultRenderer(final Class<T> valueType) {
