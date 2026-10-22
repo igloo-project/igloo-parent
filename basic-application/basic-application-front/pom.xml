@@ -174,7 +174,6 @@
     <dependency>
       <groupId>org.commonmark</groupId>
       <artifactId>commonmark</artifactId>
-      <version>${commonmark.version}</version>
     </dependency>
     <!-- Wicket debug bar -->
     <dependency>
