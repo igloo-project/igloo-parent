@@ -11,7 +11,6 @@ import igloo.wicket.behavior.ClassAttributeAppender;
 import igloo.wicket.component.CoreLabel;
 import igloo.wicket.component.EnclosureContainer;
 import igloo.wicket.condition.Condition;
-import igloo.wicket.model.BindingModel;
 import java.util.List;
 import java.util.Objects;
 import org.apache.wicket.Component;
@@ -32,7 +31,7 @@ import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.spring.property.SpringPropertyIds;
 import org.iglooproject.spring.property.service.IPropertyService;
-import org.iglooproject.wicket.more.AbstractCoreSession;
+import org.iglooproject.wicket.more.AbstractCoreAuthenticatedSession;
 import org.iglooproject.wicket.more.console.common.model.ConsoleMenuItem;
 import org.iglooproject.wicket.more.console.common.model.ConsoleMenuSection;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
@@ -43,7 +42,6 @@ import org.iglooproject.wicket.more.markup.html.template.component.BodyBreadCrum
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
 import org.iglooproject.wicket.more.model.ApplicationPropertyModel;
 import org.iglooproject.wicket.more.security.page.LogoutPage;
-import org.iglooproject.wicket.more.util.binding.CoreWicketMoreBindings;
 
 public abstract class ConsoleTemplate extends AbstractWebPageTemplate {
 
@@ -58,7 +56,7 @@ public abstract class ConsoleTemplate extends AbstractWebPageTemplate {
         new TransparentWebMarkupContainer("htmlElement")
             .add(
                 AttributeAppender.append(
-                    "lang", AbstractCoreSession.get().getLocale().getLanguage())));
+                    "lang", AbstractCoreAuthenticatedSession.get().getLocale().getLanguage())));
 
     addHeadPageTitlePrependedElement(
         new BreadCrumbElement(new ResourceModel("console.common.application.name")));
@@ -154,9 +152,7 @@ public abstract class ConsoleTemplate extends AbstractWebPageTemplate {
     add(
         new CoreLabel(
                 "username",
-                BindingModel.of(
-                    AbstractCoreSession.get().getUserModel(),
-                    CoreWicketMoreBindings.user().username()))
+                (IModel<String>) () -> AbstractCoreAuthenticatedSession.get().getUsername())
             .hideIfEmpty());
 
     add(new BookmarkablePageLink<Void>("logoutLink", LogoutPage.class));

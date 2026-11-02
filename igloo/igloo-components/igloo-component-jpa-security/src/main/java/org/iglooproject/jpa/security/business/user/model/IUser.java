@@ -4,10 +4,11 @@ import java.util.Locale;
 import org.bindgen.Bindable;
 
 @Bindable
-public interface IUser {
+public interface IUser extends ISessionUser {
 
   Long getId();
 
+  @Override
   String getUsername();
 
   String getPasswordHash();

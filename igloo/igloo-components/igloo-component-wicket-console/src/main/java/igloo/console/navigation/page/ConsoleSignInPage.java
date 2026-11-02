@@ -13,7 +13,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.iglooproject.wicket.more.AbstractCoreSession;
+import org.iglooproject.wicket.more.AbstractCoreAuthenticatedSession;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.markup.html.form.LabelPlaceholderBehavior;
@@ -69,7 +69,7 @@ public class ConsoleSignInPage extends ConsoleAccessTemplate {
             @Override
             protected void onSubmit() {
               try {
-                AbstractCoreSession.get()
+                AbstractCoreAuthenticatedSession.get()
                     .signIn(usernameModel.getObject(), passwordModel.getObject());
                 throw new RestartResponseException(ConsoleLoginSuccessPage.class);
               } catch (BadCredentialsException e) { // NOSONAR

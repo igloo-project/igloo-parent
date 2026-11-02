@@ -1,7 +1,7 @@
 package org.iglooproject.wicket.more.security.page;
 
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.iglooproject.wicket.more.AbstractCoreSession;
+import org.iglooproject.wicket.more.AbstractCoreAuthenticatedSession;
 import org.iglooproject.wicket.more.CoreDefaultExceptionMapper;
 import org.iglooproject.wicket.more.application.CoreWicketAuthenticatedApplication;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
@@ -34,8 +34,8 @@ public class AccessDeniedPage extends CoreWebPage {
   protected void onInitialize() {
     super.onInitialize();
 
-    AbstractCoreSession.get().getFeedbackMessages().clear();
-    AbstractCoreSession.get().error(getString("access.denied"));
+    AbstractCoreAuthenticatedSession.get().getFeedbackMessages().clear();
+    AbstractCoreAuthenticatedSession.get().error(getString("access.denied"));
 
     throw redirectLinkDescriptor.newRestartResponseException();
   }

@@ -10,23 +10,19 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.iglooproject.jpa.security.business.user.model.IUser;
-import org.iglooproject.jpa.security.business.user.service.ICoreUserSecurityService;
 import org.iglooproject.spring.util.StringUtils;
-import org.iglooproject.wicket.more.AbstractCoreSession;
+import org.iglooproject.wicket.more.AbstractCoreAuthenticatedSession;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.markup.html.form.LabelPlaceholderBehavior;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
 import org.iglooproject.wicket.more.security.page.LoginSuccessPage;
 import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 public class ConsoleMaintenanceAuthenticationPage extends ConsoleMaintenanceTemplate {
 
   private static final long serialVersionUID = 3401416708867386953L;
-
-  @SpringBean private ICoreUserSecurityService<?> userService;
 
   public static final IPageLinkDescriptor linkDescriptor() {
     return LinkDescriptorBuilder.start().page(ConsoleMaintenanceAuthenticationPage.class);
@@ -49,32 +45,27 @@ public class ConsoleMaintenanceAuthenticationPage extends ConsoleMaintenanceTemp
             String username = usernameModel.getObject();
 
             if (!StringUtils.hasText(username)) {
-              AbstractCoreSession.get()
-                  .error(
-                      getString("console.maintenance.authentication.signInAs.error.userUnknown"));
-              throw linkDescriptor().newRestartResponseException();
-            }
-
-            IUser user = userService.getByUsername(username);
-
-            if (user == null) {
-              AbstractCoreSession.get()
+              AbstractCoreAuthenticatedSession.get()
                   .error(
                       getString("console.maintenance.authentication.signInAs.error.userUnknown"));
               throw linkDescriptor().newRestartResponseException();
             }
 
             try {
-              AbstractCoreSession.get().signInAs(username);
-              AbstractCoreSession.get()
+              AbstractCoreAuthenticatedSession.get().signInAs(username);
+              AbstractCoreAuthenticatedSession.get()
                   .success(
                       new StringResourceModel("console.maintenance.authentication.signInAs.success")
                           .setParameters(username)
                           .getObject());
 
               throw LoginSuccessPage.linkDescriptor().newRestartResponseException();
+            } catch (UsernameNotFoundException e) {
+              AbstractCoreAuthenticatedSession.get()
+                  .error(
+                      getString("console.maintenance.authentication.signInAs.error.userUnknown"));
             } catch (DisabledException e) {
-              AbstractCoreSession.get()
+              AbstractCoreAuthenticatedSession.get()
                   .error(
                       getString("console.maintenance.authentication.signInAs.error.userDisabled"));
             }

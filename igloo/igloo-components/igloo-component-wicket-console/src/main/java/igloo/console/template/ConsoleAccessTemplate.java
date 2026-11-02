@@ -18,7 +18,7 @@ import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.jpa.security.service.IAuthenticationService;
 import org.iglooproject.spring.property.service.IPropertyService;
-import org.iglooproject.wicket.more.AbstractCoreSession;
+import org.iglooproject.wicket.more.AbstractCoreAuthenticatedSession;
 import org.iglooproject.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackPanel;
 import org.iglooproject.wicket.more.markup.html.template.AbstractWebPageTemplate;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
@@ -38,7 +38,7 @@ public abstract class ConsoleAccessTemplate extends AbstractWebPageTemplate {
         new TransparentWebMarkupContainer("htmlElement")
             .add(
                 AttributeAppender.append(
-                    "lang", AbstractCoreSession.get().getLocale().getLanguage())));
+                    "lang", AbstractCoreAuthenticatedSession.get().getLocale().getLanguage())));
 
     addHeadPageTitlePrependedElement(
         new BreadCrumbElement(new ResourceModel("console.common.application.name")));
