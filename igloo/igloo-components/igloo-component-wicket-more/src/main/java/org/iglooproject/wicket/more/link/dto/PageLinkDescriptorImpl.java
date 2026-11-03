@@ -50,6 +50,16 @@ class PageLinkDescriptorImpl<P extends Page, D extends IPageLinkDataDto>
   }
 
   @Override
+  public Class<P> getPageClass() {
+    return pageClass;
+  }
+
+  @Override
+  public D newDataDto() {
+    return dataDtoFactory.get();
+  }
+
+  @Override
   public IPageLinkGenerator<P> generator(IModel<D> dataDtoModel) {
     return new PageLinkGenerator(dataDtoModel);
   }
@@ -135,8 +145,18 @@ class PageLinkDescriptorImpl<P extends Page, D extends IPageLinkDataDto>
       return new RestartResponseException(pageClass, buildPageParameters());
     }
 
+    private void checkValid() {
+      if (!isValid()) {
+        throw new LinkInvalidTargetRuntimeException(
+            String.format(
+                "Invalid link to %s: missing required parameter or unauthorized access.",
+                pageClass.getName()));
+      }
+    }
+
     @Override
     public String url() {
+      checkValid();
       RequestCycle requestCycle = Objects.requireNonNull(RequestCycle.get());
       CharSequence url = requestCycle.urlFor(pageClass, buildPageParameters());
       return url != null ? url.toString() : null;
@@ -144,6 +164,7 @@ class PageLinkDescriptorImpl<P extends Page, D extends IPageLinkDataDto>
 
     @Override
     public String fullUrl() {
+      checkValid();
       RequestCycle requestCycle = Objects.requireNonNull(RequestCycle.get());
       CharSequence url = requestCycle.urlFor(pageClass, buildPageParameters());
       return url != null

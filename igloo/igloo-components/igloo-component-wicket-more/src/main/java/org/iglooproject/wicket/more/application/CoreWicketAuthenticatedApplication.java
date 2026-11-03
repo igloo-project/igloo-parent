@@ -19,12 +19,16 @@ import org.iglooproject.jpa.security.service.IAuthenticationService;
 import org.iglooproject.wicket.more.CoreDefaultExceptionMapper;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
+import org.iglooproject.wicket.more.link.dto.PageLinkDescriptorRegistry;
+import org.iglooproject.wicket.more.link.dto.security.IPageLinkPermissionEvaluator;
 import org.iglooproject.wicket.more.markup.CoreMarkupFactory;
 import org.iglooproject.wicket.more.markup.parser.filter.InlineEnclosureComponentHandler;
 import org.iglooproject.wicket.more.security.authorization.CoreAuthorizationStrategy;
+import org.iglooproject.wicket.more.security.authorization.PageLinkPermissionAuthorizationStrategy;
 import org.iglooproject.wicket.more.security.authorization.StandardUnauthorizedComponentInstantiationListener;
 import org.iglooproject.wicket.more.security.page.AccessDeniedPage;
 import org.iglooproject.wicket.more.security.page.LogoutPage;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.acls.domain.PermissionFactory;
 
@@ -39,6 +43,12 @@ public abstract class CoreWicketAuthenticatedApplication extends CoreWicketAppli
   @Autowired private IAuthenticationService authenticationService;
 
   @Autowired private PermissionFactory permissionFactory;
+
+  @Autowired
+  private ObjectProvider<IPageLinkPermissionEvaluator> pageLinkPermissionEvaluatorProvider;
+
+  private final PageLinkDescriptorRegistry pageLinkDescriptorRegistry =
+      new PageLinkDescriptorRegistry();
 
   public static CoreWicketAuthenticatedApplication get() {
     final Application application = Application.get();
@@ -81,6 +91,29 @@ public abstract class CoreWicketAuthenticatedApplication extends CoreWicketAppli
     mountPage("/access-denied/", AccessDeniedPage.class);
   }
 
+  /**
+   * Mounts the page of the link descriptor and registers the descriptor, so that the page
+   * instantiation is checked by the {@link PageLinkPermissionAuthorizationStrategy}.
+   */
+  public final void mountPage(
+      final String path,
+      final org.iglooproject.wicket.more.link.dto.base.IPageLinkDescriptor<?, ?> descriptor) {
+    pageLinkDescriptorRegistry.register(descriptor);
+    mountPage(path, descriptor.getPageClass());
+  }
+
+  /**
+   * Same as {@link #mountPage(String,
+   * org.iglooproject.wicket.more.link.dto.base.IPageLinkDescriptor)} with a {@link
+   * #mountParameterizedPage(String, Class)} mount.
+   */
+  public final void mountParameterizedPage(
+      final String path,
+      final org.iglooproject.wicket.more.link.dto.base.IPageLinkDescriptor<?, ?> descriptor) {
+    pageLinkDescriptorRegistry.register(descriptor);
+    mountParameterizedPage(path, descriptor.getPageClass());
+  }
+
   @Override
   public final boolean hasAnyRole(final Roles roles) {
     final Roles sessionRoles = AuthenticatedWebSession.get().getRoles();
@@ -105,7 +138,12 @@ public abstract class CoreWicketAuthenticatedApplication extends CoreWicketAppli
   }
 
   protected CompoundAuthorizationStrategy newAuthorizationStrategy() {
-    return new CoreAuthorizationStrategy(this, authenticationService, permissionFactory);
+    CompoundAuthorizationStrategy strategy =
+        new CoreAuthorizationStrategy(this, authenticationService, permissionFactory);
+    strategy.add(
+        new PageLinkPermissionAuthorizationStrategy(
+            pageLinkDescriptorRegistry, pageLinkPermissionEvaluatorProvider::getIfAvailable));
+    return strategy;
   }
 
   protected IUnauthorizedComponentInstantiationListener

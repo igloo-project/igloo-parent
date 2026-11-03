@@ -47,12 +47,16 @@ public class PageLinkBookmarkablePageLink<P extends Page> extends Link<Void>
 
   @Override
   protected boolean linksTo(Page page) {
-    return Objects.equals(generator.getClass(), page.getClass());
+    return Objects.equals(generator.getPageClass(), page.getClass());
   }
 
+  /**
+   * The link is rendered with the bookmarkable URL of the target page: this method is only called
+   * by WicketTester (clickLink).
+   */
   @Override
   public void onClick() {
-    // nothing to do
+    throw generator.restartResponseException();
   }
 
   @Override
