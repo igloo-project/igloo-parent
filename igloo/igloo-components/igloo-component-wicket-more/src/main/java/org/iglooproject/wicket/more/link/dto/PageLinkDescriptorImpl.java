@@ -137,7 +137,7 @@ class PageLinkDescriptorImpl<P extends Page, D extends IPageLinkDataDto>
 
     @Override
     public boolean isActive(Class<? extends Page> selectedPage) {
-      return isValid();
+      return Objects.equals(pageClass, selectedPage);
     }
 
     @Override
