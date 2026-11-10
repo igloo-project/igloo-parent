@@ -24,7 +24,7 @@ import org.iglooproject.wicket.more.link.descriptor.generator.ILinkGenerator;
 import org.iglooproject.wicket.more.link.descriptor.mapper.ILinkDescriptorMapper;
 import org.iglooproject.wicket.more.link.dto.base.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.dto.component.PageLinkBookmarkablePageLink;
-import org.iglooproject.wicket.more.link.dto.dto.IPageLinkDataDto;
+import org.iglooproject.wicket.more.link.dto.dto.ILinkDataDto;
 
 public class CoreBootstrapBadgeColumn<T, S extends ISort<?>, C> extends AbstractCoreColumn<T, S> {
 
@@ -48,7 +48,7 @@ public class CoreBootstrapBadgeColumn<T, S extends ISort<?>, C> extends Abstract
       sideLinkGeneratorMapper;
 
   private org.iglooproject.wicket.more.link.dto.base.IPageLinkDescriptor<
-          ? extends Page, ? super IPageLinkDataDto>
+          ? extends Page, ? super ILinkDataDto>
       pageLinkDescriptor;
 
   private enum LinkBehaviorIfInvalid {
@@ -103,7 +103,7 @@ public class CoreBootstrapBadgeColumn<T, S extends ISort<?>, C> extends Abstract
           // TODO RFO DTO modifier come le coreLabelColumn
           @Override
           public MarkupContainer getLink(String wicketId, IModel<T> rowModel) {
-            if (rowModel.getObject() instanceof IPageLinkDataDto pageLinkDataDto
+            if (rowModel.getObject() instanceof ILinkDataDto pageLinkDataDto
                 && pageLinkDescriptor != null) {
               return decorate(
                   pageLinkDescriptor.generator(Model.of(pageLinkDataDto)).link(wicketId));
@@ -194,12 +194,12 @@ public class CoreBootstrapBadgeColumn<T, S extends ISort<?>, C> extends Abstract
     return this;
   }
 
-  public IPageLinkDescriptor<? extends Page, ? super IPageLinkDataDto> getPageLinkDescriptor() {
+  public IPageLinkDescriptor<? extends Page, ? super ILinkDataDto> getPageLinkDescriptor() {
     return pageLinkDescriptor;
   }
 
   public CoreBootstrapBadgeColumn<T, S, C> setPageLinkDescriptor(
-      IPageLinkDescriptor<? extends Page, ? super IPageLinkDataDto> linkGeneratorFactory) {
+      IPageLinkDescriptor<? extends Page, ? super ILinkDataDto> linkGeneratorFactory) {
     if (pageLinkDescriptor != null) {
       throw new IllegalStateException("link and side link cannot be both set.");
     }

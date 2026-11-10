@@ -23,12 +23,12 @@ import org.iglooproject.wicket.more.link.dto.base.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.dto.base.IPageLinkExtractor;
 import org.iglooproject.wicket.more.link.dto.base.IPageLinkGenerator;
 import org.iglooproject.wicket.more.link.dto.component.PageLinkBookmarkablePageLink;
-import org.iglooproject.wicket.more.link.dto.dto.IPageLinkDataDto;
+import org.iglooproject.wicket.more.link.dto.dto.ILinkDataDto;
 import org.iglooproject.wicket.more.link.dto.exception.PageLinkExtractionException;
 import org.iglooproject.wicket.more.link.dto.security.IPageLinkPermissionEvaluator;
 import org.iglooproject.wicket.more.markup.html.template.model.NavigationMenuItem;
 
-class PageLinkDescriptorImpl<P extends Page, D extends IPageLinkDataDto>
+class PageLinkDescriptorImpl<P extends Page, D extends ILinkDataDto>
     implements IPageLinkDescriptor<P, D> {
 
   private static final long serialVersionUID = 1L;

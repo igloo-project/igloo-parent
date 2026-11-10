@@ -41,7 +41,7 @@ import org.iglooproject.wicket.more.link.descriptor.mapper.FunctionOneParameterL
 import org.iglooproject.wicket.more.link.descriptor.mapper.ILinkDescriptorMapper;
 import org.iglooproject.wicket.more.link.dto.base.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.dto.base.IPageLinkGenerator;
-import org.iglooproject.wicket.more.link.dto.dto.IPageLinkDataDto;
+import org.iglooproject.wicket.more.link.dto.dto.ILinkDataDto;
 import org.iglooproject.wicket.more.markup.html.factory.ComponentFactories;
 import org.iglooproject.wicket.more.markup.html.sort.ISortIconStyle;
 import org.iglooproject.wicket.more.markup.html.sort.SortIconStyle;
@@ -948,7 +948,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 
     @Override
     public IAddedBootstrapBadgeColumnState<T, S, C> withLink(
-        IPageLinkDescriptor<? extends ILinkGenerator, ? super IPageLinkDataDto>
+        IPageLinkDescriptor<? extends ILinkGenerator, ? super ILinkDataDto>
             linkGeneratorMapper) {
       getColumn().setPageLinkDescriptor(linkGeneratorMapper);
       return this;

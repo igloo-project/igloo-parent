@@ -12,9 +12,9 @@ import org.iglooproject.functional.Functions2;
 import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.wicket.more.link.dto.base.IPageLinkDescriptor;
-import org.iglooproject.wicket.more.link.dto.dto.IPageLinkDataDto;
+import org.iglooproject.wicket.more.link.dto.dto.ILinkDataDto;
 
-public class PageLinkDescriptorBuilder<P extends Page, D extends IPageLinkDataDto> {
+public class PageLinkDescriptorBuilder<P extends Page, D extends ILinkDataDto> {
 
   private final Class<P> pageClass;
   private final SerializableSupplier2<D> dataDtoFactory;
@@ -27,7 +27,7 @@ public class PageLinkDescriptorBuilder<P extends Page, D extends IPageLinkDataDt
   }
 
   // TODO RFO est -qu'on fait un constructeur sans DTO ?
-  public static <P extends Page, D extends IPageLinkDataDto> PageLinkDescriptorBuilder<P, D> create(
+  public static <P extends Page, D extends ILinkDataDto> PageLinkDescriptorBuilder<P, D> create(
       Class<P> pageClass, SerializableSupplier2<D> dtoFactory) {
     return new PageLinkDescriptorBuilder<>(pageClass, dtoFactory);
   }
