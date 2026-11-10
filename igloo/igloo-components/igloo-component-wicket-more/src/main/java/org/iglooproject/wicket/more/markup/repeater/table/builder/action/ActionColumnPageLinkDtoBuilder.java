@@ -50,8 +50,7 @@ public class ActionColumnPageLinkDtoBuilder<T>
 
       @Override
       protected Component getLink(String wicketId, IModel<T> rowModel) {
-        PageLinkBookmarkablePageLink<? extends Page> link =
-            getFactory().create("link", rowModel);
+        PageLinkBookmarkablePageLink<? extends Page> link = getFactory().create("link", rowModel);
         decorateLink(link, rowModel);
         return link;
       }

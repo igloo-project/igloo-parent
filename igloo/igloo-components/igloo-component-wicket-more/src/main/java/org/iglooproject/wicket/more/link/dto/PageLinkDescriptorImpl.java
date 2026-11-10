@@ -1,10 +1,7 @@
 package org.iglooproject.wicket.more.link.dto;
 
 import igloo.wicket.model.Detachables;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.wicket.Page;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.WicketRuntimeException;
@@ -25,6 +22,7 @@ import org.iglooproject.wicket.more.link.dto.base.IPageLinkGenerator;
 import org.iglooproject.wicket.more.link.dto.component.PageLinkBookmarkablePageLink;
 import org.iglooproject.wicket.more.link.dto.dto.ILinkDataDto;
 import org.iglooproject.wicket.more.link.dto.exception.PageLinkExtractionException;
+import org.iglooproject.wicket.more.link.dto.mapping.LinkDataDtoMappings;
 import org.iglooproject.wicket.more.link.dto.security.IPageLinkPermissionEvaluator;
 import org.iglooproject.wicket.more.markup.html.template.model.NavigationMenuItem;
 
@@ -35,17 +33,17 @@ class PageLinkDescriptorImpl<P extends Page, D extends ILinkDataDto>
 
   private final Class<P> pageClass;
   private final SerializableSupplier2<D> dataDtoFactory;
-  private final List<PageLinkDescriptorBuilder.MappingEntry<D>> mappings;
+  private final LinkDataDtoMappings<D> mappings;
   private final SerializableFunction2<D, String> permissionProvider;
 
   PageLinkDescriptorImpl(
       Class<P> pageClass,
       SerializableSupplier2<D> dataDtoFactory,
-      List<PageLinkDescriptorBuilder.MappingEntry<D>> mappings,
+      LinkDataDtoMappings<D> mappings,
       SerializableFunction2<D, String> permissionProvider) {
     this.pageClass = pageClass;
     this.dataDtoFactory = dataDtoFactory;
-    this.mappings = new ArrayList<>(mappings);
+    this.mappings = Objects.requireNonNull(mappings);
     this.permissionProvider = permissionProvider;
   }
 
@@ -98,13 +96,8 @@ class PageLinkDescriptorImpl<P extends Page, D extends ILinkDataDto>
     public boolean isValid() {
       D dataDto = dataDtoModel.getObject();
 
-      for (var mapping : mappings) {
-        if (mapping.required()) {
-          String value = mapping.serializer().apply(dataDto);
-          if (StringUtils.isBlank(value)) {
-            return false;
-          }
-        }
+      if (!mappings.hasRequiredValues(dataDto)) {
+        return false;
       }
 
       String permission = permissionProvider.apply(dataDto);
@@ -117,17 +110,7 @@ class PageLinkDescriptorImpl<P extends Page, D extends ILinkDataDto>
     }
 
     private PageParameters buildPageParameters() {
-      D dataDto = dataDtoModel.getObject();
-      PageParameters pageParameters = new PageParameters();
-
-      for (var mapping : mappings) {
-        String value = mapping.serializer().apply(dataDto);
-        if (value != null) {
-          pageParameters.add(mapping.paramName(), value);
-        }
-      }
-
-      return pageParameters;
+      return mappings.toPageParameters(dataDtoModel.getObject());
     }
 
     @Override
@@ -200,38 +183,7 @@ class PageLinkDescriptorImpl<P extends Page, D extends ILinkDataDto>
         return dataDto;
       }
 
-      for (var mapping : mappings) {
-        if (mapping.extractable() && mapping.deserializer() != null) {
-          var stringValue = parameters.get(mapping.paramName()).toString(null);
-
-          if (mapping.required() && StringUtils.isBlank(stringValue)) {
-            throw new PageLinkExtractionException(
-                String.format("Missing required parameter '%s'.", mapping.paramName()));
-          }
-
-          if (StringUtils.isNotBlank(stringValue)) {
-            try {
-              mapping.deserializer().accept(dataDto, stringValue);
-            } catch (Exception e) {
-              throw new PageLinkExtractionException(
-                  String.format(
-                      "Invalid value '%s' for parameter '%s'.", stringValue, mapping.paramName()),
-                  e);
-            }
-          }
-        }
-      }
-
-      for (var mapping : mappings) {
-        if (mapping.required()) {
-          String finalValue = mapping.serializer().apply(dataDto);
-
-          if (StringUtils.isBlank(finalValue)) {
-            throw new PageLinkExtractionException(
-                String.format("Missing required parameter '%s'.", mapping.paramName()));
-          }
-        }
-      }
+      mappings.extract(dataDto, parameters);
 
       String permission = permissionProvider.apply(dataDto);
       if (!permissionEvaluator.hasPermission(dataDto, permission)) {

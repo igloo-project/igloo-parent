@@ -5,8 +5,7 @@ import org.apache.wicket.Page;
 import org.apache.wicket.model.IModel;
 import org.iglooproject.wicket.more.link.dto.dto.ILinkDataDto;
 
-public interface IPageLinkDescriptor<P extends Page, D extends ILinkDataDto>
-    extends Serializable {
+public interface IPageLinkDescriptor<P extends Page, D extends ILinkDataDto> extends Serializable {
 
   Class<P> getPageClass();
 

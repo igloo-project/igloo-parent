@@ -6,7 +6,7 @@ import org.apache.wicket.Page;
 import org.apache.wicket.markup.html.link.Link;
 import org.iglooproject.wicket.more.link.descriptor.IBookmarkablePageLink;
 import org.iglooproject.wicket.more.link.dto.base.IPageLinkGenerator;
-import org.iglooproject.wicket.more.link.dto.util.PageLinkInvalidityStrategy;
+import org.iglooproject.wicket.more.link.dto.util.LinkInvalidityStrategy;
 
 public class PageLinkBookmarkablePageLink<P extends Page> extends Link<Void>
     implements IBookmarkablePageLink {
@@ -15,7 +15,7 @@ public class PageLinkBookmarkablePageLink<P extends Page> extends Link<Void>
 
   private final IPageLinkGenerator<P> generator;
 
-  private PageLinkInvalidityStrategy invalidityStrategy = PageLinkInvalidityStrategy.DISABLE;
+  private LinkInvalidityStrategy invalidityStrategy = LinkInvalidityStrategy.DISABLE;
 
   private boolean absolute = false;
 
@@ -26,12 +26,12 @@ public class PageLinkBookmarkablePageLink<P extends Page> extends Link<Void>
 
   @Override
   public PageLinkBookmarkablePageLink<P> hideIfInvalid() {
-    this.invalidityStrategy = PageLinkInvalidityStrategy.HIDE;
+    this.invalidityStrategy = LinkInvalidityStrategy.HIDE;
     return this;
   }
 
   public PageLinkBookmarkablePageLink<P> disableIfInvalid() {
-    this.invalidityStrategy = PageLinkInvalidityStrategy.DISABLE;
+    this.invalidityStrategy = LinkInvalidityStrategy.DISABLE;
     return this;
   }
 
