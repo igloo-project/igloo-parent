@@ -51,8 +51,7 @@ public class SecurityManagerControllerService implements ISecurityManagementCont
   }
 
   @Override
-  public boolean checkPassword(String password, User user)
-      throws ServiceException, SecurityServiceException {
+  public boolean checkPassword(String password, User user) {
     return securityManagementService.checkPassword(password, user);
   }
 

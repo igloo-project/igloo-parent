@@ -39,9 +39,9 @@ class TestDifference {
     try {
       URL resource = Resources.getResource(TestDifference.class, resourceName);
       return new ByteArrayInputStream(Resources.toByteArray(resource));
-    } catch (RuntimeException | IOException e) {
+    } catch (RuntimeException | IOException _) {
       LOGGER.warn("File {} not found", name);
-      return new ByteArrayInputStream(null);
+      return null;
     }
   }
 }

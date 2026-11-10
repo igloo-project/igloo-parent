@@ -32,8 +32,7 @@ public class HistoryDifferenceListPanel extends GenericPanel<List<HistoryDiffere
     super.onInitialize();
 
     add(
-        new CollectionView<HistoryDifference>(
-            "item", getModel(), GenericEntityModel.<HistoryDifference>factory()) {
+        new CollectionView<>("item", getModel(), GenericEntityModel.<HistoryDifference>factory()) {
           private static final long serialVersionUID = 1L;
 
           @Override

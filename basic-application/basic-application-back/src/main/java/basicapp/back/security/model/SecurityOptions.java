@@ -84,7 +84,7 @@ public final class SecurityOptions {
     return Collections.unmodifiableSet(passwordRules);
   }
 
-  public static final SecurityOptions create(Consumer<Builder> consumer) {
+  public static SecurityOptions create(Consumer<Builder> consumer) {
     Builder builder = new Builder();
     consumer.accept(builder);
     return builder.build();

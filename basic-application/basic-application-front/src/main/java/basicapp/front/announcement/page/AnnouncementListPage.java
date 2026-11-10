@@ -102,8 +102,7 @@ public class AnnouncementListPage extends AnnouncementTemplate {
                 EnumRenderer.get())
             .withClass("cell-w-100")
             .addColumn(
-                new AbstractCoreColumn<Announcement, AnnouncementSort>(
-                    new ResourceModel("business.announcement.content")) {
+                new AbstractCoreColumn<>(new ResourceModel("business.announcement.content")) {
                   private static final long serialVersionUID = 1L;
 
                   @Override
@@ -130,7 +129,7 @@ public class AnnouncementListPage extends AnnouncementTemplate {
             .addActionColumn()
             .addAction(
                 ActionRenderers.edit(),
-                new OneParameterModalOpenAjaxAction<IModel<Announcement>>(savePopup) {
+                new OneParameterModalOpenAjaxAction<>(savePopup) {
                   private static final long serialVersionUID = 1L;
 
                   @Override

@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 public class BasicApplicationBackReferenceDataConfiguration {
 
   @Configuration
-  public class SearchQuery {
+  public static class SearchQuery {
     @Bean
     public ICitySearchQuery citySearchQuery() {
       return new CitySearchQueryImpl();

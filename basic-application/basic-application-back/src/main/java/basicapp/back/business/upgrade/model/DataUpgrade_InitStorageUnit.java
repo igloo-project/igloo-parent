@@ -1,7 +1,5 @@
 package basicapp.back.business.upgrade.model;
 
-import org.iglooproject.jpa.exception.SecurityServiceException;
-import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.more.business.upgrade.model.IDataUpgrade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +15,7 @@ public class DataUpgrade_InitStorageUnit implements IDataUpgrade {
   }
 
   @Override
-  public void perform() throws ServiceException, SecurityServiceException {
+  public void perform() {
     LOGGER.info("Performing StorageUnit init upgrade");
 
     // Complete here

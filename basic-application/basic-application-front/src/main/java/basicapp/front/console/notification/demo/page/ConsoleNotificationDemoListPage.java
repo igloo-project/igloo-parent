@@ -61,9 +61,7 @@ public class ConsoleNotificationDemoListPage extends ConsoleNotificationDemoTemp
     var demoEntriesModel = SequenceProviders.fromItemModels(createDemoEntries());
 
     add(
-        new SpecificModelCollectionView<
-            INotificationContentDescriptor, ConsoleNotificationDemoEntry>(
-            "demoEntries", demoEntriesModel) {
+        new SpecificModelCollectionView<>("demoEntries", demoEntriesModel) {
           private static final long serialVersionUID = 1L;
 
           @Override

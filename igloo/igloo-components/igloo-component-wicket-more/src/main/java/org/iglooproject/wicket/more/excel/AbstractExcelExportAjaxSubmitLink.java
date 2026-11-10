@@ -17,7 +17,7 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.iglooproject.commons.util.mime.MediaType;
+import org.iglooproject.commons.util.mime.IMediaType;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.more.export.spreadsheet.SpreadsheetUtils;
@@ -40,7 +40,7 @@ public abstract class AbstractExcelExportAjaxSubmitLink extends AjaxSubmitLink {
 
   private final IModel<File> tempFileModel = new Model<>();
 
-  private final IModel<MediaType> mediaTypeModel = new Model<>();
+  private final IModel<IMediaType> mediaTypeModel = new Model<>();
 
   public AbstractExcelExportAjaxSubmitLink(
       String id, Form<?> form, WorkInProgressPopup loadingPopup, String fileNamePrefix) {

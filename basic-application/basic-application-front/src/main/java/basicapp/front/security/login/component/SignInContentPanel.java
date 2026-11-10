@@ -15,8 +15,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.iglooproject.jpa.exception.SecurityServiceException;
-import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.wicket.more.markup.html.form.LabelPlaceholderBehavior;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
 import org.iglooproject.wicket.more.security.page.LoginSuccessPage;
@@ -41,7 +39,7 @@ public class SignInContentPanel extends Panel {
     IModel<String> passwordModel = Model.of();
 
     Form<Void> form =
-        new Form<Void>("form") {
+        new Form<>("form") {
           private static final long serialVersionUID = 1L;
 
           @Override
@@ -58,10 +56,10 @@ public class SignInContentPanel extends Panel {
                   .signIn(usernameModel.getObject(), passwordModel.getObject());
               onSuccess(BasicApplicationSession.get().getUser());
               throw LoginSuccessPage.linkDescriptor().newRestartResponseException();
-            } catch (BadCredentialsException e) { // NOSONAR
+            } catch (BadCredentialsException _) { // NOSONAR
               Session.get().error(getString("signIn.error.authentication"));
               onBadCredentials(usernameModel.getObject());
-            } catch (UsernameNotFoundException | AccountStatusException e) { // NOSONAR
+            } catch (UsernameNotFoundException | AccountStatusException _) { // NOSONAR
               Session.get().error(getString("signIn.error.authentication"));
             } catch (RestartResponseException e) { // NOSONAR
               throw e;
@@ -93,7 +91,7 @@ public class SignInContentPanel extends Panel {
         new BlankLink("showPassword").add(new ShowPasswordBehavior(password)));
   }
 
-  private void onSuccess(User user) throws ServiceException, SecurityServiceException {
+  private void onSuccess(User user) {
     userControllerService.onSignIn(user);
   }
 

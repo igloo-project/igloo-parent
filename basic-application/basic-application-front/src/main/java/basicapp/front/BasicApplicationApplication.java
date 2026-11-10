@@ -99,8 +99,8 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 
   public static BasicApplicationApplication get() {
     final Application application = Application.get();
-    if (application instanceof BasicApplicationApplication) {
-      return (BasicApplicationApplication) application;
+    if (application instanceof BasicApplicationApplication basicApplicationApplication) {
+      return basicApplicationApplication;
     }
     throw new WicketRuntimeException(
         "There is no BasicApplicationApplication attached to current thread "

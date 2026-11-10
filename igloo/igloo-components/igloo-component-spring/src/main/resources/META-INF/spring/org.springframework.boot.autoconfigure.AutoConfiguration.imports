@@ -3,3 +3,4 @@ org.iglooproject.spring.autoconfigure.ConfigurationLoggerAutoConfiguration
 org.iglooproject.spring.autoconfigure.SpringInfoAutoConfiguration
 org.iglooproject.spring.autoconfigure.SecurityPropertyRegistryAutoConfiguration
 org.iglooproject.spring.autoconfigure.SpringPropertyRegistryAutoConfiguration
+org.iglooproject.spring.autoconfigure.MediaTypeAutoConfiguration

@@ -107,7 +107,7 @@ public class LocalizedText extends AbstractLocalizedText {
     } else if (BasicApplicationLocale.ENGLISH.getLanguage().equals(locale.getLanguage())) {
       setEn(text);
     } else {
-      throw new IllegalArgumentException(String.format("Unknown locale: %s", locale));
+      throw new IllegalArgumentException("Unknown locale: %s".formatted(locale));
     }
   }
 }

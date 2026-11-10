@@ -27,14 +27,14 @@ public abstract class AbstractBasicApplicationTestCase extends AbstractTestCase 
 
   @BeforeEach
   @Override
-  public void init() throws ServiceException, SecurityServiceException {
+  public void init() {
     // Database cleaning performed by IglooTestExecutionListener
     // nothing to do
   }
 
   @AfterEach
   @Override
-  public void close() throws ServiceException, SecurityServiceException {
+  public void close() {
     // Database cleaning performed by IglooTestExecutionListener
     // nothing to do
   }

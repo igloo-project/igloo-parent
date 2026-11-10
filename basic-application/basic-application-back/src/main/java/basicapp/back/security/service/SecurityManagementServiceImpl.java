@@ -110,27 +110,16 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
 
     notificationService.sendUserPasswordRecoveryRequest(user);
 
-    switch (type) {
-      case CREATION:
-        historyLogService.log(
-            HistoryLogEventType.PASSWORD_CREATION_REQUEST,
-            user,
-            HistoryLogAdditionalInformationBean.empty());
-        break;
-      case RESET:
-        historyLogService.log(
-            HistoryLogEventType.PASSWORD_RESET_REQUEST,
-            user,
-            HistoryLogAdditionalInformationBean.empty());
-        break;
-      default:
-        break;
-    }
+    HistoryLogEventType eventType =
+        switch (type) {
+          case CREATION -> HistoryLogEventType.PASSWORD_CREATION_REQUEST;
+          case RESET -> HistoryLogEventType.PASSWORD_RESET_REQUEST;
+        };
+    historyLogService.log(eventType, user, HistoryLogAdditionalInformationBean.empty());
   }
 
   @Override
-  public boolean checkPassword(String password, User user)
-      throws ServiceException, SecurityServiceException {
+  public boolean checkPassword(String password, User user) {
     return passwordEncoder.matches(password, user.getPasswordHash());
   }
 

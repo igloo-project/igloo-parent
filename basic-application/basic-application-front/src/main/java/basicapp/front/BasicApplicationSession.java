@@ -45,8 +45,7 @@ public class BasicApplicationSession extends AbstractCoreSession<User> {
         userService.updateLocale(user, getLocale());
       }
     } catch (Exception e) {
-      LOGGER.error(
-          String.format("Unable to update the user information on sign in: %1$s", user), e);
+      LOGGER.error("Unable to update the user information on sign in: {}", user, e);
     }
   }
 

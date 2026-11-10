@@ -38,20 +38,19 @@ public class SidebarMenuPanel extends Panel {
     List<NavigationMenuItem> menuItems =
         mainNavSupplier.get().stream()
             .filter(
-                mainNavItem -> {
-                  return (mainNavItem.getPageLinkGenerator() != null
-                          && Condition.visible(mainNavItem.linkHidingIfInvalid("navLink"))
-                              .applies())
-                      || Condition.componentsAnyVisible(
-                              mainNavItem.getSubMenuItems().stream()
-                                  .map(subMenuItem -> subMenuItem.linkHidingIfInvalid("navLink"))
-                                  .collect(ImmutableList.toImmutableList()))
-                          .applies();
-                })
+                mainNavItem ->
+                    (mainNavItem.getPageLinkGenerator() != null
+                            && Condition.visible(mainNavItem.linkHidingIfInvalid("navLink"))
+                                .applies())
+                        || Condition.componentsAnyVisible(
+                                mainNavItem.getSubMenuItems().stream()
+                                    .map(subMenuItem -> subMenuItem.linkHidingIfInvalid("navLink"))
+                                    .collect(ImmutableList.toImmutableList()))
+                            .applies())
             .collect(ImmutableList.toImmutableList());
 
     sidenavContainer.add(
-        new ListView<NavigationMenuItem>("sidenavItems", menuItems) {
+        new ListView<>("sidenavItems", menuItems) {
           private static final long serialVersionUID = 1L;
 
           @Override
@@ -87,7 +86,7 @@ public class SidebarMenuPanel extends Panel {
             item.add(sidenavSubContainer.condition(isSubVisibleCondition).setOutputMarkupId(true));
 
             sidenavSubContainer.add(
-                new ListView<NavigationMenuItem>("sidenavSubItems", subMenuItems) {
+                new ListView<>("sidenavSubItems", subMenuItems) {
                   private static final long serialVersionUID = -2257358650754295013L;
 
                   @Override

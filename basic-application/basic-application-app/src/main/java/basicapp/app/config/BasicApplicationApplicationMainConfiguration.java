@@ -6,6 +6,7 @@ import basicapp.back.config.BasicApplicationBackFlywayConfiguration;
 import basicapp.back.config.BasicApplicationBackJpaConfiguration;
 import basicapp.back.config.BasicApplicationBackLoggerConfig;
 import basicapp.back.config.BasicApplicationBackManifestConfiguration;
+import basicapp.back.config.BasicApplicationBackMediaTypeConfiguration;
 import basicapp.back.config.BasicApplicationBackNotificationConfiguration;
 import basicapp.back.config.BasicApplicationBackPropertyRegistryConfiguration;
 import basicapp.back.config.BasicApplicationBackReferenceDataConfiguration;
@@ -36,6 +37,7 @@ import org.springframework.context.annotation.Import;
   BasicApplicationBackNotificationConfiguration.class,
   BasicApplicationBackReferenceDataConfiguration.class,
   BasicApplicationBackDifferenceConfiguration.class,
+  BasicApplicationBackMediaTypeConfiguration.class,
   BasicApplicationFrontPropertyRegistryConfiguration.class,
   BasicApplicationFrontSecurityConfiguration.class,
   BasicApplicationFrontServletConfiguration.class,

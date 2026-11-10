@@ -54,20 +54,19 @@ public class NavbarPanel extends AbstractNavbarPanel {
     List<NavigationMenuItem> menuItems =
         mainNavSupplier.get().stream()
             .filter(
-                mainNavItem -> {
-                  return (mainNavItem.getPageLinkGenerator() != null
-                          && Condition.visible(mainNavItem.linkHidingIfInvalid("navLink"))
-                              .applies())
-                      || Condition.componentsAnyVisible(
-                              mainNavItem.getSubMenuItems().stream()
-                                  .map(subMenuItem -> subMenuItem.linkHidingIfInvalid("navLink"))
-                                  .collect(ImmutableList.toImmutableList()))
-                          .applies();
-                })
+                mainNavItem ->
+                    (mainNavItem.getPageLinkGenerator() != null
+                            && Condition.visible(mainNavItem.linkHidingIfInvalid("navLink"))
+                                .applies())
+                        || Condition.componentsAnyVisible(
+                                mainNavItem.getSubMenuItems().stream()
+                                    .map(subMenuItem -> subMenuItem.linkHidingIfInvalid("navLink"))
+                                    .collect(ImmutableList.toImmutableList()))
+                            .applies())
             .collect(ImmutableList.toImmutableList());
 
     navbarNavContainer.add(
-        new ListView<NavigationMenuItem>("navbarNavItems", menuItems) {
+        new ListView<>("navbarNavItems", menuItems) {
           private static final long serialVersionUID = 1L;
 
           @Override
@@ -100,7 +99,7 @@ public class NavbarPanel extends AbstractNavbarPanel {
             item.add(navbarNavSubContainer.anyChildVisible().setOutputMarkupId(true));
 
             navbarNavSubContainer.add(
-                new ListView<NavigationMenuItem>("navbarNavSubItems", subMenuItems) {
+                new ListView<>("navbarNavSubItems", subMenuItems) {
                   private static final long serialVersionUID = -2257358650754295013L;
 
                   @Override
@@ -161,7 +160,7 @@ public class NavbarPanel extends AbstractNavbarPanel {
         "profileLinkNavItem",
         ProfilePage.linkDescriptor(),
         firstMenuPageSupplier.get(),
-        new SerializableFunction2<IPageLinkGenerator, Component>() {
+        new SerializableFunction2<>() {
           private static final long serialVersionUID = 1L;
 
           @Override

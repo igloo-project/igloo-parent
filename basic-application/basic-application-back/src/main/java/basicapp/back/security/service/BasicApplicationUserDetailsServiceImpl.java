@@ -11,7 +11,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
-import org.iglooproject.commons.util.exception.IllegalSwitchValueException;
 import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
 import org.iglooproject.jpa.security.business.user.model.IUser;
 import org.iglooproject.jpa.security.service.CoreJpaUserDetailsServiceImpl;
@@ -39,7 +38,7 @@ public class BasicApplicationUserDetailsServiceImpl extends CoreJpaUserDetailsSe
     User user =
         Optional.ofNullable(loggedInUser)
             .filter(User.class::isInstance)
-            .map(u -> (User) u)
+            .map(User.class::cast)
             .orElseThrow(IllegalStateException::new);
 
     // Chargement des Authority Spring Security
@@ -68,7 +67,6 @@ public class BasicApplicationUserDetailsServiceImpl extends CoreJpaUserDetailsSe
       case BASIC -> List.of(CoreAuthorityConstants.ROLE_AUTHENTICATED);
       case TECHNICAL ->
           List.of(CoreAuthorityConstants.ROLE_AUTHENTICATED, CoreAuthorityConstants.ROLE_ADMIN);
-      default -> throw new IllegalSwitchValueException(user.getType());
     };
   }
 }

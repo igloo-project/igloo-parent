@@ -73,7 +73,7 @@ public abstract class AbstractReferenceDataListPanel<
         .addActionColumn()
         .addAction(
             ActionRenderers.edit(),
-            new OneParameterModalOpenAjaxAction<IModel<T>>(getPopup()) {
+            new OneParameterModalOpenAjaxAction<>(getPopup()) {
               private static final long serialVersionUID = 1L;
 
               @Override
@@ -82,7 +82,7 @@ public abstract class AbstractReferenceDataListPanel<
                 getPopup().setUpEdit(parameter.getObject());
               }
             })
-        .when(itemModel -> getEditCondition(itemModel))
+        .when(this::getEditCondition)
         .withClassOnElements(BTN_TABLE_ROW_ACTION)
         .end()
         .when(getEditCondition())

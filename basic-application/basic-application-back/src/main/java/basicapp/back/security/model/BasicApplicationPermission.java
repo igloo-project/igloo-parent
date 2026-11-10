@@ -17,10 +17,10 @@ public final class BasicApplicationPermission extends NamedPermission {
     for (Field field : fields) {
       try {
         Object fieldValue = field.get(null);
-        if (fieldValue instanceof String) {
-          builder.add(new BasicApplicationPermission((String) fieldValue));
+        if (fieldValue instanceof String name) {
+          builder.add(new BasicApplicationPermission(name));
         }
-      } catch (IllegalArgumentException | IllegalAccessException ignored) { // NOSONAR
+      } catch (IllegalArgumentException | IllegalAccessException _) {
       }
     }
     ALL = builder.build();

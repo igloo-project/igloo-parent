@@ -26,7 +26,7 @@ public class CommonMarkRenderer extends Renderer<String> {
         .escapeHtml(true)
         .sanitizeUrls(true)
         .softbreak("<br>")
-        .attributeProviderFactory(context -> new ImageAttributeProvider())
+        .attributeProviderFactory(_ -> new ImageAttributeProvider())
         .build()
         .render(Parser.builder().build().parse(value));
   }

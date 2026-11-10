@@ -10,7 +10,7 @@ import org.flywaydb.core.api.migration.Context;
 public abstract class LegacyPlaceholderJavaMigration extends BaseJavaMigration {
 
   @Override
-  public void migrate(Context context) throws Exception {
+  public void migrate(Context context) {
     // nothing to do
   }
 }

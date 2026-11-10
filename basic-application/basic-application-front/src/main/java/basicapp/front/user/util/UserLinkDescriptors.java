@@ -26,7 +26,6 @@ public final class UserLinkDescriptors {
     return switch (userType) {
       case BASIC -> BasicUserDetailPage.MAPPER;
       case TECHNICAL -> TechnicalUserDetailPage.MAPPER;
-      default -> LinkDescriptors.invalidTwoParameterMapper();
     };
   }
 

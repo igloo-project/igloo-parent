@@ -20,7 +20,6 @@
   </modules>
   <properties>
     <versionPlaceholderDoNotRemove/>
-    <commonmark.version>0.27.1</commonmark.version>
   </properties>
   <build>
     <pluginManagement>
