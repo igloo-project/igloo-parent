@@ -12,16 +12,19 @@ import igloo.wicket.factory.IOneParameterComponentFactory;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import org.apache.wicket.Page;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.iglooproject.commons.util.binding.ICoreBinding;
+import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.functional.SerializablePredicate2;
 import org.iglooproject.wicket.more.link.descriptor.generator.ILinkGenerator;
 import org.iglooproject.wicket.more.link.descriptor.mapper.BindingOneParameterLinkDescriptorMapper;
 import org.iglooproject.wicket.more.link.descriptor.mapper.ILinkDescriptorMapper;
+import org.iglooproject.wicket.more.link.dto.base.IPageLinkGenerator;
 import org.iglooproject.wicket.more.markup.html.factory.DetachableFactories;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.action.factory.ActionColumnActionFactory;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.action.factory.ActionColumnAjaxActionFactory;
@@ -78,6 +81,14 @@ public abstract class ActionColumnBuilder<T, I>
         ICoreBinding<? super T, C> binding,
         ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<C>> mapper) {
       return ActionColumnBuilder.this.addLabelledLink(renderer, binding, mapper);
+    }
+
+    @Override
+    public IActionColumnAddedLinkState<T, I> addLinkDto(
+        IBootstrapRenderer<? super T> renderer,
+        SerializableFunction2<? super IModel<? extends T>, IPageLinkGenerator<? extends Page>>
+            pageLinkGeneratorFunction) {
+      return ActionColumnBuilder.this.addLinkDto(renderer, pageLinkGeneratorFunction);
     }
 
     @Override
@@ -395,6 +406,34 @@ public abstract class ActionColumnBuilder<T, I>
     }
   }
 
+  private class ActionColumnAddedPageLinkDtoState
+      extends ActionColumnAddedElementState<IActionColumnAddedLinkState<T, I>>
+      implements IActionColumnAddedLinkState<T, I> {
+
+    private final ActionColumnPageLinkDtoBuilder<T> elementBuilder;
+
+    public ActionColumnAddedPageLinkDtoState(ActionColumnPageLinkDtoBuilder<T> elementBuilder) {
+      super();
+      this.elementBuilder = Objects.requireNonNull(elementBuilder);
+    }
+
+    @Override
+    public ActionColumnPageLinkDtoBuilder<T> getElementBuilder() {
+      return elementBuilder;
+    }
+
+    @Override
+    protected IActionColumnAddedLinkState<T, I> getNextState() {
+      return this;
+    }
+
+    @Override
+    public IActionColumnAddedLinkState<T, I> hideIfInvalid() {
+      getElementBuilder().hideIfInvalid();
+      return getNextState();
+    }
+  }
+
   private class ActionColumnAddedAjaxActionState
       extends ActionColumnAddedElementState<IActionColumnAddedAjaxActionState<T, I>>
       implements IActionColumnAddedAjaxActionState<T, I> {
@@ -649,6 +688,17 @@ public abstract class ActionColumnBuilder<T, I>
       ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<C>> mapper) {
     return addLabelledLink(
         renderer, new BindingOneParameterLinkDescriptorMapper<>(binding, mapper));
+  }
+
+  @Override
+  public IActionColumnAddedLinkState<T, I> addLinkDto(
+      IBootstrapRenderer<? super T> renderer,
+      SerializableFunction2<? super IModel<? extends T>, IPageLinkGenerator<? extends Page>>
+          pageLinkGeneratorFunction) {
+    ActionColumnPageLinkDtoBuilder<T> factory =
+        new ActionColumnPageLinkDtoBuilder<>(renderer, pageLinkGeneratorFunction);
+    builders.add(factory);
+    return new ActionColumnAddedPageLinkDtoState(factory);
   }
 
   @Override

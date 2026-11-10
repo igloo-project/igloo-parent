@@ -6,11 +6,14 @@ import igloo.wicket.action.IOneParameterAjaxAction;
 import igloo.wicket.factory.IDetachableFactory;
 import igloo.wicket.factory.IOneParameterComponentFactory;
 import java.util.Collection;
+import org.apache.wicket.Page;
 import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.model.IModel;
 import org.iglooproject.commons.util.binding.ICoreBinding;
+import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.wicket.more.link.descriptor.generator.ILinkGenerator;
 import org.iglooproject.wicket.more.link.descriptor.mapper.ILinkDescriptorMapper;
+import org.iglooproject.wicket.more.link.dto.base.IPageLinkGenerator;
 
 public interface IActionColumnBuildState<T, I> extends IActionColumnCommonBuildState<T, I> {
 
@@ -31,6 +34,15 @@ public interface IActionColumnBuildState<T, I> extends IActionColumnCommonBuildS
       IBootstrapRenderer<? super T> renderer,
       ICoreBinding<? super T, C> binding,
       ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<C>> mapper);
+
+  /**
+   * Link built with a link DTO {@link IPageLinkGenerator}, created from the row model by the given
+   * function.
+   */
+  IActionColumnAddedLinkState<T, I> addLinkDto(
+      IBootstrapRenderer<? super T> renderer,
+      SerializableFunction2<? super IModel<? extends T>, IPageLinkGenerator<? extends Page>>
+          pageLinkGeneratorFunction);
 
   IActionColumnAddedAjaxActionState<T, I> addAction(
       IBootstrapRenderer<? super T> renderer, IOneParameterAjaxAction<? super IModel<T>> action);
