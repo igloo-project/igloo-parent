@@ -134,9 +134,9 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 
     String fileExtension = FilenameUtils.getExtension(dataSource.getFilename());
 
-    if (Objects.equals(MediaType.APPLICATION_MSEXCEL.extension(), fileExtension)) {
+    if (MediaType.APPLICATION_MS_EXCEL.extension().equals(fileExtension)) {
       return new HSSFWorkbook(dataSource.getInputStream());
-    } else if (Objects.equals(MediaType.APPLICATION_XLSX.extension(), fileExtension)) {
+    } else if (MediaType.APPLICATION_OPENXML_EXCEL.extension().equals(fileExtension)) {
       return new XSSFWorkbook(dataSource.getInputStream());
     }
 

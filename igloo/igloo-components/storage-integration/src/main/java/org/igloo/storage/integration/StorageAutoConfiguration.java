@@ -54,7 +54,6 @@ import org.igloo.storage.micrometer.MicrometerConfig;
 import org.igloo.storage.model.Fichier;
 import org.igloo.storage.model.atomic.IStorageUnitType;
 import org.igloo.storage.model.atomic.StorageFailureStatus;
-import org.iglooproject.commons.util.mime.IMediaTypeRegistry;
 import org.iglooproject.spring.config.IPropertyRegistryConfiguration;
 import org.iglooproject.spring.property.model.ImmutablePropertyId;
 import org.iglooproject.spring.property.service.IPropertyRegistry;
@@ -118,8 +117,8 @@ public class StorageAutoConfiguration implements IPropertyRegistryConfiguration 
 
   @Bean
   @ConditionalOnMissingBean
-  public IMimeTypeResolver mimeTypeResolver(IMediaTypeRegistry mediaTypeRegistry) {
-    return new MimeTypeResolver(mediaTypeRegistry);
+  public IMimeTypeResolver mimeTypeResolver() {
+    return new MimeTypeResolver();
   }
 
   @Bean
