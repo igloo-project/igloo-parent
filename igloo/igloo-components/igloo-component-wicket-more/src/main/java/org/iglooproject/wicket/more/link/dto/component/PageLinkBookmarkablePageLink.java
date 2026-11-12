@@ -35,6 +35,16 @@ public class PageLinkBookmarkablePageLink<P extends Page> extends Link<Void>
     return this;
   }
 
+  /**
+   * The link is always rendered: if invalid, a {@link
+   * org.iglooproject.wicket.more.link.descriptor.LinkInvalidTargetRuntimeException} is thrown when
+   * rendering the URL.
+   */
+  public PageLinkBookmarkablePageLink<P> throwExceptionIfInvalid() {
+    this.invalidityStrategy = LinkInvalidityStrategy.THROW_EXCEPTION;
+    return this;
+  }
+
   public PageLinkBookmarkablePageLink<P> absolute() {
     this.absolute = true;
     return this;

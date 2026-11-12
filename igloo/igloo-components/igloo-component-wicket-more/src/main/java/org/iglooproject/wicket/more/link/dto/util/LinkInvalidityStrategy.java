@@ -16,6 +16,14 @@ public enum LinkInvalidityStrategy {
       link.setVisibilityAllowed(true);
       link.setEnabled(accessible);
     }
+  },
+  THROW_EXCEPTION {
+    @Override
+    public <L extends Link<?>> void onConfigure(L link, boolean accessible) {
+      // If invalid, the exception will be thrown when rendering the URL
+      link.setVisibilityAllowed(true);
+      link.setEnabled(true);
+    }
   };
 
   public abstract <L extends Link<?>> void onConfigure(L link, boolean accessible);

@@ -21,7 +21,6 @@ public class PageLinkDescriptorBuilder<P extends Page, D extends ILinkDataDto> {
     this.dataDtoFactory = dataDtoFactory;
   }
 
-  // TODO RFO est -qu'on fait un constructeur sans DTO ?
   public static <P extends Page, D extends ILinkDataDto> PageLinkDescriptorBuilder<P, D> create(
       Class<P> pageClass, SerializableSupplier2<D> dtoFactory) {
     return new PageLinkDescriptorBuilder<>(pageClass, dtoFactory);

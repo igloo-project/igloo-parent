@@ -100,7 +100,6 @@ public class CoreBootstrapBadgeColumn<T, S extends ISort<?>, C> extends Abstract
                 .showTooltip(showTooltip);
           }
 
-          // TODO RFO DTO modifier come le coreLabelColumn
           @Override
           public MarkupContainer getLink(String wicketId, IModel<T> rowModel) {
             if (rowModel.getObject() instanceof ILinkDataDto pageLinkDataDto
@@ -153,8 +152,7 @@ public class CoreBootstrapBadgeColumn<T, S extends ISort<?>, C> extends Abstract
           link.hideIfInvalid();
           break;
         case THROW_EXCEPTION:
-          // TODO RFO, voir ce qu'on fait dans ce cas
-          link.hideIfInvalid();
+          link.throwExceptionIfInvalid();
           break;
       }
     }
@@ -200,7 +198,7 @@ public class CoreBootstrapBadgeColumn<T, S extends ISort<?>, C> extends Abstract
 
   public CoreBootstrapBadgeColumn<T, S, C> setPageLinkDescriptor(
       IPageLinkDescriptor<? extends Page, ? super ILinkDataDto> linkGeneratorFactory) {
-    if (pageLinkDescriptor != null) {
+    if (sideLinkGeneratorMapper != null) {
       throw new IllegalStateException("link and side link cannot be both set.");
     }
     this.pageLinkDescriptor = linkGeneratorFactory;
