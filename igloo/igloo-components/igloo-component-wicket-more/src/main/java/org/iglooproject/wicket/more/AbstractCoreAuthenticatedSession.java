@@ -203,11 +203,8 @@ public abstract class AbstractCoreAuthenticatedSession<U extends ISessionUser>
    * @return the currently logged in user, or null when no user is logged in
    */
   public String getUsername() {
-    String username = null;
-    if (isSignedIn()) {
-      username = userModel.getObject().getUsername();
-    }
-    return username;
+    U user = getUser();
+    return user != null ? user.getUsername() : null;
   }
 
   public U getUser() {

@@ -176,6 +176,9 @@ public abstract class CoreLabelColumn<T, S extends ISort<?>> extends AbstractCor
     if (sideLinkGeneratorMapper != null) {
       throw new IllegalStateException("link and side link cannot be both set.");
     }
+    if (pageLinkGeneratorFunction != null) {
+      throw new IllegalStateException("link and link DTO cannot be both set.");
+    }
     this.linkGeneratorMapper = linkGeneratorFactory;
     return this;
   }
@@ -188,8 +191,11 @@ public abstract class CoreLabelColumn<T, S extends ISort<?>> extends AbstractCor
   public CoreLabelColumn<T, S> setPageLinkDescriptor(
       SerializableFunction2<? super IModel<? extends T>, IPageLinkGenerator<? extends Page>>
           pageLinkGeneratorFunction) {
-    if (this.pageLinkGeneratorFunction != null) {
+    if (sideLinkGeneratorMapper != null) {
       throw new IllegalStateException("link and side link cannot be both set.");
+    }
+    if (linkGeneratorMapper != null) {
+      throw new IllegalStateException("link and link DTO cannot be both set.");
     }
     this.pageLinkGeneratorFunction = pageLinkGeneratorFunction;
     return this;
@@ -202,7 +208,7 @@ public abstract class CoreLabelColumn<T, S extends ISort<?>> extends AbstractCor
 
   public CoreLabelColumn<T, S> setSideLinkGeneratorMapper(
       ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<T>> sideLinkGeneratorFactory) {
-    if (linkGeneratorMapper != null) {
+    if (linkGeneratorMapper != null || pageLinkGeneratorFunction != null) {
       throw new IllegalStateException("link and side link cannot be both set.");
     }
     this.sideLinkGeneratorMapper = sideLinkGeneratorFactory;

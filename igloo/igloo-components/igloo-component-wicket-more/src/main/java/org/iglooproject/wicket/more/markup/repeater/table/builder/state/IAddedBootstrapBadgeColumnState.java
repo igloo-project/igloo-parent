@@ -1,6 +1,7 @@
 package org.iglooproject.wicket.more.markup.repeater.table.builder.state;
 
 import igloo.wicket.condition.Condition;
+import org.apache.wicket.Page;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.model.IModel;
 import org.iglooproject.commons.util.binding.ICoreBinding;
@@ -9,6 +10,7 @@ import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.wicket.more.link.descriptor.generator.ILinkGenerator;
 import org.iglooproject.wicket.more.link.descriptor.mapper.ILinkDescriptorMapper;
 import org.iglooproject.wicket.more.link.dto.base.IPageLinkDescriptor;
+import org.iglooproject.wicket.more.link.dto.base.IPageLinkGenerator;
 import org.iglooproject.wicket.more.link.dto.dto.ILinkDataDto;
 import org.iglooproject.wicket.more.markup.html.sort.ISortIconStyle;
 import org.iglooproject.wicket.more.markup.html.sort.TableSortLink.CycleMode;
@@ -66,7 +68,8 @@ public interface IAddedBootstrapBadgeColumnState<T, S extends ISort<?>, C>
       ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<E>> linkGeneratorMapper);
 
   IAddedBootstrapBadgeColumnState<T, S, C> withLink(
-      IPageLinkDescriptor<? extends ILinkGenerator, ? super ILinkDataDto> linkGeneratorMapper);
+      SerializableFunction2<? super IModel<? extends T>, IPageLinkGenerator<? extends Page>>
+          pageLinkGeneratorFunction);
 
   IAddedBootstrapBadgeColumnState<T, S, C> withSideLink(
       ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<T>> linkGeneratorMapper);

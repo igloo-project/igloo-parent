@@ -23,6 +23,7 @@ import org.iglooproject.wicket.more.link.descriptor.AbstractDynamicBookmarkableL
 import org.iglooproject.wicket.more.link.descriptor.generator.ILinkGenerator;
 import org.iglooproject.wicket.more.link.descriptor.mapper.ILinkDescriptorMapper;
 import org.iglooproject.wicket.more.link.dto.base.IPageLinkDescriptor;
+import org.iglooproject.wicket.more.link.dto.base.IPageLinkGenerator;
 import org.iglooproject.wicket.more.link.dto.component.PageLinkBookmarkablePageLink;
 import org.iglooproject.wicket.more.link.dto.dto.ILinkDataDto;
 
@@ -47,9 +48,8 @@ public class CoreBootstrapBadgeColumn<T, S extends ISort<?>, C> extends Abstract
   private ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<T>>
       sideLinkGeneratorMapper;
 
-  private org.iglooproject.wicket.more.link.dto.base.IPageLinkDescriptor<
-          ? extends Page, ? super ILinkDataDto>
-      pageLinkDescriptor;
+  private SerializableFunction2<? super IModel<? extends T>, IPageLinkGenerator<? extends Page>>
+      pageLinkGeneratorFunction;
 
   private enum LinkBehaviorIfInvalid {
     THROW_EXCEPTION,
@@ -102,10 +102,8 @@ public class CoreBootstrapBadgeColumn<T, S extends ISort<?>, C> extends Abstract
 
           @Override
           public MarkupContainer getLink(String wicketId, IModel<T> rowModel) {
-            if (rowModel.getObject() instanceof ILinkDataDto pageLinkDataDto
-                && pageLinkDescriptor != null) {
-              return decorate(
-                  pageLinkDescriptor.generator(Model.of(pageLinkDataDto)).link(wicketId));
+            if (pageLinkGeneratorFunction != null) {
+              return decorate(pageLinkGeneratorFunction.apply(rowModel).link(wicketId));
             }
             if (linkGeneratorMapper != null) {
               return decorate(linkGeneratorMapper.map(rowModel).link(wicketId));
@@ -188,20 +186,28 @@ public class CoreBootstrapBadgeColumn<T, S extends ISort<?>, C> extends Abstract
     if (sideLinkGeneratorMapper != null) {
       throw new IllegalStateException("link and side link cannot be both set.");
     }
+    if (pageLinkGeneratorFunction != null) {
+      throw new IllegalStateException("link and link DTO cannot be both set.");
+    }
     this.linkGeneratorMapper = linkGeneratorFactory;
     return this;
   }
 
-  public IPageLinkDescriptor<? extends Page, ? super ILinkDataDto> getPageLinkDescriptor() {
-    return pageLinkDescriptor;
+  public SerializableFunction2<? super IModel<? extends T>, IPageLinkGenerator<? extends Page>>
+      getPageLinkGeneratorFunction() {
+    return pageLinkGeneratorFunction;
   }
 
   public CoreBootstrapBadgeColumn<T, S, C> setPageLinkDescriptor(
-      IPageLinkDescriptor<? extends Page, ? super ILinkDataDto> linkGeneratorFactory) {
+      SerializableFunction2<? super IModel<? extends T>, IPageLinkGenerator<? extends Page>>
+          pageLinkGeneratorFunction) {
     if (sideLinkGeneratorMapper != null) {
       throw new IllegalStateException("link and side link cannot be both set.");
     }
-    this.pageLinkDescriptor = linkGeneratorFactory;
+    if (linkGeneratorMapper != null) {
+      throw new IllegalStateException("link and link DTO cannot be both set.");
+    }
+    this.pageLinkGeneratorFunction = pageLinkGeneratorFunction;
     return this;
   }
 
@@ -212,7 +218,7 @@ public class CoreBootstrapBadgeColumn<T, S extends ISort<?>, C> extends Abstract
 
   public CoreBootstrapBadgeColumn<T, S, C> setSideLinkGeneratorMapper(
       ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<T>> sideLinkGeneratorFactory) {
-    if (linkGeneratorMapper != null) {
+    if (linkGeneratorMapper != null || pageLinkGeneratorFunction != null) {
       throw new IllegalStateException("link and side link cannot be both set.");
     }
     this.sideLinkGeneratorMapper = sideLinkGeneratorFactory;

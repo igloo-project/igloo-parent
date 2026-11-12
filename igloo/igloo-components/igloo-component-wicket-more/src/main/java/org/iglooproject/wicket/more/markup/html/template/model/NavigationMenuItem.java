@@ -50,7 +50,7 @@ public class NavigationMenuItem implements IDetachable {
 
   public AbstractLink link(String wicketId) {
     if (pageLinkGenerator != null) {
-      return pageLinkGenerator.link(wicketId).hideIfInvalid();
+      return pageLinkGenerator.link(wicketId).disableIfInvalid();
     } else {
       return new BlankLink(wicketId);
     }

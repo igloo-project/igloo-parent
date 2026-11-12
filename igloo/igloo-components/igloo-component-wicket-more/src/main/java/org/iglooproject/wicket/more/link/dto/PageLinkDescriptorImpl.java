@@ -96,17 +96,15 @@ class PageLinkDescriptorImpl<P extends Page, D extends ILinkDataDto>
     public boolean isValid() {
       D dataDto = dataDtoModel.getObject();
 
-      if (!mappings.hasRequiredValues(dataDto)) {
+      if (dataDto == null || !mappings.hasRequiredValues(dataDto)) {
         return false;
       }
-
-      String permission = permissionProvider.apply(dataDto);
 
       if (bypassPermissions) {
         return true;
       }
 
-      return permissionEvaluator.hasPermission(dataDto, permission);
+      return permissionEvaluator.hasPermission(dataDto, permissionProvider.apply(dataDto));
     }
 
     private PageParameters buildPageParameters() {

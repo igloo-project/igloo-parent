@@ -948,8 +948,9 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 
     @Override
     public IAddedBootstrapBadgeColumnState<T, S, C> withLink(
-        IPageLinkDescriptor<? extends ILinkGenerator, ? super ILinkDataDto> linkGeneratorMapper) {
-      getColumn().setPageLinkDescriptor(linkGeneratorMapper);
+        SerializableFunction2<? super IModel<? extends T>, IPageLinkGenerator<? extends Page>>
+            pageLinkGeneratorFunction) {
+      getColumn().setPageLinkDescriptor(pageLinkGeneratorFunction);
       return this;
     }
 

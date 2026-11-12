@@ -73,7 +73,8 @@ public class PageInstanceLinkGenerator<P extends Page> implements IPageLinkGener
 
   @Override
   public boolean isActive(Class<? extends Page> selectedPage) {
-    throw new IllegalStateException("We may not call isActive on a page instance link.");
+    // A link to a page instance (e.g. "back to source page") is never the active navigation item.
+    return false;
   }
 
   @Override
