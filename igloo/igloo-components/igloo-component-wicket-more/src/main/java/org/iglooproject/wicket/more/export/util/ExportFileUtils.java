@@ -5,16 +5,15 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import org.apache.wicket.Application;
 import org.apache.wicket.model.IModel;
-import org.iglooproject.commons.util.mime.IMediaType;
+import org.iglooproject.commons.util.mime.MediaType;
 
 public class ExportFileUtils {
 
   public static final String FILE_NAME_DATE_PATTERN_KEY = "common.action.export.file.datePattern";
 
   public static IModel<String> getFileNameMediaTypeModel(
-      IModel<String> fileNamePrefixModel, IModel<? extends IMediaType> mediaTypeModel) {
-    return getFileNameExtensionModel(
-        fileNamePrefixModel, mediaTypeModel.map(IMediaType::extension));
+      IModel<String> fileNamePrefixModel, IModel<MediaType> mediaTypeModel) {
+    return getFileNameExtensionModel(fileNamePrefixModel, mediaTypeModel.map(MediaType::extension));
   }
 
   public static IModel<String> getFileNameExtensionModel(

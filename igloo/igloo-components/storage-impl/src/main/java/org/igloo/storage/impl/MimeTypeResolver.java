@@ -3,26 +3,13 @@ package org.igloo.storage.impl;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 import org.igloo.storage.api.IMimeTypeResolver;
-import org.iglooproject.commons.util.mime.IMediaType;
-import org.iglooproject.commons.util.mime.IMediaTypeRegistry;
 import org.iglooproject.commons.util.mime.MediaType;
-import org.iglooproject.commons.util.mime.MediaTypeRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class MimeTypeResolver implements IMimeTypeResolver {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(MimeTypeResolver.class);
-
-  private final IMediaTypeRegistry mediaTypeRegistry;
-
-  public MimeTypeResolver() {
-    this(MediaTypeRegistry.of(MediaType.class));
-  }
-
-  public MimeTypeResolver(IMediaTypeRegistry mediaTypeRegistry) {
-    this.mediaTypeRegistry = mediaTypeRegistry;
-  }
 
   @Override
   public @Nonnull String resolve(@Nullable String filename) {
@@ -60,7 +47,7 @@ public class MimeTypeResolver implements IMimeTypeResolver {
   }
 
   private String resolve(@Nonnull String filename, @Nonnull String extension) {
-    IMediaType mediaType = mediaTypeRegistry.fromExtension(extension);
+    MediaType mediaType = MediaType.fromExtension(extension);
     if (mediaType != null) {
       return mediaType.mime();
     }
