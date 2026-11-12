@@ -2,7 +2,6 @@ package org.igloo.storage.impl;
 
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
-import java.util.EnumSet;
 import org.igloo.storage.api.IMimeTypeResolver;
 import org.iglooproject.commons.util.mime.MediaType;
 import org.slf4j.Logger;
@@ -48,12 +47,9 @@ public class MimeTypeResolver implements IMimeTypeResolver {
   }
 
   private String resolve(@Nonnull String filename, @Nonnull String extension) {
-    extension = extension.toLowerCase();
-    for (MediaType mediaType : EnumSet.allOf(MediaType.class)) {
-      if (mediaType.supportedExtensions().contains(extension)) {
-        // first match win
-        return mediaType.mime();
-      }
+    MediaType mediaType = MediaType.fromExtension(extension);
+    if (mediaType != null) {
+      return mediaType.mime();
     }
     if (LOGGER.isInfoEnabled()) {
       LOGGER.info("No mimetype found for {} (extension: {})", filename, extension);

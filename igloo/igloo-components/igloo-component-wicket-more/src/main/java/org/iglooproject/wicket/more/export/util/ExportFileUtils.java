@@ -1,13 +1,11 @@
 package org.iglooproject.wicket.more.export.util;
 
-import igloo.wicket.model.BindingModel;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import org.apache.wicket.Application;
 import org.apache.wicket.model.IModel;
 import org.iglooproject.commons.util.mime.MediaType;
-import org.iglooproject.wicket.more.util.binding.CoreWicketMoreBindings;
 
 public class ExportFileUtils {
 
@@ -15,9 +13,7 @@ public class ExportFileUtils {
 
   public static IModel<String> getFileNameMediaTypeModel(
       IModel<String> fileNamePrefixModel, IModel<MediaType> mediaTypeModel) {
-    return getFileNameExtensionModel(
-        fileNamePrefixModel,
-        BindingModel.of(mediaTypeModel, CoreWicketMoreBindings.mediaType().extension()));
+    return getFileNameExtensionModel(fileNamePrefixModel, mediaTypeModel.map(MediaType::extension));
   }
 
   public static IModel<String> getFileNameExtensionModel(

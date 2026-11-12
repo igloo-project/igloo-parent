@@ -16,16 +16,16 @@ public final class SpreadsheetUtils {
    */
   public static MediaType getMediaType(Workbook workbook) {
     if (workbook instanceof HSSFWorkbook) {
-      return MediaType.APPLICATION_MS_EXCEL;
+      return MediaType.APPLICATION_MSEXCEL;
     } else if (workbook instanceof XSSFWorkbook && ((XSSFWorkbook) workbook).isMacroEnabled()) {
-      return MediaType.APPLICATION_MS_EXCEL_MACRO;
+      return MediaType.APPLICATION_XLSM;
     } else if (workbook instanceof XSSFWorkbook && !((XSSFWorkbook) workbook).isMacroEnabled()) {
-      return MediaType.APPLICATION_OPENXML_EXCEL;
+      return MediaType.APPLICATION_XLSX;
     } else if (workbook instanceof SXSSFWorkbook) {
-      return MediaType.APPLICATION_OPENXML_EXCEL;
+      return MediaType.APPLICATION_XLSX;
     } else {
       // Default
-      return MediaType.APPLICATION_MS_EXCEL;
+      return MediaType.APPLICATION_MSEXCEL;
     }
   }
 }
