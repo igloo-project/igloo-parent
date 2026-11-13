@@ -1,0 +1,2 @@
+org.springframework.boot.env.PropertySourceLoader=\
+org.iglooproject.config.bootstrap.spring.env.Utf8PropertiesPropertySourceLoader
