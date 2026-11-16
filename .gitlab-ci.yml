@@ -5,6 +5,10 @@ variables:
   MAVEN_OPTS: "-Xmx1536m"
   JAVA_TOOL_OPTIONS: "-Duser.language=fr -Duser.country=FR -Duser.timezone=Europe/Paris -Dfile.encoding=UTF-8"
   SONAR_EXCLUSIONS: "**/*.png,**/*.jpg,**/*.ico,**/*.ttf,**/*.xlsx,**/*.zip,**/*.woff2"
+  # coverage is only computed for basic-application-back (only module with tests and jacoco report) ;
+  # excluded files are still analyzed (bugs, smells, duplications), only removed from coverage computation
+  # igloo module: packages igloo.*, org.igloo.* (**/igloo/**) and org.iglooproject.*
+  SONAR_COVERAGE_EXCLUSIONS: "**/igloo/**,**/org/iglooproject/**,**/basicapp/front/**,**/basicapp/app/**"
 
 stages:
   # build includes tests
@@ -20,13 +24,21 @@ maven-build:
   script:
     - "mvn spotless:check"
     - "mvn -U clean package"
+    # basic-application global coverage, sonar formula: (branches + lines covered) / (branches + lines), parsed by the coverage regex below
+    - |
+      awk -F, 'FNR > 1 { missed += $6 + $8; covered += $7 + $9 } END { if (missed + covered > 0) printf "basic-application coverage: %.2f%% covered\n", 100 * covered / (missed + covered) }' basic-application/*/target/site/jacoco/jacoco.csv
+  coverage: '/basic-application coverage: (\d+(?:\.\d+)?)% covered/'
   artifacts:
     when: always
     paths:
       - "**/target/surefire-reports/TEST-*.xml"
+      - "basic-application/*/target/site/jacoco/"
     reports:
       junit:
         - "**/target/surefire-reports/TEST-*.xml"
+      coverage_report:
+        coverage_format: jacoco
+        path: "basic-application/*/target/site/jacoco/jacoco.xml"
   rules:
     - if: $CI_COMMIT_BRANCH == "owasp"
       when: never
@@ -126,7 +138,10 @@ maven-deploy:
     - docker
 
 sonar-analyze:
-  needs: []
+  # get jacoco reports (basic-application/*/target/site/jacoco/jacoco.xml) for sonar coverage
+  needs:
+    - job: maven-build
+      artifacts: true
   stage: analyze
   environment: staging
   script:
@@ -135,6 +150,7 @@ sonar-analyze:
       -DskipTests
       -Dsonar.host.url="https://sonar.tools.kobalt.fr"
       -Dsonar.token="$SONAR_TOKEN"
+      -Dsonar.coverage.exclusions="$SONAR_COVERAGE_EXCLUSIONS"
       -Dsonar.exclusions="$SONAR_EXCLUSIONS"
   rules:
     - if: $CI_PIPELINE_SOURCE == "api"

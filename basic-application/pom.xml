@@ -20,6 +20,8 @@
   </modules>
   <properties>
     <versionPlaceholderDoNotRemove/>
+    <!-- restrict jacoco instrumentation to application classes -->
+    <igloo.jacoco.include>basicapp.*</igloo.jacoco.include>
   </properties>
   <build>
     <pluginManagement>
@@ -33,6 +35,12 @@
         </plugin>
       </plugins>
     </pluginManagement>
+    <plugins>
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
   </build>
   <scm>
     <developerConnection>scm:git:git@gitlab.tools.kobalt.fr:kobalt/${projectName}.git</developerConnection>
