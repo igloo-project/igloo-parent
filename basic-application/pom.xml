@@ -20,6 +20,8 @@
   </modules>
   <properties>
     <versionPlaceholderDoNotRemove/>
+    <!-- restrict jacoco instrumentation to application classes -->
+    <igloo.jacoco.include>basicapp.*</igloo.jacoco.include>
   </properties>
   <build>
     <pluginManagement>
@@ -33,6 +35,25 @@
         </plugin>
       </plugins>
     </pluginManagement>
+    <plugins>
+      <plugin>
+        <!-- configured in igloo-maven plugins-jacoco: prepare-agent + report (target/site/jacoco) on package -->
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>jacoco-site</id>
+            <configuration>
+              <!-- report includes are class file paths (basicapp/**), not class names (basicapp.*) used by the agent ;
+                   module classes are all application classes, so include everything -->
+              <includes combine.self="override">
+                <include>**/*</include>
+              </includes>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
   </build>
   <scm>
     <developerConnection>scm:git:git@gitlab.tools.kobalt.fr:kobalt/${projectName}.git</developerConnection>

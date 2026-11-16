@@ -20,13 +20,21 @@ maven-build:
   script:
     - "mvn spotless:check"
     - "mvn -U clean package"
+    # basic-application global coverage (instructions), parsed by the coverage regex below
+    - |
+      awk -F, 'FNR > 1 { missed += $4; covered += $5 } END { if (missed + covered > 0) printf "basic-application coverage: %.2f%% instructions covered\n", 100 * covered / (missed + covered) }' basic-application/*/target/site/jacoco/jacoco.csv
+  coverage: '/basic-application coverage: (\d+(?:\.\d+)?)% instructions covered/'
   artifacts:
     when: always
     paths:
       - "**/target/surefire-reports/TEST-*.xml"
+      - "basic-application/*/target/site/jacoco/"
     reports:
       junit:
         - "**/target/surefire-reports/TEST-*.xml"
+      coverage_report:
+        coverage_format: jacoco
+        path: "basic-application/*/target/site/jacoco/jacoco.xml"
   rules:
     - if: $CI_COMMIT_BRANCH == "owasp"
       when: never
@@ -126,7 +134,10 @@ maven-deploy:
     - docker
 
 sonar-analyze:
-  needs: []
+  # get jacoco reports (basic-application/*/target/site/jacoco/jacoco.xml) for sonar coverage
+  needs:
+    - job: maven-build
+      artifacts: true
   stage: analyze
   environment: staging
   script:
