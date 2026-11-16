@@ -49,6 +49,11 @@
               <includes combine.self="override">
                 <include>**/*</include>
               </includes>
+              <!-- bindgen generated classes (jakarta @Generated has SOURCE retention, so jacoco cannot filter them) -->
+              <excludes>
+                <exclude>**/*Binding.class</exclude>
+                <exclude>**/*BindingPath.class</exclude>
+              </excludes>
             </configuration>
           </execution>
         </executions>
