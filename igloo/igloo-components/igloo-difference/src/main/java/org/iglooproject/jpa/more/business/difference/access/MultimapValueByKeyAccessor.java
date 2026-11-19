@@ -5,6 +5,7 @@ import de.danielbechler.diff.access.Accessor;
 import de.danielbechler.diff.selector.ElementSelector;
 import java.util.Map;
 import org.iglooproject.jpa.more.business.difference.selector.MapValueByKeySelector;
+import org.jspecify.annotations.Nullable;
 
 public class MultimapValueByKeyAccessor<K> implements Accessor, IKeyAwareAccessor<K> {
 
@@ -26,7 +27,7 @@ public class MultimapValueByKeyAccessor<K> implements Accessor, IKeyAwareAccesso
   }
 
   @SuppressWarnings("rawtypes")
-  protected Map objectToMap(Object object) {
+  protected @Nullable Map objectToMap(@Nullable Object object) {
     if (object == null) {
       return null;
     } else if (object instanceof Multimap) {
@@ -37,7 +38,7 @@ public class MultimapValueByKeyAccessor<K> implements Accessor, IKeyAwareAccesso
   }
 
   @Override
-  public Object get(final Object target) {
+  public @Nullable Object get(final @Nullable Object target) {
     final Map<?, ?> targetMap = objectToMap(target);
     if (targetMap != null) {
       return targetMap.get(key);
@@ -47,7 +48,7 @@ public class MultimapValueByKeyAccessor<K> implements Accessor, IKeyAwareAccesso
 
   @SuppressWarnings({"rawtypes", "unchecked"})
   @Override
-  public void set(final Object target, final Object value) {
+  public void set(final @Nullable Object target, final @Nullable Object value) {
     final Map targetMap = objectToMap(target);
     if (targetMap != null) {
       targetMap.put(key, value);
@@ -55,7 +56,7 @@ public class MultimapValueByKeyAccessor<K> implements Accessor, IKeyAwareAccesso
   }
 
   @Override
-  public void unset(final Object target) {
+  public void unset(final @Nullable Object target) {
     final Map<?, ?> targetMap = objectToMap(target);
     if (targetMap != null) {
       targetMap.remove(key);

@@ -17,6 +17,7 @@ import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryDiffer
 import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryValue;
 import org.iglooproject.jpa.more.business.history.service.IHistoryValueService;
 import org.iglooproject.jpa.more.rendering.service.IRendererService;
+import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class AbstractHistoryDifferenceFactory<T> implements IHistoryDifferenceFactory<T> {
@@ -52,7 +53,7 @@ public abstract class AbstractHistoryDifferenceFactory<T> implements IHistoryDif
     "unchecked",
     "deprecation"
   }) // Ces méthodes sont les seuls moyen d'accéder aux clés...
-  protected final HistoryValue newSelectorKeyHistoryValue(
+  protected final @Nullable HistoryValue newSelectorKeyHistoryValue(
       DiffNode parentNode, ElementSelector selector) {
     Object key;
     if (selector instanceof CollectionItemElementSelector) {
@@ -102,7 +103,8 @@ public abstract class AbstractHistoryDifferenceFactory<T> implements IHistoryDif
   }
 
   @SuppressWarnings({"rawtypes", "unchecked"})
-  protected final HistoryValue newHistoryValue(T root, DiffNode node, IRenderer renderer) {
+  protected final HistoryValue newHistoryValue(
+      @Nullable T root, DiffNode node, IRenderer renderer) {
     Object value = node.canonicalGet(root);
     return historyValueService.createHistoryValue(value, renderer);
   }

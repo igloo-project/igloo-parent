@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.converter.Converter;
@@ -38,7 +39,7 @@ public class JwtTokenServiceImpl<P> implements IJwtTokenService<P> {
   private final BiConsumer<P, JwsHeader.Builder> jwtTokenHeaderCustomizer;
 
   /** Encoder for token creation. May be null if only verification is needed. */
-  private final JwtEncoder jwtEncoder;
+  private final @Nullable JwtEncoder jwtEncoder;
 
   /** Decoder for token verification. */
   private final NimbusJwtDecoder jwtDecoder;
@@ -46,7 +47,7 @@ public class JwtTokenServiceImpl<P> implements IJwtTokenService<P> {
   private JwtTokenServiceImpl(
       BiConsumer<P, JwtClaimsSet.Builder> jwtTokenBuilderCustomizer,
       BiConsumer<P, JwsHeader.Builder> jwtTokenHeaderCustomizer,
-      JwtEncoder jwtEncoder,
+      @Nullable JwtEncoder jwtEncoder,
       NimbusJwtDecoder jwtDecoder) {
     this.jwtTokenBuilderCustomizer = jwtTokenBuilderCustomizer;
     this.jwtTokenHeaderCustomizer = jwtTokenHeaderCustomizer;
@@ -54,7 +55,7 @@ public class JwtTokenServiceImpl<P> implements IJwtTokenService<P> {
     this.jwtDecoder = jwtDecoder;
   }
 
-  public static <P> Builder<P> builder(RSAPublicKey publicKey, RSAPrivateKey privateKey) {
+  public static <P> Builder<P> builder(RSAPublicKey publicKey, @Nullable RSAPrivateKey privateKey) {
     return new Builder<>(publicKey, privateKey);
   }
 
@@ -68,10 +69,11 @@ public class JwtTokenServiceImpl<P> implements IJwtTokenService<P> {
     if (jwtEncoder == null) {
       throw new IllegalStateException("Cannot issue tokens: no private key configured.");
     }
-    return generateJwt(principal, builderConsumer);
+    return generateJwt(jwtEncoder, principal, builderConsumer);
   }
 
-  private String generateJwt(P principal, Consumer<JwtClaimsSet.Builder> builderCustomizer) {
+  private String generateJwt(
+      JwtEncoder encoder, P principal, Consumer<JwtClaimsSet.Builder> builderCustomizer) {
     Instant now = Instant.now();
     Instant expiration = now.plus(Duration.ofMinutes(5));
 
@@ -85,7 +87,7 @@ public class JwtTokenServiceImpl<P> implements IJwtTokenService<P> {
 
     jwtTokenHeaderCustomizer.accept(principal, headerBuilder);
 
-    return jwtEncoder
+    return encoder
         .encode(JwtEncoderParameters.from(headerBuilder.build(), claimsBuilder.build()))
         .getTokenValue();
   }
@@ -127,10 +129,10 @@ public class JwtTokenServiceImpl<P> implements IJwtTokenService<P> {
   public static class Builder<P> {
     private BiConsumer<P, JwtClaimsSet.Builder> jwtTokenBuilderCustomizer = (p, b) -> {};
     private BiConsumer<P, JwsHeader.Builder> jwtTokenHeaderCustomizer = (p, b) -> {};
-    private final JwtEncoder jwtEncoder;
+    private final @Nullable JwtEncoder jwtEncoder;
     private final NimbusJwtDecoder jwtDecoder;
 
-    private Builder(RSAPublicKey publicKey, RSAPrivateKey privateKey) {
+    private Builder(RSAPublicKey publicKey, @Nullable RSAPrivateKey privateKey) {
       if (publicKey == null) {
         throw new IllegalStateException("publicKey is required");
       }

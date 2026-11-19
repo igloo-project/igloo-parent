@@ -6,6 +6,7 @@ import de.danielbechler.diff.introspection.PropertyAccessor;
 import java.lang.reflect.Method;
 import org.hibernate.proxy.HibernateProxy;
 import org.iglooproject.jpa.util.HibernateUtils;
+import org.jspecify.annotations.Nullable;
 
 /**
  * The only difference with {@link PropertyAccessor} is the unwrap step for {@link HibernateProxy}
@@ -26,7 +27,7 @@ public class HibernateProxyAwarePropertyAccessor extends PropertyAccessor {
   }
 
   @Override
-  public Object get(Object target) {
+  public @Nullable Object get(@Nullable Object target) {
     Object object = super.get(target);
     if (object == null) {
       return null;

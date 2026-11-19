@@ -2,6 +2,7 @@ package org.iglooproject.jpa.more.business.difference.differ.strategy;
 
 import java.util.Arrays;
 import java.util.Collection;
+import org.jspecify.annotations.Nullable;
 
 public abstract class AbstractCollectionDifferStrategy<T, K>
     extends AbstractContainerDifferStrategy<Collection<T>, K> {
@@ -13,7 +14,7 @@ public abstract class AbstractCollectionDifferStrategy<T, K>
 
   @SuppressWarnings("unchecked")
   @Override
-  public Collection<T> toContainer(Object object) {
+  public @Nullable Collection<T> toContainer(@Nullable Object object) {
     if (object == null) {
       return null; // NOSONAR
     } else if (object instanceof Collection) {

@@ -7,13 +7,15 @@ import org.iglooproject.jpa.business.generic.service.IGenericEntityService;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.security.business.user.service.ICoreUserSecurityService;
+import org.jspecify.annotations.Nullable;
 
 public interface IUserService
     extends ICoreUserSecurityService<User>, IGenericEntityService<Long, User> {
 
-  void saveBasicUser(User user, String password) throws SecurityServiceException, ServiceException;
+  void saveBasicUser(User user, @Nullable String password)
+      throws SecurityServiceException, ServiceException;
 
-  void saveTechnicalUser(User user, String password)
+  void saveTechnicalUser(User user, @Nullable String password)
       throws SecurityServiceException, ServiceException;
 
   void onSignIn(User user);
@@ -24,7 +26,7 @@ public interface IUserService
 
   boolean hasPassword(User user);
 
-  void initPasswordRecoveryRequest(EmailAddress emailAddress)
+  void initPasswordRecoveryRequest(@Nullable EmailAddress emailAddress)
       throws SecurityServiceException, ServiceException;
 
   void enable(User user) throws ServiceException, SecurityServiceException;
@@ -41,7 +43,7 @@ public interface IUserService
 
   void closeAnnouncement(User user) throws ServiceException, SecurityServiceException;
 
-  User getByEmailAddressCaseInsensitive(EmailAddress emailAddress);
+  @Nullable User getByEmailAddressCaseInsensitive(@Nullable EmailAddress emailAddress);
 
-  User getAuthenticatedUser();
+  @Nullable User getAuthenticatedUser();
 }

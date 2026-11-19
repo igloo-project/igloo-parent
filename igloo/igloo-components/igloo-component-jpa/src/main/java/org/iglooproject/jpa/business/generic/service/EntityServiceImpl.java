@@ -10,6 +10,7 @@ import org.iglooproject.jpa.business.generic.model.IReference;
 import org.iglooproject.jpa.business.generic.model.IReferenceable;
 import org.iglooproject.jpa.business.generic.query.IEntityReferenceQuery;
 import org.iglooproject.jpa.query.IQuery;
+import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -22,19 +23,19 @@ public class EntityServiceImpl implements IEntityService {
   private ObjectFactory<IEntityReferenceQuery> entityReferenceQueryProvider;
 
   @Override
-  public <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> E getEntity(
-      Class<E> clazz, K id) {
+  public <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>>
+      @Nullable E getEntity(Class<E> clazz, K id) {
     return entityDao.getEntity(clazz, id);
   }
 
   @Override
-  public <E extends GenericEntity<?, ?>> E getEntity(IReference<E> reference) {
+  public <E extends GenericEntity<?, ?>> @Nullable E getEntity(@Nullable IReference<E> reference) {
     return entityDao.getEntity(reference);
   }
 
   @Override
   public <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> List<E> listEntity(
-      Class<E> clazz, Collection<K> ids) {
+      Class<E> clazz, @Nullable Collection<K> ids) {
     return entityDao.listEntity(clazz, ids);
   }
 
@@ -56,7 +57,7 @@ public class EntityServiceImpl implements IEntityService {
   }
 
   @Override
-  public <E extends GenericEntity<?, ?>> E getEntity(IReferenceable<E> referenceable) {
+  public <E extends GenericEntity<?, ?>> @Nullable E getEntity(IReferenceable<E> referenceable) {
     return entityDao.getEntity(referenceable.asReference());
   }
 

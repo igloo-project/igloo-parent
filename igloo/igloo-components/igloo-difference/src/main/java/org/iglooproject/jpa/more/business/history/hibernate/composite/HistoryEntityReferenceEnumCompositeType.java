@@ -8,6 +8,7 @@ import org.hibernate.type.descriptor.java.ClassJavaType;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.more.business.history.hibernate.HistoryEntityReferenceTypeJdbcType;
 import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryEntityReference;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Use an optimized class to varchar for {@link HistoryEntityReference#getType()}
@@ -26,10 +27,10 @@ public class HistoryEntityReferenceEnumCompositeType extends AbstractHistoryValu
     @Column(nullable = true)
     @JavaType(ClassJavaType.class)
     @JdbcTypeCode(HistoryEntityReferenceTypeJdbcType.SQL_TYPE_CODE)
-    private /* final */ Class<? extends GenericEntity<Long, ?>> type;
+    private /* final */ @Nullable Class<? extends GenericEntity<Long, ?>> type;
 
     @Column(nullable = true)
     @GenericField
-    private /* final */ Long id;
+    private /* final */ @Nullable Long id;
   }
 }

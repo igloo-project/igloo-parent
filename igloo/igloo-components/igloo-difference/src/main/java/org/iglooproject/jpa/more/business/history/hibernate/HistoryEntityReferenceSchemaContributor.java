@@ -12,6 +12,7 @@ import org.hibernate.boot.model.naming.Identifier;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.iglooproject.jpa.sql.BaseSchemaContributor;
 import org.iglooproject.jpa.sql.SqlRunner.Action;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -222,7 +223,7 @@ where
   }
 
   @Override
-  public String getAfterScript(EntityManagerFactory entityManagerFactory, Action action) {
+  public @Nullable String getAfterScript(EntityManagerFactory entityManagerFactory, Action action) {
     return null; // no after script
   }
 }

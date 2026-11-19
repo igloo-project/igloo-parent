@@ -78,4 +78,42 @@
       <url>https://nexus.tools.kobalt.fr/repository/igloo-snapshots/</url>
     </repository>
   </repositories>
+  <profiles>
+    <profile>
+      <id>nullaway</id>
+      <properties>
+        <!--TODO remonter les versions dans igloo-maven-->
+        <igloo.nullaway.version>0.14.4</igloo.nullaway.version>
+        <igloo.nullaway.errorprone.version>2.50.0</igloo.nullaway.errorprone.version>
+        <igloo.nullaway.level>ERROR</igloo.nullaway.level>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+              <compilerArgs combine.children="append">
+                <compilerArg>-XDcompilePolicy=simple</compilerArg>
+                <compilerArg>--should-stop=ifError=FLOW</compilerArg>
+                <compilerArg>-Xplugin:ErrorProne -XepDisableAllChecks -Xep:NullAway:${igloo.nullaway.level} -XepOpt:NullAway:OnlyNullMarked=true -XepOpt:NullAway:JSpecifyMode=true -XepOpt:NullAway:TreatGeneratedAsUnannotated=true -XepExcludedPaths:.*/target/generated-sources/.* -XepOpt:NullAway:ExcludedFieldAnnotations=org.springframework.beans.factory.annotation.Autowired,jakarta.persistence.PersistenceContext</compilerArg>
+              </compilerArgs>
+              <annotationProcessorPaths>
+                <path>
+                  <groupId>com.google.errorprone</groupId>
+                  <artifactId>error_prone_core</artifactId>
+                  <version>${igloo.nullaway.errorprone.version}</version>
+                </path>
+                <path>
+                  <groupId>com.uber.nullaway</groupId>
+                  <artifactId>nullaway</artifactId>
+                  <version>${igloo.nullaway.version}</version>
+                </path>
+              </annotationProcessorPaths>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>

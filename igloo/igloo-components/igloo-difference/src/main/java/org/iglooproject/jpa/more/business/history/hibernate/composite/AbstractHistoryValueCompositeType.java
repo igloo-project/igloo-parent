@@ -7,6 +7,7 @@ import org.hibernate.usertype.CompositeUserType;
 import org.iglooproject.jpa.more.business.history.hibernate.HistoryEntityReferenceTypeContributor;
 import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryEntityReference;
 import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryValue;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Common base to configure {@link HistoryValue} database storage. Concrete implementation chose the
@@ -31,7 +32,7 @@ public abstract class AbstractHistoryValueCompositeType
 
   @SuppressWarnings("unchecked")
   @Override
-  public HistoryEntityReference instantiate(ValueAccess values) {
+  public @Nullable HistoryEntityReference instantiate(ValueAccess values) {
     if (values.getValue(0, Long.class) == null && values.getValue(1, Class.class) == null) {
       return null;
     }

@@ -1,6 +1,7 @@
 package igloo.cache.monitor;
 
 import org.bindgen.Bindable;
+import org.jspecify.annotations.Nullable;
 import org.springframework.cache.Cache;
 import org.springframework.cache.caffeine.CaffeineCache;
 import org.springframework.cache.jcache.JCacheCache;
@@ -59,7 +60,7 @@ public interface ICacheWrapper {
 
   void setMaxSize(long maxSize);
 
-  Long getCurrentSize();
+  @Nullable Long getCurrentSize();
 
   default long getCacheGets() {
     return getCacheHits() + getCacheMisses();
@@ -81,11 +82,12 @@ public interface ICacheWrapper {
     return getCacheMisses() / (getCacheHits() + getCacheMisses() + 0F);
   }
 
-  default Float getCacheFillRatio() {
-    if (getCurrentSize() == null || Long.valueOf(0).equals(getMaxSize())) {
+  default @Nullable Float getCacheFillRatio() {
+    Long currentSize = getCurrentSize();
+    if (currentSize == null || Long.valueOf(0).equals(getMaxSize())) {
       // corner cases
       return null;
     }
-    return getCurrentSize() / (getMaxSize() + 0F);
+    return currentSize / (getMaxSize() + 0F);
   }
 }

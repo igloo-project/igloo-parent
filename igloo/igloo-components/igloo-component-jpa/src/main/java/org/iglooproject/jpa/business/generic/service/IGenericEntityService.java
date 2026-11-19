@@ -24,6 +24,7 @@ import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.business.generic.model.IReference;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Service racine pour la gestion des entités.
@@ -69,7 +70,7 @@ public interface IGenericEntityService<
    * @param id identifiant
    * @return entité
    */
-  E getById(@PermissionObject K id);
+  @Nullable E getById(@PermissionObject K id);
 
   /**
    * Retourne une entité à partir de sa classe (dérivée de {@link E}) et de son id.
@@ -77,7 +78,7 @@ public interface IGenericEntityService<
    * @param id identifiant
    * @return entité
    */
-  <T extends E> T getById(Class<T> clazz, K id);
+  <T extends E> @Nullable T getById(Class<T> clazz, K id);
 
   /**
    * Retourne une entité à partir d'une référence.
@@ -85,7 +86,7 @@ public interface IGenericEntityService<
    * @param reference
    * @return entité
    */
-  <T extends E> T getById(IReference<T> reference);
+  <T extends E> @Nullable T getById(@Nullable IReference<T> reference);
 
   /**
    * Renvoie la liste de l'ensemble des entités de ce type.

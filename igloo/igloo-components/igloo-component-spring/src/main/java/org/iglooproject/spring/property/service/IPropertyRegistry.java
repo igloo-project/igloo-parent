@@ -30,18 +30,21 @@ import org.iglooproject.functional.converter.StringURIConverter;
 import org.iglooproject.spring.property.model.IImmutablePropertyRegistryKey;
 import org.iglooproject.spring.property.model.IMutablePropertyRegistryKey;
 import org.iglooproject.spring.property.model.IPropertyRegistryKey;
+import org.jspecify.annotations.Nullable;
 
 public interface IPropertyRegistry {
 
   <T> void register(IMutablePropertyRegistryKey<T> propertyId, Converter<String, T> converter);
 
   <T> void register(
-      IMutablePropertyRegistryKey<T> propertyId, Converter<String, T> converter, T defaultValue);
+      IMutablePropertyRegistryKey<T> propertyId,
+      Converter<String, T> converter,
+      @Nullable T defaultValue);
 
   <T> void register(
       IMutablePropertyRegistryKey<T> propertyId,
       Converter<String, T> converter,
-      Supplier2<? extends T> defaultValueSupplier);
+      Supplier2<? extends @Nullable T> defaultValueSupplier);
 
   <T> void register(
       IImmutablePropertyRegistryKey<T> propertyId, Function2<String, ? extends T> function);
@@ -49,16 +52,16 @@ public interface IPropertyRegistry {
   <T> void register(
       IImmutablePropertyRegistryKey<T> propertyId,
       Function2<String, ? extends T> function,
-      T defaultValue);
+      @Nullable T defaultValue);
 
   <T> void register(
       IImmutablePropertyRegistryKey<T> propertyId,
       Function2<String, ? extends T> function,
-      Supplier2<? extends T> defaultValueSupplier);
+      Supplier2<? extends @Nullable T> defaultValueSupplier);
 
   void registerString(IPropertyRegistryKey<String> propertyId);
 
-  void registerString(IPropertyRegistryKey<String> propertyId, String defaultValue);
+  void registerString(IPropertyRegistryKey<String> propertyId, @Nullable String defaultValue);
 
   /**
    * Property must use the following format : {@link Long#decode(String)}
@@ -72,7 +75,7 @@ public interface IPropertyRegistry {
    *
    * @see Longs#stringConverter()
    */
-  void registerLong(IPropertyRegistryKey<Long> propertyId, Long defaultValue);
+  void registerLong(IPropertyRegistryKey<Long> propertyId, @Nullable Long defaultValue);
 
   /**
    * Property must use the following format : {@link Integer#decode(String)}
@@ -86,7 +89,7 @@ public interface IPropertyRegistry {
    *
    * @see Ints#stringConverter()
    */
-  void registerInteger(IPropertyRegistryKey<Integer> propertyId, Integer defaultValue);
+  void registerInteger(IPropertyRegistryKey<Integer> propertyId, @Nullable Integer defaultValue);
 
   /**
    * Property must use the following format : {@link Float#valueOf(String)}
@@ -100,7 +103,7 @@ public interface IPropertyRegistry {
    *
    * @see Floats#stringConverter()
    */
-  void registerFloat(IPropertyRegistryKey<Float> propertyId, Float defaultValue);
+  void registerFloat(IPropertyRegistryKey<Float> propertyId, @Nullable Float defaultValue);
 
   /**
    * Property must use the following format : {@link Double#valueOf(String)}
@@ -114,7 +117,7 @@ public interface IPropertyRegistry {
    *
    * @see Doubles#stringConverter()
    */
-  void registerDouble(IPropertyRegistryKey<Double> propertyId, Double defaultValue);
+  void registerDouble(IPropertyRegistryKey<Double> propertyId, @Nullable Double defaultValue);
 
   /**
    * Property must use the following format : {@link BigDecimal#BigDecimal(String)}
@@ -128,7 +131,8 @@ public interface IPropertyRegistry {
    *
    * @see StringBigDecimalConverter
    */
-  void registerBigDecimal(IPropertyRegistryKey<BigDecimal> propertyId, BigDecimal defaultValue);
+  void registerBigDecimal(
+      IPropertyRegistryKey<BigDecimal> propertyId, @Nullable BigDecimal defaultValue);
 
   /**
    * Property must use the following format : true/false, 1/0, yes/no, on/off
@@ -142,7 +146,7 @@ public interface IPropertyRegistry {
    *
    * @see StringBooleanConverter
    */
-  void registerBoolean(IPropertyRegistryKey<Boolean> propertyId, Boolean defaultValue);
+  void registerBoolean(IPropertyRegistryKey<Boolean> propertyId, @Nullable Boolean defaultValue);
 
   /**
    * Property must use the following format : any identifier used to declare an enum constant in
@@ -159,7 +163,7 @@ public interface IPropertyRegistry {
    * @see Enums#stringConverter(Class)
    */
   <E extends Enum<E>> void registerEnum(
-      IPropertyRegistryKey<E> propertyId, Class<E> clazz, E defaultValue);
+      IPropertyRegistryKey<E> propertyId, Class<E> clazz, @Nullable E defaultValue);
 
   /**
    * Property must use the following format : yyyy-MM-dd
@@ -173,14 +177,14 @@ public interface IPropertyRegistry {
    *
    * @see StringDateConverter
    */
-  void registerDate(IPropertyRegistryKey<Date> propertyId, String defaultValue);
+  void registerDate(IPropertyRegistryKey<Date> propertyId, @Nullable String defaultValue);
 
   /**
    * Property must use the following format : yyyy-MM-dd
    *
    * @see StringDateConverter
    */
-  void registerDate(IPropertyRegistryKey<Date> propertyId, Date defaultValue);
+  void registerDate(IPropertyRegistryKey<Date> propertyId, @Nullable Date defaultValue);
 
   /**
    * Property must use the following format : HH:mm or HH:mm:ss
@@ -194,14 +198,14 @@ public interface IPropertyRegistry {
    *
    * @see StringTimeConverter
    */
-  void registerTime(IPropertyRegistryKey<Date> propertyId, String defaultValue);
+  void registerTime(IPropertyRegistryKey<Date> propertyId, @Nullable String defaultValue);
 
   /**
    * Property must use the following format : HH:mm or HH:mm:ss
    *
    * @see StringTimeConverter
    */
-  void registerTime(IPropertyRegistryKey<Date> propertyId, Date defaultValue);
+  void registerTime(IPropertyRegistryKey<Date> propertyId, @Nullable Date defaultValue);
 
   /**
    * Property must use the following format : yyyy-MM-dd HH:mm or yyyy-MM-dd HH:mm:ss
@@ -215,24 +219,26 @@ public interface IPropertyRegistry {
    *
    * @see StringDateTimeConverter
    */
-  void registerDateTime(IPropertyRegistryKey<Date> propertyId, Date defaultValue);
+  void registerDateTime(IPropertyRegistryKey<Date> propertyId, @Nullable Date defaultValue);
 
   void registerInstant(IPropertyRegistryKey<Instant> propertyId);
 
-  void registerInstant(IPropertyRegistryKey<Instant> propertyId, Instant defaultValue);
+  void registerInstant(IPropertyRegistryKey<Instant> propertyId, @Nullable Instant defaultValue);
 
   void registerLocalDate(IPropertyRegistryKey<LocalDate> propertyId);
 
-  void registerLocalDate(IPropertyRegistryKey<LocalDate> propertyId, LocalDate defaultValue);
+  void registerLocalDate(
+      IPropertyRegistryKey<LocalDate> propertyId, @Nullable LocalDate defaultValue);
 
   void registerLocalDateTime(IPropertyRegistryKey<LocalDateTime> propertyId);
 
   void registerLocalDateTime(
-      IPropertyRegistryKey<LocalDateTime> propertyId, LocalDateTime defaultValue);
+      IPropertyRegistryKey<LocalDateTime> propertyId, @Nullable LocalDateTime defaultValue);
 
   void registerLocalTime(IPropertyRegistryKey<LocalTime> propertyId);
 
-  void registerLocalTime(IPropertyRegistryKey<LocalTime> propertyId, LocalTime defaultValue);
+  void registerLocalTime(
+      IPropertyRegistryKey<LocalTime> propertyId, @Nullable LocalTime defaultValue);
 
   /**
    * Property must use the following format : {@link Locale#toLanguageTag()}
@@ -246,7 +252,7 @@ public interface IPropertyRegistry {
    *
    * @see StringLocaleConverter
    */
-  void registerLocale(IPropertyRegistryKey<Locale> propertyId, Locale defaultValue);
+  void registerLocale(IPropertyRegistryKey<Locale> propertyId, @Nullable Locale defaultValue);
 
   /**
    * Property must use the following format : file path
@@ -260,7 +266,8 @@ public interface IPropertyRegistry {
    *
    * @see StringDirectoryFileCreatingConverter
    */
-  void registerFile(IPropertyRegistryKey<File> propertyId, FileFilter filter, File defaultValue);
+  void registerFile(
+      IPropertyRegistryKey<File> propertyId, FileFilter filter, @Nullable File defaultValue);
 
   /**
    * Property must use the following format : directory path
@@ -274,7 +281,8 @@ public interface IPropertyRegistry {
    *
    * @see StringDirectoryFileCreatingConverter
    */
-  void registerWriteableDirectoryFile(IPropertyRegistryKey<File> propertyId, File defaultValue);
+  void registerWriteableDirectoryFile(
+      IPropertyRegistryKey<File> propertyId, @Nullable File defaultValue);
 
   /**
    * Property must use the following format : {@link URI#URI(String)}
@@ -288,7 +296,7 @@ public interface IPropertyRegistry {
    *
    * @see StringURIConverter
    */
-  void registerURI(IPropertyRegistryKey<URI> propertyId, URI defaultValue);
+  void registerURI(IPropertyRegistryKey<URI> propertyId, @Nullable URI defaultValue);
 
   List<IPropertyRegistryKey<?>> listRegistered();
 }

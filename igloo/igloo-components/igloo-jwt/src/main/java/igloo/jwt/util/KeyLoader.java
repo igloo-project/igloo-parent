@@ -1,6 +1,7 @@
 package igloo.jwt.util;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -86,6 +87,9 @@ public class KeyLoader {
   public static PublicKey loadPublicKey(FileLoader loader)
       throws NoSuchAlgorithmException, IOException {
     try (InputStream stream = loader.load()) {
+      if (stream == null) {
+        throw new FileNotFoundException("Public key resource not found.");
+      }
       return loadPublicKey(stream);
     }
   }
@@ -97,6 +101,9 @@ public class KeyLoader {
   public static PrivateKey loadPrivateKey(FileLoader loader)
       throws NoSuchAlgorithmException, IOException {
     try (InputStream stream = loader.load()) {
+      if (stream == null) {
+        throw new FileNotFoundException("Private key resource not found.");
+      }
       return loadPrivateKey(stream);
     }
   }

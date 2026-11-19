@@ -6,6 +6,7 @@ import basicapp.back.business.role.model.Role;
 import org.iglooproject.commons.util.security.PermissionObject;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
+import org.jspecify.annotations.Nullable;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 public interface IRoleControllerService {
@@ -13,5 +14,5 @@ public interface IRoleControllerService {
   @PreAuthorize(ROLE_WRITE)
   void saveRole(@PermissionObject Role role) throws ServiceException, SecurityServiceException;
 
-  Role getByTitle(String title);
+  @Nullable Role getByTitle(@Nullable String title);
 }

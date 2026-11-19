@@ -11,6 +11,7 @@ import org.bindgen.BindingRoot;
 import org.hibernate.proxy.HibernateProxy;
 import org.iglooproject.jpa.more.business.difference.util.IProxyInitializer;
 import org.iglooproject.jpa.util.HibernateUtils;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,7 +30,7 @@ public class DifferenceFieldsProxyInitializer implements IProxyInitializer<Objec
   }
 
   @Override
-  public void initialize(Object rootValue) {
+  public void initialize(@Nullable Object rootValue) {
     if (rootValue == null) {
       return;
     }
@@ -140,7 +141,7 @@ public class DifferenceFieldsProxyInitializer implements IProxyInitializer<Objec
       if (parent.equals(effectiveParent)) {
         return true;
       }
-    } while (!effectiveParent.getPath().isRoot());
+    } while (effectiveParent != null && !effectiveParent.getPath().isRoot());
     return false;
   }
 }

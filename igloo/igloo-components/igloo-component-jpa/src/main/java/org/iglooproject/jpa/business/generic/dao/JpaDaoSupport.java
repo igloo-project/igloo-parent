@@ -17,16 +17,17 @@ import java.util.ListIterator;
 import org.hibernate.Session;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.business.generic.model.QGenericEntity;
+import org.jspecify.annotations.Nullable;
 
 public class JpaDaoSupport {
 
   @PersistenceContext private EntityManager entityManager;
 
-  protected <T, K> T getEntity(Class<T> clazz, K id) {
+  protected <T, K> @Nullable T getEntity(Class<T> clazz, K id) {
     return getEntityManager().find(clazz, id);
   }
 
-  public <T> T getEntityByNaturalId(Class<T> clazz, Object naturalId) {
+  public <T> @Nullable T getEntityByNaturalId(Class<T> clazz, Object naturalId) {
     if (naturalId == null) {
       throw new IllegalArgumentException("Natural id may not be null");
     }
@@ -108,16 +109,18 @@ public class JpaDaoSupport {
   }
 
   protected <T> JPAQuery<T> queryByPredicateOrdered(
-      EntityPath<T> entityPath, Predicate predicate, OrderSpecifier<?>... orderSpecifiers) {
+      EntityPath<T> entityPath,
+      @Nullable Predicate predicate,
+      @Nullable OrderSpecifier<?>... orderSpecifiers) {
     return queryByPredicateOrdered(entityPath, predicate, null, null, orderSpecifiers);
   }
 
   protected <T> JPAQuery<T> queryByPredicateOrdered(
       EntityPath<T> entityPath,
-      Predicate predicate,
-      Long limit,
-      Long offset,
-      OrderSpecifier<?>... orderSpecifiers) {
+      @Nullable Predicate predicate,
+      @Nullable Long limit,
+      @Nullable Long offset,
+      @Nullable OrderSpecifier<?>... orderSpecifiers) {
     JPAQuery<T> query = queryByPredicate(entityPath, predicate, limit, offset);
 
     if (orderSpecifiers != null && orderSpecifiers.length > 0) {
@@ -127,12 +130,16 @@ public class JpaDaoSupport {
     return query;
   }
 
-  protected <T> JPAQuery<T> queryByPredicate(EntityPath<T> entityPath, Predicate predicate) {
+  protected <T> JPAQuery<T> queryByPredicate(
+      EntityPath<T> entityPath, @Nullable Predicate predicate) {
     return queryByPredicate(entityPath, predicate, null, null);
   }
 
   protected <T> JPAQuery<T> queryByPredicate(
-      EntityPath<T> entityPath, Predicate predicate, Long limit, Long offset) {
+      EntityPath<T> entityPath,
+      @Nullable Predicate predicate,
+      @Nullable Long limit,
+      @Nullable Long offset) {
     JPAQuery<T> query = new JPAQuery<>(getEntityManager());
     query.select(entityPath).from(entityPath);
 

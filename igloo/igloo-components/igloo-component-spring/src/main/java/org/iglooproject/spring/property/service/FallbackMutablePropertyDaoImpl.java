@@ -4,6 +4,7 @@ import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.spring.property.dao.IImmutablePropertyDao;
 import org.iglooproject.spring.property.dao.IMutablePropertyDao;
+import org.jspecify.annotations.Nullable;
 
 public class FallbackMutablePropertyDaoImpl implements IMutablePropertyDao {
 
@@ -14,12 +15,12 @@ public class FallbackMutablePropertyDaoImpl implements IMutablePropertyDao {
   }
 
   @Override
-  public String getInTransaction(String key) {
+  public @Nullable String getInTransaction(String key) {
     return immutablePropertyDao.get(key);
   }
 
   @Override
-  public void setInTransaction(String key, String value)
+  public void setInTransaction(String key, @Nullable String value)
       throws ServiceException, SecurityServiceException {
     throw new RuntimeException(
         String.format(

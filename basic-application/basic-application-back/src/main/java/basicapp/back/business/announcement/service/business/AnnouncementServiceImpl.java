@@ -15,6 +15,7 @@ import org.iglooproject.commons.util.exception.IllegalSwitchValueException;
 import org.iglooproject.jpa.business.generic.service.GenericEntityServiceImpl;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
+import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -66,7 +67,7 @@ public class AnnouncementServiceImpl extends GenericEntityServiceImpl<Long, Anno
 
   @Override
   @Transactional(readOnly = true)
-  public void cleanWithoutSaving(Announcement announcement) {
+  public void cleanWithoutSaving(@Nullable Announcement announcement) {
     Optional.ofNullable(announcement)
         .filter(a -> a.getType() != null)
         .ifPresent(this::cleanAnnouncement);
@@ -80,19 +81,21 @@ public class AnnouncementServiceImpl extends GenericEntityServiceImpl<Long, Anno
   @Override
   public boolean isOpen() {
     return Optional.ofNullable(userService.getAuthenticatedUser())
-        .map(
-            user -> {
-              Instant lastActionDate = user.getAnnouncementInformation().getLastActionDate();
-              LocalDateTime mostRecentPublicationStartDate =
-                  dao.getMostRecentPublicationStartDate();
+        .flatMap(
+            user ->
+                dao.getMostRecentPublicationStartDate()
+                    .map(
+                        mostRecentPublicationStartDate -> {
+                          Instant lastActionDate =
+                              user.getAnnouncementInformation().getLastActionDate();
 
-              if (lastActionDate == null
-                  || LocalDateTime.ofInstant(lastActionDate, ZoneId.systemDefault())
-                      .isBefore(mostRecentPublicationStartDate)) {
-                return true;
-              }
-              return user.getAnnouncementInformation().isOpen();
-            })
+                          if (lastActionDate == null
+                              || LocalDateTime.ofInstant(lastActionDate, ZoneId.systemDefault())
+                                  .isBefore(mostRecentPublicationStartDate)) {
+                            return true;
+                          }
+                          return user.getAnnouncementInformation().isOpen();
+                        }))
         .orElse(false);
   }
 

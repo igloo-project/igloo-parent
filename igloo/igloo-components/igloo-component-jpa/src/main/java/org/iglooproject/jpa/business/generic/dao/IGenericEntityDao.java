@@ -27,6 +27,7 @@ import java.io.Serializable;
 import java.util.List;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.business.generic.model.IReference;
+import org.jspecify.annotations.Nullable;
 
 /**
  * DAO racine pour la gestion des entités.
@@ -43,7 +44,7 @@ public interface IGenericEntityDao<
    * @param id identifiant
    * @return entité
    */
-  E getById(K id);
+  @Nullable E getById(K id);
 
   /**
    * Retourne une entité à partir de sa classe (dérivée de {@link E}) et de son id.
@@ -51,7 +52,7 @@ public interface IGenericEntityDao<
    * @param id identifiant
    * @return entité
    */
-  <T extends E> T getById(Class<T> clazz, K id);
+  <T extends E> @Nullable T getById(Class<T> clazz, K id);
 
   /**
    * Retourne une entité à partir d'une référence.
@@ -59,14 +60,14 @@ public interface IGenericEntityDao<
    * @param reference
    * @return entité
    */
-  <T extends E> T getById(IReference<T> reference);
+  <T extends E> @Nullable T getById(@Nullable IReference<T> reference);
 
   /**
    * Retourne une entité à partir de son id naturelle (si elle a été déclarée avec @NaturalId)
    *
    * @param naturalId identifiant naturel (typiquement un login)
    */
-  E getByNaturalId(Object naturalId);
+  @Nullable E getByNaturalId(Object naturalId);
 
   /**
    * Crée l'entité dans la base de données.
@@ -108,7 +109,7 @@ public interface IGenericEntityDao<
    *
    * @return liste d'IDs
    */
-  List<E> list(Long limit, Long offset);
+  List<E> list(@Nullable Long limit, @Nullable Long offset);
 
   /**
    * Compte le nombre d'entités de ce type présentes dans la base.

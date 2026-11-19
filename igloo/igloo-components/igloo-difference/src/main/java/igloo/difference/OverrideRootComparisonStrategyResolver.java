@@ -3,6 +3,7 @@ package igloo.difference;
 import de.danielbechler.diff.comparison.ComparisonStrategy;
 import de.danielbechler.diff.comparison.ComparisonStrategyResolver;
 import de.danielbechler.diff.node.DiffNode;
+import org.jspecify.annotations.Nullable;
 
 public class OverrideRootComparisonStrategyResolver implements ComparisonStrategyResolver {
 
@@ -14,7 +15,7 @@ public class OverrideRootComparisonStrategyResolver implements ComparisonStrateg
   }
 
   @Override
-  public ComparisonStrategy resolveComparisonStrategy(DiffNode node) {
+  public @Nullable ComparisonStrategy resolveComparisonStrategy(DiffNode node) {
     if (node.isRootNode()) {
       return null;
     } else {

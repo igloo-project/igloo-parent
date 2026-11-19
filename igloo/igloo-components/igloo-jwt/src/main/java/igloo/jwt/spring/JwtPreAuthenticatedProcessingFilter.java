@@ -6,6 +6,7 @@ import igloo.jwt.service.IJwtToPrincipalConverter;
 import igloo.jwt.service.IJwtTokenService;
 import jakarta.servlet.http.HttpServletRequest;
 import java.net.http.HttpRequest;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -42,7 +43,7 @@ public abstract class JwtPreAuthenticatedProcessingFilter<P>
   }
 
   @Override
-  protected P getPreAuthenticatedPrincipal(HttpServletRequest request) {
+  protected @Nullable P getPreAuthenticatedPrincipal(HttpServletRequest request) {
     String token = extractToken(request);
     if (token == null) {
       return null;
@@ -63,7 +64,7 @@ public abstract class JwtPreAuthenticatedProcessingFilter<P>
     return null;
   }
 
-  protected abstract String extractToken(HttpServletRequest request);
+  protected abstract @Nullable String extractToken(HttpServletRequest request);
 
   @Override
   protected Object getPreAuthenticatedCredentials(HttpServletRequest request) {

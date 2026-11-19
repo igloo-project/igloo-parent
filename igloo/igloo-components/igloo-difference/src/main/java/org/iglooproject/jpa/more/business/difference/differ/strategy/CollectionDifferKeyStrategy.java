@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.iglooproject.commons.util.collections.CollectionUtils;
 import org.iglooproject.functional.Function2;
 import org.iglooproject.jpa.more.business.difference.access.CollectionItemByKeyAccessor;
+import org.jspecify.annotations.Nullable;
 
 public final class CollectionDifferKeyStrategy<T, K>
     extends AbstractCollectionDifferStrategy<T, K> {
@@ -32,7 +33,7 @@ public final class CollectionDifferKeyStrategy<T, K>
   }
 
   @Override
-  public Iterable<K> difference(Collection<T> source, Collection<T> filter) {
+  public Iterable<K> difference(@Nullable Collection<T> source, @Nullable Collection<T> filter) {
     return CollectionUtils.difference(
         source == null ? null : source.stream().map(keyFunction).collect(Collectors.toList()),
         filter == null ? null : filter.stream().map(keyFunction).collect(Collectors.toList()),
@@ -40,7 +41,7 @@ public final class CollectionDifferKeyStrategy<T, K>
   }
 
   @Override
-  public Iterable<K> intersection(Collection<T> source, Collection<T> filter) {
+  public Iterable<K> intersection(@Nullable Collection<T> source, @Nullable Collection<T> filter) {
     return CollectionUtils.intersection(
         source == null ? null : source.stream().map(keyFunction).collect(Collectors.toList()),
         filter == null ? null : filter.stream().map(keyFunction).collect(Collectors.toList()),

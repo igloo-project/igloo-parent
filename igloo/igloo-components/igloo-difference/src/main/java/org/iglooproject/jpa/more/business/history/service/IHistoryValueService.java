@@ -6,23 +6,25 @@ import org.iglooproject.commons.util.rendering.IRenderer;
 import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryEventValue;
 import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryValue;
 import org.iglooproject.jpa.more.business.history.model.embeddable.IHistoryValue;
+import org.jspecify.annotations.Nullable;
 
 public interface IHistoryValueService {
 
-  <T> HistoryValue createHistoryValue(T object);
+  <T extends @Nullable Object> HistoryValue createHistoryValue(T object);
 
-  <T> HistoryEventValue createHistoryEventValue(T object);
+  <T extends @Nullable Object> HistoryEventValue createHistoryEventValue(T object);
 
   <T> HistoryValue createHistoryValue(T object, IRenderer<? super T> renderer);
 
   <T> HistoryEventValue createHistoryEventValue(T object, IRenderer<? super T> renderer);
 
-  Object retrieve(IHistoryValue value);
+  @Nullable Object retrieve(@Nullable IHistoryValue value);
 
   @SuppressWarnings("rawtypes")
-  String render(IHistoryValue value, IRenderer renderer, Locale locale);
+  @Nullable String render(
+      @Nullable IHistoryValue value, @Nullable IRenderer renderer, Locale locale);
 
-  String render(IHistoryValue value, Locale locale);
+  @Nullable String render(@Nullable IHistoryValue value, Locale locale);
 
   /**
    * @param historyValue The {@link HistoryValue} to be matched against.
@@ -31,5 +33,5 @@ public interface IHistoryValueService {
    *     be determined, or <code>Optional.absent()</code> if there is not enough information in the
    *     {@link HistoryValue} to give a definitive answer.
    */
-  Optional<Boolean> matches(IHistoryValue historyValue, Object value);
+  Optional<Boolean> matches(@Nullable IHistoryValue historyValue, @Nullable Object value);
 }

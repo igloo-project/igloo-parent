@@ -3,9 +3,11 @@ package basicapp.back.business.role.service;
 import basicapp.back.business.role.dao.IRoleDao;
 import basicapp.back.business.role.model.Role;
 import java.util.Objects;
+import java.util.Optional;
 import org.iglooproject.jpa.business.generic.service.GenericEntityServiceImpl;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
+import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -30,10 +32,7 @@ public class RoleServiceImpl extends GenericEntityServiceImpl<Long, Role> implem
   }
 
   @Override
-  public Role getByTitle(String title) {
-    if (title == null) {
-      return null;
-    }
-    return dao.getByTitle(title);
+  public @Nullable Role getByTitle(@Nullable String title) {
+    return Optional.ofNullable(title).flatMap(dao::getByTitle).orElse(null);
   }
 }

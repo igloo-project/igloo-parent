@@ -13,6 +13,7 @@ import org.iglooproject.jpa.more.business.history.model.AbstractHistoryDifferenc
 import org.iglooproject.jpa.more.business.history.model.AbstractHistoryLog;
 import org.iglooproject.jpa.more.business.history.model.atomic.IHistoryLogEventType;
 import org.iglooproject.jpa.more.business.history.model.bean.AbstractHistoryLogAdditionalInformationBean;
+import org.jspecify.annotations.Nullable;
 
 public class HistoryLogBeforeCommitWithDifferencesTask<
         T,
@@ -54,7 +55,8 @@ public class HistoryLogBeforeCommitWithDifferencesTask<
     return differenceGenerator;
   }
 
-  public void logNow(T mainObjectReference) throws ServiceException, SecurityServiceException {
+  public void logNow(@Nullable T mainObjectReference)
+      throws ServiceException, SecurityServiceException {
     Difference<T> difference = differenceGenerator.diff(mainObject, mainObjectReference);
     logNow(mainObject, difference);
   }
@@ -73,7 +75,7 @@ public class HistoryLogBeforeCommitWithDifferencesTask<
   }
 
   @Override
-  public boolean equals(Object obj) {
+  public boolean equals(@Nullable Object obj) {
     if (obj instanceof HistoryLogBeforeCommitWithDifferencesTask) {
       return super.equals(obj);
     }

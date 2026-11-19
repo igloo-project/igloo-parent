@@ -3,6 +3,7 @@ package basicapp.back.business.history.service;
 import basicapp.back.business.user.model.User;
 import basicapp.back.business.user.service.business.IUserService;
 import org.iglooproject.jpa.more.business.history.service.AbstractHistoryEventSummaryServiceImpl;
+import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,7 +17,7 @@ public class HistoryEventSummaryServiceImpl extends AbstractHistoryEventSummaryS
   }
 
   @Override
-  protected User getDefaultSubject() {
+  protected @Nullable User getDefaultSubject() {
     return userService.getAuthenticatedUser();
   }
 }

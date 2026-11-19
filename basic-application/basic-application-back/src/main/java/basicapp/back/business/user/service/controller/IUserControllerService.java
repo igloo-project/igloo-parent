@@ -13,16 +13,17 @@ import basicapp.back.business.user.model.User;
 import org.iglooproject.commons.util.security.PermissionObject;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
+import org.jspecify.annotations.Nullable;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 public interface IUserControllerService {
 
   @PreAuthorize(USER_BASIC_WRITE)
-  void saveBasicUser(@PermissionObject User user, String password)
+  void saveBasicUser(@PermissionObject User user, @Nullable String password)
       throws SecurityServiceException, ServiceException;
 
   @PreAuthorize(USER_TECHNICAL_WRITE)
-  void saveTechnicalUser(@PermissionObject User user, String password)
+  void saveTechnicalUser(@PermissionObject User user, @Nullable String password)
       throws SecurityServiceException, ServiceException;
 
   @PreAuthorize(USER_WRITE)
@@ -42,14 +43,14 @@ public interface IUserControllerService {
   void closeAnnouncement(@PermissionObject User user)
       throws ServiceException, SecurityServiceException;
 
-  void initPasswordRecoveryRequest(EmailAddress emailAddress)
+  void initPasswordRecoveryRequest(@Nullable EmailAddress emailAddress)
       throws SecurityServiceException, ServiceException;
 
   void onSignIn(User user);
 
   void onSignInFail(User user);
 
-  User getByEmailAddressCaseInsensitive(EmailAddress emailAddress);
+  @Nullable User getByEmailAddressCaseInsensitive(@Nullable EmailAddress emailAddress);
 
-  User getByUsername(String value);
+  @Nullable User getByUsername(@Nullable String value);
 }

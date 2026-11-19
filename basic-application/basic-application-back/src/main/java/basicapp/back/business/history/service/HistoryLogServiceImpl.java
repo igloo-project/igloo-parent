@@ -11,6 +11,7 @@ import java.time.Instant;
 import java.util.List;
 import org.iglooproject.functional.Supplier2;
 import org.iglooproject.jpa.more.business.history.service.AbstractHistoryLogServiceImpl;
+import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -35,7 +36,7 @@ public class HistoryLogServiceImpl
       HistoryLogEventType eventType,
       List<HistoryDifference> differences,
       T mainObject,
-      HistoryLogAdditionalInformationBean additionalInformation) {
+      @Nullable HistoryLogAdditionalInformationBean additionalInformation) {
     HistoryLog log = new HistoryLog(date, eventType, valueService.createHistoryValue(mainObject));
 
     User subject = userService.getAuthenticatedUser();

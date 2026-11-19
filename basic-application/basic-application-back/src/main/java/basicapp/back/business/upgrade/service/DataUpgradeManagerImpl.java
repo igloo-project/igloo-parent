@@ -10,6 +10,7 @@ import org.iglooproject.jpa.more.business.upgrade.model.DataUpgradeRecord;
 import org.iglooproject.jpa.more.business.upgrade.model.IDataUpgrade;
 import org.iglooproject.jpa.more.business.upgrade.service.AbstractDataUpgradeServiceImpl;
 import org.iglooproject.jpa.more.business.upgrade.service.IDataUpgradeRecordService;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,7 +101,8 @@ public class DataUpgradeManagerImpl extends AbstractDataUpgradeServiceImpl
    * Perform an upgrade, any thrown {@link RuntimeException}, {@link ServiceException} and {@link
    * SecurityServiceException} mark current transaction as rollbacked.
    */
-  private Throwable performUpgrade(IDataUpgrade upgrade, TransactionStatus transactionStatus) {
+  private @Nullable Throwable performUpgrade(
+      IDataUpgrade upgrade, TransactionStatus transactionStatus) {
     try {
       executeDataUpgrade(upgrade);
     } catch (RuntimeException | ServiceException | SecurityServiceException e) {

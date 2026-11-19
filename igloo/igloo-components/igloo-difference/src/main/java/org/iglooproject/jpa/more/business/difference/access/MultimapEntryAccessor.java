@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
 import org.iglooproject.jpa.more.business.difference.selector.MultimapEntrySelector;
+import org.jspecify.annotations.Nullable;
 
 public class MultimapEntryAccessor<K, V> implements Accessor, IKeyAwareAccessor<K> {
 
@@ -32,7 +33,7 @@ public class MultimapEntryAccessor<K, V> implements Accessor, IKeyAwareAccessor<
   }
 
   @SuppressWarnings("rawtypes")
-  protected Multimap objectToMultimap(Object object) {
+  protected @Nullable Multimap objectToMultimap(@Nullable Object object) {
     if (object == null) {
       return null;
     } else if (object instanceof Multimap) {
@@ -44,7 +45,7 @@ public class MultimapEntryAccessor<K, V> implements Accessor, IKeyAwareAccessor<
 
   @SuppressWarnings("unchecked")
   @Override
-  public Object get(final Object target) {
+  public @Nullable Object get(final @Nullable Object target) {
     final Multimap<K, V> targetMap = objectToMultimap(target);
     if (targetMap != null) {
       Collection<? extends Map.Entry<K, V>> entries = targetMap.entries();

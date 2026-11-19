@@ -3,6 +3,7 @@ package org.iglooproject.jpa.more.business.difference.util;
 import java.util.Collection;
 import org.iglooproject.functional.Function2;
 import org.iglooproject.jpa.util.HibernateUtils;
+import org.jspecify.annotations.Nullable;
 
 public class CollectionElementsFunctionProxyInitializer<T, T2> implements IProxyInitializer<T> {
 
@@ -23,7 +24,10 @@ public class CollectionElementsFunctionProxyInitializer<T, T2> implements IProxy
   }
 
   @Override
-  public void initialize(T value) {
+  public void initialize(@Nullable T value) {
+    if (value == null) {
+      return;
+    }
     Collection<? extends T2> collection = function.apply(value);
     if (collection != null) {
       HibernateUtils.initialize(collection);

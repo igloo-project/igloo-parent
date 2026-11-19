@@ -10,7 +10,6 @@ import de.danielbechler.diff.selector.CollectionItemElementSelector;
 import de.danielbechler.diff.selector.ElementSelector;
 import de.danielbechler.diff.selector.MapKeyElementSelector;
 import de.danielbechler.diff.selector.RootElementSelector;
-import jakarta.annotation.Nonnull;
 import java.util.Iterator;
 import java.util.List;
 import org.bindgen.Binding;
@@ -22,6 +21,7 @@ import org.iglooproject.functional.Predicates2;
 import org.iglooproject.functional.SerializablePredicate2;
 import org.iglooproject.jpa.more.business.difference.model.Difference;
 import org.iglooproject.jpa.more.business.difference.selector.IKeyAwareSelector;
+import org.jspecify.annotations.Nullable;
 
 public final class DiffUtils {
 
@@ -31,7 +31,7 @@ public final class DiffUtils {
     return ObjectDifferBuilder.startBuilding();
   }
 
-  public static <T> Difference<T> diff(T before, T after, ObjectDiffer differ) {
+  public static <T> Difference<T> diff(@Nullable T before, T after, ObjectDiffer differ) {
     return new Difference<>(before, after, differ.compare(after, before));
   }
 
@@ -115,7 +115,7 @@ public final class DiffUtils {
     return currentNode;
   }
 
-  public static FieldPathComponent toFieldPathComponent(ElementSelector elementSelector) {
+  public static @Nullable FieldPathComponent toFieldPathComponent(ElementSelector elementSelector) {
     if (elementSelector instanceof RootElementSelector) {
       return null;
     } else if (elementSelector instanceof CollectionItemElementSelector) {
@@ -172,7 +172,7 @@ public final class DiffUtils {
     INSTANCE;
 
     @Override
-    public NodePath apply(@Nonnull FieldPath input) {
+    public NodePath apply(FieldPath input) {
       return DiffUtils.toNodePath(input);
     }
 

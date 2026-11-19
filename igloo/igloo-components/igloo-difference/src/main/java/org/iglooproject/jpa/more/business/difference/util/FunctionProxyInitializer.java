@@ -3,6 +3,7 @@ package org.iglooproject.jpa.more.business.difference.util;
 import com.google.common.collect.ImmutableList;
 import org.iglooproject.functional.Function2;
 import org.iglooproject.jpa.util.HibernateUtils;
+import org.jspecify.annotations.Nullable;
 
 public class FunctionProxyInitializer<T> implements IProxyInitializer<T> {
   private final Iterable<? extends Function2<? super T, ?>> functions;
@@ -19,7 +20,10 @@ public class FunctionProxyInitializer<T> implements IProxyInitializer<T> {
   }
 
   @Override
-  public void initialize(T value) {
+  public void initialize(@Nullable T value) {
+    if (value == null) {
+      return;
+    }
     HibernateUtils.initialize(value);
     for (Function2<? super T, ?> function : functions) {
       HibernateUtils.initialize(function.apply(value));

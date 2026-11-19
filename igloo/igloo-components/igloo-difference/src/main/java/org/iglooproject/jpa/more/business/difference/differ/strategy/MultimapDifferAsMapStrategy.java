@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 import org.iglooproject.jpa.more.business.difference.access.MultimapValueByKeyAccessor;
+import org.jspecify.annotations.Nullable;
 
 public class MultimapDifferAsMapStrategy<K, V>
     extends AbstractContainerDifferStrategy<Map<K, Collection<V>>, K> {
@@ -22,7 +23,7 @@ public class MultimapDifferAsMapStrategy<K, V>
 
   @SuppressWarnings({"rawtypes", "unchecked"})
   @Override
-  public Map<K, Collection<V>> toContainer(Object object) {
+  public @Nullable Map<K, Collection<V>> toContainer(@Nullable Object object) {
     if (object == null) {
       return null;
     } else if (object instanceof Multimap) {
@@ -33,7 +34,8 @@ public class MultimapDifferAsMapStrategy<K, V>
   }
 
   @Override
-  public Set<K> difference(Map<K, Collection<V>> source, Map<K, Collection<V>> filter) {
+  public Set<K> difference(
+      @Nullable Map<K, Collection<V>> source, @Nullable Map<K, Collection<V>> filter) {
     final Set<K> copy = Sets.newLinkedHashSet();
     if (source != null) {
       if (filter != null) {
@@ -46,7 +48,8 @@ public class MultimapDifferAsMapStrategy<K, V>
   }
 
   @Override
-  public Set<K> intersection(Map<K, Collection<V>> source, Map<K, Collection<V>> filter) {
+  public Set<K> intersection(
+      @Nullable Map<K, Collection<V>> source, @Nullable Map<K, Collection<V>> filter) {
     final Set<K> copy = Sets.newLinkedHashSet();
     if (source != null && filter != null) {
       copy.addAll(Sets.intersection(source.keySet(), filter.keySet()));

@@ -28,6 +28,7 @@ import org.iglooproject.jpa.util.HibernateUtils;
 import org.iglooproject.spring.property.SpringPropertyIds;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.spring.util.StringUtils;
+import org.jspecify.annotations.Nullable;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -92,7 +93,7 @@ public class UserServiceImpl extends GenericEntityServiceImpl<Long, User> implem
   }
 
   @Override
-  public void saveBasicUser(User user, String password)
+  public void saveBasicUser(User user, @Nullable String password)
       throws SecurityServiceException, ServiceException {
     user.setType(UserType.BASIC);
     User author = getAuthenticatedUser();
@@ -100,14 +101,14 @@ public class UserServiceImpl extends GenericEntityServiceImpl<Long, User> implem
   }
 
   @Override
-  public void saveTechnicalUser(User user, String password)
+  public void saveTechnicalUser(User user, @Nullable String password)
       throws SecurityServiceException, ServiceException {
     user.setType(UserType.TECHNICAL);
     User author = getAuthenticatedUser();
     saveUser(user, author, password);
   }
 
-  private void saveUser(User user, User author, String password)
+  private void saveUser(User user, @Nullable User author, @Nullable String password)
       throws SecurityServiceException, ServiceException {
     Objects.requireNonNull(user);
 
@@ -171,7 +172,7 @@ public class UserServiceImpl extends GenericEntityServiceImpl<Long, User> implem
   }
 
   @Override
-  public void initPasswordRecoveryRequest(EmailAddress emailAddress)
+  public void initPasswordRecoveryRequest(@Nullable EmailAddress emailAddress)
       throws SecurityServiceException, ServiceException {
     User user = getByEmailAddressCaseInsensitive(emailAddress);
 
@@ -241,7 +242,7 @@ public class UserServiceImpl extends GenericEntityServiceImpl<Long, User> implem
   }
 
   @Override
-  public User getByUsername(String username) {
+  public @Nullable User getByUsername(@Nullable String username) {
     if (!StringUtils.hasText(username)) {
       return null;
     }
@@ -249,23 +250,23 @@ public class UserServiceImpl extends GenericEntityServiceImpl<Long, User> implem
   }
 
   @Override
-  public User getByUsernameCaseInsensitive(String username) {
+  public @Nullable User getByUsernameCaseInsensitive(@Nullable String username) {
     if (!StringUtils.hasText(username)) {
       return null;
     }
-    return dao.getByUsernameCaseInsensitive(username);
+    return dao.getByUsernameCaseInsensitive(username).orElse(null);
   }
 
   @Override
-  public User getByEmailAddressCaseInsensitive(EmailAddress emailAddress) {
+  public @Nullable User getByEmailAddressCaseInsensitive(@Nullable EmailAddress emailAddress) {
     if (emailAddress == null || !StringUtils.hasText(emailAddress.getValue())) {
       return null;
     }
-    return dao.getByEmailCaseInsensitive(emailAddress);
+    return dao.getByEmailCaseInsensitive(emailAddress).orElse(null);
   }
 
   @Override
-  public User getAuthenticatedUser() {
+  public @Nullable User getAuthenticatedUser() {
     return Optional.ofNullable(authenticationService.getUsername())
         .map(username -> HibernateUtils.unwrap(getByUsername(username)))
         .orElse(null);

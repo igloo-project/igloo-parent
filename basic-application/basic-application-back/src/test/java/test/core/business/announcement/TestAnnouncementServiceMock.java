@@ -9,6 +9,7 @@ import basicapp.back.business.user.service.business.IUserService;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Optional;
 import org.assertj.core.api.Assertions;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
@@ -152,10 +153,22 @@ public class TestAnnouncementServiceMock {
     }
 
     @Test
+    void testIsOpen_noMostRecentPublicationStartDate_returnAlwaysFalse() {
+      User user = new User();
+      user.getAnnouncementInformation().setOpen(true);
+      Mockito.when(userService.getAuthenticatedUser()).thenReturn(user);
+      Mockito.when(announcementDao.getMostRecentPublicationStartDate())
+          .thenReturn(Optional.empty());
+      Assertions.assertThat(announcementService.isOpen()).isFalse();
+    }
+
+    @Test
     void testIsOpen_lastActionDateNull_returnAlwaysTrue() {
       User user = new User();
       user.getAnnouncementInformation().setOpen(false);
       Mockito.when(userService.getAuthenticatedUser()).thenReturn(user);
+      Mockito.when(announcementDao.getMostRecentPublicationStartDate())
+          .thenReturn(Optional.of(LocalDateTime.of(2024, 1, 1, 10, 0)));
       Assertions.assertThat(announcementService.isOpen()).isTrue();
     }
 
@@ -168,7 +181,7 @@ public class TestAnnouncementServiceMock {
               LocalDate.of(2024, 1, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
       Mockito.when(userService.getAuthenticatedUser()).thenReturn(user);
       Mockito.when(announcementDao.getMostRecentPublicationStartDate())
-          .thenReturn(LocalDateTime.of(2024, 2, 1, 10, 0));
+          .thenReturn(Optional.of(LocalDateTime.of(2024, 2, 1, 10, 0)));
       Assertions.assertThat(announcementService.isOpen()).isTrue();
     }
 
@@ -181,7 +194,7 @@ public class TestAnnouncementServiceMock {
               LocalDate.of(2024, 2, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
       Mockito.when(userService.getAuthenticatedUser()).thenReturn(user);
       Mockito.when(announcementDao.getMostRecentPublicationStartDate())
-          .thenReturn(LocalDateTime.of(2024, 1, 1, 10, 0));
+          .thenReturn(Optional.of(LocalDateTime.of(2024, 1, 1, 10, 0)));
       Assertions.assertThat(announcementService.isOpen()).isFalse();
     }
 
@@ -194,7 +207,7 @@ public class TestAnnouncementServiceMock {
               LocalDate.of(2024, 2, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
       Mockito.when(userService.getAuthenticatedUser()).thenReturn(user);
       Mockito.when(announcementDao.getMostRecentPublicationStartDate())
-          .thenReturn(LocalDateTime.of(2024, 1, 1, 10, 0));
+          .thenReturn(Optional.of(LocalDateTime.of(2024, 1, 1, 10, 0)));
       Assertions.assertThat(announcementService.isOpen()).isTrue();
     }
   }

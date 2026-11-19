@@ -65,6 +65,8 @@ import org.iglooproject.spring.property.model.MutablePropertyId;
 import org.iglooproject.spring.property.model.PropertyId;
 import org.iglooproject.spring.property.model.PropertyIdTemplate;
 import org.javatuples.Pair;
+import org.jspecify.annotations.NullUnmarked;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -154,7 +156,9 @@ public class PropertyServiceImpl implements IConfigurablePropertyService {
 
   @Override
   public <T> void register(
-      IMutablePropertyRegistryKey<T> propertyId, Converter<String, T> converter, T defaultValue) {
+      IMutablePropertyRegistryKey<T> propertyId,
+      Converter<String, T> converter,
+      @Nullable T defaultValue) {
     register(propertyId, converter, Suppliers2.ofInstance(defaultValue));
   }
 
@@ -162,7 +166,7 @@ public class PropertyServiceImpl implements IConfigurablePropertyService {
   public <T> void register(
       IMutablePropertyRegistryKey<T> propertyId,
       Converter<String, T> converter,
-      Supplier2<? extends T> defaultValueSupplier) {
+      Supplier2<? extends @Nullable T> defaultValueSupplier) {
     registerProperty(propertyId, converter, defaultValueSupplier);
   }
 
@@ -176,7 +180,7 @@ public class PropertyServiceImpl implements IConfigurablePropertyService {
   public <T> void register(
       IImmutablePropertyRegistryKey<T> propertyId,
       Function2<String, ? extends T> function,
-      T defaultValue) {
+      @Nullable T defaultValue) {
     register(propertyId, function, Suppliers2.ofInstance(defaultValue));
   }
 
@@ -184,7 +188,7 @@ public class PropertyServiceImpl implements IConfigurablePropertyService {
   public <T> void register(
       IImmutablePropertyRegistryKey<T> propertyId,
       final Function2<String, ? extends T> function,
-      Supplier2<? extends T> defaultValueSupplier) {
+      Supplier2<? extends @Nullable T> defaultValueSupplier) {
     registerProperty(
         propertyId,
         new Converter<String, T>() {
@@ -204,7 +208,7 @@ public class PropertyServiceImpl implements IConfigurablePropertyService {
            * equals/hashcode possible issue.
            */
           @Override
-          public boolean equals(Object object) {
+          public boolean equals(@Nullable Object object) {
             return super.equals(object);
           }
 
@@ -225,14 +229,14 @@ public class PropertyServiceImpl implements IConfigurablePropertyService {
   protected <T> void registerProperty(
       IPropertyRegistryKey<T> propertyId,
       Converter<String, ? extends T> converter,
-      T defaultValue) {
+      @Nullable T defaultValue) {
     registerProperty(propertyId, converter, Suppliers2.ofInstance(defaultValue));
   }
 
   protected <T> void registerProperty(
       IPropertyRegistryKey<T> propertyId,
       Converter<String, ? extends T> converter,
-      Supplier2<? extends T> defaultValueSupplier) {
+      Supplier2<? extends @Nullable T> defaultValueSupplier) {
     Preconditions.checkNotNull(propertyId);
     Preconditions.checkNotNull(converter);
     Preconditions.checkNotNull(defaultValueSupplier);
@@ -254,7 +258,8 @@ public class PropertyServiceImpl implements IConfigurablePropertyService {
   }
 
   @Override
-  public void registerString(IPropertyRegistryKey<String> propertyId, String defaultValue) {
+  public void registerString(
+      IPropertyRegistryKey<String> propertyId, @Nullable String defaultValue) {
     registerProperty(propertyId, Converter.<String>identity(), defaultValue);
   }
 
@@ -264,7 +269,7 @@ public class PropertyServiceImpl implements IConfigurablePropertyService {
   }
 
   @Override
-  public void registerLong(IPropertyRegistryKey<Long> propertyId, Long defaultValue) {
+  public void registerLong(IPropertyRegistryKey<Long> propertyId, @Nullable Long defaultValue) {
     registerProperty(propertyId, Longs.stringConverter(), defaultValue);
   }
 
@@ -274,7 +279,8 @@ public class PropertyServiceImpl implements IConfigurablePropertyService {
   }
 
   @Override
-  public void registerInteger(IPropertyRegistryKey<Integer> propertyId, Integer defaultValue) {
+  public void registerInteger(
+      IPropertyRegistryKey<Integer> propertyId, @Nullable Integer defaultValue) {
     registerProperty(propertyId, Ints.stringConverter(), defaultValue);
   }
 
@@ -284,7 +290,7 @@ public class PropertyServiceImpl implements IConfigurablePropertyService {
   }
 
   @Override
-  public void registerFloat(IPropertyRegistryKey<Float> propertyId, Float defaultValue) {
+  public void registerFloat(IPropertyRegistryKey<Float> propertyId, @Nullable Float defaultValue) {
     registerProperty(propertyId, Floats.stringConverter(), defaultValue);
   }
 
@@ -294,7 +300,8 @@ public class PropertyServiceImpl implements IConfigurablePropertyService {
   }
 
   @Override
-  public void registerDouble(IPropertyRegistryKey<Double> propertyId, Double defaultValue) {
+  public void registerDouble(
+      IPropertyRegistryKey<Double> propertyId, @Nullable Double defaultValue) {
     registerProperty(propertyId, Doubles.stringConverter(), defaultValue);
   }
 
@@ -305,7 +312,7 @@ public class PropertyServiceImpl implements IConfigurablePropertyService {
 
   @Override
   public void registerBigDecimal(
-      IPropertyRegistryKey<BigDecimal> propertyId, BigDecimal defaultValue) {
+      IPropertyRegistryKey<BigDecimal> propertyId, @Nullable BigDecimal defaultValue) {
     registerProperty(propertyId, StringBigDecimalConverter.get(), defaultValue);
   }
 
@@ -315,7 +322,8 @@ public class PropertyServiceImpl implements IConfigurablePropertyService {
   }
 
   @Override
-  public void registerBoolean(IPropertyRegistryKey<Boolean> propertyId, Boolean defaultValue) {
+  public void registerBoolean(
+      IPropertyRegistryKey<Boolean> propertyId, @Nullable Boolean defaultValue) {
     registerProperty(propertyId, StringBooleanConverter.get(), defaultValue);
   }
 
@@ -326,7 +334,7 @@ public class PropertyServiceImpl implements IConfigurablePropertyService {
 
   @Override
   public <E extends Enum<E>> void registerEnum(
-      IPropertyRegistryKey<E> propertyId, Class<E> clazz, E defaultValue) {
+      IPropertyRegistryKey<E> propertyId, Class<E> clazz, @Nullable E defaultValue) {
     registerProperty(propertyId, Enums.stringConverter(clazz), defaultValue);
   }
 
@@ -336,12 +344,12 @@ public class PropertyServiceImpl implements IConfigurablePropertyService {
   }
 
   @Override
-  public void registerDate(IPropertyRegistryKey<Date> propertyId, String defaultValue) {
+  public void registerDate(IPropertyRegistryKey<Date> propertyId, @Nullable String defaultValue) {
     registerDate(propertyId, StringDateConverter.get().convert(defaultValue));
   }
 
   @Override
-  public void registerDate(IPropertyRegistryKey<Date> propertyId, Date defaultValue) {
+  public void registerDate(IPropertyRegistryKey<Date> propertyId, @Nullable Date defaultValue) {
     registerProperty(propertyId, StringDateConverter.get(), defaultValue);
   }
 
@@ -351,12 +359,12 @@ public class PropertyServiceImpl implements IConfigurablePropertyService {
   }
 
   @Override
-  public void registerTime(IPropertyRegistryKey<Date> propertyId, String defaultValue) {
+  public void registerTime(IPropertyRegistryKey<Date> propertyId, @Nullable String defaultValue) {
     registerTime(propertyId, StringTimeConverter.get().convert(defaultValue));
   }
 
   @Override
-  public void registerTime(IPropertyRegistryKey<Date> propertyId, Date defaultValue) {
+  public void registerTime(IPropertyRegistryKey<Date> propertyId, @Nullable Date defaultValue) {
     registerProperty(propertyId, StringTimeConverter.get(), defaultValue);
   }
 
@@ -366,7 +374,7 @@ public class PropertyServiceImpl implements IConfigurablePropertyService {
   }
 
   @Override
-  public void registerDateTime(IPropertyRegistryKey<Date> propertyId, Date defaultValue) {
+  public void registerDateTime(IPropertyRegistryKey<Date> propertyId, @Nullable Date defaultValue) {
     registerProperty(propertyId, StringDateTimeConverter.get(), defaultValue);
   }
 
@@ -376,7 +384,8 @@ public class PropertyServiceImpl implements IConfigurablePropertyService {
   }
 
   @Override
-  public void registerInstant(IPropertyRegistryKey<Instant> propertyId, Instant defaultValue) {
+  public void registerInstant(
+      IPropertyRegistryKey<Instant> propertyId, @Nullable Instant defaultValue) {
     registerProperty(propertyId, StringInstantConverter.get(), defaultValue);
   }
 
@@ -387,7 +396,7 @@ public class PropertyServiceImpl implements IConfigurablePropertyService {
 
   @Override
   public void registerLocalDate(
-      IPropertyRegistryKey<LocalDate> propertyId, LocalDate defaultValue) {
+      IPropertyRegistryKey<LocalDate> propertyId, @Nullable LocalDate defaultValue) {
     registerProperty(propertyId, StringLocalDateConverter.get(), defaultValue);
   }
 
@@ -398,7 +407,7 @@ public class PropertyServiceImpl implements IConfigurablePropertyService {
 
   @Override
   public void registerLocalDateTime(
-      IPropertyRegistryKey<LocalDateTime> propertyId, LocalDateTime defaultValue) {
+      IPropertyRegistryKey<LocalDateTime> propertyId, @Nullable LocalDateTime defaultValue) {
     registerProperty(propertyId, StringLocalDateTimeConverter.get(), defaultValue);
   }
 
@@ -409,7 +418,7 @@ public class PropertyServiceImpl implements IConfigurablePropertyService {
 
   @Override
   public void registerLocalTime(
-      IPropertyRegistryKey<LocalTime> propertyId, LocalTime defaultValue) {
+      IPropertyRegistryKey<LocalTime> propertyId, @Nullable LocalTime defaultValue) {
     registerProperty(propertyId, StringLocalTimeConverter.get(), defaultValue);
   }
 
@@ -419,7 +428,8 @@ public class PropertyServiceImpl implements IConfigurablePropertyService {
   }
 
   @Override
-  public void registerLocale(IPropertyRegistryKey<Locale> propertyId, Locale defaultValue) {
+  public void registerLocale(
+      IPropertyRegistryKey<Locale> propertyId, @Nullable Locale defaultValue) {
     registerProperty(propertyId, StringLocaleConverter.get(), defaultValue);
   }
 
@@ -430,12 +440,14 @@ public class PropertyServiceImpl implements IConfigurablePropertyService {
 
   @Override
   public void registerFile(
-      IPropertyRegistryKey<File> propertyId, final FileFilter filter, final File defaultValue) {
+      IPropertyRegistryKey<File> propertyId,
+      final FileFilter filter,
+      final @Nullable File defaultValue) {
     Preconditions.checkNotNull(filter);
     registerProperty(
         propertyId,
         new StringFileConverter(filter),
-        (Supplier2<? extends File>)
+        (Supplier2<? extends @Nullable File>)
             () -> {
               // Make this check *only* if we actually use the default value.
               Preconditions.checkState(
@@ -455,7 +467,7 @@ public class PropertyServiceImpl implements IConfigurablePropertyService {
 
   @Override
   public void registerWriteableDirectoryFile(
-      IPropertyRegistryKey<File> propertyId, File defaultValue) {
+      IPropertyRegistryKey<File> propertyId, @Nullable File defaultValue) {
     registerProperty(propertyId, StringDirectoryFileCreatingConverter.get(), defaultValue);
   }
 
@@ -465,11 +477,12 @@ public class PropertyServiceImpl implements IConfigurablePropertyService {
   }
 
   @Override
-  public void registerURI(IPropertyRegistryKey<URI> propertyId, URI defaultValue) {
+  public void registerURI(IPropertyRegistryKey<URI> propertyId, @Nullable URI defaultValue) {
     registerProperty(propertyId, StringURIConverter.get(), defaultValue);
   }
 
   @Override
+  @NullUnmarked
   public <T> T get(final PropertyId<T> propertyId) {
     Preconditions.checkNotNull(propertyId);
 
@@ -494,7 +507,7 @@ public class PropertyServiceImpl implements IConfigurablePropertyService {
   }
 
   @Override
-  public <T> String getAsString(final PropertyId<T> propertyId) {
+  public <T> @Nullable String getAsString(final PropertyId<T> propertyId) {
     Pair<Converter<String, T>, Supplier2<T>> information = getRegistrationInformation(propertyId);
 
     String valueAsString = getAsStringUnsafe(propertyId);
@@ -516,7 +529,7 @@ public class PropertyServiceImpl implements IConfigurablePropertyService {
     return valueAsString;
   }
 
-  private String getAsStringUnsafe(PropertyId<?> propertyId) {
+  private @Nullable String getAsStringUnsafe(PropertyId<?> propertyId) {
     String valueAsString = null;
     if (propertyId instanceof ImmutablePropertyId) {
       valueAsString = immutablePropertyDao.get(propertyId.getKey());
@@ -530,7 +543,7 @@ public class PropertyServiceImpl implements IConfigurablePropertyService {
   }
 
   @Override
-  public <T> void set(final MutablePropertyId<T> propertyId, final T value)
+  public <T> void set(final MutablePropertyId<T> propertyId, final @Nullable T value)
       throws ServiceException, SecurityServiceException {
     Preconditions.checkNotNull(propertyId);
 
@@ -562,7 +575,8 @@ public class PropertyServiceImpl implements IConfigurablePropertyService {
   }
 
   @Override
-  public <T> void setAsString(final MutablePropertyId<T> propertyId, final String valueAsString)
+  public <T> void setAsString(
+      final MutablePropertyId<T> propertyId, final @Nullable String valueAsString)
       throws ServiceException, SecurityServiceException {
     Preconditions.checkNotNull(propertyId);
     getRegistrationInformation(propertyId);
@@ -629,7 +643,7 @@ public class PropertyServiceImpl implements IConfigurablePropertyService {
    * @return locale, not null, from locale.availableLocales
    */
   @Override
-  public Locale toAvailableLocale(Locale locale) {
+  public Locale toAvailableLocale(@Nullable Locale locale) {
     if (locale != null) {
       Set<Locale> availableLocales = get(AVAILABLE_LOCALES);
       if (availableLocales.contains(locale)) {

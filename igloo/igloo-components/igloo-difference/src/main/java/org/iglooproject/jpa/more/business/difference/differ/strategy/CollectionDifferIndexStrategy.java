@@ -8,6 +8,7 @@ import de.danielbechler.diff.access.Accessor;
 import java.util.Collection;
 import java.util.List;
 import org.iglooproject.jpa.more.business.difference.access.CollectionItemByIndexAccessor;
+import org.jspecify.annotations.Nullable;
 
 public final class CollectionDifferIndexStrategy<T>
     extends AbstractCollectionDifferStrategy<T, Integer> {
@@ -22,7 +23,8 @@ public final class CollectionDifferIndexStrategy<T>
   }
 
   @Override
-  public Iterable<Integer> difference(Collection<T> source, Collection<T> filter) {
+  public Iterable<Integer> difference(
+      @Nullable Collection<T> source, @Nullable Collection<T> filter) {
     int sourceSize = source == null ? 0 : Iterables.size(source);
     int filterSize = filter == null ? 0 : Iterables.size(filter);
     if (sourceSize > filterSize) {
@@ -34,7 +36,8 @@ public final class CollectionDifferIndexStrategy<T>
   }
 
   @Override
-  public Iterable<Integer> intersection(Collection<T> source, Collection<T> filter) {
+  public Iterable<Integer> intersection(
+      @Nullable Collection<T> source, @Nullable Collection<T> filter) {
     int sourceSize = source == null ? 0 : Iterables.size(source);
     int filterSize = filter == null ? 0 : Iterables.size(filter);
     return ContiguousSet.create(

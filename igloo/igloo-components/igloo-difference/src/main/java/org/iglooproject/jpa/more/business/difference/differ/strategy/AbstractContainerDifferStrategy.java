@@ -5,6 +5,7 @@ import de.danielbechler.diff.access.Instances;
 import de.danielbechler.diff.differ.DifferDispatcher;
 import de.danielbechler.diff.filtering.IsReturnableResolver;
 import de.danielbechler.diff.node.DiffNode;
+import org.jspecify.annotations.Nullable;
 
 public abstract class AbstractContainerDifferStrategy<TContainer, K> {
 
@@ -18,7 +19,7 @@ public abstract class AbstractContainerDifferStrategy<TContainer, K> {
 
   protected abstract Accessor createItemAccessor(K key);
 
-  public abstract TContainer toContainer(Object object);
+  public abstract @Nullable TContainer toContainer(@Nullable Object object);
 
   public void compareKeys(
       DifferDispatcher differDispatcher,
@@ -38,7 +39,7 @@ public abstract class AbstractContainerDifferStrategy<TContainer, K> {
       IsReturnableResolver isReturnableResolver,
       final DiffNode parentNode,
       final Instances parentInstances,
-      final TContainer elements) {
+      final @Nullable TContainer elements) {
     for (final K key : difference(elements, null)) {
       final Accessor itemAccessor = createItemAccessor(key);
       doCompareItems(
@@ -56,7 +57,8 @@ public abstract class AbstractContainerDifferStrategy<TContainer, K> {
         differDispatcher, isReturnableResolver, parentNode, parentInstances, itemAccessor);
   }
 
-  public abstract Iterable<K> difference(TContainer source, TContainer filter);
+  public abstract Iterable<K> difference(@Nullable TContainer source, @Nullable TContainer filter);
 
-  public abstract Iterable<K> intersection(TContainer source, TContainer filter);
+  public abstract Iterable<K> intersection(
+      @Nullable TContainer source, @Nullable TContainer filter);
 }

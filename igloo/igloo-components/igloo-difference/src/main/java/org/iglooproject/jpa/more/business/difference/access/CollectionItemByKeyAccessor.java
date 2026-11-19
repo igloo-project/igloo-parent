@@ -9,6 +9,7 @@ import org.iglooproject.functional.Function2;
 import org.iglooproject.functional.Predicate2;
 import org.iglooproject.functional.Predicates2;
 import org.iglooproject.jpa.more.business.difference.selector.CollectionItemByKeySelector;
+import org.jspecify.annotations.Nullable;
 
 public class CollectionItemByKeyAccessor<T, K> implements Accessor, IKeyAwareAccessor<K> {
 
@@ -37,7 +38,7 @@ public class CollectionItemByKeyAccessor<T, K> implements Accessor, IKeyAwareAcc
   }
 
   @SuppressWarnings("unchecked")
-  private static <T> Collection<T> objectAsCollection(final Object object) {
+  private static <T> @Nullable Collection<T> objectAsCollection(final @Nullable Object object) {
     if (object == null) {
       return null; // NOSONAR: we can't return an empty collection, since we don't know which
       // subtype (List, Set, ...) is expected.
@@ -61,7 +62,7 @@ public class CollectionItemByKeyAccessor<T, K> implements Accessor, IKeyAwareAcc
   }
 
   @Override
-  public Object get(final Object target) {
+  public @Nullable Object get(final @Nullable Object target) {
     final Collection<T> targetCollection = objectAsCollection(target);
     if (targetCollection == null) {
       return null;

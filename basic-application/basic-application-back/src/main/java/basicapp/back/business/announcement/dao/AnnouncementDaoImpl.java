@@ -5,6 +5,7 @@ import basicapp.back.business.announcement.model.QAnnouncement;
 import com.querydsl.jpa.impl.JPAQuery;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import org.iglooproject.jpa.business.generic.dao.GenericEntityDaoImpl;
 import org.springframework.stereotype.Repository;
 
@@ -28,15 +29,16 @@ public class AnnouncementDaoImpl extends GenericEntityDaoImpl<Long, Announcement
   }
 
   @Override
-  public LocalDateTime getMostRecentPublicationStartDate() {
+  public Optional<LocalDateTime> getMostRecentPublicationStartDate() {
     LocalDateTime now = LocalDateTime.now();
-    return new JPAQuery<>(getEntityManager())
-        .select(qAnnouncement.publication.startDateTime)
-        .from(qAnnouncement)
-        .where(qAnnouncement.publication.startDateTime.loe(now))
-        .where(qAnnouncement.publication.endDateTime.goe(now))
-        .where(qAnnouncement.enabled.isTrue())
-        .orderBy(qAnnouncement.publication.startDateTime.desc())
-        .fetchFirst();
+    return Optional.ofNullable(
+        new JPAQuery<>(getEntityManager())
+            .select(qAnnouncement.publication.startDateTime)
+            .from(qAnnouncement)
+            .where(qAnnouncement.publication.startDateTime.loe(now))
+            .where(qAnnouncement.publication.endDateTime.goe(now))
+            .where(qAnnouncement.enabled.isTrue())
+            .orderBy(qAnnouncement.publication.startDateTime.desc())
+            .fetchFirst());
   }
 }

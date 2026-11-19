@@ -7,6 +7,7 @@ import org.iglooproject.functional.Predicate2;
 import org.iglooproject.functional.Supplier2;
 import org.iglooproject.jpa.more.business.difference.model.Difference;
 import org.iglooproject.jpa.more.business.history.model.AbstractHistoryDifference;
+import org.jspecify.annotations.Nullable;
 
 public interface IHistoryDifferenceFactory<T> {
 
@@ -14,7 +15,7 @@ public interface IHistoryDifferenceFactory<T> {
       Supplier2<HD> historyDifferenceSupplier,
       Difference<T> rootDifference,
       Collection<DiffNode> nodes,
-      Predicate2<? super DiffNode> dynamicNodeFilter);
+      @Nullable Predicate2<? super DiffNode> dynamicNodeFilter);
 
   @Deprecated
   default <HD extends AbstractHistoryDifference<HD, ?>> List<HD> create(

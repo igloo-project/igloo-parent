@@ -4,6 +4,7 @@ import igloo.jwt.service.IJwtToPrincipalConverter;
 import igloo.jwt.service.IJwtTokenService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.iglooproject.spring.util.StringUtils;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -30,7 +31,7 @@ public class JwtBearerPreAuthenticatedProcessingFilter<P>
   }
 
   @Override
-  protected String extractToken(HttpServletRequest request) {
+  protected @Nullable String extractToken(HttpServletRequest request) {
     String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
     // Missing header

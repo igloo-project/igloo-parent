@@ -9,16 +9,17 @@ import org.iglooproject.jpa.business.generic.model.GenericEntityReference;
 import org.iglooproject.jpa.business.generic.model.IReference;
 import org.iglooproject.jpa.business.generic.model.IReferenceable;
 import org.iglooproject.jpa.query.IQuery;
+import org.jspecify.annotations.Nullable;
 
 public interface IEntityService extends ITransactionalAspectAwareService {
 
-  <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> E getEntity(
+  <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> @Nullable E getEntity(
       Class<E> clazz, K id);
 
-  <E extends GenericEntity<?, ?>> E getEntity(IReference<E> reference);
+  <E extends GenericEntity<?, ?>> @Nullable E getEntity(@Nullable IReference<E> reference);
 
   <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> List<E> listEntity(
-      Class<E> clazz, Collection<K> ids);
+      Class<E> clazz, @Nullable Collection<K> ids);
 
   <E extends GenericEntity<?, ?>> List<E> listEntity(
       GenericEntityCollectionReference<?, E> reference);
@@ -32,7 +33,7 @@ public interface IEntityService extends ITransactionalAspectAwareService {
    * @return An object representing the same entity, but which is guaranteed to be attached to the
    *     session
    */
-  <E extends GenericEntity<?, ?>> E getEntity(IReferenceable<E> referenceOrEntity);
+  <E extends GenericEntity<?, ?>> @Nullable E getEntity(IReferenceable<E> referenceOrEntity);
 
   void flush();
 

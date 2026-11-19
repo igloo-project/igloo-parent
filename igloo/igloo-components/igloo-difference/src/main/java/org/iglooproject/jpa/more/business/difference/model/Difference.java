@@ -2,23 +2,24 @@ package org.iglooproject.jpa.more.business.difference.model;
 
 import de.danielbechler.diff.node.DiffNode;
 import de.danielbechler.diff.path.NodePath;
+import org.jspecify.annotations.Nullable;
 
 public class Difference<T> {
 
-  private final T before;
+  private final @Nullable T before;
 
   private final T after;
 
   private final DiffNode diffNode;
 
-  public Difference(T before, T after, DiffNode diffNode) {
+  public Difference(@Nullable T before, T after, DiffNode diffNode) {
     super();
     this.before = before;
     this.after = after;
     this.diffNode = diffNode;
   }
 
-  public T getBefore() {
+  public @Nullable T getBefore() {
     return before;
   }
 

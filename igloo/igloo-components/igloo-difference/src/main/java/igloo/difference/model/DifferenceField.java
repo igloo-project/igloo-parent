@@ -6,26 +6,27 @@ import org.iglooproject.commons.util.fieldpath.FieldPath;
 import org.iglooproject.jpa.more.business.difference.differ.strategy.AbstractContainerDifferStrategy;
 import org.iglooproject.jpa.more.business.difference.util.CompositeProxyInitializer;
 import org.iglooproject.jpa.more.business.difference.util.IProxyInitializer;
+import org.jspecify.annotations.Nullable;
 
 public class DifferenceField {
   private final FieldPath path;
   private final Class<?> type;
   private final BindingRoot<?, ?> binding;
-  private final BindingRoot<?, ?> containedBinding;
+  private final @Nullable BindingRoot<?, ?> containedBinding;
   private final DifferenceMode mode;
-  private final DifferenceField parent;
-  private final IProxyInitializer<?> initializer;
-  private final AbstractContainerDifferStrategy<?, ?> containerDifferStrategy;
+  private final @Nullable DifferenceField parent;
+  private final @Nullable IProxyInitializer<?> initializer;
+  private final @Nullable AbstractContainerDifferStrategy<?, ?> containerDifferStrategy;
 
   public DifferenceField(
       FieldPath path,
       BindingRoot<?, ?> binding,
       Class<?> type,
       DifferenceMode mode,
-      DifferenceField parent,
-      BindingRoot<?, ?> containedBinding,
-      IProxyInitializer<?> initializer,
-      AbstractContainerDifferStrategy<?, ?> containerDifferStrategy) {
+      @Nullable DifferenceField parent,
+      @Nullable BindingRoot<?, ?> containedBinding,
+      @Nullable IProxyInitializer<?> initializer,
+      @Nullable AbstractContainerDifferStrategy<?, ?> containerDifferStrategy) {
     this.path = path;
     this.binding = binding;
     this.type = type;
@@ -48,13 +49,13 @@ public class DifferenceField {
     return binding;
   }
 
-  public BindingRoot<?, ?> getContainedBinding() {
+  public @Nullable BindingRoot<?, ?> getContainedBinding() {
     return containedBinding;
   }
 
   public BindingRoot<?, ?> getIntrospectionBinding() {
     if (containedBinding != null) {
-      return getContainedBinding();
+      return containedBinding;
     } else {
       return getBinding();
     }
@@ -64,15 +65,15 @@ public class DifferenceField {
     return mode;
   }
 
-  public DifferenceField getParent() {
+  public @Nullable DifferenceField getParent() {
     return parent;
   }
 
-  public IProxyInitializer<?> getInitializer() {
+  public @Nullable IProxyInitializer<?> getInitializer() {
     return initializer;
   }
 
-  public AbstractContainerDifferStrategy<?, ?> getContainerDifferStrategy() {
+  public @Nullable AbstractContainerDifferStrategy<?, ?> getContainerDifferStrategy() {
     return containerDifferStrategy;
   }
 
@@ -83,7 +84,7 @@ public class DifferenceField {
   public DifferenceField copy(
       DifferenceMode mode,
       List<IProxyInitializer<?>> initializers,
-      AbstractContainerDifferStrategy<?, ?> containerDifferStrategy) {
+      @Nullable AbstractContainerDifferStrategy<?, ?> containerDifferStrategy) {
     IProxyInitializer<?> initializer = null;
     if (initializers != null && !initializers.isEmpty()) {
       // appropriate generic cannot be enforced
@@ -102,7 +103,7 @@ public class DifferenceField {
   }
 
   @Override
-  public boolean equals(Object value) {
+  public boolean equals(@Nullable Object value) {
     return value instanceof DifferenceField field && field.getPath().equals(path);
   }
 

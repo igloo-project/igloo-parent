@@ -13,6 +13,7 @@ import org.iglooproject.functional.Supplier2;
 import org.iglooproject.jpa.more.business.difference.model.Difference;
 import org.iglooproject.jpa.more.business.difference.util.DiffUtils;
 import org.iglooproject.jpa.more.business.history.model.AbstractHistoryDifference;
+import org.jspecify.annotations.Nullable;
 
 /**
  * A HistoryDifferenceFactory which creates a HistoryDifference for each DiffNode:
@@ -53,7 +54,7 @@ public final class DefaultHistoryDifferenceFactory<T> extends AbstractHistoryDif
       Supplier2<HD> historyDifferenceSupplier,
       Difference<T> rootDifference,
       Collection<DiffNode> nodes,
-      Predicate2<? super DiffNode> dynamicNodeFilter) {
+      @Nullable Predicate2<? super DiffNode> dynamicNodeFilter) {
     final List<HD> result = Lists.newLinkedList();
     for (DiffNode node : nodes) {
       FieldPath path = DiffUtils.toFieldPath(node.getPath());
@@ -75,7 +76,7 @@ public final class DefaultHistoryDifferenceFactory<T> extends AbstractHistoryDif
       DiffNode parentNode,
       DiffNode currentNode,
       FieldPath currentNodeRelativePath,
-      Predicate2<? super DiffNode> dynamicNodeFilter) {
+      @Nullable Predicate2<? super DiffNode> dynamicNodeFilter) {
     HD difference =
         newHistoryDifference(
             historyDifferenceSupplier,
@@ -100,7 +101,7 @@ public final class DefaultHistoryDifferenceFactory<T> extends AbstractHistoryDif
       final Difference<T> rootDifference,
       final DiffNode parentNode,
       final FieldPath parentRelativePath,
-      Predicate2<? super DiffNode> dynamicNodeFilter) {
+      @Nullable Predicate2<? super DiffNode> dynamicNodeFilter) {
     final List<HD> result = Lists.newLinkedList();
     parentNode.visitChildren(
         new Visitor() {

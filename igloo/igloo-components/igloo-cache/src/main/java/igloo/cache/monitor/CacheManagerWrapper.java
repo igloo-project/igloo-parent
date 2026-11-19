@@ -1,6 +1,8 @@
 package igloo.cache.monitor;
 
 import java.util.Objects;
+import org.jspecify.annotations.Nullable;
+import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 
 /**
@@ -26,7 +28,7 @@ public class CacheManagerWrapper {
   }
 
   @Override
-  public boolean equals(Object obj) {
+  public boolean equals(@Nullable Object obj) {
     if (this == obj) {
       return true;
     }
@@ -42,6 +44,9 @@ public class CacheManagerWrapper {
   }
 
   public void clearAll() {
-    cacheManager.getCacheNames().forEach(name -> cacheManager.getCache(name).clear());
+    cacheManager.getCacheNames().stream()
+        .map(cacheManager::getCache)
+        .filter(Objects::nonNull)
+        .forEach(Cache::clear);
   }
 }

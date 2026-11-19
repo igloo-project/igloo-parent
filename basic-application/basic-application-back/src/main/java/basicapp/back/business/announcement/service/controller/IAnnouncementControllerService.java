@@ -8,6 +8,7 @@ import java.util.List;
 import org.iglooproject.commons.util.security.PermissionObject;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
+import org.jspecify.annotations.Nullable;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 public interface IAnnouncementControllerService {
@@ -21,7 +22,7 @@ public interface IAnnouncementControllerService {
       throws SecurityServiceException, ServiceException;
 
   @PreAuthorize(ANNOUNCEMENT_WRITE)
-  void cleanWithoutSaving(@PermissionObject Announcement announcement);
+  void cleanWithoutSaving(@PermissionObject @Nullable Announcement announcement);
 
   List<Announcement> listEnabled();
 

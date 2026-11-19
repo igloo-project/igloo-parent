@@ -7,6 +7,8 @@ import org.iglooproject.spring.property.exception.PropertyServiceIncompleteRegis
 import org.iglooproject.spring.property.model.IMutablePropertyValueMap;
 import org.iglooproject.spring.property.model.MutablePropertyId;
 import org.iglooproject.spring.property.model.PropertyId;
+import org.jspecify.annotations.NullUnmarked;
+import org.jspecify.annotations.Nullable;
 
 public interface IPropertyService {
 
@@ -16,6 +18,7 @@ public interface IPropertyService {
    * @throws PropertyServiceIncompleteRegistrationException If the property was not properly {@link
    *     IPropertyRegistry registered}.
    */
+  @NullUnmarked
   <T> T get(PropertyId<T> propertyId);
 
   /**
@@ -28,7 +31,7 @@ public interface IPropertyService {
    * @throws ServiceException If an error occurred in the underlying data store.
    * @throws SecurityServiceException If an error occurred in the underlying data store.
    */
-  <T> void set(MutablePropertyId<T> propertyId, T value)
+  <T> void set(MutablePropertyId<T> propertyId, @Nullable T value)
       throws ServiceException, SecurityServiceException;
 
   /**
@@ -52,7 +55,7 @@ public interface IPropertyService {
    * @throws ServiceException If an error occurred in the underlying data store.
    * @throws SecurityServiceException If an error occurred in the underlying data store.
    */
-  <T> void setAsString(MutablePropertyId<T> propertyId, String valueAsString)
+  <T> void setAsString(MutablePropertyId<T> propertyId, @Nullable String valueAsString)
       throws ServiceException, SecurityServiceException;
 
   /**
@@ -62,9 +65,9 @@ public interface IPropertyService {
    * @throws PropertyServiceIncompleteRegistrationException If the property was not properly {@link
    *     IPropertyRegistry registered}.
    */
-  <T> String getAsString(PropertyId<T> propertyId);
+  <T> @Nullable String getAsString(PropertyId<T> propertyId);
 
   boolean isConfigurationTypeDevelopment();
 
-  Locale toAvailableLocale(Locale locale);
+  Locale toAvailableLocale(@Nullable Locale locale);
 }

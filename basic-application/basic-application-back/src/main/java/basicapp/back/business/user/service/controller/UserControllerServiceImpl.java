@@ -5,6 +5,7 @@ import basicapp.back.business.user.model.User;
 import basicapp.back.business.user.service.business.IUserService;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
+import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,13 +18,13 @@ public class UserControllerServiceImpl implements IUserControllerService {
   }
 
   @Override
-  public void saveBasicUser(User user, String password)
+  public void saveBasicUser(User user, @Nullable String password)
       throws SecurityServiceException, ServiceException {
     userService.saveBasicUser(user, password);
   }
 
   @Override
-  public void saveTechnicalUser(User user, String password)
+  public void saveTechnicalUser(User user, @Nullable String password)
       throws SecurityServiceException, ServiceException {
     userService.saveTechnicalUser(user, password);
   }
@@ -54,7 +55,7 @@ public class UserControllerServiceImpl implements IUserControllerService {
   }
 
   @Override
-  public void initPasswordRecoveryRequest(EmailAddress emailAddress)
+  public void initPasswordRecoveryRequest(@Nullable EmailAddress emailAddress)
       throws SecurityServiceException, ServiceException {
     userService.initPasswordRecoveryRequest(emailAddress);
   }
@@ -70,12 +71,12 @@ public class UserControllerServiceImpl implements IUserControllerService {
   }
 
   @Override
-  public User getByEmailAddressCaseInsensitive(EmailAddress emailAddress) {
+  public @Nullable User getByEmailAddressCaseInsensitive(@Nullable EmailAddress emailAddress) {
     return userService.getByEmailAddressCaseInsensitive(emailAddress);
   }
 
   @Override
-  public User getByUsername(String value) {
+  public @Nullable User getByUsername(@Nullable String value) {
     return userService.getByUsername(value);
   }
 }

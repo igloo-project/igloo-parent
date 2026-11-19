@@ -23,6 +23,7 @@ import java.util.List;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.business.generic.model.IReference;
 import org.iglooproject.jpa.business.generic.util.GenericEntityUtils;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Implémentation de {@link IGenericEntityDao}
@@ -60,23 +61,23 @@ public abstract class GenericEntityDaoImpl<
   }
 
   @Override
-  public E getById(K id) {
+  public @Nullable E getById(K id) {
     return super.getEntity(getObjectClass(), id);
   }
 
   @Override
-  public <T extends E> T getById(Class<T> clazz, K id) {
+  public <T extends E> @Nullable T getById(Class<T> clazz, K id) {
     return super.getEntity(clazz, id);
   }
 
   @Override
   @SuppressWarnings("unchecked")
-  public <T extends E> T getById(IReference<T> reference) {
+  public <T extends E> @Nullable T getById(@Nullable IReference<T> reference) {
     return reference == null ? null : getById(reference.getType(), (K) reference.getId());
   }
 
   @Override
-  public E getByNaturalId(Object naturalId) {
+  public @Nullable E getByNaturalId(Object naturalId) {
     return super.getEntityByNaturalId(getObjectClass(), naturalId);
   }
 
@@ -106,7 +107,7 @@ public abstract class GenericEntityDaoImpl<
   }
 
   @Override
-  public List<E> list(Long limit, Long offset) {
+  public List<E> list(@Nullable Long limit, @Nullable Long offset) {
     PathBuilder<E> pathBuilder = new PathBuilder<>(getObjectClass(), "rootAlias");
     return super.list(pathBuilder, limit, offset);
   }

@@ -42,7 +42,7 @@ public class HistoryEntityReferenceTypeContributor implements TypeContributor {
 
   public static boolean isOptimizationEnabled(ServiceRegistry serviceRegistry) {
     return serviceRegistry
-        .getService(ConfigurationService.class)
+        .requireService(ConfigurationService.class)
         .<Boolean>getSetting(
             PROPERTY_IGLOO_HISTORYLOG_OPTIMIZATION_ENABLED,
             HistoryEntityReferenceTypeContributor::convertBoolean,

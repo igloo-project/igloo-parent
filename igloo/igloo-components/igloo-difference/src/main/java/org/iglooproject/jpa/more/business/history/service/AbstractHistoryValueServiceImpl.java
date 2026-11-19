@@ -17,6 +17,7 @@ import org.iglooproject.jpa.more.rendering.service.IRendererService;
 import org.iglooproject.jpa.util.HibernateUtils;
 import org.iglooproject.spring.property.SpringPropertyIds;
 import org.iglooproject.spring.property.service.IPropertyService;
+import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class AbstractHistoryValueServiceImpl implements IHistoryValueService {
@@ -28,12 +29,12 @@ public abstract class AbstractHistoryValueServiceImpl implements IHistoryValueSe
   @Autowired protected IPropertyService propertyService;
 
   @Override
-  public final <T> HistoryValue createHistoryValue(T object) {
+  public final <T extends @Nullable Object> HistoryValue createHistoryValue(T object) {
     return create(object, HistoryValue::build);
   }
 
   @Override
-  public final <T> HistoryEventValue createHistoryEventValue(T object) {
+  public final <T extends @Nullable Object> HistoryEventValue createHistoryEventValue(T object) {
     return create(object, HistoryEventValue::build);
   }
 
@@ -57,7 +58,8 @@ public abstract class AbstractHistoryValueServiceImpl implements IHistoryValueSe
    * just to get the right type, but it would seem a little dumb...
    */
   @SuppressWarnings("unchecked")
-  public final <T, H extends IHistoryValue> H create(T object, IHistoryValueProvider<H> supplier) {
+  public final <T extends @Nullable Object, H extends IHistoryValue> H create(
+      T object, IHistoryValueProvider<H> supplier) {
     if (object == null) {
       return supplier.build(null, null, null);
     } else {
@@ -85,19 +87,19 @@ public abstract class AbstractHistoryValueServiceImpl implements IHistoryValueSe
     return supplier.build(label, serialized, null);
   }
 
-  protected String serialize(Object value) {
+  protected @Nullable String serialize(@Nullable Object value) {
     if (value instanceof Enum) {
       return ((Enum<?>) value).name();
     }
     return null;
   }
 
-  protected Object deserialize(String value) {
+  protected @Nullable Object deserialize(@Nullable String value) {
     return null; // Can't do a thing with the default implementation of serialize(Object)
   }
 
   @Override
-  public final Object retrieve(IHistoryValue value) {
+  public final @Nullable Object retrieve(@Nullable IHistoryValue value) {
     if (value == null) {
       return null;
     }
@@ -111,13 +113,14 @@ public abstract class AbstractHistoryValueServiceImpl implements IHistoryValueSe
   }
 
   @VisibleForTesting
-  public <E extends GenericEntity<?, ?>> E getEntity(IReference<E> reference) {
+  public <E extends GenericEntity<?, ?>> @Nullable E getEntity(IReference<E> reference) {
     return entityManager.find(reference.getType(), reference.getId());
   }
 
   @Override
   @SuppressWarnings({"rawtypes", "unchecked"})
-  public final String render(IHistoryValue value, IRenderer renderer, Locale locale) {
+  public final @Nullable String render(
+      @Nullable IHistoryValue value, @Nullable IRenderer renderer, Locale locale) {
     if (value == null) {
       return null;
     }
@@ -134,7 +137,7 @@ public abstract class AbstractHistoryValueServiceImpl implements IHistoryValueSe
 
   @Override
   @SuppressWarnings({"unchecked", "rawtypes"})
-  public final String render(IHistoryValue value, Locale locale) {
+  public final @Nullable String render(@Nullable IHistoryValue value, Locale locale) {
     if (value == null) {
       return null;
     }
@@ -149,7 +152,7 @@ public abstract class AbstractHistoryValueServiceImpl implements IHistoryValueSe
   }
 
   @Override
-  public Optional<Boolean> matches(IHistoryValue historyValue, Object value) {
+  public Optional<Boolean> matches(@Nullable IHistoryValue historyValue, @Nullable Object value) {
     if (historyValue == null) {
       // We never return null from create(...). Thus a null HistoryValue does not match anything.
       return Optional.of(false);

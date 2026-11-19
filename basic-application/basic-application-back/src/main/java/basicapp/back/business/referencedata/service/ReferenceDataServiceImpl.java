@@ -8,6 +8,7 @@ import java.util.List;
 import org.iglooproject.jpa.more.business.generic.model.search.EnabledFilter;
 import org.iglooproject.jpa.more.business.referencedata.model.GenericReferenceData;
 import org.iglooproject.jpa.more.business.referencedata.service.IGenericReferenceDataService;
+import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,7 +21,7 @@ public class ReferenceDataServiceImpl implements IReferenceDataService {
   }
 
   @Override
-  public <E extends GenericReferenceData<?, ?>> E getById(Class<E> clazz, Long id) {
+  public <E extends GenericReferenceData<?, ?>> @Nullable E getById(Class<E> clazz, Long id) {
     return genericReferenceDataService.getById(clazz, id);
   }
 
@@ -79,14 +80,14 @@ public class ReferenceDataServiceImpl implements IReferenceDataService {
   }
 
   @Override
-  public <E extends GenericReferenceData<?, ?>, V extends Comparable<?>> E getByField(
-      EntityPath<E> entityPath, SimpleExpression<V> field, V fieldValue) {
+  public <E extends GenericReferenceData<?, ?>, V extends Comparable<?>> @Nullable E getByField(
+      EntityPath<E> entityPath, SimpleExpression<V> field, @Nullable V fieldValue) {
     return genericReferenceDataService.getByField(entityPath, field, fieldValue);
   }
 
   @Override
-  public <E extends GenericReferenceData<?, ?>> E getByFieldIgnoreCase(
-      EntityPath<E> entityPath, StringExpression field, String fieldValue) {
+  public <E extends GenericReferenceData<?, ?>> @Nullable E getByFieldIgnoreCase(
+      EntityPath<E> entityPath, StringExpression field, @Nullable String fieldValue) {
     return genericReferenceDataService.getByFieldIgnoreCase(entityPath, field, fieldValue);
   }
 }

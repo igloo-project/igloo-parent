@@ -4,6 +4,7 @@ import java.time.Instant;
 import org.iglooproject.jpa.more.business.history.model.AbstractHistoryLog;
 import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryEventSummary;
 import org.iglooproject.jpa.util.HibernateUtils;
+import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class AbstractHistoryEventSummaryServiceImpl<U>
@@ -11,7 +12,7 @@ public abstract class AbstractHistoryEventSummaryServiceImpl<U>
 
   @Autowired private IHistoryValueService valueService;
 
-  protected abstract U getDefaultSubject();
+  protected abstract @Nullable U getDefaultSubject();
 
   @Override
   public void refresh(HistoryEventSummary evenement) {
@@ -24,7 +25,7 @@ public abstract class AbstractHistoryEventSummaryServiceImpl<U>
   }
 
   @Override
-  public void refresh(HistoryEventSummary evenement, Instant date, U subject) {
+  public void refresh(HistoryEventSummary evenement, Instant date, @Nullable U subject) {
     evenement.setDate(date);
     evenement.setSubject(valueService.createHistoryEventValue(HibernateUtils.unwrap(subject)));
   }
@@ -42,7 +43,7 @@ public abstract class AbstractHistoryEventSummaryServiceImpl<U>
   }
 
   @Override
-  public boolean isSubject(HistoryEventSummary event, U subject) {
+  public boolean isSubject(HistoryEventSummary event, @Nullable U subject) {
     return valueService.matches(event.getSubject(), subject).or(false);
   }
 }

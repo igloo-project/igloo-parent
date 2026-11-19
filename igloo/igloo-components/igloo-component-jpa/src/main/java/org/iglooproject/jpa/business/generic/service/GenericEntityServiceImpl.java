@@ -25,6 +25,7 @@ import org.iglooproject.jpa.business.generic.model.IReference;
 import org.iglooproject.jpa.business.generic.util.GenericEntityUtils;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Implémentation de {@link IGenericEntityService}
@@ -65,21 +66,21 @@ public abstract class GenericEntityServiceImpl<
   }
 
   @Override
-  public E getById(K id) {
+  public @Nullable E getById(K id) {
     return genericDao.getById(id);
   }
 
   @Override
-  public <T extends E> T getById(Class<T> clazz, K id) {
+  public <T extends E> @Nullable T getById(Class<T> clazz, K id) {
     return genericDao.getById(clazz, id);
   }
 
   @Override
-  public <T extends E> T getById(IReference<T> reference) {
+  public <T extends E> @Nullable T getById(@Nullable IReference<T> reference) {
     return genericDao.getById(reference);
   }
 
-  protected E getByNaturalId(Object naturalId) {
+  protected @Nullable E getByNaturalId(Object naturalId) {
     return genericDao.getByNaturalId(naturalId);
   }
 

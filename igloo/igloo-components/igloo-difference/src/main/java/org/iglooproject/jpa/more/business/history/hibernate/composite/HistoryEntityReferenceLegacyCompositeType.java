@@ -8,6 +8,7 @@ import org.hibernate.type.SqlTypes;
 import org.hibernate.type.descriptor.java.ClassJavaType;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.more.business.history.hibernate.HistoryEntityReferenceTypeJdbcType;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Use old-style varchar storing for <code>type</code> field.
@@ -26,10 +27,10 @@ public class HistoryEntityReferenceLegacyCompositeType extends AbstractHistoryVa
     @Column(nullable = true)
     @JavaType(ClassJavaType.class)
     @JdbcTypeCode(SqlTypes.VARCHAR)
-    private /* final */ Class<? extends GenericEntity<Long, ?>> type;
+    private /* final */ @Nullable Class<? extends GenericEntity<Long, ?>> type;
 
     @Column(nullable = true)
     @GenericField
-    private /* final */ Long id;
+    private /* final */ @Nullable Long id;
   }
 }

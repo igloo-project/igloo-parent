@@ -2,6 +2,7 @@ package org.iglooproject.jpa.business.generic.service;
 
 import jakarta.persistence.EntityManager;
 import java.util.concurrent.Callable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * This service must inherit from {@link ITransactionalAspectAwareService} for everything to work
@@ -11,7 +12,7 @@ import java.util.concurrent.Callable;
 public interface ITransactionScopeIndependantRunnerService
     extends ITransactionalAspectAwareService {
 
-  <T> T run(Callable<T> callable);
+  <T extends @Nullable Object> T run(Callable<T> callable);
 
-  <T> T run(boolean readOnly, Callable<T> callable);
+  <T extends @Nullable Object> T run(boolean readOnly, Callable<T> callable);
 }

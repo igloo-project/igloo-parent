@@ -14,25 +14,26 @@ import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.business.generic.model.GenericEntityCollectionReference;
 import org.iglooproject.jpa.business.generic.model.IReference;
 import org.iglooproject.jpa.business.generic.model.QGenericEntity;
+import org.jspecify.annotations.Nullable;
 
 public class EntityDaoImpl implements IEntityDao {
 
   @PersistenceContext private EntityManager entityManager;
 
   @Override
-  public <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> E getEntity(
-      Class<E> clazz, K id) {
+  public <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>>
+      @Nullable E getEntity(Class<E> clazz, K id) {
     return entityManager.find(clazz, id);
   }
 
   @Override
-  public <E extends GenericEntity<?, ?>> E getEntity(IReference<E> reference) {
+  public <E extends GenericEntity<?, ?>> @Nullable E getEntity(@Nullable IReference<E> reference) {
     return reference == null ? null : entityManager.find(reference.getType(), reference.getId());
   }
 
   @Override
   public <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> List<E> listEntity(
-      Class<E> clazz, Collection<K> ids) {
+      Class<E> clazz, @Nullable Collection<K> ids) {
     return listEntityUnsafe(clazz, ids);
   }
 
@@ -44,7 +45,7 @@ public class EntityDaoImpl implements IEntityDao {
 
   @SuppressWarnings("unchecked")
   private <K extends Serializable & Comparable<K>, E extends GenericEntity<?, ?>>
-      List<E> listEntityUnsafe(Class<? extends E> clazz, Collection<?> ids) {
+      List<E> listEntityUnsafe(Class<? extends E> clazz, @Nullable Collection<?> ids) {
     if (ids == null || ids.isEmpty()) {
       return Lists.newArrayListWithCapacity(0);
     }

@@ -6,6 +6,7 @@ import igloo.loginmdc.annotation.LogExecution;
 import java.util.List;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
+import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -33,7 +34,7 @@ public class AnnouncementControllerServiceImpl implements IAnnouncementControlle
   }
 
   @Override
-  public void cleanWithoutSaving(Announcement announcement) {
+  public void cleanWithoutSaving(@Nullable Announcement announcement) {
     announcementService.cleanWithoutSaving(announcement);
   }
 

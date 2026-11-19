@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.hibernate.HibernateException;
@@ -25,6 +26,7 @@ import org.hibernate.type.descriptor.jdbc.JdbcType;
 import org.hibernate.type.descriptor.jdbc.JdbcTypeIndicators;
 import org.hibernate.type.descriptor.jdbc.VarcharJdbcType;
 import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryEntityReference;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Custom {@link JdbcType} to manage {@link HistoryEntityReference#getType()} as an enum. It allows
@@ -38,10 +40,10 @@ public class HistoryEntityReferenceTypeJdbcType implements AdjustableJdbcType {
   public static final int SQL_TYPE_CODE = 6004;
 
   @SuppressWarnings("rawtypes")
-  private Map<String, Class> valueToClass;
+  private @Nullable Map<String, Class> valueToClass;
 
   @SuppressWarnings("rawtypes")
-  private Map<Class, String> classToValue;
+  private @Nullable Map<Class, String> classToValue;
 
   public HistoryEntityReferenceTypeJdbcType() {
     this.valueToClass = null;
@@ -131,11 +133,11 @@ public class HistoryEntityReferenceTypeJdbcType implements AdjustableJdbcType {
 
   /** Map a string value to a {@link Class} (database to entity). Null maps to null. */
   @SuppressWarnings("rawtypes")
-  protected Class fromString(String value) {
+  protected @Nullable Class fromString(@Nullable String value) {
     if (value == null) {
       return null;
     }
-    Class clazz = valueToClass.get(value);
+    Class clazz = Objects.requireNonNull(valueToClass, "Types not set up").get(value);
     if (clazz == null) {
       throw new HibernateException("Class not found for type " + value);
     }
@@ -143,11 +145,11 @@ public class HistoryEntityReferenceTypeJdbcType implements AdjustableJdbcType {
   }
 
   /** Map a {@link Class} value to the excepted type (entity to database). Null maps to null. */
-  protected String fromClass(@SuppressWarnings("rawtypes") Class clazz) {
+  protected @Nullable String fromClass(@SuppressWarnings("rawtypes") @Nullable Class clazz) {
     if (clazz == null) {
       return null;
     }
-    String value = classToValue.get(clazz);
+    String value = Objects.requireNonNull(classToValue, "Types not set up").get(clazz);
     if (value == null) {
       throw new HibernateException("Class " + clazz.getName() + " is not a detected entity type");
     }

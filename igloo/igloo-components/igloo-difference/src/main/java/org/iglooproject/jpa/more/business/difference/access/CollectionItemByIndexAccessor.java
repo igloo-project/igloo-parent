@@ -6,6 +6,7 @@ import de.danielbechler.diff.selector.ElementSelector;
 import java.util.Arrays;
 import java.util.Collection;
 import org.iglooproject.jpa.more.business.difference.selector.CollectionItemByIndexSelector;
+import org.jspecify.annotations.Nullable;
 
 public class CollectionItemByIndexAccessor<T> implements Accessor, IKeyAwareAccessor<Integer> {
 
@@ -21,7 +22,7 @@ public class CollectionItemByIndexAccessor<T> implements Accessor, IKeyAwareAcce
   }
 
   @SuppressWarnings("unchecked")
-  private static <T> Collection<T> objectAsCollection(final Object object) {
+  private static <T> @Nullable Collection<T> objectAsCollection(final @Nullable Object object) {
     if (object == null) {
       return null; // NOSONAR
     } else if (object instanceof Collection) {
@@ -43,12 +44,12 @@ public class CollectionItemByIndexAccessor<T> implements Accessor, IKeyAwareAcce
   }
 
   @Override
-  public Object get(final Object target) {
+  public @Nullable Object get(final @Nullable Object target) {
     final Collection<T> targetCollection = objectAsCollection(target);
     if (targetCollection == null) {
       return null;
     }
-    return Iterables.get(targetCollection, index, null);
+    return Iterables.<@Nullable T>get(targetCollection, index, null);
   }
 
   @Override

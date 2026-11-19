@@ -1,7 +1,6 @@
 package org.igloo.storage.api;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * {@link IMimeTypeResolver} allow to select a mimetype from a filename. Returned mimetype cannot be
@@ -12,6 +11,5 @@ public interface IMimeTypeResolver {
   /**
    * @see IMimeTypeResolver
    */
-  @Nonnull
   String resolve(@Nullable String filename);
 }

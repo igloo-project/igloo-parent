@@ -2,6 +2,7 @@ package org.iglooproject.jpa.more.business.difference.util;
 
 import java.util.concurrent.Callable;
 import org.iglooproject.jpa.more.business.difference.model.Difference;
+import org.jspecify.annotations.Nullable;
 
 public interface IDifferenceFromReferenceGenerator<T> extends IDifferenceGenerator<T> {
 
@@ -17,7 +18,7 @@ public interface IDifferenceFromReferenceGenerator<T> extends IDifferenceGenerat
    * @see #initializeReference(Object)
    * @see #diff(Object, Object)
    */
-  Callable<T> getReferenceProvider(T value);
+  Callable<@Nullable T> getReferenceProvider(T value);
 
   /**
    * Must be called on an object returned by {@link #retrieveReference(Object)} to make it usable by
@@ -26,5 +27,5 @@ public interface IDifferenceFromReferenceGenerator<T> extends IDifferenceGenerat
    * @see #retrieveReference(Object)
    * @see #diff(Object, Object)
    */
-  void initializeReference(T reference);
+  void initializeReference(@Nullable T reference);
 }

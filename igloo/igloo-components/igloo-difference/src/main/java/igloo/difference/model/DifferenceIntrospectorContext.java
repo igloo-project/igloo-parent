@@ -7,6 +7,7 @@ import org.bindgen.BindingRoot;
 import org.iglooproject.commons.util.fieldpath.FieldPath;
 import org.iglooproject.commons.util.fieldpath.FieldPathComponent;
 import org.iglooproject.commons.util.fieldpath.FieldPathPropertyComponent;
+import org.jspecify.annotations.Nullable;
 
 public class DifferenceIntrospectorContext {
   final DifferenceField field;
@@ -42,7 +43,7 @@ public class DifferenceIntrospectorContext {
       String name,
       BindingRoot<?, ?> binding,
       Class<?> type,
-      BindingRoot<?, ?> containedBinding) {
+      @Nullable BindingRoot<?, ?> containedBinding) {
     DifferenceField childField;
     childField =
         new DifferenceField(

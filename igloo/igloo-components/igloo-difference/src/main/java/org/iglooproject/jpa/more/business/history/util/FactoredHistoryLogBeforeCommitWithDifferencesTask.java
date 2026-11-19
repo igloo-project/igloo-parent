@@ -2,12 +2,14 @@ package org.iglooproject.jpa.more.business.history.util;
 
 import com.google.common.collect.Lists;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.Callable;
 import org.iglooproject.jpa.business.generic.service.ITransactionScopeIndependantRunnerService;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.more.util.transaction.model.ITransactionSynchronizationBeforeCommitTask;
+import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class FactoredHistoryLogBeforeCommitWithDifferencesTask
@@ -76,8 +78,8 @@ public class FactoredHistoryLogBeforeCommitWithDifferencesTask
 
   private static class HistoryLogRunner<T> {
     private final HistoryLogBeforeCommitWithDifferencesTask<T, ?, ?, ?, ?> task;
-    private Callable<T> referenceProvider;
-    private T reference;
+    private @Nullable Callable<@Nullable T> referenceProvider;
+    private @Nullable T reference;
 
     public HistoryLogRunner(HistoryLogBeforeCommitWithDifferencesTask<T, ?, ?, ?, ?> task) {
       super();
@@ -91,7 +93,7 @@ public class FactoredHistoryLogBeforeCommitWithDifferencesTask
 
     public void retrieveReference() {
       try {
-        this.reference = referenceProvider.call();
+        this.reference = Objects.requireNonNull(referenceProvider).call();
       } catch (Exception e) {
         if (e instanceof InterruptedException) {
           Thread.currentThread().interrupt();

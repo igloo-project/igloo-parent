@@ -9,16 +9,17 @@ import com.querydsl.core.types.dsl.StringExpression;
 import java.util.List;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.business.generic.model.QGenericEntity;
+import org.jspecify.annotations.Nullable;
 
 public abstract class AbstractEntityDaoImpl<E> extends JpaDaoSupport {
 
-  protected <T extends E, V extends Comparable<?>> T getByField(
-      EntityPath<T> entityPath, SimpleExpression<V> field, V fieldValue) {
+  protected <T extends E, V extends Comparable<?>> @Nullable T getByField(
+      EntityPath<T> entityPath, SimpleExpression<V> field, @Nullable V fieldValue) {
     return queryByPredicate(entityPath, eqOrIsNull(field, fieldValue)).fetchOne();
   }
 
-  protected <T extends E> T getByFieldIgnoreCase(
-      EntityPath<T> entityPath, StringExpression field, String fieldValue) {
+  protected <T extends E> @Nullable T getByFieldIgnoreCase(
+      EntityPath<T> entityPath, StringExpression field, @Nullable String fieldValue) {
     return queryByPredicate(entityPath, eqIgnoreCaseOrIsNull(field, fieldValue)).fetchOne();
   }
 
@@ -26,7 +27,8 @@ public abstract class AbstractEntityDaoImpl<E> extends JpaDaoSupport {
     return list(entityPath, null, null);
   }
 
-  protected <T extends E> List<T> list(EntityPath<T> entityPath, Long limit, Long offset) {
+  protected <T extends E> List<T> list(
+      EntityPath<T> entityPath, @Nullable Long limit, @Nullable Long offset) {
     OrderSpecifier<?> order = null;
     if (GenericEntity.class.isAssignableFrom(entityPath.getType())) {
       // cast possible puisqu'on vient de vérifier le type de objectclass
@@ -41,7 +43,7 @@ public abstract class AbstractEntityDaoImpl<E> extends JpaDaoSupport {
   protected <T extends E, V extends Comparable<?>> List<T> listByField(
       EntityPath<T> entityPath,
       SimpleExpression<V> field,
-      V fieldValue,
+      @Nullable V fieldValue,
       OrderSpecifier<?>... orderSpecifiers) {
     return queryByPredicateOrdered(entityPath, eqOrIsNull(field, fieldValue), orderSpecifiers)
         .fetch();
@@ -50,9 +52,9 @@ public abstract class AbstractEntityDaoImpl<E> extends JpaDaoSupport {
   protected <T extends E, V extends Comparable<?>> List<T> listByField(
       EntityPath<T> entityPath,
       SimpleExpression<V> field,
-      V fieldValue,
-      Long limit,
-      Long offset,
+      @Nullable V fieldValue,
+      @Nullable Long limit,
+      @Nullable Long offset,
       OrderSpecifier<?>... orderSpecifiers) {
     return queryByPredicateOrdered(
             entityPath, eqOrIsNull(field, fieldValue), limit, offset, orderSpecifiers)
@@ -64,16 +66,17 @@ public abstract class AbstractEntityDaoImpl<E> extends JpaDaoSupport {
   }
 
   protected <V extends Comparable<?>> Long countByField(
-      EntityPath<? extends E> entityPath, SimpleExpression<V> field, V fieldValue) {
+      EntityPath<? extends E> entityPath, SimpleExpression<V> field, @Nullable V fieldValue) {
     return queryByPredicate(entityPath, eqOrIsNull(field, fieldValue)).distinct().fetchCount();
   }
 
   private static <V extends Comparable<?>> Predicate eqOrIsNull(
-      SimpleExpression<V> field, V fieldValue) {
+      SimpleExpression<V> field, @Nullable V fieldValue) {
     return fieldValue != null ? field.eq(fieldValue) : field.isNull();
   }
 
-  private static Predicate eqIgnoreCaseOrIsNull(StringExpression field, String fieldValue) {
+  private static Predicate eqIgnoreCaseOrIsNull(
+      StringExpression field, @Nullable String fieldValue) {
     return fieldValue != null ? field.equalsIgnoreCase(fieldValue) : field.isNull();
   }
 }

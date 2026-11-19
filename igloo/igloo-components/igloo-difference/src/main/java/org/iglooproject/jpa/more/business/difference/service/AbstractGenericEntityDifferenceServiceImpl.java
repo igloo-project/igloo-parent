@@ -36,6 +36,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.concurrent.Callable;
 import org.bindgen.BindingRoot;
 import org.hibernate.proxy.HibernateProxy;
@@ -62,6 +63,7 @@ import org.iglooproject.jpa.more.business.difference.util.TypeSafeBindingProxyIn
 import org.iglooproject.jpa.more.business.history.model.AbstractHistoryDifference;
 import org.iglooproject.jpa.more.rendering.service.IRendererService;
 import org.iglooproject.jpa.util.HibernateUtils;
+import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -312,7 +314,8 @@ public abstract class AbstractGenericEntityDifferenceServiceImpl<T extends Gener
               public void node(DiffNode node, Visit visit) {
                 visit.dontGoDeeper();
                 FieldPathComponent component =
-                    DiffUtils.toFieldPathComponent(node.getPath().getLastElementSelector());
+                    Objects.requireNonNull(
+                        DiffUtils.toFieldPathComponent(node.getPath().getLastElementSelector()));
                 pathComponents.addLast(component);
                 Collection<IHistoryDifferenceFactory<T>> specificFactories =
                     specificHistoryDifferenceFactories.get(FieldPath.of(pathComponents));
@@ -348,7 +351,7 @@ public abstract class AbstractGenericEntityDifferenceServiceImpl<T extends Gener
   private abstract class AbstractDifferenceFromReferenceGenerator
       implements IDifferenceFromReferenceGenerator<T> {
     @Override
-    public Difference<T> diff(T modified, T reference) {
+    public Difference<T> diff(T modified, @Nullable T reference) {
       return new Difference<>(reference, modified, createDiffer().compare(modified, reference));
     }
 
@@ -369,11 +372,11 @@ public abstract class AbstractGenericEntityDifferenceServiceImpl<T extends Gener
       return diff(after, before);
     }
 
-    private Callable<T> getReferenceProviderAndInitializer(T value) {
+    private Callable<@Nullable T> getReferenceProviderAndInitializer(T value) {
       final GenericEntityReference<?, T> reference = GenericEntityReference.ofUnknownIdType(value);
-      return new Callable<T>() {
+      return new Callable<@Nullable T>() {
         @Override
-        public T call() throws Exception {
+        public @Nullable T call() throws Exception {
           if (reference == null) {
             return null;
           } else {
@@ -386,11 +389,11 @@ public abstract class AbstractGenericEntityDifferenceServiceImpl<T extends Gener
     }
 
     @Override
-    public Callable<T> getReferenceProvider(T value) {
+    public Callable<@Nullable T> getReferenceProvider(T value) {
       final GenericEntityReference<?, T> reference = GenericEntityReference.ofUnknownIdType(value);
-      return new Callable<T>() {
+      return new Callable<@Nullable T>() {
         @Override
-        public T call() throws Exception {
+        public @Nullable T call() throws Exception {
           if (reference == null) {
             return null;
           } else {
@@ -402,7 +405,7 @@ public abstract class AbstractGenericEntityDifferenceServiceImpl<T extends Gener
     }
 
     @Override
-    public void initializeReference(T reference) {
+    public void initializeReference(@Nullable T reference) {
       proxyInitializer.initialize(reference);
     }
   }

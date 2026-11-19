@@ -9,6 +9,7 @@ import org.hibernate.type.SqlTypes;
 import org.hibernate.type.descriptor.WrapperOptions;
 import org.hibernate.usertype.UserType;
 import org.iglooproject.commons.util.fieldpath.FieldPath;
+import org.jspecify.annotations.Nullable;
 
 public class FieldPathType implements UserType<FieldPath> {
 
@@ -34,7 +35,7 @@ public class FieldPathType implements UserType<FieldPath> {
   }
 
   @Override
-  public FieldPath nullSafeGet(ResultSet rs, int position, WrapperOptions options)
+  public @Nullable FieldPath nullSafeGet(ResultSet rs, int position, WrapperOptions options)
       throws SQLException {
     String columnValue = rs.getString(position);
     if (rs.wasNull()) {

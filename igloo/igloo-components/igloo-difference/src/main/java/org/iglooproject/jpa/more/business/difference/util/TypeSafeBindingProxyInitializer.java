@@ -3,6 +3,7 @@ package org.iglooproject.jpa.more.business.difference.util;
 import com.google.common.collect.ImmutableList;
 import org.bindgen.BindingRoot;
 import org.iglooproject.jpa.util.HibernateUtils;
+import org.jspecify.annotations.Nullable;
 
 public class TypeSafeBindingProxyInitializer<R> implements IProxyInitializer<R> {
   private final Iterable<? extends BindingRoot<? extends R, ?>> bindings;
@@ -20,7 +21,7 @@ public class TypeSafeBindingProxyInitializer<R> implements IProxyInitializer<R> 
   }
 
   @Override
-  public void initialize(R value) {
+  public void initialize(@Nullable R value) {
     R unwrapped = HibernateUtils.unwrap(value);
     for (BindingRoot<? extends R, ?> binding : bindings) {
       HibernateUtils.initialize(getTypeSafe(binding, unwrapped));
@@ -28,7 +29,8 @@ public class TypeSafeBindingProxyInitializer<R> implements IProxyInitializer<R> 
   }
 
   @SuppressWarnings("unchecked")
-  private <R2 extends R, T> T getTypeSafe(BindingRoot<R2, T> binding, R unwrapped) {
+  private <R2 extends R, T> @Nullable T getTypeSafe(
+      BindingRoot<R2, T> binding, @Nullable R unwrapped) {
     if (unwrapped != null
         && binding.getRootBinding().getType().isAssignableFrom(unwrapped.getClass())) {
       return binding.getSafelyWithRoot((R2) unwrapped);

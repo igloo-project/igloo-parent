@@ -6,8 +6,6 @@ import igloo.difference.model.DifferenceField;
 import igloo.difference.model.DifferenceFields;
 import igloo.difference.model.DifferenceIntrospectorContext;
 import igloo.difference.model.DifferenceMode;
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
@@ -21,6 +19,7 @@ import org.bindgen.BindingRoot;
 import org.iglooproject.commons.util.fieldpath.FieldPath;
 import org.iglooproject.jpa.more.business.difference.differ.strategy.AbstractContainerDifferStrategy;
 import org.iglooproject.jpa.more.business.difference.util.IProxyInitializer;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -180,8 +179,7 @@ public class DifferenceIntrospector {
   }
 
   /** Return binding of contained type for a collection field. Else null. */
-  @Nullable
-  private BindingRoot<?, ?> getContainedBinding(
+  private @Nullable BindingRoot<?, ?> getContainedBinding(
       DifferenceFields fields, FieldPath path, BindingRoot<?, ?> binding) {
     if (getBindings().containsKey(path)) {
       return getBindings().get(path);
@@ -192,7 +190,6 @@ public class DifferenceIntrospector {
   /**
    * Return binding of type for a scalar field, or binding of contained type for a collection field.
    */
-  @Nonnull
   private BindingRoot<?, ?> getBinding(
       DifferenceFields fields, FieldPath path, BindingRoot<?, ?> binding) {
     if (getBindings().containsKey(path)) {

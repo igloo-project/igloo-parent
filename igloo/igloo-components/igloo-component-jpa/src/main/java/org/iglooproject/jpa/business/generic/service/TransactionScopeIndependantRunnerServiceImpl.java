@@ -1,6 +1,7 @@
 package org.iglooproject.jpa.business.generic.service;
 
 import java.util.concurrent.Callable;
+import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
@@ -32,12 +33,12 @@ public class TransactionScopeIndependantRunnerServiceImpl
   }
 
   @Override
-  public <T> T run(final Callable<T> callable) {
+  public <T extends @Nullable Object> T run(final Callable<T> callable) {
     return run(true, callable);
   }
 
   @Override
-  public <T> T run(boolean readOnly, final Callable<T> callable) {
+  public <T extends @Nullable Object> T run(boolean readOnly, final Callable<T> callable) {
     TransactionTemplate transactionTemplate =
         readOnly ? readOnlyTransactionTemplate : writeTransactionTemplate;
 
