@@ -134,7 +134,7 @@ class TestIndexingDependencyRemoval {
   }
 
   protected void assertCount(EntityManager entityManager, Class<?> clazz, int count) {
-    assertCount(entityManager, clazz, SearchPredicateFactory::matchAll, 1);
+    assertCount(entityManager, clazz, SearchPredicateFactory::matchAll, count);
   }
 
   protected void assertCount(

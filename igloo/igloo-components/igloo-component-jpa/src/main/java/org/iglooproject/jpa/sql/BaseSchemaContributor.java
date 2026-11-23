@@ -40,10 +40,8 @@ public class BaseSchemaContributor implements SchemaContributor {
     if (this.getClass() != obj.getClass()) {
       return false;
     }
-    if (obj instanceof BaseSchemaContributor schemaContributor) {
-      return schemaContributor.getName().equals(schemaContributor.getName());
-    }
-    return false;
+    BaseSchemaContributor schemaContributor = (BaseSchemaContributor) obj;
+    return getName().equals(schemaContributor.getName());
   }
 
   @Override

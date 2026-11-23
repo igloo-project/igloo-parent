@@ -76,7 +76,7 @@ class TestTransactionService extends AbstractJpaCoreTestCase {
 
     try {
       serviceExceptionService.throwCheckedException();
-      fail(String.format("Exception {} obligatoire", CheckedException.class.getName()));
+      fail(String.format("Exception %s obligatoire", CheckedException.class.getName()));
     } catch (CheckedException _) {
     }
 

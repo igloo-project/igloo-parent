@@ -142,7 +142,7 @@ public class ConfigurationLogger implements ApplicationListener<ContextRefreshed
   }
 
   private void logPropertyAsTrace(String propertyName, Object value) {
-    if (LOGGER.isInfoEnabled()) {
+    if (LOGGER.isTraceEnabled()) {
       String formatted = logPattern.formatted(propertyName, value);
       LOGGER.trace(formatted);
     }

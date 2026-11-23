@@ -223,8 +223,8 @@ public abstract class AbstractTask implements Runnable, Serializable {
                      * will be called.
                      */
                     TaskExecutionResult executionResult = doTask();
-                    batchReportBeanAtomicReference.set(executionResult.getReport());
                     Objects.requireNonNull(executionResult, "executionResult must not be null");
+                    batchReportBeanAtomicReference.set(executionResult.getReport());
 
                     /*
                      * If the task execution caught a business exception in doTask without propagating it

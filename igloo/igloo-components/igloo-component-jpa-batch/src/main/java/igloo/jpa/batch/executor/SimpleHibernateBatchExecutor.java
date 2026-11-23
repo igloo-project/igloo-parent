@@ -219,7 +219,7 @@ public class SimpleHibernateBatchExecutor
           "End of batch for {}: {}/{} objects treated", loggerContext, offset, expectedTotalCount);
     } catch (ExecutionException e) {
       LOGGER.info(
-          "End of batch for {}: {}/{} objects treated, but caught exception '{}'",
+          "End of batch for {}: {}/{} objects treated, but caught exception",
           loggerContext,
           offset,
           expectedTotalCount,
