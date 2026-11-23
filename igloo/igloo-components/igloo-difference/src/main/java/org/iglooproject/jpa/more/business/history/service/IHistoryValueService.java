@@ -1,7 +1,7 @@
 package org.iglooproject.jpa.more.business.history.service;
 
-import com.google.common.base.Optional;
 import java.util.Locale;
+import java.util.Optional;
 import org.iglooproject.commons.util.rendering.IRenderer;
 import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryEventValue;
 import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryValue;
@@ -28,7 +28,7 @@ public interface IHistoryValueService {
    * @param historyValue The {@link HistoryValue} to be matched against.
    * @param value The value that we want to compare to <code>historyValue</code>
    * @return <code>Optional.of(true)</code> or <code>Optional.of(false)</code> if the answer could
-   *     be determined, or <code>Optional.absent()</code> if there is not enough information in the
+   *     be determined, or <code>Optional.empty()</code> if there is not enough information in the
    *     {@link HistoryValue} to give a definitive answer.
    */
   Optional<Boolean> matches(IHistoryValue historyValue, Object value);

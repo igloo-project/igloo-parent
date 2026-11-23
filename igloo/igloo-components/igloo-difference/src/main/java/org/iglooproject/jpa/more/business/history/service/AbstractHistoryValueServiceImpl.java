@@ -1,10 +1,10 @@
 package org.iglooproject.jpa.more.business.history.service;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.Optional;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import java.util.Locale;
+import java.util.Optional;
 import org.iglooproject.commons.util.rendering.IRenderer;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.business.generic.model.GenericEntityReference;
@@ -166,6 +166,6 @@ public abstract class AbstractHistoryValueServiceImpl implements IHistoryValueSe
     }
 
     // Don't know
-    return Optional.absent();
+    return Optional.empty();
   }
 }

@@ -43,6 +43,6 @@ public abstract class AbstractHistoryEventSummaryServiceImpl<U>
 
   @Override
   public boolean isSubject(HistoryEventSummary event, U subject) {
-    return valueService.matches(event.getSubject(), subject).or(false);
+    return valueService.matches(event.getSubject(), subject).orElse(false);
   }
 }
