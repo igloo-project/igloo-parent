@@ -56,15 +56,12 @@ public final class DefaultHistoryDifferenceValueRenderer
                 HISTORY_DIFFERENCE_ROOT, entityResourceKeyPart, pathResourceKeyPart, ".value"),
             locale,
             dataModel)
-        .toJavaUtil()
         .or(
             () ->
                 getStringOptional(
-                        JOINER.join(
-                            HISTORY_DIFFERENCE_ROOT, ".common", pathResourceKeyPart, ".value"),
-                        locale,
-                        dataModel)
-                    .toJavaUtil())
+                    JOINER.join(HISTORY_DIFFERENCE_ROOT, ".common", pathResourceKeyPart, ".value"),
+                    locale,
+                    dataModel))
         .orElseGet(() -> getString(DEFAULT_KEY, locale, dataModel));
   }
 

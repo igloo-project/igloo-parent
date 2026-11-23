@@ -38,26 +38,22 @@ public final class HistoryDifferencePathRenderer
             JOINER.join(HISTORY_DIFFERENCE_ROOT, entityResourceKeyPart, pathResourceKeyPart),
             locale,
             keyDataModel)
-        .toJavaUtil()
         .or(
             () ->
                 getStringOptional(
-                        JOINER.join(BUSINESS_ROOT, entityResourceKeyPart, pathResourceKeyPart),
-                        locale,
-                        keyDataModel)
-                    .toJavaUtil())
+                    JOINER.join(BUSINESS_ROOT, entityResourceKeyPart, pathResourceKeyPart),
+                    locale,
+                    keyDataModel))
         .or(
             () ->
                 getStringOptional(
-                        JOINER.join(HISTORY_DIFFERENCE_ROOT, ".common", pathResourceKeyPart),
-                        locale,
-                        keyDataModel)
-                    .toJavaUtil())
+                    JOINER.join(HISTORY_DIFFERENCE_ROOT, ".common", pathResourceKeyPart),
+                    locale,
+                    keyDataModel))
         .or(
             () ->
                 getStringOptional(
-                        JOINER.join(BUSINESS_ROOT, pathResourceKeyPart), locale, keyDataModel)
-                    .toJavaUtil())
+                    JOINER.join(BUSINESS_ROOT, pathResourceKeyPart), locale, keyDataModel))
         .orElseGet(
             () -> {
               LOGGER.error(

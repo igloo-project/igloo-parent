@@ -4,7 +4,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Joiner.MapJoiner;
-import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Range;
 import com.google.common.collect.Streams;
@@ -26,6 +25,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
 import java.util.MissingResourceException;
+import java.util.Optional;
 import org.apache.wicket.Localizer;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.convert.ConversionException;
@@ -69,7 +69,7 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
    * Utility method that can be used when a resource key value is needed in the render()
    * implementation.
    *
-   * <p>Returns Optional.absent() when the key is not found.
+   * <p>Returns Optional.empty() when the key is not found.
    */
   protected static Optional<String> getStringOptional(String key, Locale locale) {
     return getStringOptional(key, locale, null);
@@ -79,16 +79,11 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
    * Utility method that can be used when a resource key value is needed in the render()
    * implementation.
    *
-   * <p>Returns Optional.absent() when the key is not found.
+   * <p>Returns Optional.empty() when the key is not found.
    */
   protected static Optional<String> getStringOptional(String key, Locale locale, IModel<?> model) {
-    String defaultValue = new String(); // NOSONAR
-    String result = Localizer.get().getString(key, null, model, locale, null, defaultValue);
-    if (result == defaultValue) { // NOSONAR
-      return Optional.absent();
-    } else {
-      return Optional.of(result);
-    }
+    return Optional.ofNullable(
+        Localizer.get().getStringIgnoreSettings(key, null, model, locale, null, null));
   }
 
   /**
@@ -116,7 +111,7 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
   }
 
   private static final Renderer<Object> NULL_RENDERER =
-      new ConstantRenderer<Object>(null) {
+      new ConstantRenderer<>(null) {
         private static final long serialVersionUID = 5711969182760960576L;
 
         private Object readResolve() {
@@ -129,7 +124,7 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
   }
 
   private static final Renderer<Object> BLANK_RENDERER =
-      new ConstantRenderer<Object>("") {
+      new ConstantRenderer<>("") {
         private static final long serialVersionUID = 5711969182760960576L;
 
         private Object readResolve() {
