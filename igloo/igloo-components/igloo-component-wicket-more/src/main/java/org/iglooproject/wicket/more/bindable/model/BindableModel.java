@@ -187,9 +187,15 @@ public class BindableModel<E> implements IBindableModel<E> {
     FieldPath currentPath = path;
     do {
       getPropertyModelsByImpactingPaths().put(currentPath, model);
-      currentPath = currentPath.parent().get();
+      currentPath = requireParent(currentPath);
     } while (!currentPath.isRoot());
   }
+  /** Parent of a property path; binding the root path itself is a programming error. */
+  private static FieldPath requireParent(FieldPath path) {
+    return path.parent()
+        .orElseThrow(() -> new IllegalArgumentException("Cannot bind root path: " + path));
+  }
+
 
   @Override
   public <T, C extends Collection<T>> IBindableCollectionModel<T, C> bindCollectionWithCache(
@@ -206,12 +212,12 @@ public class BindableModel<E> implements IBindableModel<E> {
       FieldPath path,
       SerializableSupplier2<? extends C> newCollectionSupplier,
       SerializableFunction2<? super T, ? extends IModel<T>> itemModelFunction) {
-    BindableModel<?> owner = getOrCreateSimpleModel(path.parent().get());
+    BindableModel<?> owner = getOrCreateSimpleModel(requireParent(path));
     if (owner != this) {
       return owner.bindCollectionWithCache(
           rootBindableModel,
           originalPath,
-          path.relativeToParent().get(),
+          path.relativeToParent().orElseThrow(),
           newCollectionSupplier,
           itemModelFunction);
     }
@@ -259,9 +265,9 @@ public class BindableModel<E> implements IBindableModel<E> {
 
   private <T, C extends Collection<T>> IBindableCollectionModel<T, C> bindCollectionAlreadyAdded(
       FieldPath path) {
-    BindableModel<?> owner = getOrCreateSimpleModel(path.parent().get());
+    BindableModel<?> owner = getOrCreateSimpleModel(requireParent(path));
     if (owner != this) {
-      return owner.bindCollectionAlreadyAdded(path.relativeToParent().get());
+      return owner.bindCollectionAlreadyAdded(path.relativeToParent().orElseThrow());
     }
     @SuppressWarnings("unchecked") // Generic parameters are known, by construction
     BindableModel<C> propertyModel = (BindableModel<C>) getPropertyModels().get(path);
@@ -297,12 +303,12 @@ public class BindableModel<E> implements IBindableModel<E> {
       SerializableSupplier2<? extends M> newMapSupplier,
       SerializableFunction2<? super K, ? extends IModel<K>> keyModelFunction,
       SerializableFunction2<? super V, ? extends IModel<V>> valueModelFunction) {
-    BindableModel<?> owner = getOrCreateSimpleModel(path.parent().get());
+    BindableModel<?> owner = getOrCreateSimpleModel(requireParent(path));
     if (owner != this) {
       return owner.bindMapWithCache(
           rootBindableModel,
           originalPath,
-          path.relativeToParent().get(),
+          path.relativeToParent().orElseThrow(),
           newMapSupplier,
           keyModelFunction,
           valueModelFunction);
@@ -350,9 +356,9 @@ public class BindableModel<E> implements IBindableModel<E> {
 
   private <K, V, M extends Map<K, V>> IBindableMapModel<K, V, M> bindMapAlreadyAdded(
       FieldPath path) {
-    BindableModel<?> owner = getOrCreateSimpleModel(path.parent().get());
+    BindableModel<?> owner = getOrCreateSimpleModel(requireParent(path));
     if (owner != this) {
-      return owner.bindMapAlreadyAdded(path.relativeToParent().get());
+      return owner.bindMapAlreadyAdded(path.relativeToParent().orElseThrow());
     }
     @SuppressWarnings("unchecked") // Generic parameters are known, by construction
     IBindableModel<M> propertyModel = (IBindableModel<M>) getPropertyModels().get(path);
@@ -386,7 +392,7 @@ public class BindableModel<E> implements IBindableModel<E> {
     if (path.isRoot()) {
       // Binding the root, i.e. this
       return (BindableModel<T>) this;
-    } else if (path.parent().get().isRoot()) {
+    } else if (path.parent().orElseThrow().isRoot()) {
       // Binding a direct child property
       BindableModel<T> propertyModel = (BindableModel<T>) getPropertyModels().get(path);
       if (propertyModel == null) {
@@ -400,8 +406,8 @@ public class BindableModel<E> implements IBindableModel<E> {
        * We make sure to never create a "shortcut" that would skip an intermediary model, because
        * it would allow users to create multiple BindableModels pointing to the same property.
        */
-      FieldPath parentPath = path.parent().get();
-      FieldPath relativePropertyPath = path.relativeTo(parentPath).get();
+      FieldPath parentPath = path.parent().orElseThrow();
+      FieldPath relativePropertyPath = path.relativeTo(parentPath).orElseThrow();
       return getOrCreateSimpleModel(parentPath).getOrCreateSimpleModel(relativePropertyPath);
     }
   }

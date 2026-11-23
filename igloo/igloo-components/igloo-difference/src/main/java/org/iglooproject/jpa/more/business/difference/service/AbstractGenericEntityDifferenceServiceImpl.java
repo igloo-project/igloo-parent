@@ -254,10 +254,13 @@ public abstract class AbstractGenericEntityDifferenceServiceImpl<T extends Gener
       // all the children of the parent (the categories are inherited by the children and the
       // NodePathInclusionResolver
       // considers that we include all the children of a node.
-      path = path.parent().get();
+      path =
+          path.parent()
+              .orElseThrow(
+                  () -> new IllegalArgumentException("Cannot include root path: " + binding));
       while (!path.isRoot()) {
         parentInclusionResolver.setInclusion(DiffUtils.toNodePath(path), Inclusion.INCLUDED);
-        path = path.parent().get();
+        path = path.parent().orElseThrow();
       }
     }
 

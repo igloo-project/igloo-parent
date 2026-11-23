@@ -344,8 +344,8 @@ public class DifferenceIntrospector {
       if (path1FirstComponent.equals(path2FirstComponent)) {
         // first components are equal; compare tails
         return compare(
-            path1.relativeTo(path1FirstComponent).get(),
-            path2.relativeTo(path1FirstComponent).get());
+            path1.relativeTo(path1FirstComponent).orElseThrow(),
+            path2.relativeTo(path1FirstComponent).orElseThrow());
       } else {
         // first components are different; just compare names
         return path1.iterator().next().getName().compareTo(path2.iterator().next().getName());
