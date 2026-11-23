@@ -15,12 +15,6 @@
     <productionBranchName>main</productionBranchName>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <maven-toolchains-plugin.version>3.3.0</maven-toolchains-plugin.version>
-    <maven-site-plugin.version>4.0.0-M16</maven-site-plugin.version>
-    <igloo.wagon-ssh-external-plugin.version>3.4.1</igloo.wagon-ssh-external-plugin.version>
-    <maven-project-info-reports-plugin.version>3.9.0</maven-project-info-reports-plugin.version>
-    <igloo.owasp-maven-plugin.version>13.0.0</igloo.owasp-maven-plugin.version>
-    <igloo.versions-maven-plugin.version>2.22.0</igloo.versions-maven-plugin.version>
     <!-- Math.random is not used for security purpose  -->
     <sonar.issue.ignore.multicriteria>e1</sonar.issue.ignore.multicriteria>
     <sonar.issue.ignore.multicriteria.e1.ruleKey>javascript:S2245</sonar.issue.ignore.multicriteria.e1.ruleKey>
@@ -31,21 +25,8 @@
       <plugins>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-toolchains-plugin</artifactId>
-          <version>${maven-toolchains-plugin.version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-site-plugin</artifactId>
-          <version>${maven-site-plugin.version}</version>
-          <dependencies>
-            <dependency>
-              <!-- add support for ssh/scp -->
-              <groupId>org.apache.maven.wagon</groupId>
-              <artifactId>wagon-ssh-external</artifactId>
-              <version>${igloo.wagon-ssh-external-plugin.version}</version>
-            </dependency>
-          </dependencies>
+          <!-- version and wagon-ssh-external dependency are managed by igloo-maven -->
           <executions>
             <!-- BUGS (?): target/site is erroneously used as source by site:stage-deploy -->
             <!-- found on maven-site-plugin 3.8.2 / not verified on a minimal use case -->
@@ -57,21 +38,6 @@
               </configuration>
             </execution>
           </executions>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-project-info-reports-plugin</artifactId>
-          <version>${maven-project-info-reports-plugin.version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.owasp</groupId>
-          <artifactId>dependency-check-maven</artifactId>
-          <version>${igloo.owasp-maven-plugin.version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.codehaus.mojo</groupId>
-          <artifactId>versions-maven-plugin</artifactId>
-          <version>${igloo.versions-maven-plugin.version}</version>
         </plugin>
       </plugins>
     </pluginManagement>
