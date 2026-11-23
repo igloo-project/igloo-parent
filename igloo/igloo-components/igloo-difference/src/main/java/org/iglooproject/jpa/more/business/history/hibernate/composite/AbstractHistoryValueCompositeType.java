@@ -19,14 +19,11 @@ public abstract class AbstractHistoryValueCompositeType
   @Override
   public Object getPropertyValue(HistoryEntityReference component, int property)
       throws HibernateException {
-    switch (property) {
-      case 0:
-        return component.getId();
-      case 1:
-        return component.getType();
-      default:
-        throw new HibernateException("Illegal property index: " + property);
-    }
+    return switch (property) {
+      case 0 -> component.getId();
+      case 1 -> component.getType();
+      default -> throw new HibernateException("Illegal property index: " + property);
+    };
   }
 
   @SuppressWarnings("unchecked")

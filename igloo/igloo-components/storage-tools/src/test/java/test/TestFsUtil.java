@@ -50,7 +50,7 @@ class TestFsUtil {
     IStorageUnitType targetType = mock(IStorageUnitType.class);
     target.setType(targetType);
 
-    when(targetType.getFichierPathStrategy()).thenReturn(f -> "subfolder-target/fichier-target");
+    when(targetType.getFichierPathStrategy()).thenReturn(_ -> "subfolder-target/fichier-target");
   }
 
   @Test

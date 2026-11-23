@@ -39,7 +39,7 @@ abstract class GTable<R, C, V, T extends Table<R, C, V>>
   protected abstract T createTable();
 
   public static <R, C, V> GTable<R, C, V, Table<R, C, V>> createLinked(QTriplet<R, C, V> expr) {
-    return new GTable<R, C, V, Table<R, C, V>>(expr) {
+    return new GTable<>(expr) {
       private static final long serialVersionUID = 1L;
 
       @Override
@@ -52,7 +52,7 @@ abstract class GTable<R, C, V, T extends Table<R, C, V>>
   @SuppressWarnings("rawtypes")
   public static <R extends Comparable, C extends Comparable, V>
       GTable<R, C, V, RowSortedTable<R, C, V>> createSorted(QTriplet<R, C, V> expr) {
-    return new GTable<R, C, V, RowSortedTable<R, C, V>>(expr) {
+    return new GTable<>(expr) {
       private static final long serialVersionUID = 1L;
 
       @Override
@@ -66,7 +66,7 @@ abstract class GTable<R, C, V, T extends Table<R, C, V>>
       QTriplet<R, C, V> expr,
       final Comparator<? super R> rowComparator,
       final Comparator<? super C> columnComparator) {
-    return new GTable<R, C, V, RowSortedTable<R, C, V>>(expr) {
+    return new GTable<>(expr) {
       private static final long serialVersionUID = 1L;
 
       @Override
@@ -78,7 +78,7 @@ abstract class GTable<R, C, V, T extends Table<R, C, V>>
 
   @Override
   public GroupCollector<Triplet<R, C, V>, T> createGroupCollector() {
-    return new GroupCollector<Triplet<R, C, V>, T>() {
+    return new GroupCollector<>() {
 
       private final T table = createTable();
 

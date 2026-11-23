@@ -9,7 +9,7 @@ public class AjaxActions {
 
   public static <T> IOneParameterAjaxAction<T> ignoreParameter(final IAjaxAction action) {
     Objects.requireNonNull(action);
-    return new IOneParameterAjaxAction<T>() {
+    return new IOneParameterAjaxAction<>() {
       private static final long serialVersionUID = 1L;
 
       @Override

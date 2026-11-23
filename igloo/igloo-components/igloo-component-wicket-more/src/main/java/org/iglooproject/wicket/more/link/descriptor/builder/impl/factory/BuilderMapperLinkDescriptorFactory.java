@@ -47,32 +47,29 @@ public final class BuilderMapperLinkDescriptorFactory<TTarget, TLinkDescriptor>
 
   private static Tuple extractParameters(Tuple parameters, List<Integer> indices) {
     int size = indices.size();
-    switch (size) {
-      case 0:
-        return null;
-      case 1:
-        return Unit.with(parameters.getValue(indices.get(0)));
-      case 2:
-        return Pair.with(parameters.getValue(indices.get(0)), parameters.getValue(indices.get(1)));
-      case 3:
-        return Triplet.with(
-            parameters.getValue(indices.get(0)),
-            parameters.getValue(indices.get(1)),
-            parameters.getValue(indices.get(2)));
-      case 4:
-        return Quartet.with(
-            parameters.getValue(indices.get(0)),
-            parameters.getValue(indices.get(1)),
-            parameters.getValue(indices.get(2)),
-            parameters.getValue(indices.get(3)));
-      default:
-        throw new IllegalStateException(
-            "Only Unit, Pair, Triplet and Quartet parameters are supported for ILinkParameterMappingEntryFactory");
-    }
+    return switch (size) {
+      case 0 -> null;
+      case 1 -> Unit.with(parameters.getValue(indices.get(0)));
+      case 2 -> Pair.with(parameters.getValue(indices.get(0)), parameters.getValue(indices.get(1)));
+      case 3 ->
+          Triplet.with(
+              parameters.getValue(indices.get(0)),
+              parameters.getValue(indices.get(1)),
+              parameters.getValue(indices.get(2)));
+      case 4 ->
+          Quartet.with(
+              parameters.getValue(indices.get(0)),
+              parameters.getValue(indices.get(1)),
+              parameters.getValue(indices.get(2)),
+              parameters.getValue(indices.get(3)));
+      default ->
+          throw new IllegalStateException(
+              "Only Unit, Pair, Triplet and Quartet parameters are supported for ILinkParameterMappingEntryFactory");
+    };
   }
 
   @Override
-  public final TLinkDescriptor create(Tuple parameters) {
+  public TLinkDescriptor create(Tuple parameters) {
     Collection<ILinkParameterMappingEntry> addedParameterMappingEntries = Lists.newArrayList();
     Collection<ILinkParameterValidator> addedValidators = Lists.newArrayList();
 

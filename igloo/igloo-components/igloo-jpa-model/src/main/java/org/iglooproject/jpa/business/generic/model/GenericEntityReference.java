@@ -97,11 +97,9 @@ public class GenericEntityReference<
     /* Caution here: we really need an instanceof, not a this.getClass() == other.getClass()
      * because some subclasses may simply be workarounds (for instance HistoryEntityReference in JPA-More)
      */
-    if (!(obj instanceof GenericEntityReference)) {
+    if (!(obj instanceof GenericEntityReference<?, ?> other)) {
       return false;
     }
-    GenericEntityReference<?, ? extends GenericEntity<?, ?>> other =
-        (GenericEntityReference<?, ?>) obj;
     return new EqualsBuilder()
         .append(getId(), other.getId())
         .append(getUpperEntityClass(getType()), getUpperEntityClass(other.getType()))

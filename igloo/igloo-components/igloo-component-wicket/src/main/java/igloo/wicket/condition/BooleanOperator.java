@@ -4,7 +4,7 @@ public enum BooleanOperator {
   AND {
     @Override
     protected boolean isDecisiveOperand(boolean operand) {
-      return operand == false;
+      return !operand;
     }
 
     @Override
@@ -15,7 +15,7 @@ public enum BooleanOperator {
   OR {
     @Override
     protected boolean isDecisiveOperand(boolean operand) {
-      return operand == true;
+      return operand;
     }
 
     @Override
@@ -26,7 +26,7 @@ public enum BooleanOperator {
   NOR {
     @Override
     protected boolean isDecisiveOperand(boolean operand) {
-      return operand == true;
+      return operand;
     }
 
     @Override
@@ -37,7 +37,7 @@ public enum BooleanOperator {
   NAND {
     @Override
     protected boolean isDecisiveOperand(boolean operand) {
-      return operand == false;
+      return !operand;
     }
 
     @Override

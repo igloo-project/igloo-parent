@@ -229,7 +229,7 @@ public abstract class AbstractConfiguredDifferenceServiceImpl<T extends GenericE
             });
 
     final List<HD> historyDifferences = Lists.newLinkedList();
-    try (ITearDownHandle handle = rendererService.context().open()) {
+    try (ITearDownHandle _ = rendererService.context().open()) {
       for (Map.Entry<IHistoryDifferenceFactory<T>, Collection<DiffNode>> entry :
           factoriesToNodes.asMap().entrySet()) {
         IHistoryDifferenceFactory<T> factory = entry.getKey();

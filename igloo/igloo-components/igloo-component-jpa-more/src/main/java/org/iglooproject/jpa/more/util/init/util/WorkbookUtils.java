@@ -102,19 +102,17 @@ public final class WorkbookUtils {
   }
 
   public static boolean hasContent(Cell cell) {
-    switch (Objects.equal(cell.getCellType(), CellType.FORMULA)
+    return switch (Objects.equal(cell.getCellType(), CellType.FORMULA)
         ? cell.getCachedFormulaResultType()
         : cell.getCellType()) {
-      case BLANK:
-        return false;
-      case STRING:
-        return StringUtils.hasText(cell.getStringCellValue());
-      default:
-        // In other cases we cannot detect whether the cell is actually empty in the
-        // underlying file, or at least not without relying on low-level APIs.
-        // Just give up.
-        return true;
-    }
+      case BLANK -> false;
+      case STRING -> StringUtils.hasText(cell.getStringCellValue());
+      default ->
+          // In other cases we cannot detect whether the cell is actually empty in the
+          // underlying file, or at least not without relying on low-level APIs.
+          // Just give up.
+          true;
+    };
   }
 
   private static Object getCellValue(FormulaEvaluator formulaEvaluator, Cell cell) {

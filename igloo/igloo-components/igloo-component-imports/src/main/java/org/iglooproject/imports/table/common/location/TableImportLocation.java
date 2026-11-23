@@ -50,10 +50,9 @@ public class TableImportLocation implements Serializable {
     if (obj == this) {
       return true;
     }
-    if (!(obj instanceof TableImportLocation)) {
+    if (!(obj instanceof TableImportLocation other)) {
       return false;
     }
-    TableImportLocation other = (TableImportLocation) obj;
     return new EqualsBuilder()
         .append(fileName, other.fileName)
         .append(tableName, other.tableName)

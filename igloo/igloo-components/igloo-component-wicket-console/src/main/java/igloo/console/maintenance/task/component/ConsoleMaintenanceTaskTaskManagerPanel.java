@@ -10,7 +10,6 @@ import igloo.wicket.condition.Condition;
 import igloo.wicket.feedback.FeedbackUtils;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.Session;
-import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.TransparentWebMarkupContainer;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
@@ -35,24 +34,10 @@ public class ConsoleMaintenanceTaskTaskManagerPanel extends Panel {
     super(id);
 
     IModel<Boolean> managerActiveModel =
-        new LoadableDetachableModel<Boolean>() {
-          private static final long serialVersionUID = 1L;
-
-          @Override
-          protected Boolean load() {
-            return queuedTaskHolderManager.isActive();
-          }
-        };
+        LoadableDetachableModel.of(() -> queuedTaskHolderManager.isActive());
 
     IModel<Integer> queueSizeModel =
-        new LoadableDetachableModel<Integer>() {
-          private static final long serialVersionUID = 1L;
-
-          @Override
-          protected Integer load() {
-            return queuedTaskHolderManager.getNumberOfWaitingTasks();
-          }
-        };
+        LoadableDetachableModel.of(() -> queuedTaskHolderManager.getNumberOfWaitingTasks());
 
     Condition managerActiveCondition = Condition.isTrue(managerActiveModel);
 
@@ -79,34 +64,30 @@ public class ConsoleMaintenanceTaskTaskManagerPanel extends Panel {
             .content(new ResourceModel("common.action.confirm.content"))
             .confirm()
             .onClick(
-                new IAjaxAction() {
-                  private static final long serialVersionUID = 1L;
+                (IAjaxAction)
+                    target -> {
+                      try {
+                        if (queuedTaskHolderManager.isAvailableForAction()) {
+                          queuedTaskHolderManager.stop();
+                          Session.get().success(getString("common.success"));
+                        } else {
+                          Session.get()
+                              .error(
+                                  getString(
+                                      "console.maintenance.task.taskManager.action.unavailable"));
+                        }
 
-                  @Override
-                  public void execute(AjaxRequestTarget target) {
-                    try {
-                      if (queuedTaskHolderManager.isAvailableForAction()) {
-                        queuedTaskHolderManager.stop();
-                        Session.get().success(getString("common.success"));
-                      } else {
-                        Session.get()
-                            .error(
-                                getString(
-                                    "console.maintenance.task.taskManager.action.unavailable"));
+                        FeedbackUtils.refreshFeedback(target, getPage());
+                        throw new RestartResponseException(ConsoleMaintenanceTaskListPage.class);
+                      } catch (RestartResponseException e) {
+                        throw e;
+                      } catch (Exception e) {
+                        LOGGER.error("Unexpected error while trying to stop the task manager.", e);
+                        Session.get().error(getString("common.error.unexpected"));
                       }
 
                       FeedbackUtils.refreshFeedback(target, getPage());
-                      throw new RestartResponseException(ConsoleMaintenanceTaskListPage.class);
-                    } catch (RestartResponseException e) {
-                      throw e;
-                    } catch (Exception e) {
-                      LOGGER.error("Unexpected error while trying to stop the task manager.", e);
-                      Session.get().error(getString("common.error.unexpected"));
-                    }
-
-                    FeedbackUtils.refreshFeedback(target, getPage());
-                  }
-                })
+                    })
             .create("stop")
             .add(managerActiveCondition.thenShowInternal()),
         AjaxConfirmLink.<Void>build()
@@ -114,34 +95,30 @@ public class ConsoleMaintenanceTaskTaskManagerPanel extends Panel {
             .content(new ResourceModel("common.action.confirm.content"))
             .confirm()
             .onClick(
-                new IAjaxAction() {
-                  private static final long serialVersionUID = 1L;
+                (IAjaxAction)
+                    target -> {
+                      try {
+                        if (queuedTaskHolderManager.isAvailableForAction()) {
+                          queuedTaskHolderManager.start();
+                          Session.get().success(getString("common.success"));
+                        } else {
+                          Session.get()
+                              .error(
+                                  getString(
+                                      "console.maintenance.task.taskManager.action.unavailable"));
+                        }
 
-                  @Override
-                  public void execute(AjaxRequestTarget target) {
-                    try {
-                      if (queuedTaskHolderManager.isAvailableForAction()) {
-                        queuedTaskHolderManager.start();
-                        Session.get().success(getString("common.success"));
-                      } else {
-                        Session.get()
-                            .error(
-                                getString(
-                                    "console.maintenance.task.taskManager.action.unavailable"));
+                        FeedbackUtils.refreshFeedback(target, getPage());
+                        throw new RestartResponseException(ConsoleMaintenanceTaskListPage.class);
+                      } catch (RestartResponseException e) {
+                        throw e;
+                      } catch (Exception e) {
+                        LOGGER.error("Unexpected error while trying to start the task manager.", e);
+                        Session.get().error(getString("common.error.unexpected"));
                       }
 
                       FeedbackUtils.refreshFeedback(target, getPage());
-                      throw new RestartResponseException(ConsoleMaintenanceTaskListPage.class);
-                    } catch (RestartResponseException e) {
-                      throw e;
-                    } catch (Exception e) {
-                      LOGGER.error("Unexpected error while trying to start the task manager.", e);
-                      Session.get().error(getString("common.error.unexpected"));
-                    }
-
-                    FeedbackUtils.refreshFeedback(target, getPage());
-                  }
-                })
+                    })
             .create("start")
             .add(managerActiveCondition.negate().thenShowInternal()));
   }

@@ -74,8 +74,7 @@ public class HistoryEntityReferenceTypeJdbcType implements AdjustableJdbcType {
 
   @Override
   public <T> JdbcLiteralFormatter<T> getJdbcLiteralFormatter(JavaType<T> javaType) {
-    return (appender, value, dialect, wrapperOptions) ->
-        appender.appendSql("'" + value + "'::" + ENUM_TYPE_NAME);
+    return (appender, value, _, _) -> appender.appendSql("'" + value + "'::" + ENUM_TYPE_NAME);
   }
 
   @Override

@@ -42,14 +42,14 @@ class TestUserService extends AbstractJpaSecurityTestCase {
     try {
       authenticationManager.authenticate(new UsernamePasswordAuthenticationToken("Login1", "tata"));
       fail("Le mot de passe est erroné");
-    } catch (AuthenticationException e) {
+    } catch (AuthenticationException _) {
     }
     authenticationManager.authenticate(new UsernamePasswordAuthenticationToken("Login1", "toto"));
 
     try {
       authenticationManager.authenticate(new UsernamePasswordAuthenticationToken("Login2", "toto"));
       fail("Le mot de passe est erroné");
-    } catch (AuthenticationException e) {
+    } catch (AuthenticationException _) {
     }
     authenticationManager.authenticate(new UsernamePasswordAuthenticationToken("Login2", "tata"));
   }

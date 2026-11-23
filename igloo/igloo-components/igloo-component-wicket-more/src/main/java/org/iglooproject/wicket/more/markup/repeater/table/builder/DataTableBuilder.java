@@ -101,7 +101,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
   private boolean showBottomToolbar = true;
 
   private IDataTableFactory<T, S> factory =
-      new IDataTableFactory<T, S>() {
+      new IDataTableFactory<>() {
         private static final long serialVersionUID = 1L;
 
         @Override
@@ -137,7 +137,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
   public static <T, S extends ISort<?>> DataTableBuilder<T, S> start(
       ISequenceProvider<T> sequenceProvider) {
     return new DataTableBuilder<>(
-        sequenceProvider, new CompositeSortModel<S>(CompositingStrategy.LAST_ONLY));
+        sequenceProvider, new CompositeSortModel<>(CompositingStrategy.LAST_ONLY));
   }
 
   public static <T, S extends ISort<?>> DataTableBuilder<T, S> start(
@@ -184,7 +184,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 
   @Override
   public IAddedLabelColumnState<T, S> addLabelColumn(IModel<String> headerModel) {
-    return addLabelColumn(new SimpleLabelColumn<T, S>(headerModel));
+    return addLabelColumn(new SimpleLabelColumn<>(headerModel));
   }
 
   private static class SimpleLabelColumn<T, S extends ISort<?>> extends CoreLabelColumn<T, S> {
@@ -203,7 +203,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
   @Override
   public IAddedLabelColumnState<T, S> addLabelColumn(
       IModel<String> headerModel, final Renderer<? super T> renderer) {
-    return addLabelColumn(new RendererLabelColumn<T, S>(headerModel, renderer));
+    return addLabelColumn(new RendererLabelColumn<>(headerModel, renderer));
   }
 
   private static class RendererLabelColumn<T, S extends ISort<?>> extends CoreLabelColumn<T, S> {
@@ -224,7 +224,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
   @Override
   public <C> IAddedLabelColumnState<T, S> addLabelColumn(
       IModel<String> headerModel, final SerializableFunction2<? super T, C> function) {
-    return addLabelColumn(new FunctionLabelColumn<T, S, C>(headerModel, function));
+    return addLabelColumn(new FunctionLabelColumn<>(headerModel, function));
   }
 
   private static class FunctionLabelColumn<T, S extends ISort<?>, C> extends CoreLabelColumn<T, S> {
@@ -248,8 +248,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
       IModel<String> headerModel,
       final SerializableFunction2<? super T, C> function,
       final Renderer<? super C> renderer) {
-    return addLabelColumn(
-        new FunctionRendererLabelColumn<T, S, C>(headerModel, function, renderer));
+    return addLabelColumn(new FunctionRendererLabelColumn<>(headerModel, function, renderer));
   }
 
   private static class FunctionRendererLabelColumn<T, S extends ISort<?>, C>
@@ -276,7 +275,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
   @Override
   public <C> IAddedLabelColumnState<T, S> addLabelColumn(
       IModel<String> headerModel, final ICoreBinding<? super T, C> binding) {
-    return addLabelColumn(new BindingLabelColumn<T, S, C>(headerModel, binding));
+    return addLabelColumn(new BindingLabelColumn<>(headerModel, binding));
   }
 
   private static class BindingLabelColumn<T, S extends ISort<?>, C> extends CoreLabelColumn<T, S> {
@@ -299,7 +298,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
       IModel<String> headerModel,
       final ICoreBinding<? super T, C> binding,
       final Renderer<? super C> renderer) {
-    return addLabelColumn(new BindingRendererLabelColumn<T, S, C>(headerModel, binding, renderer));
+    return addLabelColumn(new BindingRendererLabelColumn<>(headerModel, binding, renderer));
   }
 
   private static class BindingRendererLabelColumn<T, S extends ISort<?>, C>
@@ -391,10 +390,10 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
   @Override
   public ActionColumnBuilder<T, IAddedCoreColumnState<T, S>> addActionColumn(
       final IModel<String> headerLabelModel) {
-    return new ActionColumnBuilder<T, IAddedCoreColumnState<T, S>>() {
+    return new ActionColumnBuilder<>() {
       @Override
       protected IAddedCoreColumnState<T, S> onEnd(List<IActionColumnBaseBuilder<T>> builders) {
-        return addActionColumn(new CoreActionColumn<T, S>(headerLabelModel, builders));
+        return addActionColumn(new CoreActionColumn<>(headerLabelModel, builders));
       }
     };
   }
@@ -416,7 +415,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 
   @Override
   public IDataTableRowsState<T, S> rows() {
-    return new DataTableRowsBuilder<T, S>() {
+    return new DataTableRowsBuilder<>() {
       @Override
       protected IBuildState<T, S> onEnd(
           List<IDetachableFactory<? super IModel<? extends T>, ? extends Behavior>>
@@ -429,7 +428,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 
   @Override
   public IDataTableTableState<T, S> table() {
-    return new DataTableTableBuilder<T, S>() {
+    return new DataTableTableBuilder<>() {
       @Override
       protected IBuildState<T, S> onEnd(List<Behavior> tableBehaviors) {
         DataTableBuilder.this.tableBehaviors.addAll(tableBehaviors);
@@ -481,7 +480,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
       for (CustomizableToolbarBuilder<T, S> builder : topToolbarBuilders) {
         dataTable.addTopToolbar(builder.build(dataTable));
       }
-      dataTable.addTopToolbar(new CoreHeadersToolbar<S>(dataTable, sortModel));
+      dataTable.addTopToolbar(new CoreHeadersToolbar<>(dataTable, sortModel));
     }
     if (showBottomToolbar) {
       dataTable.addBodyBottomToolbar(
@@ -1045,7 +1044,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
     @Override
     public IActionColumnNoParameterBuildState<Void, IDecoratedBuildState<T, S>> actions(
         final AddInPlacement placement) {
-      return new ActionColumnBuilder<Void, IDecoratedBuildState<T, S>>() {
+      return new ActionColumnBuilder<>() {
         @Override
         protected IDecoratedBuildState<T, S> onEnd(List<IActionColumnBaseBuilder<Void>> builders) {
           for (final IOneParameterComponentFactory<?, IModel<Void>> builder : builders) {
@@ -1059,7 +1058,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
     @Override
     public <Z> IActionColumnBuildState<Z, IDecoratedBuildState<T, S>> actions(
         final AddInPlacement placement, final IModel<Z> model) {
-      return new ActionColumnBuilder<Z, IDecoratedBuildState<T, S>>() {
+      return new ActionColumnBuilder<>() {
         @Override
         protected IDecoratedBuildState<T, S> onEnd(List<IActionColumnBaseBuilder<Z>> builders) {
           for (final IOneParameterComponentFactory<?, IModel<Z>> builder : builders) {

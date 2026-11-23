@@ -208,8 +208,7 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
     Sheet sheet = workbook.getSheet(getSheetName(clazz));
     if (sheet != null) {
       GenericEntityConverter converter =
-          new GenericEntityConverter(
-              importDataDao, workbook, new HashMap<Class<?>, Class<?>>(0), idsMapping);
+          new GenericEntityConverter(importDataDao, workbook, new HashMap<>(0), idsMapping);
       GenericConversionService conversionService = getConversionService(converter);
       converter.setConversionService(conversionService);
 
@@ -221,7 +220,7 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 
       for (Class<?> referencedClass : getOtherReferencedClasses(clazz)) {
         if (!idsMapping.containsKey(referencedClass.getName())) {
-          idsMapping.put(referencedClass.getName(), new HashMap<String, GenericEntity<Long, ?>>());
+          idsMapping.put(referencedClass.getName(), new HashMap<>());
         }
       }
 
@@ -251,9 +250,9 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
       }
 
       LOGGER.info(
-          "Imported " + idsMappingForClass.size() + " objects for class: " + clazz.getSimpleName());
+          "Imported {} objects for class: {}", idsMappingForClass.size(), clazz.getSimpleName());
     } else {
-      LOGGER.info("Nothing to do for class: " + clazz.getSimpleName());
+      LOGGER.info("Nothing to do for class: {}", clazz.getSimpleName());
     }
   }
 
@@ -278,7 +277,7 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 
   protected void addAdditionalClassMapping(Class<?> sourceClass, Class<?> targetClass) {
     if (!ADDITIONAL_CLASS_MAPPINGS.containsKey(sourceClass)) {
-      ADDITIONAL_CLASS_MAPPINGS.put(sourceClass, new ArrayList<Class<?>>());
+      ADDITIONAL_CLASS_MAPPINGS.put(sourceClass, new ArrayList<>());
     }
     ADDITIONAL_CLASS_MAPPINGS.get(sourceClass).add(targetClass);
   }

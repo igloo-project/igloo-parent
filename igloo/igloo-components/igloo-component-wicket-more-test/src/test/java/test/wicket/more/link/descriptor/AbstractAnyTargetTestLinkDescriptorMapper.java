@@ -309,7 +309,7 @@ public abstract class AbstractAnyTargetTestLinkDescriptorMapper extends Abstract
 
   @Test
   public void url_oneParamOptional_collection() {
-    IModel<List<Long>> model = new ListModel<Long>(Lists.newArrayList(1L, 2L));
+    IModel<List<Long>> model = new ListModel<>(Lists.newArrayList(1L, 2L));
     IOneParameterLinkDescriptorMapper<? extends ILinkDescriptor, List<Long>> mapper =
         buildWithOneParameterTarget(
             LinkDescriptorBuilder.start()
@@ -321,7 +321,7 @@ public abstract class AbstractAnyTargetTestLinkDescriptorMapper extends Abstract
 
   @Test
   public void extract_oneParamOptional_collection() throws Exception {
-    IModel<List<Long>> model = new ListModel<Long>(null);
+    IModel<List<Long>> model = new ListModel<>(null);
     IOneParameterLinkDescriptorMapper<? extends ILinkDescriptor, List<Long>> mapper =
         buildWithOneParameterTarget(
             LinkDescriptorBuilder.start()

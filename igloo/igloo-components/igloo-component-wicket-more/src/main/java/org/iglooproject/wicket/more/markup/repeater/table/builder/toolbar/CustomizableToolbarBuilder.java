@@ -137,7 +137,7 @@ public class CustomizableToolbarBuilder<T, S extends ISort<?>>
     CustomizableToolbarElementBuilder<T, S> elementBuilder =
         new CustomizableToolbarElementBuilder<>(
             getPreviousColspan(builders.size()),
-            new CustomizableToolbarLabelElementDelegateFactory<T, S>(model));
+            new CustomizableToolbarLabelElementDelegateFactory<>(model));
     builders.add(elementBuilder);
     return new AddedToolbarLabelElementState(elementBuilder);
   }

@@ -69,9 +69,7 @@ public class HistoryLogBeforeCommitTask<
 
   @Override
   public boolean equals(Object obj) {
-    if (obj instanceof HistoryLogBeforeCommitTask) {
-      HistoryLogBeforeCommitTask<?, ?, ?, ?, ?> other =
-          (HistoryLogBeforeCommitTask<?, ?, ?, ?, ?>) obj;
+    if (obj instanceof HistoryLogBeforeCommitTask<?, ?, ?, ?, ?> other) {
       boolean mergeGroupMode =
           eventType != null
               && eventType.getMergeGroup() != null

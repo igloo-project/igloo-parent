@@ -5,7 +5,7 @@ import org.iglooproject.jpa.more.business.history.model.bean.AbstractHistoryLogA
 public final class HistoryLogAdditionalInformationBean
     extends AbstractHistoryLogAdditionalInformationBean {
 
-  public static final HistoryLogAdditionalInformationBean empty() {
+  public static HistoryLogAdditionalInformationBean empty() {
     return new HistoryLogAdditionalInformationBean();
   }
 

@@ -37,10 +37,10 @@ public abstract class AjaxConfirmLink<O> extends AjaxLink<O> {
         textModel,
         yesLabelModel,
         noLabelModel,
-        new Model<String>("fa fa-fw fa-check"),
-        new Model<String>(),
-        new Model<String>("btn btn-success"),
-        new Model<String>("btn-outline-secondary"),
+        new Model<>("fa fa-fw fa-check"),
+        new Model<>(),
+        new Model<>("btn btn-success"),
+        new Model<>("btn-outline-secondary"),
         cssClassNamesModel,
         textNoEscape);
   }

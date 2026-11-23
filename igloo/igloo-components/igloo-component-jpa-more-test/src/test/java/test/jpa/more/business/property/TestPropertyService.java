@@ -18,7 +18,6 @@ import org.iglooproject.spring.property.model.IMutablePropertyValueMap;
 import org.iglooproject.spring.property.model.ImmutablePropertyId;
 import org.iglooproject.spring.property.model.MutablePropertyId;
 import org.iglooproject.spring.property.model.MutablePropertyValueMap;
-import org.iglooproject.spring.property.service.IPropertyRegistry;
 import org.iglooproject.spring.property.service.PropertyServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -65,14 +64,10 @@ class TestPropertyService {
   @Test
   void mutablePropertyGet() throws ServiceException, SecurityServiceException {
     initPropertyService(
-        new IPropertyRegistryConfiguration() {
-          @Override
-          public void register(IPropertyRegistry propertyService) {
-            propertyService.registerString(PropertyIds.MUTABLE_STRING);
-            propertyService.registerLong(PropertyIds.MUTABLE_LONG);
-            propertyService.registerString(
-                PropertyIds.MUTABLE_STRING_WITH_DEFAULT, "MyDefaultValue");
-          }
+        propertyService -> {
+          propertyService.registerString(PropertyIds.MUTABLE_STRING);
+          propertyService.registerLong(PropertyIds.MUTABLE_LONG);
+          propertyService.registerString(PropertyIds.MUTABLE_STRING_WITH_DEFAULT, "MyDefaultValue");
         });
 
     when(mutablePropertyDao.getInTransaction("mutable.property.string")).thenReturn("MyValue");
@@ -88,14 +83,10 @@ class TestPropertyService {
   @Test
   void mutablePropertySet() throws ServiceException, SecurityServiceException {
     initPropertyService(
-        new IPropertyRegistryConfiguration() {
-          @Override
-          public void register(IPropertyRegistry propertyService) {
-            propertyService.registerString(PropertyIds.MUTABLE_STRING);
-            propertyService.registerLong(PropertyIds.MUTABLE_LONG);
-            propertyService.registerString(
-                PropertyIds.MUTABLE_STRING_WITH_DEFAULT, "MyDefaultValue");
-          }
+        propertyService -> {
+          propertyService.registerString(PropertyIds.MUTABLE_STRING);
+          propertyService.registerLong(PropertyIds.MUTABLE_LONG);
+          propertyService.registerString(PropertyIds.MUTABLE_STRING_WITH_DEFAULT, "MyDefaultValue");
         });
 
     propertyService.set(PropertyIds.MUTABLE_STRING, "MyValue2");
@@ -110,14 +101,10 @@ class TestPropertyService {
   @Test
   void mutablePropertySetAll() throws ServiceException, SecurityServiceException {
     initPropertyService(
-        new IPropertyRegistryConfiguration() {
-          @Override
-          public void register(IPropertyRegistry propertyService) {
-            propertyService.registerString(PropertyIds.MUTABLE_STRING);
-            propertyService.registerLong(PropertyIds.MUTABLE_LONG);
-            propertyService.registerString(
-                PropertyIds.MUTABLE_STRING_WITH_DEFAULT, "MyDefaultValue");
-          }
+        propertyService -> {
+          propertyService.registerString(PropertyIds.MUTABLE_STRING);
+          propertyService.registerLong(PropertyIds.MUTABLE_LONG);
+          propertyService.registerString(PropertyIds.MUTABLE_STRING_WITH_DEFAULT, "MyDefaultValue");
         });
 
     IMutablePropertyValueMap propertyValueMap = new MutablePropertyValueMap();
@@ -139,14 +126,11 @@ class TestPropertyService {
         PropertyServiceIncompleteRegistrationException.class,
         () ->
             initPropertyService(
-                new IPropertyRegistryConfiguration() {
-                  @Override
-                  public void register(IPropertyRegistry propertyService) {
-                    propertyService.registerString(PropertyIds.MUTABLE_STRING);
-                    propertyService.registerString(
-                        PropertyIds.MUTABLE_STRING_WITH_DEFAULT, "MyDefaultValue");
-                    // Do not register the last property
-                  }
+                propertyService -> {
+                  propertyService.registerString(PropertyIds.MUTABLE_STRING);
+                  propertyService.registerString(
+                      PropertyIds.MUTABLE_STRING_WITH_DEFAULT, "MyDefaultValue");
+                  // Do not register the last property
                 }));
   }
 
@@ -164,12 +148,9 @@ class TestPropertyService {
   @Test
   void immutablePropertyGet() {
     initPropertyService(
-        new IPropertyRegistryConfiguration() {
-          @Override
-          public void register(IPropertyRegistry propertyService) {
-            propertyService.registerString(ImmutablePropertyIds.IMMUTABLE_STRING);
-            propertyService.registerLong(ImmutablePropertyIds.IMMUTABLE_LONG);
-          }
+        propertyService -> {
+          propertyService.registerString(ImmutablePropertyIds.IMMUTABLE_STRING);
+          propertyService.registerLong(ImmutablePropertyIds.IMMUTABLE_LONG);
         });
     when(immutablePropertyDao.get("immutable.property.string")).thenReturn("MyValue");
     when(immutablePropertyDao.get("immutable.property.long")).thenReturn("1");
@@ -202,23 +183,17 @@ class TestPropertyService {
         PropertyServiceDuplicateRegistrationException.class,
         () ->
             initPropertyService(
-                new IPropertyRegistryConfiguration() {
-                  @Override
-                  public void register(IPropertyRegistry propertyService) {
-                    propertyService.registerString(ImmutablePropertyIds.IMMUTABLE_STRING);
-                    propertyService.registerString(DuplicatePropertyIds.IMMUTABLE_STRING);
-                  }
+                propertyService -> {
+                  propertyService.registerString(ImmutablePropertyIds.IMMUTABLE_STRING);
+                  propertyService.registerString(DuplicatePropertyIds.IMMUTABLE_STRING);
                 }));
   }
 
   public void propertiesMutableImmutableWithSameKey() {
     initPropertyService(
-        new IPropertyRegistryConfiguration() {
-          @Override
-          public void register(IPropertyRegistry propertyService) {
-            propertyService.registerString(DuplicatePropertyIds.IMMUTABLE_STRING);
-            propertyService.registerString(DuplicatePropertyIds.MUTABLE_STRING);
-          }
+        propertyService -> {
+          propertyService.registerString(DuplicatePropertyIds.IMMUTABLE_STRING);
+          propertyService.registerString(DuplicatePropertyIds.MUTABLE_STRING);
         });
   }
 }

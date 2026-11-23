@@ -77,9 +77,8 @@ public class DataUpgradeRecordServiceImpl extends GenericEntityServiceImpl<Long,
       update(record);
     } else {
       LOGGER.warn(
-          "Auto perform cannot be disabled because no record has been found for '"
-              + dataUpgrade.getName()
-              + "'");
+          "Auto perform cannot be disabled because no record has been found for '{}'",
+          dataUpgrade.getName());
     }
   }
 }

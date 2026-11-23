@@ -26,42 +26,42 @@ public class Company extends GenericEntity<Long, Company> {
   private String name;
 
   @OneToMany(mappedBy = "company")
-  private List<Person> directors = new LinkedList<Person>();
+  private List<Person> directors = new LinkedList<>();
 
   @OneToMany
   @JoinTable(
       name = "company_employees",
       joinColumns = @JoinColumn(name = "company_id"),
       inverseJoinColumns = @JoinColumn(name = "employees_id"))
-  private List<Person> employees = new LinkedList<Person>();
+  private List<Person> employees = new LinkedList<>();
 
   @OneToMany(cascade = CascadeType.PERSIST)
   @JoinTable(
       name = "company_employees1",
       joinColumns = @JoinColumn(name = "company_id"),
       inverseJoinColumns = @JoinColumn(name = "employees1_id"))
-  private List<Person> employees1 = new LinkedList<Person>();
+  private List<Person> employees1 = new LinkedList<>();
 
   @OneToMany(cascade = CascadeType.PERSIST)
   @JoinTable(
       name = "company_employees2",
       joinColumns = @JoinColumn(name = "company_id"),
       inverseJoinColumns = @JoinColumn(name = "employees2_id"))
-  private List<Person> employees2 = new LinkedList<Person>();
+  private List<Person> employees2 = new LinkedList<>();
 
   @OneToMany(cascade = CascadeType.REMOVE)
   @JoinTable(
       name = "company_employees3",
       joinColumns = @JoinColumn(name = "company_id"),
       inverseJoinColumns = @JoinColumn(name = "employees3_id"))
-  private List<Person> employees3 = new LinkedList<Person>();
+  private List<Person> employees3 = new LinkedList<>();
 
   @OneToMany(cascade = CascadeType.REMOVE)
   @JoinTable(
       name = "company_employees4",
       joinColumns = @JoinColumn(name = "company_id"),
       inverseJoinColumns = @JoinColumn(name = "employees4_id"))
-  private List<Person> employees4 = new LinkedList<Person>();
+  private List<Person> employees4 = new LinkedList<>();
 
   /**
    * {@link CascadeType#DELETE_ORPHAN} a été remplacé par {@link OneToMany#orphanRemoval()} ou
@@ -72,17 +72,17 @@ public class Company extends GenericEntity<Long, Company> {
       name = "company_employees5",
       joinColumns = @JoinColumn(name = "company_id"),
       inverseJoinColumns = @JoinColumn(name = "employees5_id"))
-  private List<Person> employees5 = new LinkedList<Person>();
+  private List<Person> employees5 = new LinkedList<>();
 
   @OneToMany(cascade = CascadeType.MERGE)
   @JoinTable(
       name = "company_employees6",
       joinColumns = @JoinColumn(name = "company_id"),
       inverseJoinColumns = @JoinColumn(name = "employees6_id"))
-  private List<Person> employees6 = new LinkedList<Person>();
+  private List<Person> employees6 = new LinkedList<>();
 
   @OneToMany(mappedBy = "company")
-  private List<Project> projects = new LinkedList<Project>();
+  private List<Project> projects = new LinkedList<>();
 
   public Company() {}
 

@@ -187,7 +187,7 @@ public class PropertyServiceImpl implements IConfigurablePropertyService {
       Supplier2<? extends T> defaultValueSupplier) {
     registerProperty(
         propertyId,
-        new Converter<String, T>() {
+        new Converter<>() {
           @Override
           protected T doForward(String a) {
             return function.apply(a);
@@ -481,12 +481,9 @@ public class PropertyServiceImpl implements IConfigurablePropertyService {
 
       if (defaultValue != null) {
         value = defaultValue;
-        LOGGER.debug(
-            String.format("Property '%1s' has no value, fallback on default value.", propertyId));
+        LOGGER.debug("Property '{}' has no value, fallback on default value.", propertyId);
       } else {
-        LOGGER.info(
-            String.format(
-                "Property '%1s' has no value and default value is undefined.", propertyId));
+        LOGGER.info("Property '{}' has no value and default value is undefined.", propertyId);
       }
     }
 
@@ -504,12 +501,9 @@ public class PropertyServiceImpl implements IConfigurablePropertyService {
 
       if (defaultValue != null) {
         valueAsString = information.getValue0().reverse().convert(defaultValue);
-        LOGGER.debug(
-            String.format("Property '%1s' has no value, fallback on default value.", propertyId));
+        LOGGER.debug("Property '{}' has no value, fallback on default value.", propertyId);
       } else {
-        LOGGER.info(
-            String.format(
-                "Property '%1s' has no value and default value is undefined.", propertyId));
+        LOGGER.info("Property '{}' has no value and default value is undefined.", propertyId);
       }
     }
 
@@ -550,7 +544,7 @@ public class PropertyServiceImpl implements IConfigurablePropertyService {
       throws ServiceException, SecurityServiceException {
     Objects.requireNonNull(valueMap);
     writeTransactionTemplate.executeWithoutResult(
-        status -> {
+        _ -> {
           try {
             for (IMutablePropertyValueMap.Entry<?> idToValueEntry : valueMap) {
               set(idToValueEntry);

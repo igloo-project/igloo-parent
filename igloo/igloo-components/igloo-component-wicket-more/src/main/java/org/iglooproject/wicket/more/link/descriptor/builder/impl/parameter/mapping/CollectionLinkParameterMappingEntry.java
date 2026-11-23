@@ -35,7 +35,7 @@ public class CollectionLinkParameterMappingEntry<C extends Collection>
       final SerializableSupplier2<C> emptyCollectionSupplier) {
     Args.notNull(parameterName, "parameterName");
 
-    return new AbstractLinkParameterMappingEntryFactory<Unit<IModel<C>>>() {
+    return new AbstractLinkParameterMappingEntryFactory<>() {
       private static final long serialVersionUID = 1L;
 
       @Override
@@ -63,6 +63,7 @@ public class CollectionLinkParameterMappingEntry<C extends Collection>
    *     collection instance that cannot be performed by the conversionService itself (for example,
    *     instantiation of TreeSet with a specific comparator)
    */
+  @SuppressWarnings("unchecked")
   public CollectionLinkParameterMappingEntry(
       String parameterName,
       IModel<C> mappedModel,
@@ -74,17 +75,12 @@ public class CollectionLinkParameterMappingEntry<C extends Collection>
         typeDescriptorSupplier,
         emptyCollectionSupplier == null
             ? Functions2.<C>identity()
-            : new SerializableFunction2<C, C>() {
-              private static final long serialVersionUID = 1L;
-
-              @Override
-              @SuppressWarnings("unchecked")
-              public C apply(C input) {
-                C newCollection = emptyCollectionSupplier.get();
-                newCollection.addAll(input);
-                return newCollection;
-              }
-            });
+            : (SerializableFunction2<C, C>)
+                input -> {
+                  C newCollection = emptyCollectionSupplier.get();
+                  newCollection.addAll(input);
+                  return newCollection;
+                });
   }
 
   public CollectionLinkParameterMappingEntry(

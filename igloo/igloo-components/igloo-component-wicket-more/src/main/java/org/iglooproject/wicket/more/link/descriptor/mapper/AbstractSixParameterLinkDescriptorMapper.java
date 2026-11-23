@@ -37,7 +37,7 @@ public abstract class AbstractSixParameterLinkDescriptorMapper<L, T1, T2, T3, T4
   @Override
   public IFiveParameterLinkDescriptorMapper<L, T2, T3, T4, T5, T6> setParameter1(
       final IModel<T1> model1) {
-    return new AbstractFiveParameterLinkDescriptorMapper<L, T2, T3, T4, T5, T6>() {
+    return new AbstractFiveParameterLinkDescriptorMapper<>() {
       private static final long serialVersionUID = 1L;
 
       @Override
@@ -69,7 +69,7 @@ public abstract class AbstractSixParameterLinkDescriptorMapper<L, T1, T2, T3, T4
   @Override
   public AbstractFiveParameterLinkDescriptorMapper<L, T1, T3, T4, T5, T6> setParameter2(
       final IModel<T2> model2) {
-    return new AbstractFiveParameterLinkDescriptorMapper<L, T1, T3, T4, T5, T6>() {
+    return new AbstractFiveParameterLinkDescriptorMapper<>() {
       private static final long serialVersionUID = 1L;
 
       @Override
@@ -101,7 +101,7 @@ public abstract class AbstractSixParameterLinkDescriptorMapper<L, T1, T2, T3, T4
   @Override
   public AbstractFiveParameterLinkDescriptorMapper<L, T1, T2, T4, T5, T6> setParameter3(
       final IModel<T3> model3) {
-    return new AbstractFiveParameterLinkDescriptorMapper<L, T1, T2, T4, T5, T6>() {
+    return new AbstractFiveParameterLinkDescriptorMapper<>() {
       private static final long serialVersionUID = 1L;
 
       @Override
@@ -133,7 +133,7 @@ public abstract class AbstractSixParameterLinkDescriptorMapper<L, T1, T2, T3, T4
   @Override
   public AbstractFiveParameterLinkDescriptorMapper<L, T1, T2, T3, T5, T6> setParameter4(
       final IModel<T4> model4) {
-    return new AbstractFiveParameterLinkDescriptorMapper<L, T1, T2, T3, T5, T6>() {
+    return new AbstractFiveParameterLinkDescriptorMapper<>() {
       private static final long serialVersionUID = 1L;
 
       @Override
@@ -165,7 +165,7 @@ public abstract class AbstractSixParameterLinkDescriptorMapper<L, T1, T2, T3, T4
   @Override
   public AbstractFiveParameterLinkDescriptorMapper<L, T1, T2, T3, T4, T6> setParameter5(
       final IModel<T5> model5) {
-    return new AbstractFiveParameterLinkDescriptorMapper<L, T1, T2, T3, T4, T6>() {
+    return new AbstractFiveParameterLinkDescriptorMapper<>() {
       private static final long serialVersionUID = 1L;
 
       @Override
@@ -197,7 +197,7 @@ public abstract class AbstractSixParameterLinkDescriptorMapper<L, T1, T2, T3, T4
   @Override
   public AbstractFiveParameterLinkDescriptorMapper<L, T1, T2, T3, T4, T5> setParameter6(
       final IModel<T6> model6) {
-    return new AbstractFiveParameterLinkDescriptorMapper<L, T1, T2, T3, T4, T5>() {
+    return new AbstractFiveParameterLinkDescriptorMapper<>() {
       private static final long serialVersionUID = 1L;
 
       @Override

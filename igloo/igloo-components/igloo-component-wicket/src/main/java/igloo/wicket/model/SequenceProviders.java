@@ -108,7 +108,7 @@ public final class SequenceProviders {
 
     @Override
     public Iterator<? extends IModel<T>> iterator(final long offset, final long limit) {
-      return new Iterator<IModel<T>>() {
+      return new Iterator<>() {
         private Iterator<? extends T> dataIterator = dataProvider.iterator(offset, limit);
 
         @Override

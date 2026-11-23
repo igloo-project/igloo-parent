@@ -108,9 +108,10 @@ public class SimpleFileStoreImpl implements IFileStore {
     File file = getFile(fileKey, extension);
     if (!file.delete()) {
       LOGGER.error(
-          String.format(
-              "Error removing file %1$s (key: %2$s; extension: %3$s)",
-              getFile(fileKey, extension).getAbsolutePath(), fileKey, extension));
+          "Error removing file {} (key: {}; extension: {})",
+          getFile(fileKey, extension).getAbsolutePath(),
+          fileKey,
+          extension);
     }
   }
 
@@ -129,7 +130,7 @@ public class SimpleFileStoreImpl implements IFileStore {
     if (!directory.isDirectory()) {
       try {
         FileUtils.forceMkdir(directory);
-      } catch (RuntimeException | IOException e) {
+      } catch (RuntimeException | IOException _) {
         throw new IllegalStateException(
             "The directory "
                 + rootDirectoryPath

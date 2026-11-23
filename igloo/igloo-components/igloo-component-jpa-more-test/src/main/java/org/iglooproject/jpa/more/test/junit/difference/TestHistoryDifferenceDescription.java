@@ -45,8 +45,7 @@ public final class TestHistoryDifferenceDescription {
 
   @Override
   public boolean equals(Object obj) {
-    if (obj instanceof TestHistoryDifferenceDescription) {
-      TestHistoryDifferenceDescription other = (TestHistoryDifferenceDescription) obj;
+    if (obj instanceof TestHistoryDifferenceDescription other) {
       return new EqualsBuilder()
           .append(action, other.action)
           .append(differences, other.differences)

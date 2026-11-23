@@ -160,38 +160,29 @@ public class NavbarPanel extends AbstractNavbarPanel {
         "profileLinkNavItem",
         ProfilePage.linkDescriptor(),
         firstMenuPageSupplier.get(),
-        new SerializableFunction2<>() {
-          private static final long serialVersionUID = 1L;
-
-          @Override
-          public Component apply(IPageLinkGenerator pageLinkGenerator) {
-            return pageLinkGenerator
-                .link("profileLink")
-                .add(
-                    new CoreLabel(
-                            "originalAuthentication",
-                            new IModel<String>() {
-                              private static final long serialVersionUID = 1L;
-
-                              @Override
-                              public String getObject() {
-                                return BasicApplicationSession.get().getOriginalAuthentication()
-                                        != null
-                                    ? BasicApplicationSession.get()
-                                        .getOriginalAuthentication()
-                                        .getName()
-                                    : null;
-                              }
-                            })
-                        .hideIfEmpty(),
-                    new CoreLabel(
-                            "userFullName",
-                            BindingModel.of(
-                                BasicApplicationSession.get().getUserModel(),
-                                Bindings.user().fullName()))
-                        .hideIfEmpty());
-          }
-        });
+        // addNavItem expects a plain Function: the cast keeps the lambda serializable
+        (SerializableFunction2<IPageLinkGenerator, Component>)
+            pageLinkGenerator ->
+                pageLinkGenerator
+                    .link("profileLink")
+                    .add(
+                        new CoreLabel(
+                                "originalAuthentication",
+                                (IModel<String>)
+                                    () ->
+                                        BasicApplicationSession.get().getOriginalAuthentication()
+                                                != null
+                                            ? BasicApplicationSession.get()
+                                                .getOriginalAuthentication()
+                                                .getName()
+                                            : null)
+                            .hideIfEmpty(),
+                        new CoreLabel(
+                                "userFullName",
+                                BindingModel.of(
+                                    BasicApplicationSession.get().getUserModel(),
+                                    Bindings.user().fullName()))
+                            .hideIfEmpty()));
 
     add(
         new AjaxLink<Void>("signInAsUndo") {

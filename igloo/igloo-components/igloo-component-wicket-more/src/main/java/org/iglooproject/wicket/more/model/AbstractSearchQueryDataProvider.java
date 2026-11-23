@@ -38,8 +38,8 @@ public abstract class AbstractSearchQueryDataProvider<T, S extends ISort<?>>
     try {
       return getSearchQuery().list(offset, limit);
     } catch (Exception e) {
-      LOGGER.error("Erreur lors de la recherche : {}", e);
-      errorFlag |= true;
+      LOGGER.error("Erreur lors de la recherche", e);
+      errorFlag = true;
       return Lists.newArrayList();
     }
   }
@@ -49,8 +49,8 @@ public abstract class AbstractSearchQueryDataProvider<T, S extends ISort<?>>
     try {
       return getSearchQuery().count();
     } catch (Exception e) {
-      LOGGER.error("Erreur lors de la recherche : {}", e);
-      errorFlag |= true;
+      LOGGER.error("Erreur lors de la recherche", e);
+      errorFlag = true;
       return 0;
     }
   }

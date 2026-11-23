@@ -92,7 +92,7 @@ public class JCacheLookup {
         if ("file".equals(resolved.getScheme()) || "jar".equals(resolved.getScheme())) {
           return Optional.of(resolved.toString());
         }
-      } catch (RuntimeException | URISyntaxException e) {
+      } catch (RuntimeException | URISyntaxException _) {
         // nothing
       }
     }

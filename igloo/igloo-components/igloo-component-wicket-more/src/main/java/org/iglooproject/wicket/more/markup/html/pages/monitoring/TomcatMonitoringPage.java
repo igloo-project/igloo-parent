@@ -10,7 +10,7 @@ public class TomcatMonitoringPage extends AbstractMonitoringPage {
     super();
 
     setSuccess(true);
-    setDetails(new ArrayList<String>(0));
+    setDetails(new ArrayList<>(0));
     setMessage("");
   }
 }

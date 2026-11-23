@@ -56,7 +56,7 @@ ORDER BY table_schema, table_name
         tables.stream()
             .<String>map("select count(*) from %s;"::formatted)
             .<Integer>map(q -> jdbcTemplate.queryForObject(q, Integer.class))
-            .<Integer>toArray(i -> new Integer[i]);
+            .<Integer>toArray(Integer[]::new);
     // list not-empty tables
     List<String> tablesToTruncate =
         IntStream.range(0, tables.size())
@@ -70,7 +70,7 @@ ORDER BY table_schema, table_name
     String[] truncateQuery =
         tablesToTruncate.stream()
             .<String>map("truncate table %s cascade;"::formatted)
-            .toArray(i -> new String[i]);
+            .toArray(String[]::new);
     LOGGER.info("Database - Truncate prepared: {} ms.", sw.elapsed(TimeUnit.MILLISECONDS));
     if (LOGGER.isDebugEnabled()) {
       LOGGER.debug(
@@ -79,7 +79,7 @@ ORDER BY table_schema, table_name
     }
     // perform truncates
     if (truncateQuery.length > 0) {
-      transactionTemplate.execute(t -> jdbcTemplate.batchUpdate(truncateQuery));
+      transactionTemplate.execute(_ -> jdbcTemplate.batchUpdate(truncateQuery));
     }
     LOGGER.info("Database - Duration: {} ms.", sw.elapsed(TimeUnit.MILLISECONDS));
   }

@@ -30,7 +30,7 @@ public abstract class AbstractDataUpgradeServiceImpl implements IAbstractDataUpg
 
       recordService.markAsDone(upgrade);
     } else {
-      LOGGER.warn("Data upgrade '" + upgrade.getName() + "' has already been done.");
+      LOGGER.warn("Data upgrade '{}' has already been done.", upgrade.getName());
     }
   }
 

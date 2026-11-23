@@ -5,12 +5,8 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
-import de.danielbechler.diff.NodeQueryService;
 import de.danielbechler.diff.ObjectDiffer;
 import de.danielbechler.diff.ObjectDifferBuilder;
-import de.danielbechler.diff.differ.Differ;
-import de.danielbechler.diff.differ.DifferDispatcher;
-import de.danielbechler.diff.differ.DifferFactory;
 import de.danielbechler.diff.inclusion.Inclusion;
 import de.danielbechler.diff.inclusion.InclusionResolver;
 import de.danielbechler.diff.instantiation.TypeInfo;
@@ -118,7 +114,7 @@ public abstract class AbstractGenericEntityDifferenceServiceImpl<T extends Gener
     // Initialization of the simple fields
     Iterable<? extends ICoreBinding<? extends T, ?>> simpleFieldsBindingsList =
         getSimpleInitializationFieldsBindings();
-    initializers.add(new TypeSafeBindingProxyInitializer<T>(simpleFieldsBindingsList));
+    initializers.add(new TypeSafeBindingProxyInitializer<>(simpleFieldsBindingsList));
 
     // Customized initializations
     Iterables.addAll(initializers, initializeInitializers());
@@ -177,29 +173,21 @@ public abstract class AbstractGenericEntityDifferenceServiceImpl<T extends Gener
         builder
             .differs()
             .register(
-                new DifferFactory() {
-                  @Override
-                  public Differ createDiffer(
-                      DifferDispatcher differDispatcher, NodeQueryService nodeQueryService) {
-                    ExtendedCollectionDiffer differ =
-                        new ExtendedCollectionDiffer(
-                            differDispatcher, nodeQueryService, nodeQueryService);
-                    return initializeCollectionDiffer(differ);
-                  }
+                (differDispatcher, nodeQueryService) -> {
+                  ExtendedCollectionDiffer differ =
+                      new ExtendedCollectionDiffer(
+                          differDispatcher, nodeQueryService, nodeQueryService);
+                  return initializeCollectionDiffer(differ);
                 });
 
     builder =
         builder
             .differs()
             .register(
-                new DifferFactory() {
-                  @Override
-                  public Differ createDiffer(
-                      DifferDispatcher differDispatcher, NodeQueryService nodeQueryService) {
-                    MultimapDiffer differ =
-                        new MultimapDiffer(differDispatcher, nodeQueryService, nodeQueryService);
-                    return initializeMultimapDiffer(differ);
-                  }
+                (differDispatcher, nodeQueryService) -> {
+                  MultimapDiffer differ =
+                      new MultimapDiffer(differDispatcher, nodeQueryService, nodeQueryService);
+                  return initializeMultimapDiffer(differ);
                 });
 
     initJavaTimeEqualsComparaison(builder);
@@ -335,7 +323,7 @@ public abstract class AbstractGenericEntityDifferenceServiceImpl<T extends Gener
             });
 
     final List<HD> historyDifferences = Lists.newLinkedList();
-    try (ITearDownHandle handle = rendererService.context().open()) {
+    try (ITearDownHandle _ = rendererService.context().open()) {
       for (Map.Entry<IHistoryDifferenceFactory<T>, Collection<DiffNode>> entry :
           factoriesToNodes.asMap().entrySet()) {
         IHistoryDifferenceFactory<T> factory = entry.getKey();
@@ -374,16 +362,13 @@ public abstract class AbstractGenericEntityDifferenceServiceImpl<T extends Gener
 
     private Callable<T> getReferenceProviderAndInitializer(T value) {
       final GenericEntityReference<?, T> reference = GenericEntityReference.ofUnknownIdType(value);
-      return new Callable<T>() {
-        @Override
-        public T call() throws Exception {
-          if (reference == null) {
-            return null;
-          } else {
-            T databaseVersion = HibernateUtils.unwrap(entityService.getEntity(reference));
-            proxyInitializer.initialize(databaseVersion);
-            return databaseVersion;
-          }
+      return () -> {
+        if (reference == null) {
+          return null;
+        } else {
+          T databaseVersion = HibernateUtils.unwrap(entityService.getEntity(reference));
+          proxyInitializer.initialize(databaseVersion);
+          return databaseVersion;
         }
       };
     }
@@ -391,15 +376,12 @@ public abstract class AbstractGenericEntityDifferenceServiceImpl<T extends Gener
     @Override
     public Callable<T> getReferenceProvider(T value) {
       final GenericEntityReference<?, T> reference = GenericEntityReference.ofUnknownIdType(value);
-      return new Callable<T>() {
-        @Override
-        public T call() throws Exception {
-          if (reference == null) {
-            return null;
-          } else {
-            T databaseVersion = entityService.getEntity(reference);
-            return HibernateUtils.unwrap(databaseVersion);
-          }
+      return () -> {
+        if (reference == null) {
+          return null;
+        } else {
+          T databaseVersion = entityService.getEntity(reference);
+          return HibernateUtils.unwrap(databaseVersion);
         }
       };
     }

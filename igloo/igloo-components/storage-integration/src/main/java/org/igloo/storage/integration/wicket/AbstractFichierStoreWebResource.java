@@ -42,7 +42,7 @@ public abstract class AbstractFichierStoreWebResource extends AbstractResource {
   private final SerializableConsumer<ResourceResponse> resourceResponseConsumer;
 
   protected AbstractFichierStoreWebResource() {
-    this(data -> {});
+    this(_ -> {});
   }
 
   protected AbstractFichierStoreWebResource(
@@ -78,7 +78,7 @@ public abstract class AbstractFichierStoreWebResource extends AbstractResource {
         InputStream inputStream = null;
         try {
           inputStream = stream.getInputStream();
-        } catch (ResourceStreamNotFoundException e) {
+        } catch (ResourceStreamNotFoundException _) {
           data.setError(HttpServletResponse.SC_NOT_FOUND);
           close(stream);
         }

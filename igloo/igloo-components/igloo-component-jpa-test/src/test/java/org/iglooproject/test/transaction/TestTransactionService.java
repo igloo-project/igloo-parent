@@ -34,7 +34,7 @@ class TestTransactionService extends AbstractJpaCoreTestCase {
 
     try {
       serviceExceptionService.throwServiceException();
-    } catch (ServiceException e) {
+    } catch (ServiceException _) {
     }
 
     assertEquals(1, serviceExceptionService.size());
@@ -48,7 +48,7 @@ class TestTransactionService extends AbstractJpaCoreTestCase {
 
     try {
       serviceExceptionService.throwServiceInheritedException();
-    } catch (ServiceException e) {
+    } catch (ServiceException _) {
     }
 
     assertEquals(1, serviceExceptionService.size());
@@ -62,7 +62,7 @@ class TestTransactionService extends AbstractJpaCoreTestCase {
 
     try {
       serviceExceptionService.throwUncheckedException();
-    } catch (IllegalStateException e) {
+    } catch (IllegalStateException _) {
     }
 
     assertEquals(1, serviceExceptionService.size());
@@ -77,7 +77,7 @@ class TestTransactionService extends AbstractJpaCoreTestCase {
     try {
       serviceExceptionService.throwCheckedException();
       fail(String.format("Exception {} obligatoire", CheckedException.class.getName()));
-    } catch (CheckedException e) {
+    } catch (CheckedException _) {
     }
 
     assertEquals(2, serviceExceptionService.size());
@@ -99,19 +99,19 @@ class TestTransactionService extends AbstractJpaCoreTestCase {
     try {
       serviceExceptionService.throwServiceInheritedException();
       fail("La méthode précédente se finit en exception");
-    } catch (ServiceException e) {
+    } catch (ServiceException _) {
     }
 
     try {
-      company.getEmployees1().get(0);
+      company.getEmployees1().getFirst();
       fail(
           "Faire une opération sur un objet après un rollback lève une LazyInitializationException "
               + "car l'objet n'est plus lié à la session");
-    } catch (LazyInitializationException e) {
+    } catch (LazyInitializationException _) {
     }
 
     // Il faut recharger l'objet après l'exception pour pouvoir agir dessus
     company = companyService.getById(company.getId());
-    company.getEmployees1().get(0);
+    company.getEmployees1().getFirst();
   }
 }

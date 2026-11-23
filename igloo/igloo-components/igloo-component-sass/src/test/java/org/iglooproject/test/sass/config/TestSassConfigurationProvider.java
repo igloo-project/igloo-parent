@@ -4,7 +4,7 @@ import org.iglooproject.sass.config.ISassConfigurationProvider;
 
 public final class TestSassConfigurationProvider implements ISassConfigurationProvider {
 
-  public static final TestSassConfigurationProvider of(
+  public static TestSassConfigurationProvider of(
       final boolean autoprefixerEnabled, final boolean staticEnabled) {
     return new TestSassConfigurationProvider(autoprefixerEnabled, staticEnabled);
   }

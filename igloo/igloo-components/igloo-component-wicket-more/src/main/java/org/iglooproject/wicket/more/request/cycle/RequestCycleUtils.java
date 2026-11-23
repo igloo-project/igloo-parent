@@ -15,11 +15,10 @@ public final class RequestCycleUtils {
 
   public static String getCurrentRequestUrl() {
     Request request = RequestCycle.get().getRequest();
-    if (!(request instanceof ServletWebRequest)) {
+    if (!(request instanceof ServletWebRequest servletWebRequest)) {
       throw new IllegalStateException("Cannot be used in a non servlet environment");
     }
 
-    ServletWebRequest servletWebRequest = (ServletWebRequest) request;
     StringBuffer currentUrl = servletWebRequest.getContainerRequest().getRequestURL();
     String queryString = servletWebRequest.getContainerRequest().getQueryString();
     if (queryString != null) {

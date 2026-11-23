@@ -53,33 +53,33 @@ class TestIntegration {
     sourceFolder.toFile().mkdir();
 
     entityManagerHelper.doWithReadWriteTransaction(
-        e -> {
+        _ -> {
           return storageService.createStorageUnit(
               StorageUnitType.SOURCE, StorageUnitCheckType.NONE, sourceFolder.toString());
         });
     Fichier fichier1 =
         entityManagerHelper.doWithReadWriteTransaction(
-            e ->
+            _ ->
                 storageService.addFichier(
                     "test", FichierType.TYPE1, new ByteArrayInputStream("fichier1".getBytes())));
     Fichier fichier2Missing =
         entityManagerHelper.doWithReadWriteTransaction(
-            e ->
+            _ ->
                 storageService.addFichier(
                     "test", FichierType.TYPE1, new ByteArrayInputStream("fichier2".getBytes())));
     Fichier fichier3AlreadyMoved =
         entityManagerHelper.doWithReadWriteTransaction(
-            e ->
+            _ ->
                 storageService.addFichier(
                     "test", FichierType.TYPE1, new ByteArrayInputStream("fichier3".getBytes())));
     Fichier fichier4 =
         entityManagerHelper.doWithReadWriteTransaction(
-            e ->
+            _ ->
                 storageService.addFichier(
                     "test", FichierType.TYPE1, new ByteArrayInputStream("fichier4".getBytes())));
     Fichier fichierIgnored =
         entityManagerHelper.doWithReadWriteTransaction(
-            e ->
+            _ ->
                 storageService.addFichier(
                     "test", FichierType.TYPE1, new ByteArrayInputStream("fichier4".getBytes())));
 

@@ -94,7 +94,7 @@ public abstract class AbstractTestHibernateBatchExecutor extends AbstractJpaCore
 
     @Override
     public void preExecutePartition(List<T> partition) {
-      LOGGER.warn("Executing partition: " + Joiners.onComma().join(partition));
+      LOGGER.warn("Executing partition: {}", Joiners.onComma().join(partition));
     }
 
     @Override

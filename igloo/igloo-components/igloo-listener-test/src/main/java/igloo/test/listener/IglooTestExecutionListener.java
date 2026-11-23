@@ -173,7 +173,7 @@ public class IglooTestExecutionListener implements TestExecutionListener, Ordere
     }
     try {
       return TestInstance.Lifecycle.valueOf(setting);
-    } catch (IllegalArgumentException e) {
+    } catch (IllegalArgumentException _) {
       return TestInstance.Lifecycle.PER_METHOD;
     }
   }

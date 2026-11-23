@@ -24,7 +24,7 @@ public class DifferenceFieldsProxyInitializer implements IProxyInitializer<Objec
 
   public DifferenceFieldsProxyInitializer(DifferenceFields fields) {
     this.fields = fields;
-    this.rootField = fields.getFieldList().get(0);
+    this.rootField = fields.getFieldList().getFirst();
     Preconditions.checkArgument(rootField.getPath().isRoot(), "First field must be root field");
   }
 
@@ -35,10 +35,10 @@ public class DifferenceFieldsProxyInitializer implements IProxyInitializer<Objec
     }
     List<DifferenceField> fieldList = new ArrayList<>();
     fieldList.addAll(fields.getFieldList());
-    DifferenceField skippedRootField = fieldList.get(0);
+    DifferenceField skippedRootField = fieldList.getFirst();
     Preconditions.checkArgument(
         skippedRootField.getPath().isRoot(), "First field must be root field");
-    fieldList.remove(0);
+    fieldList.removeFirst();
 
     DifferenceInitializerContext context = new DifferenceInitializerContext();
     context.push(skippedRootField, rootValue);
@@ -50,7 +50,7 @@ public class DifferenceFieldsProxyInitializer implements IProxyInitializer<Objec
   private void initialize(
       List<DifferenceField> remainingFields, DifferenceInitializerContext context) {
     while (!remainingFields.isEmpty()) {
-      DifferenceField field = remainingFields.remove(0);
+      DifferenceField field = remainingFields.removeFirst();
       if (!isChildOf(field, context.peekRootField())) {
         return;
       }
@@ -101,9 +101,9 @@ public class DifferenceFieldsProxyInitializer implements IProxyInitializer<Objec
       DifferenceField currentField, List<DifferenceField> remainingField) {
     List<DifferenceField> childFields = new ArrayList<>();
     while (!remainingField.isEmpty()) {
-      DifferenceField field = remainingField.get(0);
+      DifferenceField field = remainingField.getFirst();
       if (isChildOf(field, currentField)) {
-        childFields.add(remainingField.remove(0));
+        childFields.add(remainingField.removeFirst());
       } else {
         break;
       }

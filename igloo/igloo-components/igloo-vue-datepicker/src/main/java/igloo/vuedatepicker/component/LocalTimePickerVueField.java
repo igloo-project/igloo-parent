@@ -13,7 +13,7 @@ public class LocalTimePickerVueField extends AbstractDatePickerVueField<LocalTim
   private static final long serialVersionUID = 1L;
 
   public LocalTimePickerVueField(String id, IModel<LocalTime> model) {
-    this(id, model, builder -> {});
+    this(id, model, _ -> {});
   }
 
   public LocalTimePickerVueField(
@@ -28,7 +28,7 @@ public class LocalTimePickerVueField extends AbstractDatePickerVueField<LocalTim
         return null;
       }
       return LocalTime.parse(trim(value[0]), getFormat());
-    } catch (DateTimeException e) {
+    } catch (DateTimeException _) {
       throw new ConversionException("Cannot parse '" + value)
           .setResourceKey("conversion.error.localTime")
           .setSourceValue(value)

@@ -10,7 +10,7 @@ public final class GenericEntityRendererToChoiceRenderer {
 
   public static <E extends GenericEntity<?, ?>> AbstractGenericEntityChoiceRenderer<E> of(
       final Renderer<E> renderer) {
-    return new AbstractGenericEntityChoiceRenderer<E>() {
+    return new AbstractGenericEntityChoiceRenderer<>() {
       private static final long serialVersionUID = 1L;
 
       @Override
@@ -23,7 +23,7 @@ public final class GenericEntityRendererToChoiceRenderer {
   public static <E extends GenericEntity<?, ?>>
       AbstractGenericEntityChoiceRenderer<E> ofWildcardRenderer(
           final Renderer<? super E> renderer) {
-    return new AbstractGenericEntityChoiceRenderer<E>() {
+    return new AbstractGenericEntityChoiceRenderer<>() {
       private static final long serialVersionUID = 1L;
 
       @Override

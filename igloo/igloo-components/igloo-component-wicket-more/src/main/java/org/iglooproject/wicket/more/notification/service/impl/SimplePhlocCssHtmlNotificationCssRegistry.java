@@ -82,9 +82,7 @@ public class SimplePhlocCssHtmlNotificationCssRegistry implements IHtmlNotificat
     for (CSSStyleRule rule : styleSheet.getAllStyleRules()) {
       Collection<CSSSelector> matchedSelectors = getMatchedSelectors(matchableTag, rule);
       Collection<CssSelectorSpecificity> matchedSelectorsSpecificities =
-          matchedSelectors.stream()
-              .map(input -> computeSpecificity(input))
-              .collect(Collectors.toList());
+          matchedSelectors.stream().map(this::computeSpecificity).collect(Collectors.toList());
       if (!matchedSelectorsSpecificities.isEmpty()) {
         matchedRules.put(rule, Ordering.natural().max(matchedSelectorsSpecificities));
       }
@@ -129,9 +127,7 @@ public class SimplePhlocCssHtmlNotificationCssRegistry implements IHtmlNotificat
       }
     }
 
-    return mergedDeclarations.values().stream()
-        .map(input -> input.getLeft())
-        .collect(Collectors.toList());
+    return mergedDeclarations.values().stream().map(Pair::getLeft).collect(Collectors.toList());
   }
 
   private CssSelectorSpecificity computeSpecificity(CSSSelector selector) {
@@ -140,9 +136,8 @@ public class SimplePhlocCssHtmlNotificationCssRegistry implements IHtmlNotificat
     int typeSelectorsAndPseudoElements = 0;
 
     for (ICSSSelectorMember member : selector.getAllMembers()) {
-      if (member instanceof CSSSelectorSimpleMember
+      if (member instanceof CSSSelectorSimpleMember simpleMember
           && !((CSSSelectorSimpleMember) member).isPseudo()) {
-        CSSSelectorSimpleMember simpleMember = (CSSSelectorSimpleMember) member;
         if (simpleMember.isClass()) {
           ++classAndPseudoClassSelectors;
         } else if (simpleMember.isElementName()) {

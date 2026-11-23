@@ -140,7 +140,6 @@ public class WicketContextProviderImpl implements IWicketContextProvider {
       ThreadContext.restore(initialContext);
     }
   }
-  ;
 
   private final class RequestCycleExecutionContext extends AbstractExecutionContext {
 
@@ -175,12 +174,9 @@ public class WicketContextProviderImpl implements IWicketContextProvider {
       RequestCycle requestCycle = application.createRequestCycle(webRequest, webResponse);
 
       ITearDownHandle handle =
-          new ITearDownHandle() {
-            @Override
-            public void close() {
-              ThreadContext.setSession(null);
-              ThreadContext.setRequestCycle(null);
-            }
+          () -> {
+            ThreadContext.setSession(null);
+            ThreadContext.setRequestCycle(null);
           };
 
       try {
@@ -231,13 +227,7 @@ public class WicketContextProviderImpl implements IWicketContextProvider {
         return ExecutionContexts.noOp().open();
       }
 
-      ITearDownHandle handle =
-          new ITearDownHandle() {
-            @Override
-            public void close() {
-              Session.get().setLocale(oldLocale);
-            }
-          };
+      ITearDownHandle handle = () -> Session.get().setLocale(oldLocale);
 
       try {
         session.setLocale(locale);

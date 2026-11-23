@@ -19,8 +19,7 @@ public class BootstrapRequestCycle {
   private BootstrapRequestCycle() {}
 
   @SuppressWarnings("serial")
-  public static final MetaDataKey<BootstrapVersion> VERSION_KEY =
-      new MetaDataKey<BootstrapVersion>() {};
+  public static final MetaDataKey<BootstrapVersion> VERSION_KEY = new MetaDataKey<>() {};
 
   /**
    * Get bootstrap version from request cycle cache, or resolve it from currently processed page.
@@ -72,40 +71,33 @@ public class BootstrapRequestCycle {
     if (requestHandler instanceof IRequestHandlerDelegate) {
       requestHandler = ((IRequestHandlerDelegate) requestHandler).getDelegateHandler();
     }
-    if (!(requestHandler instanceof IPageRequestHandler)) {
+    if (!(requestHandler instanceof IPageRequestHandler pageRequestHandler)) {
       throw new IllegalStateException(
           String.format(
               "requestHandler not a IPageRequestHandler; version cannot be resolved (%s)",
               requestHandler.getClass().getName()));
     } else {
-      IPageRequestHandler pageRequestHandler = (IPageRequestHandler) requestHandler;
       return pageRequestHandler.getPageClass();
     }
   }
 
   public static IBootstrapProvider getSettings() {
-    switch (getVersion()) {
-      case BOOTSTRAP_4:
-        return ((IBootstrapApplication) Application.get())
-            .getBootstrapSettings()
-            .getBootstrap4Provider();
-      case BOOTSTRAP_5:
-        return ((IBootstrapApplication) Application.get())
-            .getBootstrapSettings()
-            .getBootstrap5Provider();
-      default:
-        throw new IllegalStateException();
-    }
+    return switch (getVersion()) {
+      case BOOTSTRAP_4 ->
+          ((IBootstrapApplication) Application.get())
+              .getBootstrapSettings()
+              .getBootstrap4Provider();
+      case BOOTSTRAP_5 ->
+          ((IBootstrapApplication) Application.get())
+              .getBootstrapSettings()
+              .getBootstrap5Provider();
+    };
   }
 
   public static String getVariation() {
-    switch (getVersion()) {
-      case BOOTSTRAP_4:
-        return "bs4";
-      case BOOTSTRAP_5:
-        return null;
-      default:
-        throw new IllegalStateException();
-    }
+    return switch (getVersion()) {
+      case BOOTSTRAP_4 -> "bs4";
+      case BOOTSTRAP_5 -> null;
+    };
   }
 }

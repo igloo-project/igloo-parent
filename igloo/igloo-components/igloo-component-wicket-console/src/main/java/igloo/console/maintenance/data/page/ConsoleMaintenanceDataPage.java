@@ -53,17 +53,10 @@ public class ConsoleMaintenanceDataPage extends ConsoleMaintenanceTemplate {
         new BreadCrumbElement(new ResourceModel("console.navigation.maintenance.data")));
 
     IModel<List<IDataUpgrade>> dataUpgrades =
-        new LoadableDetachableModel<List<IDataUpgrade>>() {
-          private static final long serialVersionUID = 1L;
-
-          @Override
-          protected List<IDataUpgrade> load() {
-            return dataUpgradeService.listDataUpgrades();
-          }
-        };
+        LoadableDetachableModel.of(() -> dataUpgradeService.listDataUpgrades());
 
     ListView<IDataUpgrade> dataUpgradeListView =
-        new ListView<IDataUpgrade>("dataUpgrades", dataUpgrades) {
+        new ListView<>("dataUpgrades", dataUpgrades) {
           private static final long serialVersionUID = 1L;
 
           @Override
@@ -91,7 +84,7 @@ public class ConsoleMaintenanceDataPage extends ConsoleMaintenanceTemplate {
                     .content(new ResourceModel("common.action.confirm.content"))
                     .confirm()
                     .onClick(
-                        new IOneParameterAction<IModel<IDataUpgrade>>() {
+                        new IOneParameterAction<>() {
                           private static final long serialVersionUID = 1L;
 
                           @Override
@@ -101,9 +94,8 @@ public class ConsoleMaintenanceDataPage extends ConsoleMaintenanceTemplate {
                               Session.get().success(getString("common.success"));
                             } catch (Exception e) {
                               LOGGER.error(
-                                  "Erreur lors de l'exécution de la mise à jour '"
-                                      + getModelObject()
-                                      + "'",
+                                  "Erreur lors de l'exécution de la mise à jour '{}'",
+                                  getModelObject(),
                                   e);
                               Session.get().error(getString("common.error.unexpected"));
                             }

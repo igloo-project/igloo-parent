@@ -21,7 +21,6 @@ import org.iglooproject.imports.table.common.event.TableImportNonFatalErrorHandl
 import org.iglooproject.imports.table.common.event.exception.TableImportException;
 import org.iglooproject.imports.table.common.excel.scanner.IExcelImportFileScanner.IExcelImportFileVisitor;
 import org.iglooproject.imports.table.common.excel.scanner.IExcelImportFileScanner.SheetSelection;
-import org.iglooproject.imports.table.common.location.ITableImportNavigator;
 import org.iglooproject.imports.table.common.mapping.column.builder.MappingConstraint;
 import org.javatuples.Quartet;
 import org.slf4j.Logger;
@@ -33,8 +32,7 @@ public class TestApachePoiExcelImporter {
 
   private static class Columns extends ApachePoiImportColumnSet {
     final Column<LocalDate> dateColumn = withIndex(0).asLocalDate().build();
-    final Column<Boolean> booleanColumn =
-        withIndex(1).asString().toBoolean(input -> "true".equals(input) ? true : false).build();
+    final Column<Boolean> booleanColumn = withIndex(1).asString().toBoolean("true"::equals).build();
     final Column<String> stringColumn =
         withHeader("StringColumn", 2, MappingConstraint.REQUIRED).asString().clean().build();
     final Column<Integer> integerColumn = withHeader("IntegerColumn").asInteger().build();
@@ -53,40 +51,34 @@ public class TestApachePoiExcelImporter {
         stream,
         filename,
         SheetSelection.ALL,
-        new IExcelImportFileVisitor<Workbook, Sheet, Row, Cell, CellReference>() {
-          @Override
-          public void visitSheet(
-              ITableImportNavigator<Sheet, Row, Cell, CellReference> navigator,
-              Workbook workbook,
-              Sheet sheet)
-              throws TableImportException {
-            ITableImportEventHandler eventHandler =
-                new LoggerTableImportEventHandler(
-                    TableImportNonFatalErrorHandling.THROW_IMMEDIATELY, LOGGER);
+        (IExcelImportFileVisitor<Workbook, Sheet, Row, Cell, CellReference>)
+            (navigator, _, sheet) -> {
+              ITableImportEventHandler eventHandler =
+                  new LoggerTableImportEventHandler(
+                      TableImportNonFatalErrorHandling.THROW_IMMEDIATELY, LOGGER);
 
-            Columns.TableContext sheetContext = COLUMNS.map(sheet, navigator, eventHandler);
+              Columns.TableContext sheetContext = COLUMNS.map(sheet, navigator, eventHandler);
 
-            assertTrue(sheetContext.column(COLUMNS.dateColumn).exists());
-            assertTrue(sheetContext.column(COLUMNS.integerColumn).exists());
-            assertTrue(sheetContext.column(COLUMNS.booleanColumn).exists());
-            assertFalse(sheetContext.column(COLUMNS.missingColumn).exists());
+              assertTrue(sheetContext.column(COLUMNS.dateColumn).exists());
+              assertTrue(sheetContext.column(COLUMNS.integerColumn).exists());
+              assertTrue(sheetContext.column(COLUMNS.booleanColumn).exists());
+              assertFalse(sheetContext.column(COLUMNS.missingColumn).exists());
 
-            for (Columns.RowContext rowContext : Iterables.skip(sheetContext, 1)) {
-              if (!rowContext.hasContent()) {
-                break;
+              for (Columns.RowContext rowContext : Iterables.skip(sheetContext, 1)) {
+                if (!rowContext.hasContent()) {
+                  break;
+                }
+
+                Quartet<LocalDate, Boolean, String, Integer> result =
+                    Quartet.with(
+                        rowContext.cell(COLUMNS.dateColumn).get(),
+                        rowContext.cell(COLUMNS.booleanColumn).get(),
+                        rowContext.cell(COLUMNS.stringColumn).get(),
+                        rowContext.cell(COLUMNS.integerColumn).get());
+
+                results.add(result);
               }
-
-              Quartet<LocalDate, Boolean, String, Integer> result =
-                  Quartet.with(
-                      rowContext.cell(COLUMNS.dateColumn).get(),
-                      rowContext.cell(COLUMNS.booleanColumn).get(),
-                      rowContext.cell(COLUMNS.stringColumn).get(),
-                      rowContext.cell(COLUMNS.integerColumn).get());
-
-              results.add(result);
-            }
-          }
-        });
+            });
 
     return results;
   }

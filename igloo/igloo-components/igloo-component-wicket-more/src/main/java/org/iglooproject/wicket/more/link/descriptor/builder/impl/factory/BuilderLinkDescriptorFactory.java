@@ -89,7 +89,7 @@ public abstract class BuilderLinkDescriptorFactory<TTarget, TLinkDescriptor>
 
   private static final BuilderLinkDescriptorFactory<Class<? extends Page>, IPageLinkDescriptor>
       PAGE =
-          new BuilderLinkDescriptorFactory<Class<? extends Page>, IPageLinkDescriptor>() {
+          new BuilderLinkDescriptorFactory<>() {
             private static final long serialVersionUID = 1L;
 
             @Override
@@ -117,7 +117,7 @@ public abstract class BuilderLinkDescriptorFactory<TTarget, TLinkDescriptor>
 
   private static final BuilderLinkDescriptorFactory<ResourceReference, IResourceLinkDescriptor>
       RESOURCE =
-          new BuilderLinkDescriptorFactory<ResourceReference, IResourceLinkDescriptor>() {
+          new BuilderLinkDescriptorFactory<>() {
             private static final long serialVersionUID = 1L;
 
             @Override
@@ -145,7 +145,7 @@ public abstract class BuilderLinkDescriptorFactory<TTarget, TLinkDescriptor>
 
   private static final BuilderLinkDescriptorFactory<ResourceReference, IImageResourceLinkDescriptor>
       IMAGE_RESOURCE =
-          new BuilderLinkDescriptorFactory<ResourceReference, IImageResourceLinkDescriptor>() {
+          new BuilderLinkDescriptorFactory<>() {
             private static final long serialVersionUID = 1L;
 
             @Override

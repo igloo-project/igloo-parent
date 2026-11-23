@@ -209,7 +209,7 @@ class TestTaskManagement extends AbstractJpaMoreTestCase {
     final StaticValueAccessor<String> result = new StaticValueAccessor<>();
     final StaticValueAccessor<Long> taskHolderId = new StaticValueAccessor<>();
     transactionTemplate.executeWithoutResult(
-        status -> {
+        _ -> {
           try {
             QueuedTaskHolder taskHolder =
                 manager.submit(
@@ -259,17 +259,13 @@ class TestTaskManagement extends AbstractJpaMoreTestCase {
     final StaticValueAccessor<Long> taskHolderId = new StaticValueAccessor<>();
     // concurrency mechanism to ensure that task 1 is pushed to queue before task 2
     // for each step, offer then take must be done
-    final LinkedBlockingQueue<Boolean> step1ConcurrentLinkedQueue =
-        new LinkedBlockingQueue<Boolean>(1);
-    final LinkedBlockingQueue<Boolean> step2ConcurrentLinkedQueue =
-        new LinkedBlockingQueue<Boolean>(1);
+    final LinkedBlockingQueue<Boolean> step1ConcurrentLinkedQueue = new LinkedBlockingQueue<>(1);
+    final LinkedBlockingQueue<Boolean> step2ConcurrentLinkedQueue = new LinkedBlockingQueue<>(1);
 
     Runnable runnable =
-        new Runnable() {
-          @Override
-          public void run() {
+        () ->
             transactionTemplate.executeWithoutResult(
-                status -> {
+                _ -> {
                   try {
                     QueuedTaskHolder taskHolder =
                         manager.submit(
@@ -293,8 +289,6 @@ class TestTaskManagement extends AbstractJpaMoreTestCase {
                     throw new IllegalStateException(e);
                   }
                 });
-          }
-        };
     // thread needed so that second task can be run and completed before the above transaction
     Thread t = new Thread(runnable);
     t.start();
@@ -304,7 +298,7 @@ class TestTaskManagement extends AbstractJpaMoreTestCase {
 
     // push another task
     transactionTemplate.executeWithoutResult(
-        status -> {
+        _ -> {
           try {
             manager.submit(
                 new SimpleTestTask<>(result2, "success", TaskExecutionResult.completed()));
@@ -348,14 +342,7 @@ class TestTaskManagement extends AbstractJpaMoreTestCase {
 
     @Override
     protected TaskExecutionResult doTask() throws Exception {
-      Thread thread =
-          new Thread(
-              new Runnable() {
-                @Override
-                public void run() {
-                  manager.stop();
-                }
-              });
+      Thread thread = new Thread(() -> manager.stop());
       // stop the manager in a separate thread so that there is no lockup
       // (as manager will wait uninterruptibly for all threads to stop)
       thread.start();
@@ -370,7 +357,7 @@ class TestTaskManagement extends AbstractJpaMoreTestCase {
     final StaticValueAccessor<String> result = new StaticValueAccessor<>();
     final StaticValueAccessor<Long> taskHolderId = new StaticValueAccessor<>();
     transactionTemplate.executeWithoutResult(
-        status -> {
+        _ -> {
           try {
             // This task will stop the manager during its execution
             SelfInterruptingTask<String> testTask =
@@ -418,7 +405,7 @@ class TestTaskManagement extends AbstractJpaMoreTestCase {
     final StaticValueAccessor<Long> taskHolderId = new StaticValueAccessor<>();
 
     transactionTemplate.executeWithoutResult(
-        status -> {
+        _ -> {
           try {
             QueuedTaskHolder taskHolder =
                 manager.submit(
@@ -483,7 +470,7 @@ class TestTaskManagement extends AbstractJpaMoreTestCase {
       valueAccessor.set(expectedValue);
       try {
         taskTransactionTemplate.execute(
-            t -> {
+            _ -> {
               throw new RuntimeException();
             });
       } catch (Exception e) {

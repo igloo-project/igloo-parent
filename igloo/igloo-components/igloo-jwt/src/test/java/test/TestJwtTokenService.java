@@ -188,8 +188,7 @@ public class TestJwtTokenService {
         JwtTokenServiceImpl.<String>builder(publicKey, privateKey)
             .jwtTokenBuilderCustomizer((principal, builder) -> builder.subject(principal))
             .jwtTokenHeaderCustomizer(
-                (principal, headerBuilder) ->
-                    headerBuilder.header("x-custom-header", "customHeaderValue"))
+                (_, headerBuilder) -> headerBuilder.header("x-custom-header", "customHeaderValue"))
             .build();
 
     String token = service.issueToken("headerUser");

@@ -18,7 +18,7 @@ public final class TaskQueue extends ForwardingBlockingQueue<Long> {
     this.id = id;
   }
 
-  public final String getId() {
+  public String getId() {
     return id;
   }
 

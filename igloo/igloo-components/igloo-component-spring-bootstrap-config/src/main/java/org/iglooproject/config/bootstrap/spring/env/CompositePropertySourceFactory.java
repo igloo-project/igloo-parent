@@ -57,7 +57,7 @@ public class CompositePropertySourceFactory implements PropertySourceFactory {
                   ? ((ResourcePropertySource) wrappedPropertySource).withResourceName()
                   : wrappedPropertySource);
           compositePropertySource.addFirstPropertySource(wrappedPropertySource);
-        } catch (IllegalArgumentException | FileNotFoundException | UnknownHostException ex) {
+        } catch (IllegalArgumentException | FileNotFoundException | UnknownHostException _) {
           // catch based on ConfigurationClassParser behavior
 
         }

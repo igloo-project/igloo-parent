@@ -37,10 +37,9 @@ public class ListItemModel<T> implements IModel<T> {
     if (obj == this) {
       return true;
     }
-    if (!(obj instanceof ListItemModel)) {
+    if (!(obj instanceof ListItemModel<?> other)) {
       return false;
     }
-    ListItemModel<?> other = (ListItemModel<?>) obj;
     return new EqualsBuilder()
         .append(listModel, other.listModel)
         .append(indexModel, other.indexModel)

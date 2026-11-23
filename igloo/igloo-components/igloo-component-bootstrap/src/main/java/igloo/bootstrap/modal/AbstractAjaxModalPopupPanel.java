@@ -57,14 +57,7 @@ public abstract class AbstractAjaxModalPopupPanel<O> extends AbstractModalPopupP
     target.add(getContainer());
     onShow(target);
     if (resetInputOnShow) {
-      visitChildren(
-          Form.class,
-          new IVisitor<Form<?>, Void>() {
-            @Override
-            public void component(Form<?> component, IVisit<Void> visit) {
-              component.clearInput();
-            }
-          });
+      visitChildren(Form.class, (IVisitor<Form<?>, Void>) (component, _) -> component.clearInput());
     }
     visitChildren(IAjaxModalShowListener.class, new OnShowVisitor<>(target));
     FeedbackUtils.refreshFeedback(target, getPage());

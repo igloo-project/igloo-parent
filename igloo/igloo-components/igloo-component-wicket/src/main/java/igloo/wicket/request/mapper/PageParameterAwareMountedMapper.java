@@ -87,12 +87,10 @@ public class PageParameterAwareMountedMapper extends MountedMapper {
       PageParameters pageParameters,
       Integer renderCount) {
     IRequestHandler handler = super.processHybrid(pageInfo, pageClass, pageParameters, renderCount);
-    if (handler instanceof RenderPageRequestHandler) {
+    if (handler instanceof RenderPageRequestHandler renderPageHandler) {
       // in the current implementation (wicket 1.5.6) super.processHybrid
       // returns a RenderPageRequestHandler
-      RenderPageRequestHandler renderPageHandler = (RenderPageRequestHandler) handler;
-      if (renderPageHandler.getPageProvider() instanceof PageProvider) {
-        PageProvider provider = (PageProvider) renderPageHandler.getPageProvider();
+      if (renderPageHandler.getPageProvider() instanceof PageProvider provider) {
         // This check is necessary to prevent a
         // RestartResponseAtInterceptPageException at the wrong time in
         // request cycle

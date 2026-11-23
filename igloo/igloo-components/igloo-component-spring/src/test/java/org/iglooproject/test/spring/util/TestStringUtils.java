@@ -34,7 +34,7 @@ class TestStringUtils {
     String str5 = "test test test";
     List<String> list5 = StringUtils.splitAsList(str5, null);
     assertEquals(1, list5.size());
-    assertEquals(str5, list5.get(0));
+    assertEquals(str5, list5.getFirst());
   }
 
   @Test

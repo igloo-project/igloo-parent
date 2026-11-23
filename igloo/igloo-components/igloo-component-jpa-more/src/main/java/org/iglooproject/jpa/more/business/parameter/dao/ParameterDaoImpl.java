@@ -24,14 +24,14 @@ public class ParameterDaoImpl extends GenericEntityDaoImpl<Long, Parameter>
 
   @Override
   public String getInTransaction(final String key) {
-    return readOnlyTransactionTemplate.execute(status -> get(key));
+    return readOnlyTransactionTemplate.execute(_ -> get(key));
   }
 
   @Override
   public void setInTransaction(final String key, final String value)
       throws ServiceException, SecurityServiceException {
     writeTransactionTemplate.executeWithoutResult(
-        status -> {
+        _ -> {
           try {
             set(key, value);
           } catch (RuntimeException | ServiceException | SecurityServiceException e) {
@@ -43,7 +43,7 @@ public class ParameterDaoImpl extends GenericEntityDaoImpl<Long, Parameter>
 
   @Override
   public void cleanInTransaction() {
-    writeTransactionTemplate.executeWithoutResult(status -> clean());
+    writeTransactionTemplate.executeWithoutResult(_ -> clean());
   }
 
   @Autowired

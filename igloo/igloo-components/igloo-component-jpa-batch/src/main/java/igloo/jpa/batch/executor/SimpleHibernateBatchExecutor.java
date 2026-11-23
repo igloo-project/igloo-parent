@@ -22,7 +22,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionException;
-import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.SimpleTransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionOperations;
@@ -157,14 +156,14 @@ public class SimpleHibernateBatchExecutor
         executionStrategyFactory.create(this, query, batchRunnable);
     executionStrategy
         .getExecuteTransactionOperations()
-        .executeWithoutResult(status -> doRun(executionStrategy, loggerContext, consuming));
+        .executeWithoutResult(_ -> doRun(executionStrategy, loggerContext, consuming));
   }
 
   private <E extends GenericEntity<Long, ?>> void doRun(
       ExecutionStrategy<E> executionStrategy, String loggerContext, boolean consuming) {
     long expectedTotalCount = executionStrategy.getExpectedTotalCount();
     long offset = 0;
-    LOGGER.info("Beginning batch for %1$s: %2$d objects", loggerContext, expectedTotalCount);
+    LOGGER.info("Beginning batch for {}: {} objects", loggerContext, expectedTotalCount);
 
     try {
       LOGGER.info("    preExecute start");
@@ -188,7 +187,7 @@ public class SimpleHibernateBatchExecutor
                   consuming ? 0 : offset, batchSize);
 
           offset += partitionSize;
-          LOGGER.info("        treated %1$d/%2$d objects", offset, expectedTotalCount);
+          LOGGER.info("        treated {}/{} objects", offset, expectedTotalCount);
         } while (partitionSize > 0);
       } catch (RuntimeException e) {
         throw new ExecutionException("Exception on executePartition", e);
@@ -206,8 +205,8 @@ public class SimpleHibernateBatchExecutor
 
       LOGGER.info("    postExecute end");
 
-      if (classesToReindex.size() > 0) {
-        LOGGER.info("    reindexing classes %1$s", Joiners.onComma().join(classesToReindex));
+      if (!classesToReindex.isEmpty()) {
+        LOGGER.info("    reindexing classes {}", Joiners.onComma().join(classesToReindex));
         try {
           hibernateSearchService.reindexClasses(classesToReindex);
         } catch (ServiceException e) {
@@ -217,12 +216,14 @@ public class SimpleHibernateBatchExecutor
       }
 
       LOGGER.info(
-          "End of batch for %1$s: %2$d/%3$d objects treated",
-          loggerContext, offset, expectedTotalCount);
+          "End of batch for {}: {}/{} objects treated", loggerContext, offset, expectedTotalCount);
     } catch (ExecutionException e) {
       LOGGER.info(
-          "End of batch for %1$s: %2$d/%3$d objects treated, but caught exception '%s'",
-          loggerContext, offset, expectedTotalCount, e);
+          "End of batch for {}: {}/{} objects treated, but caught exception '{}'",
+          loggerContext,
+          offset,
+          expectedTotalCount,
+          e);
       try {
         LOGGER.info("    onError start");
         executionStrategy.onError(e);
@@ -379,39 +380,30 @@ public class SimpleHibernateBatchExecutor
 
     @Override
     public long getExpectedTotalCount() {
-      return stepTransactionTemplate.execute(
-          new TransactionCallback<Long>() {
-            @Override
-            public Long doInTransaction(TransactionStatus status) {
-              return query.count();
-            }
-          });
+      return stepTransactionTemplate.execute(_ -> query.count());
     }
 
     @Override
     public void preExecute() {
-      stepTransactionTemplate.executeWithoutResult(status -> runnable.preExecute());
+      stepTransactionTemplate.executeWithoutResult(_ -> runnable.preExecute());
     }
 
     @Override
     public int executePartition(final long offset, final long limit) {
       return stepTransactionTemplate.execute(
-          new TransactionCallback<Integer>() {
-            @Override
-            public Integer doInTransaction(TransactionStatus status) {
-              final List<T> partition = query.list(offset, limit);
-              int partitionSize = partition.size();
-              if (partitionSize > 0) {
-                runnable.executePartition(partition);
-              }
-              return partitionSize;
+          _ -> {
+            final List<T> partition = query.list(offset, limit);
+            int partitionSize = partition.size();
+            if (partitionSize > 0) {
+              runnable.executePartition(partition);
             }
+            return partitionSize;
           });
     }
 
     @Override
     public void postExecute() {
-      stepTransactionTemplate.executeWithoutResult(status -> runnable.postExecute());
+      stepTransactionTemplate.executeWithoutResult(_ -> runnable.postExecute());
     }
   }
 }

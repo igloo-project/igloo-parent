@@ -9,8 +9,8 @@ public final class DetachableFactories {
 
   private DetachableFactories() {}
 
-  public static final <T, R> IDetachableFactory<T, R> constant(final R value) {
-    return new IDetachableFactory<T, R>() {
+  public static <T, R> IDetachableFactory<T, R> constant(final R value) {
+    return new IDetachableFactory<>() {
       private static final long serialVersionUID = 1L;
 
       @Override
@@ -20,9 +20,9 @@ public final class DetachableFactories {
     };
   }
 
-  public static final <T, R> IDetachableFactory<Unit<? extends T>, R> forUnit(
+  public static <T, R> IDetachableFactory<Unit<? extends T>, R> forUnit(
       final IDetachableFactory<T, R> factory) {
-    return new IDetachableFactory<Unit<? extends T>, R>() {
+    return new IDetachableFactory<>() {
       private static final long serialVersionUID = 1L;
 
       @Override
@@ -38,10 +38,10 @@ public final class DetachableFactories {
     };
   }
 
-  public static final <A, B, R> IDetachableFactory<A, R> compose(
+  public static <A, B, R> IDetachableFactory<A, R> compose(
       final IDetachableFactory<B, R> factory,
       final SerializableFunction2<A, ? extends B> function) {
-    return new IDetachableFactory<A, R>() {
+    return new IDetachableFactory<>() {
       private static final long serialVersionUID = 1L;
 
       @Override
@@ -57,9 +57,9 @@ public final class DetachableFactories {
     };
   }
 
-  public static final <A, B, R> IDetachableFactory<A, R> compose(
+  public static <A, B, R> IDetachableFactory<A, R> compose(
       final IDetachableFactory<B, R> first, final IDetachableFactory<A, ? extends B> second) {
-    return new IDetachableFactory<A, R>() {
+    return new IDetachableFactory<>() {
       private static final long serialVersionUID = 1L;
 
       @Override
@@ -75,7 +75,7 @@ public final class DetachableFactories {
     };
   }
 
-  public static final <T, R> SerializableFunction2<IDetachableFactory<T, R>, R> toApplyFunction(
+  public static <T, R> SerializableFunction2<IDetachableFactory<T, R>, R> toApplyFunction(
       final T parameter) {
     return input -> input.create(parameter);
   }

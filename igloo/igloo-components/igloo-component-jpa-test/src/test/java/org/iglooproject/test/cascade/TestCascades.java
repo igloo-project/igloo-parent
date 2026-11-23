@@ -46,7 +46,7 @@ class TestCascades extends AbstractJpaCoreTestCase {
     try {
       companyService.create(company);
       fail("La création d'une entité liée à un élément non persisté lève une exception");
-    } catch (InvalidDataAccessApiUsageException e) {
+    } catch (InvalidDataAccessApiUsageException _) {
       assertFalse(companyService.list().contains(company));
       assertFalse(personService.list().contains(person));
     }
@@ -95,7 +95,7 @@ class TestCascades extends AbstractJpaCoreTestCase {
     try {
       companyService.create(company3);
       fail("La création d'une entité liée à un élément non persisté lève une exception");
-    } catch (InvalidDataAccessApiUsageException e) {
+    } catch (InvalidDataAccessApiUsageException _) {
       assertFalse(companyService.list().contains(company3));
     }
 
@@ -112,7 +112,7 @@ class TestCascades extends AbstractJpaCoreTestCase {
     try {
       companyService.create(company4);
       fail("La création d'une entité liée à un élément non persisté lève une exception");
-    } catch (InvalidDataAccessApiUsageException e) {
+    } catch (InvalidDataAccessApiUsageException _) {
       assertFalse(companyService.list().contains(company4));
     }
 
@@ -129,7 +129,7 @@ class TestCascades extends AbstractJpaCoreTestCase {
     try {
       companyService.create(company5);
       fail("La création d'une entité liée à un élément non persisté lève une exception");
-    } catch (InvalidDataAccessApiUsageException e) {
+    } catch (InvalidDataAccessApiUsageException _) {
       assertFalse(companyService.list().contains(company5));
     }
 
@@ -146,7 +146,7 @@ class TestCascades extends AbstractJpaCoreTestCase {
     try {
       companyService.create(company6);
       fail("La création d'une entité liée à un élément non persisté lève une exception");
-    } catch (InvalidDataAccessApiUsageException e) {
+    } catch (InvalidDataAccessApiUsageException _) {
       assertFalse(companyService.list().contains(company6));
     }
   }
@@ -175,7 +175,7 @@ class TestCascades extends AbstractJpaCoreTestCase {
       companyService.update(company);
       fail(
           "Le fait d'updater et d'avoir un élément non persisté lié à l'entité doit provoquer une exception");
-    } catch (InvalidDataAccessApiUsageException e) {
+    } catch (InvalidDataAccessApiUsageException _) {
       assertFalse(personService.list().contains(person));
     }
 
@@ -218,7 +218,7 @@ class TestCascades extends AbstractJpaCoreTestCase {
       companyService.update(company);
       fail(
           "Le fait d'updater et d'avoir une cascade REMOVE sur un élément non persisté doit provoquer une exception");
-    } catch (InvalidDataAccessApiUsageException e) {
+    } catch (InvalidDataAccessApiUsageException _) {
       assertFalse(personService.list().contains(person3));
     }
 
@@ -238,7 +238,7 @@ class TestCascades extends AbstractJpaCoreTestCase {
       companyService.update(company);
       fail(
           "Le fait d'updater et d'avoir une cascade DELETE sur un élément non persisté doit provoquer une exception");
-    } catch (InvalidDataAccessApiUsageException e) {
+    } catch (InvalidDataAccessApiUsageException _) {
       assertFalse(personService.list().contains(person4));
     }
 
@@ -258,7 +258,7 @@ class TestCascades extends AbstractJpaCoreTestCase {
       companyService.update(company);
       fail(
           "Le fait d'updater et d'avoir une cascade DELETE_ORPHAN sur un élément non persisté doit provoquer une exception");
-    } catch (InvalidDataAccessApiUsageException e) {
+    } catch (InvalidDataAccessApiUsageException _) {
       assertFalse(personService.list().contains(person5));
     }
 
@@ -278,7 +278,7 @@ class TestCascades extends AbstractJpaCoreTestCase {
       companyService.update(company);
       fail(
           "Le fait d'updater et d'avoir une cascade MERGE sur un élément non persisté doit provoquer une exception");
-    } catch (InvalidDataAccessApiUsageException e) {
+    } catch (InvalidDataAccessApiUsageException _) {
       assertFalse(personService.list().contains(person6));
     }
 

@@ -132,7 +132,7 @@ public class FichierUtil {
       }
       LOGGER.info("Process finished.");
       monitor.printStatus();
-    } catch (InterruptedException e) {
+    } catch (InterruptedException _) {
       LOGGER.error("Processing interrupted. Stopping...");
       executorService.shutdownNow();
       LOGGER.error("Processing interrupted. Stopped.");
@@ -204,7 +204,7 @@ public class FichierUtil {
         entityManagerHelper.doWithReadOnlyTransaction(action);
       }
       monitor.databaseSuccess(results);
-    } catch (RuntimeException e) {
+    } catch (RuntimeException _) {
       monitor.databaseFailed(results);
     }
   }

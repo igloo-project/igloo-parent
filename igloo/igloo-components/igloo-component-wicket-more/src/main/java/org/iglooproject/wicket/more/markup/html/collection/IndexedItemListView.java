@@ -44,7 +44,7 @@ public abstract class IndexedItemListView<T>
       return Collections.emptyIterator();
     }
 
-    return new UnmodifiableIterator<IModel<T>>() {
+    return new UnmodifiableIterator<>() {
       private int index = (int) offset;
       private final int end = (int) (offset + size);
 

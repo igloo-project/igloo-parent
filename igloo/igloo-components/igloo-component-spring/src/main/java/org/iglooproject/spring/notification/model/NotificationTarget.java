@@ -74,7 +74,7 @@ public class NotificationTarget implements Serializable {
             new InternetAddress(idnEmail, fullName, charset != null ? charset.name() : null);
         internetAddress.validate();
         return internetAddress;
-      } catch (UnsupportedEncodingException e) {
+      } catch (UnsupportedEncodingException _) {
         throw new AddressException(
             String.format(
                 "Unable to parse the address %1$s <$2$s>: invalid encoding", fullName, idnEmail));

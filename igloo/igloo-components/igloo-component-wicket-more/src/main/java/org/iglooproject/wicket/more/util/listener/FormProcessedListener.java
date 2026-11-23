@@ -18,7 +18,7 @@ public final class FormProcessedListener
   private static final FormProcessedListener INSTANCE = new FormProcessedListener();
 
   private static final MetaDataKey<Serializable> IS_PROCESSED =
-      new MetaDataKey<Serializable>() {
+      new MetaDataKey<>() {
         private static final long serialVersionUID = 1L;
 
         private Object readResolve() {
@@ -109,8 +109,7 @@ public final class FormProcessedListener
 
   @Override
   public void onInstantiation(Component component) {
-    if (component instanceof Form) {
-      Form<?> form = (Form<?>) component;
+    if (component instanceof Form<?> form) {
       form.add(PROCESSING_LISTENER);
     }
   }

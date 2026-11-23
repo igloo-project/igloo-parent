@@ -71,8 +71,7 @@ public abstract class AbstractHistoryValueServiceImpl implements IHistoryValueSe
       T value, IRenderer<? super T> renderer, IHistoryValueProvider<H> supplier) {
     String label = renderer.render(value, propertyService.get(SpringPropertyIds.DEFAULT_LOCALE));
 
-    if (value instanceof GenericEntity) {
-      GenericEntity<?, ?> entity = (GenericEntity<?, ?>) value;
+    if (value instanceof GenericEntity<?, ?> entity) {
       if (entity.getId() instanceof Long) {
         @SuppressWarnings("unchecked")
         GenericEntityReference<Long, ?> reference =

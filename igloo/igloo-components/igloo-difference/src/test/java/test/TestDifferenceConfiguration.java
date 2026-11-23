@@ -68,14 +68,11 @@ public class TestDifferenceConfiguration {
   public IRendererService rendererService() {
     @SuppressWarnings("rawtypes")
     IRenderer renderer =
-        new IRenderer() {
-          @Override
-          public String render(Object value, Locale locale) {
-            if (value == null) {
-              return "null";
-            } else {
-              return value.toString();
-            }
+        (value, _) -> {
+          if (value == null) {
+            return "null";
+          } else {
+            return value.toString();
           }
         };
     return new IRendererService() {

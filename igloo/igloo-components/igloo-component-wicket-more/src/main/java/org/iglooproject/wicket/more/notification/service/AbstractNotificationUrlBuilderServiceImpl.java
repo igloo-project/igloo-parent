@@ -33,7 +33,7 @@ public abstract class AbstractNotificationUrlBuilderServiceImpl
       final Callable<IPageLinkGenerator> pageLinkGeneratorTask, final String anchor) {
     Args.notNull(pageLinkGeneratorTask, "pageLinkGeneratorTask");
 
-    try (ITearDownHandle handle = wicketContextProvider.context().open()) {
+    try (ITearDownHandle _ = wicketContextProvider.context().open()) {
       IPageLinkGenerator pageLinkGenerator = pageLinkGeneratorTask.call();
 
       StringBuilder url = new StringBuilder();
@@ -78,7 +78,7 @@ public abstract class AbstractNotificationUrlBuilderServiceImpl
   protected String buildUrl(final IRequestHandler requestHandler, final String anchor) {
     Args.notNull(requestHandler, "requestHandler");
 
-    try (ITearDownHandle handle = wicketContextProvider.context().open()) {
+    try (ITearDownHandle _ = wicketContextProvider.context().open()) {
       StringBuilder url = new StringBuilder();
       url.append(
           RequestCycle.get()

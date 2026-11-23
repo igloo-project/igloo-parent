@@ -22,7 +22,7 @@ public abstract class AbstractTestGenericEntityCollectionModel<C extends Collect
     extends AbstractTestCollectionModel<C> {
 
   protected static final Equivalence<Set<?>> ORDERED_SET_EQUIVALENCE =
-      new Equivalence<Set<?>>() {
+      new Equivalence<>() {
         @Override
         protected boolean doEquivalent(Set<?> a, Set<?> b) {
           return Lists.newArrayList(a)

@@ -23,7 +23,7 @@ public class EnumDropDownSingleChoice<E extends Enum<E>>
 
   public EnumDropDownSingleChoice(
       String id, IModel<E> model, IModel<? extends Collection<? extends E>> choicesModel) {
-    this(id, model, choicesModel, new ResourceKeyWithParameterEnumChoiceRenderer<E>());
+    this(id, model, choicesModel, new ResourceKeyWithParameterEnumChoiceRenderer<>());
   }
 
   public EnumDropDownSingleChoice(

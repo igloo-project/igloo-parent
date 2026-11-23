@@ -22,7 +22,7 @@ public class ActionColumnSimpleElementBuilder<T, L extends AbstractLink>
 
   @Override
   public final MarkupContainer create(String wicketId, IModel<T> rowModel) {
-    return new CoreActionColumnSimpleElementPanel<T>(wicketId, rowModel) {
+    return new CoreActionColumnSimpleElementPanel<>(wicketId, rowModel) {
       private static final long serialVersionUID = 1L;
 
       @Override

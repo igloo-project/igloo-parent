@@ -16,7 +16,7 @@ public class WicketStorage {
   private static final Logger LOGGER = LoggerFactory.getLogger(WicketStorage.class);
 
   private static final MetaDataKey<IWicketStorageSettings> STORAGE_SETTINGS_METADATA_KEY =
-      new MetaDataKey<IWicketStorageSettings>() {
+      new MetaDataKey<>() {
         private static final long serialVersionUID = 1L;
       };
 

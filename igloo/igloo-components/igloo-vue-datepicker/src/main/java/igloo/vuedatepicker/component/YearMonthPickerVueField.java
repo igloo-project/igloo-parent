@@ -13,7 +13,7 @@ public class YearMonthPickerVueField extends AbstractDatePickerVueField<YearMont
   private static final long serialVersionUID = 1L;
 
   public YearMonthPickerVueField(String id, IModel<YearMonth> model) {
-    this(id, model, builder -> {});
+    this(id, model, _ -> {});
   }
 
   public YearMonthPickerVueField(
@@ -28,7 +28,7 @@ public class YearMonthPickerVueField extends AbstractDatePickerVueField<YearMont
         return null;
       }
       return YearMonth.parse(trim(value[0]), getFormat());
-    } catch (DateTimeException e) {
+    } catch (DateTimeException _) {
       throw new ConversionException("Cannot parse '" + value)
           .setResourceKey("conversion.error.yearMonth")
           .setSourceValue(value)

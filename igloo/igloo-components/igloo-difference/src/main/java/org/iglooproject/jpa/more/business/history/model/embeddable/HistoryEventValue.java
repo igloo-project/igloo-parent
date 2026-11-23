@@ -98,10 +98,9 @@ public class HistoryEventValue implements IHistoryValue, Serializable {
 
   @Override
   public boolean equals(Object obj) {
-    if (!(obj instanceof HistoryEventValue)) {
+    if (!(obj instanceof HistoryEventValue other)) {
       return false;
     }
-    HistoryEventValue other = (HistoryEventValue) obj;
     return new EqualsBuilder()
         .append(getLabel(), other.getLabel())
         .append(getSerialized(), other.getSerialized())

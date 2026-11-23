@@ -37,7 +37,7 @@ public abstract class AbstractMonitoringPage extends Page {
     add(new CoreLabel("status", isSuccess() ? "OK" : "KO").setEscapeModelStrings(false));
 
     add(
-        new ListView<String>("details", getDetails()) {
+        new ListView<>("details", getDetails()) {
 
           private static final long serialVersionUID = 1998240269123369862L;
 
@@ -73,7 +73,7 @@ public abstract class AbstractMonitoringPage extends Page {
   @Override
   protected void onRender() {
     final String encoding = getApplication().getRequestCycleSettings().getResponseRequestEncoding();
-    final boolean validEncoding = (Strings.isEmpty(encoding) == false);
+    final boolean validEncoding = (!Strings.isEmpty(encoding));
     final String contentType;
     if (validEncoding) {
       contentType = getMarkupType().getMimeType() + "; charset=" + encoding;

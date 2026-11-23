@@ -61,10 +61,9 @@ public abstract class PropertyId<T> implements IPropertyRegistryKey<T> {
     if (obj == this) {
       return true;
     }
-    if (!(obj instanceof PropertyId)) {
+    if (!(obj instanceof PropertyId<?> other)) {
       return false;
     }
-    PropertyId<?> other = (PropertyId<?>) obj;
     return new EqualsBuilder()
         .append(getClass(), obj.getClass())
         .append(key, other.key)

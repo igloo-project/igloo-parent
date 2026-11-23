@@ -7,6 +7,7 @@ import jakarta.persistence.EntityTransaction;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import org.assertj.core.api.Assertions;
+import org.hibernate.search.engine.search.predicate.dsl.TypedSearchPredicateFactory;
 import org.hibernate.search.mapper.orm.Search;
 import org.jboss.logging.Logger;
 import org.junit.jupiter.api.Test;
@@ -80,7 +81,7 @@ class TestHsearchUtil {
   private long countDummy(EntityManager em) {
     return Search.session(em)
         .search(DummyEntity.class)
-        .where(f -> f.matchAll())
+        .where(TypedSearchPredicateFactory::matchAll)
         .fetchTotalHitCount();
   }
 

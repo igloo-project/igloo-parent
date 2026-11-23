@@ -63,38 +63,28 @@ public class BootstrapBadge<T> extends GenericPanel<T>
     add(
         BootstrapColorBehavior.badge(labelModel.getColorModel()),
         new ClassAttributeAppender(
-            new IModel<String>() {
-              private static final long serialVersionUID = 1L;
-
-              @Override
-              public String getObject() {
-                if (badgePill.applies()) {
-                  return "badge-pill";
-                }
-                return null;
+            () -> {
+              if (badgePill.applies()) {
+                return "badge-pill";
               }
+              return null;
             }),
         new AttributeAppender(
             "title",
-            new IModel<String>() {
-              private static final long serialVersionUID = 1L;
-
-              @Override
-              public String getObject() {
-                if (!showTooltip.applies()) {
-                  return null;
-                }
-
-                if (StringUtils.hasText(labelModel.getTooltipModel().getObject())) {
-                  return labelModel.getTooltipModel().getObject();
-                }
-
-                if (!showLabel.applies() && StringUtils.hasText(labelModel.getObject())) {
-                  return labelModel.getObject();
-                }
-
+            () -> {
+              if (!showTooltip.applies()) {
                 return null;
               }
+
+              if (StringUtils.hasText(labelModel.getTooltipModel().getObject())) {
+                return labelModel.getTooltipModel().getObject();
+              }
+
+              if (!showLabel.applies() && StringUtils.hasText(labelModel.getObject())) {
+                return labelModel.getObject();
+              }
+
+              return null;
             }));
 
     add(Condition.or(Condition.visible(icon), Condition.visible(label)).thenShowInternal());

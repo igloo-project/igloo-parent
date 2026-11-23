@@ -47,7 +47,7 @@ public class ConsoleMaintenanceTaskBatchReportPanel extends GenericPanel<BatchRe
                     batchReportNotEmptyCondition.then("text-bg-dark").otherwise("card-page"))));
 
     add(
-        new MapView<String, List<BatchReportItem>>(
+        new MapView<>(
             "contextes",
             BindingModel.of(batchReportBeanModel, CoreJpaMoreBindings.batchReportBean().items()),
             Models.serializableModelFactory()) {
@@ -67,7 +67,7 @@ public class ConsoleMaintenanceTaskBatchReportPanel extends GenericPanel<BatchRe
                             .thenShow()));
 
             item.add(
-                new CollectionView<BatchReportItem>(
+                new CollectionView<>(
                     "items", item.getValueModel(), Models.serializableModelFactory()) {
                   private static final long serialVersionUID = 1L;
 

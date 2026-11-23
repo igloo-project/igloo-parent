@@ -40,7 +40,7 @@ public abstract class AbstractBatchEntityMigrationService<T extends GenericEntit
     executor.run(
         getMigrationInformation().getEntityClass().getSimpleName(),
         entityIds,
-        new ReadWriteBatchRunnable<Long>() {
+        new ReadWriteBatchRunnable<>() {
           @Override
           public void executePartition(List<Long> partition) {
             importBatch(partition);

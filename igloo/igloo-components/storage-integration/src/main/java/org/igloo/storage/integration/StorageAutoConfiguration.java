@@ -167,7 +167,7 @@ public class StorageAutoConfiguration implements IPropertyRegistryConfiguration 
             value = value.strip();
             try {
               types.addAll(resolveIStorageUnitType(value));
-            } catch (ClassNotFoundException e) {
+            } catch (ClassNotFoundException _) {
               LOGGER.debug("{} cannot be resolved to a class. Resolving as an enum value.", value);
               if (value.contains(".")) {
                 try {
@@ -182,7 +182,7 @@ public class StorageAutoConfiguration implements IPropertyRegistryConfiguration 
                           () -> {
                             throw new IllegalStateException();
                           });
-                } catch (ClassNotFoundException | IllegalStateException e1) {
+                } catch (ClassNotFoundException | IllegalStateException _) {
                   throw new IllegalStateException(
                       String.format("%s cannot be resolved to a value. Check value.", value));
                 }
@@ -347,7 +347,7 @@ public class StorageAutoConfiguration implements IPropertyRegistryConfiguration 
                   MicrometerConfig.TAG_STORAGE_METER,
                   Predicates.alwaysTrue(), // check only alive failures
                   Collectors.summingLong(g -> ((Double) g.value()).longValue()),
-                  v -> HealthStatus.OK,
+                  _ -> HealthStatus.OK,
                   v ->
                       String.format(
                           "%s content in storage.",

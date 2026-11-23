@@ -25,7 +25,7 @@ public class InjectOnlyLinkParameterMappingEntry<T> extends AbstractLinkParamete
   public static <T> ILinkParameterMappingEntryFactory<Unit<IModel<? extends T>>> factory(
       final String parameterName) {
     Args.notNull(parameterName, "parameterName");
-    return new AbstractLinkParameterMappingEntryFactory<Unit<IModel<? extends T>>>() {
+    return new AbstractLinkParameterMappingEntryFactory<>() {
       private static final long serialVersionUID = 1L;
 
       @Override
@@ -39,12 +39,12 @@ public class InjectOnlyLinkParameterMappingEntry<T> extends AbstractLinkParamete
       final String parameterName, final BindingRoot<R, T> bindingRoot) {
     Args.notNull(parameterName, "parameterName");
     Args.notNull(bindingRoot, "bindingRoot");
-    return new AbstractLinkParameterMappingEntryFactory<Unit<IModel<? extends R>>>() {
+    return new AbstractLinkParameterMappingEntryFactory<>() {
       private static final long serialVersionUID = 1L;
 
       @Override
       public ILinkParameterMappingEntry create(Unit<IModel<? extends R>> parameters) {
-        return new InjectOnlyLinkParameterMappingEntry<T>(
+        return new InjectOnlyLinkParameterMappingEntry<>(
             parameterName, BindingModel.of(parameters.getValue0(), bindingRoot));
       }
     };

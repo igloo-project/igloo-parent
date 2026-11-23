@@ -120,7 +120,7 @@ public class ImageGalleryFileStoreImpl extends SimpleFileStoreImpl {
     for (ImageThumbnailFormat thumbnailFormat : thumbnailFormats) {
       File thumbnailFile = getThumbnailFile(fileKey, extension, thumbnailFormat);
       if (!thumbnailFile.delete()) {
-        LOGGER.error("Error removing thumbnail file " + thumbnailFile.getAbsolutePath());
+        LOGGER.error("Error removing thumbnail file {}", thumbnailFile.getAbsolutePath());
       }
     }
     super.removeFile(fileKey, extension);

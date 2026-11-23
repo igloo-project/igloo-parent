@@ -70,7 +70,7 @@ public class AnimatedGlobalFeedbackPanel extends GlobalFeedbackPanel {
     closeTrigger.add(new CloseAlertBehavior());
 
     // To retrieve main panel on close event.
-    add(new ClassAttributeAppender(new Model<String>("animated-global-feedback")));
+    add(new ClassAttributeAppender(new Model<>("animated-global-feedback")));
   }
 
   @Override

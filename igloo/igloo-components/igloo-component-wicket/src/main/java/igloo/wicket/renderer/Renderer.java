@@ -338,16 +338,7 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 
     @Override
     public String render(final T value, Locale locale) {
-      IModel<?> model =
-          parameterRenderer.asModel(
-              new IModel<T>() {
-                private static final long serialVersionUID = 1L;
-
-                @Override
-                public T getObject() {
-                  return value;
-                }
-              });
+      IModel<?> model = parameterRenderer.asModel(() -> value);
       return Renderer.getString(resourceKey, locale, model);
     }
 
@@ -438,7 +429,7 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
   }
 
   private static final Renderer<Object> STRING_VALUE_RENDERER =
-      new Renderer<Object>() {
+      new Renderer<>() {
         private static final long serialVersionUID = 5711969182760960576L;
 
         @Override
@@ -472,7 +463,7 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
   protected static <T> Renderer<T> fromFormat(Format format) {
     checkNotNull(format);
     final Format copiedFormat = (Format) format.clone(); // Ignore changes on 'format'
-    return new FormatRenderer<>(locale -> (Format) copiedFormat.clone());
+    return new FormatRenderer<>(_ -> (Format) copiedFormat.clone());
   }
 
   protected static <T> Renderer<T> fromFormat(
@@ -852,7 +843,7 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
       String rangeResourceKey,
       Renderer<C> withUnitValueRenderer,
       Renderer<C> withoutUnitValueRenderer) {
-    return new RangeRenderer<C>(
+    return new RangeRenderer<>(
             rangeResourceKey,
             withoutUnitValueRenderer,
             (withUnitValueRenderer == null) ? withoutUnitValueRenderer : withUnitValueRenderer)

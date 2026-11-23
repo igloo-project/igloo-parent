@@ -210,9 +210,9 @@ public class SimpleMicrometerHealthMetricService implements IHealthMetricService
     } else {
       try {
         value = gauges.stream().filter(metricFilter).collect(MoreCollectors.onlyElement()).value();
-      } catch (NoSuchElementException e) {
+      } catch (NoSuchElementException _) {
         value = null;
-      } catch (IllegalArgumentException e) {
+      } catch (IllegalArgumentException _) {
         throw unknownStatus(metricName, "More than one metric and no reducer provided");
       }
     }
@@ -236,7 +236,7 @@ public class SimpleMicrometerHealthMetricService implements IHealthMetricService
           Optional.ofNullable(registry.get(metricName))
               .map(m -> m.gauge().getId().getBaseUnit())
               .orElse("");
-    } catch (MeterNotFoundException e) {
+    } catch (MeterNotFoundException _) {
       baseUnit = "";
     }
     return baseUnit;

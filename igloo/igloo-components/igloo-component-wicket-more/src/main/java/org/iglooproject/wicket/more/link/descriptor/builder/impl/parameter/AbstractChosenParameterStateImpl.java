@@ -50,7 +50,7 @@ public abstract class AbstractChosenParameterStateImpl<TSelf, TInitialState>
   }
 
   private int getFirstIndex() {
-    return parameterIndices.get(0);
+    return parameterIndices.getFirst();
   }
 
   @Override

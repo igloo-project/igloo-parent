@@ -92,7 +92,7 @@ abstract class AbstractMainStateImpl<
     Args.notNull(valueType, "valueType");
 
     return map(
-        new SimpleLinkParameterMappingEntry<T>(
+        new SimpleLinkParameterMappingEntry<>(
             name,
             valueModel,
             LinkParameterTypeInformation.valueOf(valueType).getTypeDescriptorSupplier()));
@@ -149,7 +149,7 @@ abstract class AbstractMainStateImpl<
     LinkParameterMappingEntryBuilder<TTuple> builder =
         new LinkParameterMappingEntryBuilder<>(factory);
     mappingEntryBuilders.put(builder, parameterIndices);
-    return new AbstractCoreAddedParameterMapperStateImpl<TSelf, TTuple>(builder) {
+    return new AbstractCoreAddedParameterMapperStateImpl<>(builder) {
       @Override
       protected TSelf toNextState(LinkParameterMappingEntryBuilder<TTuple> builder) {
         return AbstractMainStateImpl.this.thisAsTSelf();

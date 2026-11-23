@@ -34,7 +34,7 @@ class TestExcelGeneration {
             .add(new ColumnInformation("percentage", false, maxColumnWidth))
             .build();
 
-    List<Person> persons = new LinkedList<Person>();
+    List<Person> persons = new LinkedList<>();
     persons.add(
         new Person("username1", "firstname1", "lastname1", LocalDateTime.now(), 24, 1.80, .88));
     persons.add(
@@ -75,7 +75,7 @@ class TestExcelGeneration {
 
   @Test
   void testXSSFGeneration() {
-    List<String> columns = new ArrayList<String>();
+    List<String> columns = new ArrayList<>();
     columns.add("username");
     columns.add("firstname");
     columns.add("lastname");
@@ -85,7 +85,7 @@ class TestExcelGeneration {
     columns.add("size");
     columns.add("percentage");
 
-    List<Person> persons = new LinkedList<Person>();
+    List<Person> persons = new LinkedList<>();
     persons.add(
         new Person("username1", "firstname1", "lastname1", LocalDateTime.now(), 24, 1.80, .88));
     persons.add(

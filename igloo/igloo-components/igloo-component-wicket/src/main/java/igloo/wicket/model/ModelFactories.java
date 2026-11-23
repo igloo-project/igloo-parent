@@ -9,10 +9,10 @@ public final class ModelFactories {
 
   private ModelFactories() {}
 
-  public static final <T>
+  public static <T>
       IDetachableFactory<IModel<? extends T>, StringResourceModel> stringResourceModel(
           final String resourceKey) {
-    return new IDetachableFactory<IModel<? extends T>, StringResourceModel>() {
+    return new IDetachableFactory<>() {
       private static final long serialVersionUID = 1L;
 
       @Override
@@ -22,11 +22,11 @@ public final class ModelFactories {
     };
   }
 
-  public static final <T>
+  public static <T>
       IDetachableFactory<IModel<? extends T>, StringResourceModel> stringResourceModel(
           final String resourceKey,
           final SerializableFunction2<? super T, ?> positionalParameterFunction) {
-    return new IDetachableFactory<IModel<? extends T>, StringResourceModel>() {
+    return new IDetachableFactory<>() {
       private static final long serialVersionUID = 1L;
 
       @Override
@@ -37,8 +37,8 @@ public final class ModelFactories {
     };
   }
 
-  public static final <R extends IModel<?>, T> IDetachableFactory<T, R> constant(final R model) {
-    return new IDetachableFactory<T, R>() {
+  public static <R extends IModel<?>, T> IDetachableFactory<T, R> constant(final R model) {
+    return new IDetachableFactory<>() {
       private static final long serialVersionUID = 1L;
 
       @Override

@@ -22,7 +22,7 @@ public abstract class AbstractTestGenericEntityMapCopyModel<K, V, M extends Map<
     extends AbstractTestMapModel<M> {
 
   protected static final Equivalence<Map<?, ?>> ORDERED_MAP_EQUIVALENCE =
-      new Equivalence<Map<?, ?>>() {
+      new Equivalence<>() {
         @Override
         protected boolean doEquivalent(Map<?, ?> a, Map<?, ?> b) {
           return Lists.newArrayList(a.entrySet())

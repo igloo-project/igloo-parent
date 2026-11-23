@@ -42,7 +42,7 @@ public abstract class AbstractTestNotification {
   public void resetJavaMailSenderMock() {
     Mockito.reset(javaMailSender);
     JavaMailSender real = new JavaMailSenderImpl();
-    Mockito.when(javaMailSender.createMimeMessage()).then(invocation -> real.createMimeMessage());
+    Mockito.when(javaMailSender.createMimeMessage()).then(_ -> real.createMimeMessage());
   }
 
   protected JavaMailSender getJavaMailSenderMock() {

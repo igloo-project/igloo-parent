@@ -77,7 +77,7 @@ public abstract class AbstractAnyTargetTestLinkDescriptor extends AbstractTestLi
         LinkDescriptorBuilder.start()
             .validator(Condition.alwaysFalse())
             .page(TestLinkDescriptorNoParameterPage.class);
-    assertThrows(LinkParameterValidationRuntimeException.class, () -> linkDescriptor.url());
+    assertThrows(LinkParameterValidationRuntimeException.class, linkDescriptor::url);
   }
 
   @Test
@@ -93,7 +93,7 @@ public abstract class AbstractAnyTargetTestLinkDescriptor extends AbstractTestLi
   @Test
   public void url_noParam_missingTarget() {
     ILinkDescriptor linkDescriptor = buildWithNullTarget(LinkDescriptorBuilder.start());
-    assertThrows(LinkInvalidTargetRuntimeException.class, () -> linkDescriptor.url());
+    assertThrows(LinkInvalidTargetRuntimeException.class, linkDescriptor::url);
   }
 
   @Test
@@ -108,7 +108,7 @@ public abstract class AbstractAnyTargetTestLinkDescriptor extends AbstractTestLi
     ILinkDescriptor linkDescriptor =
         buildWithOneParameterTarget(
             LinkDescriptorBuilder.start().map(CommonParameters.ID, model, Long.class).mandatory());
-    assertThrows(LinkParameterValidationRuntimeException.class, () -> linkDescriptor.url());
+    assertThrows(LinkParameterValidationRuntimeException.class, linkDescriptor::url);
   }
 
   @Test
@@ -150,7 +150,7 @@ public abstract class AbstractAnyTargetTestLinkDescriptor extends AbstractTestLi
                 .map(CommonParameters.ID, model, Long.class)
                 .optional()
                 .validator(Condition.alwaysFalse()));
-    assertThrows(LinkParameterValidationRuntimeException.class, () -> linkDescriptor.url());
+    assertThrows(LinkParameterValidationRuntimeException.class, linkDescriptor::url);
   }
 
   @Test
@@ -218,7 +218,7 @@ public abstract class AbstractAnyTargetTestLinkDescriptor extends AbstractTestLi
 
   @Test
   public void url_oneParamOptional_collection() {
-    IModel<List<Long>> model = new ListModel<Long>(Lists.newArrayList(1L, 2L));
+    IModel<List<Long>> model = new ListModel<>(Lists.newArrayList(1L, 2L));
     ILinkDescriptor linkDescriptor =
         buildWithOneParameterTarget(
             LinkDescriptorBuilder.start()
@@ -229,7 +229,7 @@ public abstract class AbstractAnyTargetTestLinkDescriptor extends AbstractTestLi
 
   @Test
   public void extract_oneParamOptional_collection() throws Exception {
-    IModel<List<Long>> model = new ListModel<Long>(null);
+    IModel<List<Long>> model = new ListModel<>(null);
     ILinkDescriptor linkDescriptor =
         buildWithOneParameterTarget(
             LinkDescriptorBuilder.start()

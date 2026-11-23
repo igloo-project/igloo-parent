@@ -48,7 +48,7 @@ class ScssResource extends PackageResource {
 
   @Override
   public IResourceStream getResourceStream() {
-    try (IResourceStream resourceStream = super.getResourceStream()) {
+    try (IResourceStream _ = super.getResourceStream()) {
       ScssStylesheetInformation cssInformation =
           scssService.getCachedCompiledStylesheet(
               getScope(), getName(), Application.get().usesDevelopmentConfig());

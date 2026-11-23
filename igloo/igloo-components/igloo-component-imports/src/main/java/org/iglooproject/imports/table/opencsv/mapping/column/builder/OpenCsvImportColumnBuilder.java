@@ -30,8 +30,7 @@ import org.iglooproject.imports.table.opencsv.model.CsvTable;
 public class OpenCsvImportColumnBuilder
     extends AbstractTableImportColumnBuilder<CsvTable, CsvRow, CsvCell, CsvCellReference> {
 
-  private static final Function2<String, Double> DOUBLE_FORMAT_FUNCTION =
-      input -> Double.valueOf(input);
+  private static final Function2<String, Double> DOUBLE_FORMAT_FUNCTION = Double::valueOf;
 
   private static final Function2<String, BigDecimal> BIG_DECIMAL_FORMAT_FUNCTION =
       input -> input == null ? null : new BigDecimal(input);

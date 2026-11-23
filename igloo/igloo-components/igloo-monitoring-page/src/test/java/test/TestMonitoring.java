@@ -46,8 +46,8 @@ class TestMonitoring {
       assertThat(lookup.getStatus()).isEqualTo(HealthStatus.CRITICAL);
       // no groupby -> one value
       assertThat(lookup.getPerfDatas()).hasSize(1);
-      assertThat(lookup.getPerfDatas().get(0).getValue()).isEqualTo(1l + 2l + 3l);
-      assertThat(lookup.getPerfDatas().get(0).getUnit()).isEqualTo("item");
+      assertThat(lookup.getPerfDatas().getFirst().getValue()).isEqualTo(1l + 2l + 3l);
+      assertThat(lookup.getPerfDatas().getFirst().getUnit()).isEqualTo("item");
       assertThat(lookup.getMessage()).isEqualTo("Red Alert");
     }
     gauge.register(
@@ -62,8 +62,8 @@ class TestMonitoring {
       assertThat(lookup.getStatus()).isEqualTo(HealthStatus.OK);
       // no groupby -> one value
       assertThat(lookup.getPerfDatas()).hasSize(1);
-      assertThat(lookup.getPerfDatas().get(0).getValue()).isEqualTo(0l + 1l + 1l);
-      assertThat(lookup.getPerfDatas().get(0).getUnit()).isEqualTo("item");
+      assertThat(lookup.getPerfDatas().getFirst().getValue()).isEqualTo(0l + 1l + 1l);
+      assertThat(lookup.getPerfDatas().getFirst().getUnit()).isEqualTo("item");
       assertThat(lookup.getMessage()).isEqualTo("Red Alert");
     }
   }

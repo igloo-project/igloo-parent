@@ -10,11 +10,11 @@ public class TestSessionThreadSafeGenericEntityModel extends AbstractTestGeneric
 
   @Override
   protected IModel<Person> createModel() {
-    return new SessionThreadSafeGenericEntityModel<Long, Person>();
+    return new SessionThreadSafeGenericEntityModel<>();
   }
 
   @Override
   protected IModel<Person> createModel(Person person) {
-    return new SessionThreadSafeGenericEntityModel<Long, Person>(person);
+    return new SessionThreadSafeGenericEntityModel<>(person);
   }
 }

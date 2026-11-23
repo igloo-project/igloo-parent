@@ -19,7 +19,7 @@ public class ActionColumnActionFactory<T>
 
   @Override
   public Link<T> create(String wicketId, final IModel<T> parameter) {
-    return new Link<T>(wicketId, parameter) {
+    return new Link<>(wicketId, parameter) {
       private static final long serialVersionUID = 1L;
 
       @Override

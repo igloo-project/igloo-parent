@@ -112,11 +112,10 @@ public class ExplicitelyDefinedNotificationContentDescriptorImpl
 
     @Override
     public boolean equals(Object obj) {
-      if (obj instanceof Wrapper) {
+      if (obj instanceof Wrapper other) {
         if (obj == this) {
           return true;
         }
-        Wrapper other = (Wrapper) obj;
         return new EqualsBuilder()
             .append(wrapped, other.wrapped)
             .append(locale, other.locale)

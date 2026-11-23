@@ -60,13 +60,7 @@ public class ScssMain implements Callable<Integer> {
   public Integer call() {
     try {
       Stopwatch sw = Stopwatch.createStarted();
-      ISassConfigurationProvider configuration =
-          new ISassConfigurationProvider() {
-            @Override
-            public boolean isAutoprefixerEnabled() {
-              return true;
-            }
-          };
+      ISassConfigurationProvider configuration = () -> true;
       ScssServiceImpl scssService = new ScssServiceImpl(configuration);
       for (String scope : scopes) {
         try {

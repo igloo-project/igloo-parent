@@ -6,11 +6,11 @@ import test.jpa.more.business.entity.model.TestEntity;
 public final class TestHistoryLogAdditionalInformationBean
     extends AbstractHistoryLogAdditionalInformationBean {
 
-  public static final TestHistoryLogAdditionalInformationBean empty() {
+  public static TestHistoryLogAdditionalInformationBean empty() {
     return new TestHistoryLogAdditionalInformationBean();
   }
 
-  public static final TestHistoryLogAdditionalInformationBean of(TestEntity secondaryObject) {
+  public static TestHistoryLogAdditionalInformationBean of(TestEntity secondaryObject) {
     return new TestHistoryLogAdditionalInformationBean(secondaryObject);
   }
 

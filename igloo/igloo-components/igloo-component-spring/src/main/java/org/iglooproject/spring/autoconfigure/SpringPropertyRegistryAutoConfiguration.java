@@ -75,11 +75,10 @@ public class SpringPropertyRegistryAutoConfiguration implements IPropertyRegistr
           for (String localeAsString : Splitter.on(" ").omitEmptyStrings().split(input)) {
             try {
               locales.add(StringLocaleConverter.get().convert(localeAsString));
-            } catch (RuntimeException e) {
+            } catch (RuntimeException _) {
               LOGGER.error(
-                  String.format(
-                      "%1$s string from locale.availableLocales cannot be mapped to Locale, ignored",
-                      localeAsString));
+                  "{} string from locale.availableLocales cannot be mapped to Locale, ignored",
+                  localeAsString);
             }
           }
           return locales;

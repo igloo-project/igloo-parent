@@ -5,7 +5,6 @@ import com.google.common.base.Splitter;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import org.hibernate.search.engine.search.sort.dsl.SortOrder;
-import org.iglooproject.commons.util.exception.IllegalSwitchValueException;
 import org.iglooproject.jpa.more.business.sort.ISort;
 
 public class HibernateSearchUtils {
@@ -67,7 +66,6 @@ public class HibernateSearchUtils {
     return switch (effectiveSortOrder) {
       case ASC -> SortOrder.ASC;
       case DESC -> SortOrder.DESC;
-      default -> throw new IllegalSwitchValueException(effectiveSortOrder);
     };
   }
 }

@@ -22,7 +22,7 @@ public class ReadOnlyModel<F, T> implements IComponentAssignedModel<T> {
 
   public static final <F, T> IDetachableFactory<IModel<F>, IModel<T>> factory(
       final SerializableFunction2<? super F, T> function) {
-    return new IDetachableFactory<IModel<F>, IModel<T>>() {
+    return new IDetachableFactory<>() {
       private static final long serialVersionUID = 1L;
 
       @Override

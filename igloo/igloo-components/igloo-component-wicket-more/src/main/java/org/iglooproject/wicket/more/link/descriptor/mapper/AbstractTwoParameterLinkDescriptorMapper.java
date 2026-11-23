@@ -23,7 +23,7 @@ public abstract class AbstractTwoParameterLinkDescriptorMapper<L, T1, T2>
 
   @Override
   public IOneParameterLinkDescriptorMapper<L, T2> setParameter1(final IModel<T1> model1) {
-    return new AbstractOneParameterLinkDescriptorMapper<L, T2>() {
+    return new AbstractOneParameterLinkDescriptorMapper<>() {
       private static final long serialVersionUID = 1L;
 
       @Override
@@ -43,7 +43,7 @@ public abstract class AbstractTwoParameterLinkDescriptorMapper<L, T1, T2>
   @Override
   public IOneParameterLinkDescriptorMapper<L, T2> setParameter1(
       final SerializableFunction2<T2, T1> function) {
-    return new AbstractOneParameterLinkDescriptorMapper<L, T2>() {
+    return new AbstractOneParameterLinkDescriptorMapper<>() {
       private static final long serialVersionUID = 1L;
 
       @Override
@@ -62,7 +62,7 @@ public abstract class AbstractTwoParameterLinkDescriptorMapper<L, T1, T2>
 
   @Override
   public <U1 extends T1> ITwoParameterLinkDescriptorMapper<L, U1, T2> castParameter1() {
-    return new AbstractTwoParameterLinkDescriptorMapper<L, U1, T2>() {
+    return new AbstractTwoParameterLinkDescriptorMapper<>() {
       private static final long serialVersionUID = 1L;
 
       @Override
@@ -86,7 +86,7 @@ public abstract class AbstractTwoParameterLinkDescriptorMapper<L, T1, T2>
 
   @Override
   public IOneParameterLinkDescriptorMapper<L, T1> setParameter2(final IModel<T2> model2) {
-    return new AbstractOneParameterLinkDescriptorMapper<L, T1>() {
+    return new AbstractOneParameterLinkDescriptorMapper<>() {
       private static final long serialVersionUID = 1L;
 
       @Override
@@ -106,7 +106,7 @@ public abstract class AbstractTwoParameterLinkDescriptorMapper<L, T1, T2>
   @Override
   public IOneParameterLinkDescriptorMapper<L, T1> setParameter2(
       final SerializableFunction2<T1, T2> function) {
-    return new AbstractOneParameterLinkDescriptorMapper<L, T1>() {
+    return new AbstractOneParameterLinkDescriptorMapper<>() {
       private static final long serialVersionUID = 1L;
 
       @Override
@@ -125,7 +125,7 @@ public abstract class AbstractTwoParameterLinkDescriptorMapper<L, T1, T2>
 
   @Override
   public <U2 extends T2> ITwoParameterLinkDescriptorMapper<L, T1, U2> castParameter2() {
-    return new AbstractTwoParameterLinkDescriptorMapper<L, T1, U2>() {
+    return new AbstractTwoParameterLinkDescriptorMapper<>() {
       private static final long serialVersionUID = 1L;
 
       @Override

@@ -87,7 +87,7 @@ class TestGenericService extends AbstractJpaCoreTestCase {
     try {
       personService.update(person1);
       fail("Faire un update sur un objet non persisté doit lever une exception");
-    } catch (PersistenceException | JpaSystemException e) {
+    } catch (PersistenceException | JpaSystemException _) {
     }
   }
 
@@ -107,7 +107,7 @@ class TestGenericService extends AbstractJpaCoreTestCase {
     try {
       personService.refresh(person1);
       fail("Faire un refresh sur un objet avec un identifiant null doit lever une exception");
-    } catch (IllegalArgumentException | InvalidDataAccessApiUsageException e) {
+    } catch (IllegalArgumentException | InvalidDataAccessApiUsageException _) {
     }
 
     personService.create(person1);
@@ -116,7 +116,7 @@ class TestGenericService extends AbstractJpaCoreTestCase {
     try {
       personService.refresh(person1);
       fail("Faire un refresh sur un objet non persisté doit lever une exception");
-    } catch (IllegalArgumentException | InvalidDataAccessApiUsageException e) {
+    } catch (IllegalArgumentException | InvalidDataAccessApiUsageException _) {
     }
   }
 

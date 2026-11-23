@@ -28,12 +28,12 @@ public class SimpleLinkParameterMappingEntry<T> extends AbstractLinkParameterMap
     Args.notNull(parameterName, "parameterName");
     Args.notNull(typeDescriptorSupplier, "typeDescriptorSupplier");
 
-    return new AbstractLinkParameterMappingEntryFactory<Unit<IModel<T>>>() {
+    return new AbstractLinkParameterMappingEntryFactory<>() {
       private static final long serialVersionUID = 1L;
 
       @Override
       public ILinkParameterMappingEntry create(Unit<IModel<T>> parameters) {
-        return new SimpleLinkParameterMappingEntry<T>(
+        return new SimpleLinkParameterMappingEntry<>(
             parameterName, parameters.getValue0(), typeDescriptorSupplier);
       }
     };
@@ -75,7 +75,7 @@ public class SimpleLinkParameterMappingEntry<T> extends AbstractLinkParameterMap
   @Override
   public ILinkParameterMappingEntry wrap(Component component) {
     IModel<T> wrappedModel = wrap(mappedModel, component);
-    return new SimpleLinkParameterMappingEntry<T>(
+    return new SimpleLinkParameterMappingEntry<>(
         parameterName, wrappedModel, typeDescriptorSupplier);
   }
 

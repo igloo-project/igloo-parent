@@ -60,7 +60,7 @@ public class JwtTokenServiceImpl<P> implements IJwtTokenService<P> {
 
   @Override
   public String issueToken(P principal) {
-    return issueToken(principal, x -> {});
+    return issueToken(principal, _ -> {});
   }
 
   @Override
@@ -125,8 +125,8 @@ public class JwtTokenServiceImpl<P> implements IJwtTokenService<P> {
   }
 
   public static class Builder<P> {
-    private BiConsumer<P, JwtClaimsSet.Builder> jwtTokenBuilderCustomizer = (p, b) -> {};
-    private BiConsumer<P, JwsHeader.Builder> jwtTokenHeaderCustomizer = (p, b) -> {};
+    private BiConsumer<P, JwtClaimsSet.Builder> jwtTokenBuilderCustomizer = (_, _) -> {};
+    private BiConsumer<P, JwsHeader.Builder> jwtTokenHeaderCustomizer = (_, _) -> {};
     private final JwtEncoder jwtEncoder;
     private final NimbusJwtDecoder jwtDecoder;
 

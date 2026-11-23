@@ -37,7 +37,7 @@ public class ConfigurationLogger implements ApplicationListener<ContextRefreshed
 
   private String logPattern = "%1$30s : %2$s";
 
-  private List<String> propertyIdsKeysForInfoLogLevel = Lists.newArrayList();
+  private final List<String> propertyIdsKeysForInfoLogLevel = Lists.newArrayList();
 
   public void setPropertyNamesForInfoLogLevel(String propertyIds) {
     propertyIdsKeysForInfoLogLevel.addAll(StringUtils.splitAsList(propertyIds, ","));
@@ -50,8 +50,8 @@ public class ConfigurationLogger implements ApplicationListener<ContextRefreshed
   @Override
   public void onApplicationEvent(ContextRefreshedEvent refresh) {
     // run only once by context
-    if (refresh.getSource() instanceof AbstractApplicationContext
-        && ((AbstractApplicationContext) refresh.getSource()).getParent() == null) {
+    if (refresh.getSource() instanceof AbstractApplicationContext source
+        && source.getParent() == null) {
       LOGGER.info("Configuration logging");
 
       // retrieve application context
@@ -68,9 +68,8 @@ public class ConfigurationLogger implements ApplicationListener<ContextRefreshed
         // warn if no IPropertyService found
         if (LOGGER.isWarnEnabled()) {
           LOGGER.warn(
-              String.format(
-                  "No %1$s found. Unable to log the configuration.",
-                  IConfigurablePropertyService.class.getSimpleName()));
+              "No {} found. Unable to log the configuration.",
+              IConfigurablePropertyService.class.getSimpleName());
         }
       }
 
@@ -90,9 +89,8 @@ public class ConfigurationLogger implements ApplicationListener<ContextRefreshed
     if (propertyServiceNames.length > 1) {
       if (LOGGER.isWarnEnabled()) { // NOSONAR (squid:S1066)
         LOGGER.warn(
-            String.format(
-                "Multiple %1$s found. We only log the configuration of the first instance.",
-                IPropertyService.class.getSimpleName()));
+            "Multiple {} found. We only log the configuration of the first instance.",
+            IPropertyService.class.getSimpleName());
       }
     }
     return (IConfigurablePropertyService) context.getBean(propertyServiceName);
@@ -138,13 +136,15 @@ public class ConfigurationLogger implements ApplicationListener<ContextRefreshed
 
   private void logPropertyAsInfo(String propertyName, Object value) {
     if (LOGGER.isInfoEnabled()) {
-      LOGGER.info(String.format(logPattern, propertyName, value));
+      String formatted = logPattern.formatted(propertyName, value);
+      LOGGER.info(formatted);
     }
   }
 
   private void logPropertyAsTrace(String propertyName, Object value) {
     if (LOGGER.isInfoEnabled()) {
-      LOGGER.trace(String.format(logPattern, propertyName, value));
+      String formatted = logPattern.formatted(propertyName, value);
+      LOGGER.trace(formatted);
     }
   }
 }

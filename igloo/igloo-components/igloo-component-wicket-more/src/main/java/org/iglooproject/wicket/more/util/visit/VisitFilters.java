@@ -47,12 +47,12 @@ public class VisitFilters {
     }
 
     @Override
-    public final boolean visitObject(Object object) {
+    public boolean visitObject(Object object) {
       return objectVisitPredicate.test(object);
     }
 
     @Override
-    public final boolean visitChildren(Object object) {
+    public boolean visitChildren(Object object) {
       return compositeVisitPredicate.test(object);
     }
   }
@@ -211,10 +211,9 @@ public class VisitFilters {
     }
 
     private boolean hasRenderedMarkup(Object object) {
-      if (!(object instanceof Component)) {
+      if (!(object instanceof Component component)) {
         return false;
       }
-      Component component = (Component) object;
       if (!component.hasBeenRendered() && !component.getOutputMarkupPlaceholderTag()) {
         return false;
       }

@@ -34,8 +34,7 @@ public class CollectionItemByKeySelector<T, K> extends ElementSelector
     if (this == o) {
       return true;
     }
-    if (o instanceof CollectionItemByKeySelector) {
-      CollectionItemByKeySelector<?, ?> other = (CollectionItemByKeySelector<?, ?>) o;
+    if (o instanceof CollectionItemByKeySelector<?, ?> other) {
       return keyFunction.equals(other.keyFunction)
           && equivalence.equals(other.equivalence)
           && equivalence.equivalent(key, (K) other.key);

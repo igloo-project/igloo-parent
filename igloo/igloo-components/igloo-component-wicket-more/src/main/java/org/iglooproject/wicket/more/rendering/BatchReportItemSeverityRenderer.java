@@ -27,19 +27,13 @@ public class BatchReportItemSeverityRenderer extends BootstrapRenderer<BatchRepo
     Builder builder =
         BootstrapRendererInformation.builder().label(EnumRenderer.get().render(value, locale));
 
-    switch (value) {
-      case TRACE:
-        return builder.color(BootstrapColor.INFO).icon("fa fa-fw fa-code").build();
-      case DEBUG:
-        return builder.color(BootstrapColor.INFO).icon("fa fa-fw fa-bug").build();
-      case INFO:
-        return builder.color(BootstrapColor.SUCCESS).icon("fa fa-fw fa-chevron-right").build();
-      case WARN:
-        return builder.color(BootstrapColor.WARNING).icon("fa fa-fw fa-exclamation").build();
-      case ERROR:
-        return builder.color(BootstrapColor.DANGER).icon("fa fa-fw fa-skull").build();
-      default:
-        return builder.color(BootstrapColor.SECONDARY).icon("fa fa-fw fa-chevron-right").build();
-    }
+    return switch (value) {
+      case TRACE -> builder.color(BootstrapColor.INFO).icon("fa fa-fw fa-code").build();
+      case DEBUG -> builder.color(BootstrapColor.INFO).icon("fa fa-fw fa-bug").build();
+      case INFO -> builder.color(BootstrapColor.SUCCESS).icon("fa fa-fw fa-chevron-right").build();
+      case WARN -> builder.color(BootstrapColor.WARNING).icon("fa fa-fw fa-exclamation").build();
+      case ERROR -> builder.color(BootstrapColor.DANGER).icon("fa fa-fw fa-skull").build();
+      default -> builder.color(BootstrapColor.SECONDARY).icon("fa fa-fw fa-chevron-right").build();
+    };
   }
 }

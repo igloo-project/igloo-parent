@@ -100,7 +100,7 @@ class TestService extends AbstractTest {
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     doAnswer(
             AdditionalAnswers.<InputStream, Path>answerVoid(
-                (a, b) -> {
+                (a, _) -> {
                   IOUtils.copy(a, baos);
                 }))
         .when(storageOperations)
@@ -135,7 +135,7 @@ class TestService extends AbstractTest {
               "filename",
               FichierType1.CONTENT1,
               FILE_CONTENT,
-              (f) -> {
+              _ -> {
                 throw new IllegalStateException("Triggered rollback");
               });
         };
@@ -169,7 +169,7 @@ class TestService extends AbstractTest {
             "filename",
             FichierType1.CONTENT1,
             FILE_CONTENT,
-            (f) -> f.setStatus(FichierStatus.INVALIDATED));
+            f -> f.setStatus(FichierStatus.INVALIDATED));
     Mockito.reset(storageOperations); // Get rid of creation operation
 
     // check enabled - exception thrown
@@ -192,7 +192,7 @@ class TestService extends AbstractTest {
             "filename",
             FichierType1.CONTENT1,
             FILE_CONTENT,
-            (f) -> f.setStatus(FichierStatus.TRANSIENT));
+            f -> f.setStatus(FichierStatus.TRANSIENT));
     Mockito.reset(storageOperations); // Get rid of creation operation
 
     storageService.getFile(fichier);
@@ -207,14 +207,14 @@ class TestService extends AbstractTest {
   void testRemoveFichier() {
     Fichier fichierToRemove =
         transactionTemplate.execute(
-            (t) -> {
+            _ -> {
               Fichier fichier = createFichier("filename", FichierType1.CONTENT1, FILE_CONTENT);
               Mockito.reset(storageOperations); // Get rid of creation operation
               return fichier;
             });
     // storageService reload an attached instance for remove, so we can pass detached instance
     transactionTemplate.execute(
-        t -> {
+        _ -> {
           storageService.removeFichier(fichierToRemove);
           return null;
         });
@@ -224,7 +224,7 @@ class TestService extends AbstractTest {
             Mockito.any(), // log message
             Mockito.eq(fichierToRemove.getId()), // id
             argThat(
-                (a) -> {
+                a -> {
                   assertThat(a).toString().contains(fichierToRemove.getRelativePath());
                 }) // path
             );
@@ -238,11 +238,11 @@ class TestService extends AbstractTest {
         () -> {
           Fichier fichier =
               transactionTemplate.execute(
-                  (t) -> createFichier("filename", FichierType1.CONTENT1, FILE_CONTENT));
+                  _ -> createFichier("filename", FichierType1.CONTENT1, FILE_CONTENT));
           Mockito.reset(storageOperations);
 
           transactionTemplate.executeWithoutResult(
-              (t) -> {
+              _ -> {
                 EntityManager em =
                     EntityManagerFactoryUtils.getTransactionalEntityManager(entityManagerFactory);
                 storageService.removeFichier(em.find(Fichier.class, fichier.getId()));
@@ -268,7 +268,7 @@ class TestService extends AbstractTest {
   void testValidateFichier() {
     Fichier fichier =
         transactionTemplate.execute(
-            (t) -> {
+            _ -> {
               Fichier fichierToInvalidate =
                   createFichier("filename", FichierType1.CONTENT1, FILE_CONTENT);
               Mockito.reset(storageOperations); // Get rid of creation operation
@@ -286,13 +286,13 @@ class TestService extends AbstractTest {
   void testValidateFichier_AlreadyAlive() {
     Fichier fichier =
         transactionTemplate.execute(
-            (t) -> {
+            _ -> {
               Fichier fichierToInvalidate =
                   createFichier(
                       "filename",
                       FichierType1.CONTENT1,
                       FILE_CONTENT,
-                      (f) -> f.setStatus(FichierStatus.ALIVE));
+                      f -> f.setStatus(FichierStatus.ALIVE));
               Mockito.reset(storageOperations); // Get rid of creation operation
               storageService.validateFichier(fichierToInvalidate);
               return fichierToInvalidate;
@@ -308,7 +308,7 @@ class TestService extends AbstractTest {
   void testInvalidateFichier() {
     Fichier fichier =
         transactionTemplate.execute(
-            (t) -> {
+            _ -> {
               Fichier fichierToInvalidate =
                   createFichier("filename", FichierType1.CONTENT1, FILE_CONTENT);
               storageService.validateFichier(fichierToInvalidate);
@@ -327,13 +327,13 @@ class TestService extends AbstractTest {
   void testInvalidateFichier_AlreadyInvalided() {
     Fichier fichier =
         transactionTemplate.execute(
-            (t) -> {
+            _ -> {
               Fichier fichierToInvalidate =
                   createFichier(
                       "filename",
                       FichierType1.CONTENT1,
                       FILE_CONTENT,
-                      (f) -> f.setStatus(FichierStatus.INVALIDATED));
+                      f -> f.setStatus(FichierStatus.INVALIDATED));
               storageService.validateFichier(fichierToInvalidate);
               Mockito.reset(storageOperations); // Get rid of creation/validation operation
               storageService.invalidateFichier(fichierToInvalidate);
@@ -350,7 +350,7 @@ class TestService extends AbstractTest {
   void testSplitStorageUnit() {
     StorageUnit original =
         transactionTemplate.execute(
-            (t) -> {
+            _ -> {
               EntityManager em =
                   EntityManagerFactoryUtils.getTransactionalEntityManager(entityManagerFactory);
               // created by init
@@ -358,16 +358,16 @@ class TestService extends AbstractTest {
                   .getSingleResult();
             });
     StorageUnit newUnit =
-        transactionTemplate.execute((t) -> storageService.splitStorageUnit(original));
+        transactionTemplate.execute(_ -> storageService.splitStorageUnit(original));
     StorageUnit updated =
         transactionTemplate.execute(
-            (t) -> {
+            _ -> {
               EntityManager em =
                   EntityManagerFactoryUtils.getTransactionalEntityManager(entityManagerFactory);
               // created by split
               return em.createQuery("SELECT s FROM StorageUnit s ORDER BY s.id", StorageUnit.class)
                   .getResultList()
-                  .get(0);
+                  .getFirst();
             });
     assertThat(updated.getStatus()).isEqualTo(StorageUnitStatus.ARCHIVED);
     assertThat(newUnit.getStatus()).isEqualTo(StorageUnitStatus.ALIVE);

@@ -97,11 +97,9 @@ public class GenericEntityCollectionReference<
     if (obj == this) {
       return true;
     }
-    if (!(obj instanceof GenericEntityCollectionReference)) {
+    if (!(obj instanceof GenericEntityCollectionReference<?, ?> other)) {
       return false;
     }
-    GenericEntityCollectionReference<?, ? extends GenericEntity<?, ?>> other =
-        (GenericEntityCollectionReference<?, ?>) obj;
     return new EqualsBuilder()
         .append(getEntityIdList(), other.getEntityIdList())
         .append(getUpperEntityClass(getEntityClass()), getUpperEntityClass(other.getEntityClass()))

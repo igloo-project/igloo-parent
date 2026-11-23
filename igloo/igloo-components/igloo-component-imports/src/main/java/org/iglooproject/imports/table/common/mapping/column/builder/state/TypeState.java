@@ -97,7 +97,7 @@ public abstract class TypeState<TTable, TRow, TCell, TCellReference> {
     public StringState<TTable, TRow, TCell, TCellReference> toString(
         final Function2<? super T, String> function) {
       final TypeStateSwitcher<String> switcher = newSwitcher(function, Predicates2.hasText());
-      return new StringState<TTable, TRow, TCell, TCellReference>() {
+      return new StringState<>() {
         @Override
         protected TypeStateSwitcher<String> getStateSwitcher() {
           return switcher;
@@ -109,7 +109,7 @@ public abstract class TypeState<TTable, TRow, TCell, TCellReference> {
     public IntegerState<TTable, TRow, TCell, TCellReference> toInteger(
         Function2<? super T, Integer> function) {
       final TypeStateSwitcher<Integer> switcher = newSwitcher(function);
-      return new IntegerState<TTable, TRow, TCell, TCellReference>() {
+      return new IntegerState<>() {
         @Override
         protected TypeStateSwitcher<Integer> getStateSwitcher() {
           return switcher;
@@ -121,7 +121,7 @@ public abstract class TypeState<TTable, TRow, TCell, TCellReference> {
     public LongState<TTable, TRow, TCell, TCellReference> toLong(
         Function2<? super T, Long> function) {
       final TypeStateSwitcher<Long> switcher = newSwitcher(function);
-      return new LongState<TTable, TRow, TCell, TCellReference>() {
+      return new LongState<>() {
         @Override
         protected TypeStateSwitcher<Long> getStateSwitcher() {
           return switcher;
@@ -133,7 +133,7 @@ public abstract class TypeState<TTable, TRow, TCell, TCellReference> {
     public DoubleState<TTable, TRow, TCell, TCellReference> toDouble(
         Function2<? super T, Double> function) {
       final TypeStateSwitcher<Double> switcher = newSwitcher(function);
-      return new DoubleState<TTable, TRow, TCell, TCellReference>() {
+      return new DoubleState<>() {
         @Override
         protected TypeStateSwitcher<Double> getStateSwitcher() {
           return switcher;
@@ -145,7 +145,7 @@ public abstract class TypeState<TTable, TRow, TCell, TCellReference> {
     public BigDecimalState<TTable, TRow, TCell, TCellReference> toBigDecimal(
         Function2<? super T, BigDecimal> function) {
       final TypeStateSwitcher<BigDecimal> switcher = newSwitcher(function);
-      return new BigDecimalState<TTable, TRow, TCell, TCellReference>() {
+      return new BigDecimalState<>() {
         @Override
         protected TypeStateSwitcher<BigDecimal> getStateSwitcher() {
           return switcher;
@@ -157,7 +157,7 @@ public abstract class TypeState<TTable, TRow, TCell, TCellReference> {
     public DateState<TTable, TRow, TCell, TCellReference> toDate(
         Function2<? super T, ? extends Date> function) {
       final TypeStateSwitcher<Date> switcher = newSwitcher(function);
-      return new DateState<TTable, TRow, TCell, TCellReference>() {
+      return new DateState<>() {
         @Override
         protected TypeStateSwitcher<Date> getStateSwitcher() {
           return switcher;
@@ -169,7 +169,7 @@ public abstract class TypeState<TTable, TRow, TCell, TCellReference> {
     public LocalDateState<TTable, TRow, TCell, TCellReference> toLocalDate(
         Function2<? super T, LocalDate> function) {
       final TypeStateSwitcher<LocalDate> switcher = newSwitcher(function);
-      return new LocalDateState<TTable, TRow, TCell, TCellReference>() {
+      return new LocalDateState<>() {
         @Override
         protected TypeStateSwitcher<LocalDate> getStateSwitcher() {
           return switcher;
@@ -181,7 +181,7 @@ public abstract class TypeState<TTable, TRow, TCell, TCellReference> {
     public LocalDateTimeState<TTable, TRow, TCell, TCellReference> toLocalDateTime(
         Function2<? super T, LocalDateTime> function) {
       final TypeStateSwitcher<LocalDateTime> switcher = newSwitcher(function);
-      return new LocalDateTimeState<TTable, TRow, TCell, TCellReference>() {
+      return new LocalDateTimeState<>() {
         @Override
         protected TypeStateSwitcher<LocalDateTime> getStateSwitcher() {
           return switcher;
@@ -193,7 +193,7 @@ public abstract class TypeState<TTable, TRow, TCell, TCellReference> {
     public BooleanState<TTable, TRow, TCell, TCellReference> toBoolean(
         Function2<? super T, Boolean> function) {
       final TypeStateSwitcher<Boolean> switcher = newSwitcher(function);
-      return new BooleanState<TTable, TRow, TCell, TCellReference>() {
+      return new BooleanState<>() {
         @Override
         protected TypeStateSwitcher<Boolean> getStateSwitcher() {
           return switcher;
@@ -205,7 +205,7 @@ public abstract class TypeState<TTable, TRow, TCell, TCellReference> {
     public <TValue> GenericState<TTable, TRow, TCell, TCellReference, TValue> toGeneric(
         Function2<? super T, TValue> function) {
       final TypeStateSwitcher<TValue> switcher = newSwitcher(function);
-      return new GenericState<TTable, TRow, TCell, TCellReference, TValue>() {
+      return new GenericState<>() {
         @Override
         protected TypeStateSwitcher<TValue> getStateSwitcher() {
           return switcher;

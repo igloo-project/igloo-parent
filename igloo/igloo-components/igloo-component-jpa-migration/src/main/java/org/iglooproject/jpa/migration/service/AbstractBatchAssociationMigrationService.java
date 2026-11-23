@@ -45,7 +45,7 @@ public abstract class AbstractBatchAssociationMigrationService<
     executor.run(
         getMigrationInformation().getAssociationName(),
         entityIds,
-        new ReadWriteBatchRunnable<Long>() {
+        new ReadWriteBatchRunnable<>() {
           @Override
           public void executePartition(List<Long> partition) {
             importBatch(partition);

@@ -72,7 +72,7 @@ abstract class AbstractOfflinePanelRendererServiceImpl {
       final Locale locale,
       final String variation) {
     Args.notNull(offlineComponent, "offlineComponent");
-    try (ITearDownHandle handle = context(locale).open()) {
+    try (ITearDownHandle _ = context(locale).open()) {
       RequestCycle.get()
           .setMetaData(
               OfflineComponentClassMetadataKey.INSTANCE, offlineComponent.getComponentClass());
@@ -99,7 +99,7 @@ abstract class AbstractOfflinePanelRendererServiceImpl {
 
     Pair<Page, CharSequence> result;
 
-    try (ITearDownHandle handle = context(locale).open()) {
+    try (ITearDownHandle _ = context(locale).open()) {
       result = renderPage(offlineComponent);
       if (!offlineComponent.getComponentClass().isInstance(result.getLeft())) {
         LOGGER.warn(

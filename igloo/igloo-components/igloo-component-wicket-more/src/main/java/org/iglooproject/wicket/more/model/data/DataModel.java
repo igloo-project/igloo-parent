@@ -109,10 +109,9 @@ public class DataModel<T> extends LoadableDetachableModel<T> implements IDataMod
       if (obj == this) {
         return true;
       }
-      if (!(obj instanceof DataModelProperty)) {
+      if (!(obj instanceof DataModelProperty<?, ?> other)) {
         return false;
       }
-      DataModelProperty<?, ?> other = (DataModelProperty<?, ?>) obj;
       return new EqualsBuilder().append(binding.getPath(), other.binding.getPath()).isEquals();
     }
 

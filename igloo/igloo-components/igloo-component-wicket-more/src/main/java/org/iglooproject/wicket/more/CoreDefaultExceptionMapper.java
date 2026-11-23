@@ -28,11 +28,11 @@ public class CoreDefaultExceptionMapper implements IExceptionMapper {
       return DELEGATE.map(e);
     } catch (RuntimeException e2) {
       if (LOGGER.isDebugEnabled()) {
-        LOGGER.error("An error occurred while handling a previous error: " + e2.getMessage(), e2);
+        LOGGER.error("An error occurred while handling a previous error: {}", e2.getMessage(), e2);
       }
 
       // We were already handling an exception! give up
-      LOGGER.error("unexpected exception when handling another exception: " + e.getMessage(), e);
+      LOGGER.error("unexpected exception when handling another exception: {}", e.getMessage(), e);
       return new ErrorCodeRequestHandler(500);
     }
   }

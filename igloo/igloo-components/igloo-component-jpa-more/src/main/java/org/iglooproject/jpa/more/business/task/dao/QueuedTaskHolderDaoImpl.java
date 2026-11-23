@@ -61,7 +61,7 @@ public class QueuedTaskHolderDaoImpl extends GenericEntityDaoImpl<Long, QueuedTa
     if (tasksForExecution.isEmpty()) {
       return null;
     } else {
-      return tasksForExecution.get(0);
+      return tasksForExecution.getFirst();
     }
   }
 
@@ -87,7 +87,7 @@ public class QueuedTaskHolderDaoImpl extends GenericEntityDaoImpl<Long, QueuedTa
     if (stalledTasks.isEmpty()) {
       return null;
     } else {
-      return stalledTasks.get(0);
+      return stalledTasks.getFirst();
     }
   }
 

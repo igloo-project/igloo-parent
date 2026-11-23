@@ -32,7 +32,7 @@ public class LegacyFichierPathStrategy implements IFichierPathStrategy {
             .splitToStream(digest)
             .limit(hashSizeInBytes)
             .map(Path::of)
-            .reduce(Path.of(""), (a, b) -> a.resolve(b));
+            .reduce(Path.of(""), Path::resolve);
 
     return Path.of(fichier.getType().getPath(), path.toString(), filenameBuilder.toString())
         .toString();

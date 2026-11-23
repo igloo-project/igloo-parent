@@ -17,7 +17,7 @@ public class MultimapDifferAsMapStrategy<K, V>
 
   @Override
   protected Accessor createItemAccessor(K key) {
-    return new MultimapValueByKeyAccessor<K>(key);
+    return new MultimapValueByKeyAccessor<>(key);
   }
 
   @SuppressWarnings({"rawtypes", "unchecked"})

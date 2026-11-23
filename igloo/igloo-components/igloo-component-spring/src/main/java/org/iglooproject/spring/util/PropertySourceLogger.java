@@ -132,7 +132,7 @@ public class PropertySourceLogger implements ApplicationListener<ContextRefreshe
         } else {
           properties.put(propertyName, Objects.requireNonNullElse(configurerProperty, ""));
         }
-      } catch (IllegalArgumentException e) {
+      } catch (IllegalArgumentException _) {
         // allow to skip environment variable as value like ${IFS+x} are not resolvable
         LOGGER.warn("{} : skipped", propertyName);
         skippedProperties.append(String.format("skipped: %s", propertyName)).append("\n");
@@ -205,7 +205,7 @@ public class PropertySourceLogger implements ApplicationListener<ContextRefreshe
     /** Java 11 ordering * */
     @Override
     public synchronized Enumeration<Object> keys() {
-      return Collections.enumeration(new TreeSet<Object>(super.keySet()));
+      return Collections.enumeration(new TreeSet<>(super.keySet()));
     }
 
     /** Java &lt; 11 ordering * */
@@ -217,5 +217,4 @@ public class PropertySourceLogger implements ApplicationListener<ContextRefreshe
               .collect(Collectors.toCollection(LinkedHashSet::new)));
     }
   }
-  ;
 }

@@ -44,7 +44,7 @@ public class IglooMetricsAspectsAutoConfiguration implements BeanFactoryPostProc
       throws BeansException {
     try {
       ((DefaultListableBeanFactory) beanFactory).removeBeanDefinition("countedAspect");
-    } catch (NoSuchBeanDefinitionException e) {
+    } catch (NoSuchBeanDefinitionException _) {
       // ignore
     }
   }
@@ -58,10 +58,10 @@ public class IglooMetricsAspectsAutoConfiguration implements BeanFactoryPostProc
   public CountedAspect customCountedAspect(
       MeterRegistry registry, List<IMetricTagsContributor> contributors) {
     CountedAspect countedAspect =
-        new CountedAspect(registry, pjp -> combineTags(pjp, contributors), pjp -> false);
+        new CountedAspect(registry, pjp -> combineTags(pjp, contributors), _ -> false);
     countedAspect.setMeterTagAnnotationHandler(
         new CountedMeterTagAnnotationHandler(
-            aClass -> Object::toString, aClass -> micrometerExpressionResolver()));
+            _ -> Object::toString, _ -> micrometerExpressionResolver()));
 
     return countedAspect;
   }

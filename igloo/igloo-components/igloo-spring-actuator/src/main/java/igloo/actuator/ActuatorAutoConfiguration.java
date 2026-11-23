@@ -16,6 +16,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -91,11 +92,11 @@ public class ActuatorAutoConfiguration {
     String password = user.getPassword();
     if (user.isPasswordGenerated() && LOGGER.isWarnEnabled()) {
       LOGGER.warn(
-          String.format(
-              "%nUsing generated security password: %s:%s%nThis generated password is for development use only. "
-                  + "Your security configuration must be updated before running your application in "
-                  + "production.%n",
-              user.getName(), user.getPassword()));
+          "\nUsing generated security password: {}:{}\nThis generated password is for development use only. "
+              + "Your security configuration must be updated before running your application in "
+              + "production.\n",
+          user.getName(),
+          user.getPassword());
     }
     return NOOP_PASSWORD_PREFIX + password;
   }
@@ -116,11 +117,11 @@ public class ActuatorAutoConfiguration {
       throws Exception {
     // only handle actuator endpoints
     http.securityMatcher(EndpointRequest.toAnyEndpoint());
-    http.formLogin(f -> f.disable());
+    http.formLogin(AbstractHttpConfigurer::disable);
     http.userDetailsService(userDetailsService);
     // DO NOT reuse default authenticationManager !
     http.getSharedObject(AuthenticationManagerBuilder.class).parentAuthenticationManager(null);
-    http.sessionManagement(s -> s.disable());
+    http.sessionManagement(AbstractHttpConfigurer::disable);
     http.authorizeHttpRequests(
         requests ->
             requests

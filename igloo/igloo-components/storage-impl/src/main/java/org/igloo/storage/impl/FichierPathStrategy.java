@@ -23,7 +23,7 @@ public class FichierPathStrategy implements IFichierPathStrategy {
             .skip(1)
             .limit(hashSizeInBytes)
             .map(Path::of)
-            .reduce(Path.of(""), (a, b) -> a.resolve(b));
+            .reduce(Path.of(""), Path::resolve);
 
     return Path.of(fichier.getType().getPath(), path.toString(), fichier.getUuid().toString())
         .toString();

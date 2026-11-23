@@ -45,10 +45,10 @@ public abstract class AbstractTestSimpleHibernateBatchExecutor
     executor.run(
         Person.class,
         toExecute,
-        new ReadWriteBatchRunnable<Person>() {
+        new ReadWriteBatchRunnable<>() {
           @Override
           public void executeUnit(Person unit) {
-            LOGGER.info("Executing: " + unit);
+            LOGGER.info("Executing: {}", unit);
             unit.setLastName(NEW_LASTNAME_VALUE);
             try {
               personService.update(unit);
@@ -65,7 +65,7 @@ public abstract class AbstractTestSimpleHibernateBatchExecutor
 
   @Test
   void readWriteInsideTransaction() {
-    writeRequiredTransactionTemplate.executeWithoutResult(status -> readWrite());
+    writeRequiredTransactionTemplate.executeWithoutResult(_ -> readWrite());
     assertAllPersonsNamed(NEW_LASTNAME_VALUE);
   }
 
@@ -79,10 +79,10 @@ public abstract class AbstractTestSimpleHibernateBatchExecutor
     executor.run(
         Person.class,
         toExecute,
-        new ReadOnlyBatchRunnable<Person>() {
+        new ReadOnlyBatchRunnable<>() {
           @Override
           public void executeUnit(Person unit) {
-            LOGGER.info("Executing: " + unit);
+            LOGGER.info("Executing: {}", unit);
             unit.setLastName(NEW_LASTNAME_VALUE);
             try {
               personService.update(unit);
@@ -97,7 +97,7 @@ public abstract class AbstractTestSimpleHibernateBatchExecutor
 
   @Test
   void readOnlyInsideTransaction() {
-    writeRequiredTransactionTemplate.executeWithoutResult(status -> readOnly());
+    writeRequiredTransactionTemplate.executeWithoutResult(_ -> readOnly());
     assertNoPersonNamed(NEW_LASTNAME_VALUE);
   }
 
@@ -122,10 +122,10 @@ public abstract class AbstractTestSimpleHibernateBatchExecutor
     executor.runNonConsuming(
         "Person query",
         query,
-        new ReadOnlyBatchRunnable<Person>() {
+        new ReadOnlyBatchRunnable<>() {
           @Override
           public void executeUnit(Person unit) {
-            LOGGER.info("Executing: " + unit);
+            LOGGER.info("Executing: {}", unit);
             executed.add(unit.getId());
           }
         });
@@ -154,10 +154,10 @@ public abstract class AbstractTestSimpleHibernateBatchExecutor
     executor.runConsuming(
         "Person query",
         query,
-        new ReadWriteBatchRunnable<Person>() {
+        new ReadWriteBatchRunnable<>() {
           @Override
           public void executeUnit(Person unit) {
-            LOGGER.info("Executing: " + unit);
+            LOGGER.info("Executing: {}", unit);
 
             /* Remove the "Lastname" prefix, which "consumes" this element
              * (e.g. it removes this element from the query's results)
@@ -178,7 +178,7 @@ public abstract class AbstractTestSimpleHibernateBatchExecutor
   private static class SequentialFailingRunnable<T> extends PartitionCountingRunnable<T> {
     @Override
     public void preExecutePartition(List<T> partition) {
-      LOGGER.warn("Executing partition: " + Joiners.onComma().join(partition));
+      LOGGER.warn("Executing partition: {}", Joiners.onComma().join(partition));
     }
 
     @Override
@@ -223,7 +223,7 @@ public abstract class AbstractTestSimpleHibernateBatchExecutor
 
     Exception runException = null;
     PreExecuteFailingRunnable<Person> runnable =
-        new PreExecuteFailingRunnable<Person>() {
+        new PreExecuteFailingRunnable<>() {
           @Override
           public void onError(ExecutionException exception) {
             throw new TestBatchException2(exception);
@@ -267,7 +267,7 @@ public abstract class AbstractTestSimpleHibernateBatchExecutor
 
     Exception runException = null;
     SequentialFailingRunnable<Person> runnable =
-        new SequentialFailingRunnable<Person>() {
+        new SequentialFailingRunnable<>() {
           @Override
           public void onError(ExecutionException exception) {
             throw new TestBatchException2(exception);

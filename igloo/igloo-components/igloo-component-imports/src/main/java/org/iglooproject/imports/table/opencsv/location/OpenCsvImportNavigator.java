@@ -51,7 +51,7 @@ public class OpenCsvImportNavigator
 
   @Override
   public Iterator<CsvRow> nonEmptyRows(CsvTable sheet) {
-    return Streams.stream(rows(sheet)).filter(row -> rowHasContent(row)).iterator();
+    return Streams.stream(rows(sheet)).filter(this::rowHasContent).iterator();
   }
 
   @Override

@@ -202,10 +202,9 @@ public class GenericEntityModel<
     if (obj == this) {
       return true;
     }
-    if (!(obj instanceof GenericEntityModel)) {
+    if (!(obj instanceof GenericEntityModel<?, ?> other)) {
       return false;
     }
-    GenericEntityModel<?, ?> other = (GenericEntityModel<?, ?>) obj;
     return new EqualsBuilder()
         .append(persistedEntityReference, other.persistedEntityReference)
         .append(notYetPersistedEntity, other.notYetPersistedEntity)

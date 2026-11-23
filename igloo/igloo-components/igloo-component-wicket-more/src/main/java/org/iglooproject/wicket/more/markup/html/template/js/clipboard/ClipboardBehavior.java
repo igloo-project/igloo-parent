@@ -53,15 +53,7 @@ public class ClipboardBehavior extends Behavior {
   }
 
   public ClipboardBehavior target(Component component) {
-    return target(
-        new IModel<String>() {
-          private static final long serialVersionUID = 1L;
-
-          @Override
-          public String getObject() {
-            return component != null ? "#" + component.getMarkupId() : null;
-          }
-        });
+    return target(() -> component != null ? "#" + component.getMarkupId() : null);
   }
 
   public ClipboardBehavior target(String target) {

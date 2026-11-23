@@ -23,7 +23,7 @@ public class ConsoleMaintenanceTaskSearchPanel extends Panel {
     add(
         new PageableSearchForm<>("form", pageable)
             .add(
-                new TextField<String>(
+                new TextField<>(
                         "name",
                         BindingModel.of(
                             dataModel,

@@ -104,7 +104,7 @@ public abstract class AbstractWebPageTemplate extends CoreWebPage {
   protected abstract Class<? extends WebPage> getSecondMenuPage();
 
   private static IModel<List<BreadCrumbElement>> newBreadCrumbListModel() {
-    return new ListModel<>(new ArrayList<BreadCrumbElement>());
+    return new ListModel<>(new ArrayList<>());
   }
 
   /**

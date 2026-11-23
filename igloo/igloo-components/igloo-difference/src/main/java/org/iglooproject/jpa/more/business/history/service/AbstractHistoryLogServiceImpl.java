@@ -137,7 +137,7 @@ public abstract class AbstractHistoryLogServiceImpl<
       IHistoryDifferenceGenerator<T> historyDifferenceGenerator,
       IHistoryDifferenceHandler<? super T, ? super HL>... differenceHandlers) {
     transactionSynchronizationTaskManagerService.push(
-        new HistoryLogBeforeCommitWithDifferencesTask<T, HLAIB, HL, HLET, HD>(
+        new HistoryLogBeforeCommitWithDifferencesTask<>(
             Instant.now(),
             eventType,
             mainObject,

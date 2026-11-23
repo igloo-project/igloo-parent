@@ -17,7 +17,7 @@ public class PsqlCleanerProperties {
     if (excludes == null) {
       excludes = new String[0];
     }
-    this.excludes = Stream.of(excludes).map(String::toLowerCase).toArray(i -> new String[i]);
+    this.excludes = Stream.of(excludes).map(String::toLowerCase).toArray(String[]::new);
   }
 
   public boolean isExcludeFlywayTable() {

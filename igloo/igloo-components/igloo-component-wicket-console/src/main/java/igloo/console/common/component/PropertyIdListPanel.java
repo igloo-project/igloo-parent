@@ -27,16 +27,7 @@ public class PropertyIdListPanel extends Panel {
   @SpringBean private IPropertyService propertyService;
 
   public PropertyIdListPanel(String id, Collection<PropertyId<?>> propertyIds) {
-    this(
-        id,
-        new LoadableDetachableModel<Collection<PropertyId<?>>>() {
-          private static final long serialVersionUID = 1L;
-
-          @Override
-          protected Collection<PropertyId<?>> load() {
-            return propertyIds;
-          }
-        });
+    this(id, LoadableDetachableModel.of(() -> propertyIds));
   }
 
   public PropertyIdListPanel(
@@ -50,7 +41,7 @@ public class PropertyIdListPanel extends Panel {
     add(
         DataTableBuilder.start(
                 ReadOnlyCollectionModel.of(propertyIdsModel, Models.serializableModelFactory()))
-            .addLabelColumn(new ResourceModel("common.propertyId.key"), p -> p.getKey())
+            .addLabelColumn(new ResourceModel("common.propertyId.key"), PropertyId::getKey)
             .addLabelColumn(
                 new ResourceModel("common.propertyId.value"), p -> propertyService.getAsString(p))
             .addActionColumn()

@@ -36,7 +36,6 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.hamcrest.MockitoHamcrest;
-import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
@@ -188,7 +187,7 @@ class TestHistoryLogService extends AbstractJpaMoreTestCase {
 
     assertThat(logs).hasSize(1);
 
-    TestHistoryLog log = logs.iterator().next();
+    TestHistoryLog log = logs.getFirst();
 
     assertThat(log.getId()).isNotNull();
 
@@ -217,19 +216,12 @@ class TestHistoryLogService extends AbstractJpaMoreTestCase {
             historyDifferenceGeneratorMock.toHistoryDifferences(
                 ArgumentMatchers.<Supplier2<TestHistoryDifference>>any(),
                 ArgumentMatchers.<Difference<TestEntity>>any()))
-        .then(
-            new Answer<List<TestHistoryDifference>>() {
-              @Override
-              public List<TestHistoryDifference> answer(InvocationOnMock invocation)
-                  throws Throwable {
-                return createExpectedDifferences();
-              }
-            });
+        .then((Answer<List<TestHistoryDifference>>) invocation -> createExpectedDifferences());
 
     final Instant before = Instant.now();
 
     writeTransactionTemplate.executeWithoutResult(
-        status -> {
+        _ -> {
           TestEntity objectReloaded = entityService.getEntity(object);
           TestEntity secondaryObjectReloaded = entityService.getEntity(secondaryObject);
           try {
@@ -250,13 +242,13 @@ class TestHistoryLogService extends AbstractJpaMoreTestCase {
 
     assertThat(logs).hasSize(1);
 
-    TestHistoryLog log = logs.iterator().next();
+    TestHistoryLog log = logs.getFirst();
 
     assertThat(log.getId()).isNotNull();
 
     assertThat(
         log.getDate(),
-        new TypeSafeMatcher<Instant>() {
+        new TypeSafeMatcher<>() {
           @Override
           public void describeTo(Description description) {
             description
@@ -295,19 +287,12 @@ class TestHistoryLogService extends AbstractJpaMoreTestCase {
             historyDifferenceGeneratorMock.toHistoryDifferences(
                 ArgumentMatchers.<Supplier2<TestHistoryDifference>>any(),
                 ArgumentMatchers.<Difference<TestEntity>>any()))
-        .then(
-            new Answer<List<TestHistoryDifference>>() {
-              @Override
-              public List<TestHistoryDifference> answer(InvocationOnMock invocation)
-                  throws Throwable {
-                return createExpectedDifferences();
-              }
-            });
+        .then((Answer<List<TestHistoryDifference>>) invocation -> createExpectedDifferences());
 
     final Instant before = Instant.now();
 
     writeTransactionTemplate.executeWithoutResult(
-        status -> {
+        _ -> {
           TestEntity objectReloaded = entityService.getEntity(object);
           TestEntity secondaryObjectReloaded = entityService.getEntity(secondaryObject);
           try {
@@ -334,13 +319,13 @@ class TestHistoryLogService extends AbstractJpaMoreTestCase {
 
     assertThat(logs).hasSize(1);
 
-    TestHistoryLog log = logs.iterator().next();
+    TestHistoryLog log = logs.getFirst();
 
     assertThat(log.getId()).isNotNull();
 
     assertThat(
         log.getDate(),
-        new TypeSafeMatcher<Instant>() {
+        new TypeSafeMatcher<>() {
           @Override
           public void describeTo(Description description) {
             description

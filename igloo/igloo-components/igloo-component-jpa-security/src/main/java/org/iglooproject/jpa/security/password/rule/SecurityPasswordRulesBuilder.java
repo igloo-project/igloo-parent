@@ -24,7 +24,7 @@ import org.passay.rule.WhitespaceRule;
 
 public final class SecurityPasswordRulesBuilder {
 
-  public static final Set<Rule> create(Consumer<SecurityPasswordRulesBuilder> consumer) {
+  public static Set<Rule> create(Consumer<SecurityPasswordRulesBuilder> consumer) {
     SecurityPasswordRulesBuilder builder = new SecurityPasswordRulesBuilder();
     consumer.accept(builder);
     return builder.build();

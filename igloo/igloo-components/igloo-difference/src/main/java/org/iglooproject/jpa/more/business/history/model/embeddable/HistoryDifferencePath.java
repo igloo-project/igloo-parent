@@ -51,8 +51,7 @@ public class HistoryDifferencePath {
 
   @Override
   public boolean equals(Object obj) {
-    if (obj instanceof HistoryDifferencePath) {
-      HistoryDifferencePath other = (HistoryDifferencePath) obj;
+    if (obj instanceof HistoryDifferencePath other) {
       return new EqualsBuilder().append(path, other.path).append(key, other.key).build();
     } else {
       return false;

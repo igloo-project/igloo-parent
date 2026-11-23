@@ -85,10 +85,10 @@ public class RendererServiceImpl implements IRendererService, IRendererRegistry 
 
   private <T> Renderer<? super T> findDefaultRenderer(final Class<T> valueType) {
     IConverter<T> converter;
-    try (ITearDownHandle handle = context().open()) {
+    try (ITearDownHandle _ = context().open()) {
       converter = Application.get().getConverterLocator().getConverter(valueType);
     }
-    return new BackgroundWicketThreadContextRenderer<T>(converter).nullsAsNull();
+    return new BackgroundWicketThreadContextRenderer<>(converter).nullsAsNull();
   }
 
   /**
@@ -106,7 +106,7 @@ public class RendererServiceImpl implements IRendererService, IRendererRegistry 
 
     @Override
     public String render(final T value, final Locale locale) {
-      try (ITearDownHandle handle = context().open()) {
+      try (ITearDownHandle _ = context().open()) {
         return delegate.convertToString(value, locale);
       }
     }
@@ -186,7 +186,7 @@ public class RendererServiceImpl implements IRendererService, IRendererRegistry 
 
   @Override
   public final String localize(final String resourceKey, final Locale locale) {
-    try (ITearDownHandle handle = context().open()) {
+    try (ITearDownHandle _ = context().open()) {
       return Localizer.get().getString(resourceKey, null, null, locale, null, (String) null);
     }
   }
@@ -197,20 +197,12 @@ public class RendererServiceImpl implements IRendererService, IRendererRegistry 
       final Locale locale,
       final Object namedParameters,
       final Object... positionalParameters) {
-    try (ITearDownHandle handle = context().open()) {
+    try (ITearDownHandle _ = context().open()) {
       IModel<?> modelParameter;
       if (namedParameters instanceof IModel) {
         modelParameter = (IModel<?>) namedParameters;
       } else {
-        modelParameter =
-            new IModel<Object>() {
-              private static final long serialVersionUID = 1L;
-
-              @Override
-              public Object getObject() {
-                return namedParameters;
-              }
-            };
+        modelParameter = () -> namedParameters;
       }
 
       return new StringResourceModel(resourceKey)
@@ -232,7 +224,7 @@ public class RendererServiceImpl implements IRendererService, IRendererRegistry 
   @Override
   public final String localize(
       final Enum<?> enumValue, final String prefix, final String suffix, final Locale locale) {
-    try (ITearDownHandle handle = context().open()) {
+    try (ITearDownHandle _ = context().open()) {
       return EnumRenderer.with(prefix, suffix)
           .render(enumValue, locale != null ? locale : Session.get().getLocale());
     }
@@ -240,7 +232,7 @@ public class RendererServiceImpl implements IRendererService, IRendererRegistry 
 
   @Override
   public final <T> String localize(final Class<T> clazz, final T value, final Locale locale) {
-    try (ITearDownHandle handle = context().open()) {
+    try (ITearDownHandle _ = context().open()) {
       return Application.get()
           .getConverterLocator()
           .getConverter(clazz)

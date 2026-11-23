@@ -6,7 +6,7 @@ public class Actions {
 
   public static <T> IOneParameterAction<T> ignoreParameter(final IAction action) {
     Objects.requireNonNull(action);
-    return new IOneParameterAction<T>() {
+    return new IOneParameterAction<>() {
       private static final long serialVersionUID = 1L;
 
       @Override

@@ -158,7 +158,7 @@ class QueuedTaskHolderJacksonTest extends AbstractJpaMoreTestCase {
 
     List<BatchReportItem> items = deserialized.getItems().get(BatchReport.GLOBAL_CONTEXT);
     assertThat(items).hasSize(3);
-    assertThat(items.get(0).getMessage()).isEqualTo("Item processed successfully");
+    assertThat(items.getFirst().getMessage()).isEqualTo("Item processed successfully");
     assertThat(items.get(0).getSeverity()).isEqualTo(BatchReportItemSeverity.INFO);
     assertThat(items.get(0).getInstant()).isNotNull();
     assertThat(items.get(1).getSeverity()).isEqualTo(BatchReportItemSeverity.WARN);
@@ -204,7 +204,7 @@ class QueuedTaskHolderJacksonTest extends AbstractJpaMoreTestCase {
 
     List<BatchReportItem> items = deserializedReport.getItems().get(BatchReport.GLOBAL_CONTEXT);
     assertThat(items).hasSize(3);
-    assertThat(items.get(0).getMessage()).isEqualTo("Item processed successfully");
+    assertThat(items.getFirst().getMessage()).isEqualTo("Item processed successfully");
     assertThat(items.get(0).getSeverity()).isEqualTo(BatchReportItemSeverity.INFO);
     assertThat(items.get(0).getInstant()).isNotNull();
     assertThat(items.get(2).getSeverity()).isEqualTo(BatchReportItemSeverity.ERROR);

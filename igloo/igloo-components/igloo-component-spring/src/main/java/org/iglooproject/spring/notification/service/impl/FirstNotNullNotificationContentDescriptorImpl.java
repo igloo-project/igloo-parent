@@ -66,12 +66,10 @@ public class FirstNotNullNotificationContentDescriptorImpl
 
   @Override
   public boolean equals(Object obj) {
-    if (obj instanceof FirstNotNullNotificationContentDescriptorImpl) {
+    if (obj instanceof FirstNotNullNotificationContentDescriptorImpl other) {
       if (obj == this) {
         return true;
       }
-      FirstNotNullNotificationContentDescriptorImpl other =
-          (FirstNotNullNotificationContentDescriptorImpl) obj;
       return new EqualsBuilder().append(chainedDescriptors, other.chainedDescriptors).build();
     }
     return false;

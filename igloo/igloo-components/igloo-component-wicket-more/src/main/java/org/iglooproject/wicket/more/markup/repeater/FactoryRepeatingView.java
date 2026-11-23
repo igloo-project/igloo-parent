@@ -67,7 +67,7 @@ public class FactoryRepeatingView extends RepeatingView implements IRefreshableO
      * @see AbstractRepeater#dequeue()
      */
     @Override
-    protected final void onRender() {
+    protected void onRender() {
       Iterator<? extends Component> it = iterator();
       while (it.hasNext()) {
         Component child = it.next();
@@ -98,9 +98,8 @@ public class FactoryRepeatingView extends RepeatingView implements IRefreshableO
       if (size() > 0) {
         Bookmark bookmark = dequeue.save();
         for (Component child : this) {
-          if (child instanceof MarkupContainer) {
+          if (child instanceof MarkupContainer container) {
             dequeue.popContainer(); // pop the repeater
-            MarkupContainer container = (MarkupContainer) child;
             dequeue.pushContainer(container);
             container.dequeue(dequeue);
             dequeue.restore(bookmark);

@@ -76,7 +76,7 @@ public class WorkingCopyModel<T> implements IModel<T> {
   private String tryToString(IModel<?> model) {
     try {
       return String.valueOf(model);
-    } catch (RuntimeException e) {
+    } catch (RuntimeException _) {
       return "<Unexpected exception while calling String.valueOf(model)>";
     }
   }

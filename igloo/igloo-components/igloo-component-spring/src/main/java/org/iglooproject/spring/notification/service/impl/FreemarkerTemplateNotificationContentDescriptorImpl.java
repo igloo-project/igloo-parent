@@ -110,11 +110,10 @@ public class FreemarkerTemplateNotificationContentDescriptorImpl
 
     @Override
     public boolean equals(Object obj) {
-      if (obj instanceof Wrapper) {
+      if (obj instanceof Wrapper other) {
         if (obj == this) {
           return true;
         }
-        Wrapper other = (Wrapper) obj;
         return new EqualsBuilder()
             .append(wrapped, other.wrapped)
             .append(locale, other.locale)
@@ -153,7 +152,7 @@ public class FreemarkerTemplateNotificationContentDescriptorImpl
   public void setVariable(Locale locale, String name, Object value) {
     Assert.hasText(name, "Variable name must contain text");
     if (!templateVariablesByLocale.containsKey(locale)) {
-      templateVariablesByLocale.put(locale, new HashMap<String, Object>());
+      templateVariablesByLocale.put(locale, new HashMap<>());
     }
     templateVariablesByLocale.get(locale).put(name, value);
   }
@@ -164,7 +163,7 @@ public class FreemarkerTemplateNotificationContentDescriptorImpl
    */
   public void setVariables(Locale locale, Map<String, ?> variables) {
     if (!templateVariablesByLocale.containsKey(locale)) {
-      templateVariablesByLocale.put(locale, new HashMap<String, Object>());
+      templateVariablesByLocale.put(locale, new HashMap<>());
     }
     templateVariablesByLocale.get(locale).putAll(variables);
   }

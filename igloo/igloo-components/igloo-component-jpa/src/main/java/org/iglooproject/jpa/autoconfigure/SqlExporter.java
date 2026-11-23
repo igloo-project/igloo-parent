@@ -137,9 +137,9 @@ public class SqlExporter {
     pathCopy.addAll(path);
     while (!pathCopy.isEmpty()) {
       currentMapping =
-          ((EmbeddedAttributeMapping) currentMapping.findAttributeMapping(pathCopy.get(0)))
+          ((EmbeddedAttributeMapping) currentMapping.findAttributeMapping(pathCopy.getFirst()))
               .getEmbeddableTypeDescriptor();
-      pathCopy.remove(0);
+      pathCopy.removeFirst();
     }
     return currentMapping.findAttributeMapping(attributeName);
   }

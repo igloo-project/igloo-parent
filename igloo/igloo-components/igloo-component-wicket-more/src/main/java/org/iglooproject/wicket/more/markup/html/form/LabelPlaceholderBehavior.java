@@ -35,13 +35,12 @@ public class LabelPlaceholderBehavior extends Behavior {
 
     @Override
     protected String getObject(Component component) {
-      if (!(component instanceof FormComponent)) {
+      if (!(component instanceof FormComponent<?> formComponent)) {
         throw new IllegalStateException(
             "Behavior "
                 + getClass().getName()
                 + " can only be added to an instance of a FormComponent");
       }
-      FormComponent<?> formComponent = (FormComponent<?>) component;
       IModel<String> labelModel = formComponent.getLabel();
       return labelModel == null ? null : labelModel.getObject();
     }

@@ -45,7 +45,7 @@ public abstract class AbstractThreeParameterLinkDescriptorMapper<L, T1, T2, T3>
 
   @Override
   public ITwoParameterLinkDescriptorMapper<L, T2, T3> setParameter1(final IModel<T1> model1) {
-    return new AbstractTwoParameterLinkDescriptorMapper<L, T2, T3>() {
+    return new AbstractTwoParameterLinkDescriptorMapper<>() {
       private static final long serialVersionUID = 1L;
 
       @Override
@@ -65,7 +65,7 @@ public abstract class AbstractThreeParameterLinkDescriptorMapper<L, T1, T2, T3>
   @Override
   public ITwoParameterLinkDescriptorMapper<L, T2, T3> setParameter1(
       final SerializableFunction2<Pair<T2, T3>, T1> function) {
-    return new AbstractTwoParameterLinkDescriptorMapper<L, T2, T3>() {
+    return new AbstractTwoParameterLinkDescriptorMapper<>() {
       private static final long serialVersionUID = 1L;
 
       @Override
@@ -84,7 +84,7 @@ public abstract class AbstractThreeParameterLinkDescriptorMapper<L, T1, T2, T3>
 
   @Override
   public <U1 extends T1> IThreeParameterLinkDescriptorMapper<L, U1, T2, T3> castParameter1() {
-    return new AbstractThreeParameterLinkDescriptorMapper<L, U1, T2, T3>() {
+    return new AbstractThreeParameterLinkDescriptorMapper<>() {
       private static final long serialVersionUID = 1L;
 
       @Override
@@ -109,7 +109,7 @@ public abstract class AbstractThreeParameterLinkDescriptorMapper<L, T1, T2, T3>
 
   @Override
   public ITwoParameterLinkDescriptorMapper<L, T1, T3> setParameter2(final IModel<T2> model2) {
-    return new AbstractTwoParameterLinkDescriptorMapper<L, T1, T3>() {
+    return new AbstractTwoParameterLinkDescriptorMapper<>() {
       private static final long serialVersionUID = 1L;
 
       @Override
@@ -129,7 +129,7 @@ public abstract class AbstractThreeParameterLinkDescriptorMapper<L, T1, T2, T3>
   @Override
   public ITwoParameterLinkDescriptorMapper<L, T1, T3> setParameter2(
       final SerializableFunction2<Pair<T1, T3>, T2> function) {
-    return new AbstractTwoParameterLinkDescriptorMapper<L, T1, T3>() {
+    return new AbstractTwoParameterLinkDescriptorMapper<>() {
       private static final long serialVersionUID = 1L;
 
       @Override
@@ -148,7 +148,7 @@ public abstract class AbstractThreeParameterLinkDescriptorMapper<L, T1, T2, T3>
 
   @Override
   public <U2 extends T2> IThreeParameterLinkDescriptorMapper<L, T1, U2, T3> castParameter2() {
-    return new AbstractThreeParameterLinkDescriptorMapper<L, T1, U2, T3>() {
+    return new AbstractThreeParameterLinkDescriptorMapper<>() {
       private static final long serialVersionUID = 1L;
 
       @Override
@@ -173,7 +173,7 @@ public abstract class AbstractThreeParameterLinkDescriptorMapper<L, T1, T2, T3>
 
   @Override
   public ITwoParameterLinkDescriptorMapper<L, T1, T2> setParameter3(final IModel<T3> model3) {
-    return new AbstractTwoParameterLinkDescriptorMapper<L, T1, T2>() {
+    return new AbstractTwoParameterLinkDescriptorMapper<>() {
       private static final long serialVersionUID = 1L;
 
       @Override
@@ -193,7 +193,7 @@ public abstract class AbstractThreeParameterLinkDescriptorMapper<L, T1, T2, T3>
   @Override
   public ITwoParameterLinkDescriptorMapper<L, T1, T2> setParameter3(
       final SerializableFunction2<Pair<T1, T2>, T3> function) {
-    return new AbstractTwoParameterLinkDescriptorMapper<L, T1, T2>() {
+    return new AbstractTwoParameterLinkDescriptorMapper<>() {
       private static final long serialVersionUID = 1L;
 
       @Override
@@ -212,7 +212,7 @@ public abstract class AbstractThreeParameterLinkDescriptorMapper<L, T1, T2, T3>
 
   @Override
   public <U3 extends T3> IThreeParameterLinkDescriptorMapper<L, T1, T2, U3> castParameter3() {
-    return new AbstractThreeParameterLinkDescriptorMapper<L, T1, T2, U3>() {
+    return new AbstractThreeParameterLinkDescriptorMapper<>() {
       private static final long serialVersionUID = 1L;
 
       @Override

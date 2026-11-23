@@ -72,39 +72,27 @@ public class ConsoleMaintenancePropertiesPage extends ConsoleMaintenanceTemplate
     add(propertiesContainer.setOutputMarkupId(true));
 
     IModel<List<PropertyId<?>>> propertyIdsModel =
-        new LoadableDetachableModel<List<PropertyId<?>>>() {
-          private static final long serialVersionUID = 1L;
-
-          @Override
-          protected List<PropertyId<?>> load() {
-            return propertyRegistry.listRegistered().stream()
-                .filter(PropertyId.class::isInstance)
-                .map(p -> (PropertyId<?>) p)
-                .filter(Predicates2.compose(Predicates2.hasText(), PropertyId::getKey))
-                .filter(
-                    Predicates2.compose(
-                        getFilterPredicate(filterModel.getObject()), PropertyId::getKey))
-                .sorted(Ordering.natural().onResultOf(PropertyId::getKey))
-                .collect(ImmutableList.toImmutableList());
-          }
-        };
+        LoadableDetachableModel.of(
+            () ->
+                propertyRegistry.listRegistered().stream()
+                    .filter(PropertyId.class::isInstance)
+                    .map(p -> (PropertyId<?>) p)
+                    .filter(Predicates2.compose(Predicates2.hasText(), PropertyId::getKey))
+                    .filter(
+                        Predicates2.compose(
+                            getFilterPredicate(filterModel.getObject()), PropertyId::getKey))
+                    .sorted(Ordering.natural().onResultOf(PropertyId::getKey))
+                    .collect(ImmutableList.toImmutableList()));
 
     ListView<PropertyId<?>> propertyIdsListView =
-        new ListView<PropertyId<?>>("propertyIds", propertyIdsModel) {
+        new ListView<>("propertyIds", propertyIdsModel) {
           private static final long serialVersionUID = 1L;
 
           @Override
           protected void populateItem(ListItem<PropertyId<?>> item) {
             IModel<PropertyId<?>> propertyIdModel = item.getModel();
             IModel<Object> propertyIdValueModel =
-                new LoadableDetachableModel<Object>() {
-                  private static final long serialVersionUID = 1L;
-
-                  @Override
-                  protected Object load() {
-                    return propertyService.get(propertyIdModel.getObject());
-                  }
-                };
+                LoadableDetachableModel.of(() -> propertyService.get(propertyIdModel.getObject()));
             item.setVisible(true);
             item.add(
                 new CoreLabel("name", propertyIdModel.map(PropertyId::getKey)),
@@ -125,51 +113,48 @@ public class ConsoleMaintenancePropertiesPage extends ConsoleMaintenanceTemplate
             .condition(Condition.componentVisible(propertyIdsListView)));
 
     IModel<List<KeyValue<String, Object>>> propertiesModel =
-        new LoadableDetachableModel<List<KeyValue<String, Object>>>() {
-          private static final long serialVersionUID = 1L;
+        LoadableDetachableModel.of(
+            () -> {
+              List<KeyValue<String, Object>> properties =
+                  propertySourceLogger.listProperties().entrySet().stream()
+                      .map(e -> KeyValue.with((String) e.getKey(), e.getValue()))
+                      .filter(Predicates2.compose(Predicates2.hasText(), KeyValue::getKey))
+                      .filter(
+                          Predicates2.compose(
+                              getFilterPredicate(filterModel.getObject()), KeyValue::getKey))
+                      .sorted(Ordering.natural().onResultOf(KeyValue::getKey))
+                      .collect(ImmutableList.toImmutableList());
 
-          @Override
-          protected List<KeyValue<String, Object>> load() {
-            List<KeyValue<String, Object>> properties =
-                propertySourceLogger.listProperties().entrySet().stream()
-                    .map(e -> KeyValue.with((String) e.getKey(), e.getValue()))
-                    .filter(Predicates2.compose(Predicates2.hasText(), KeyValue::getKey))
-                    .filter(
-                        Predicates2.compose(
-                            getFilterPredicate(filterModel.getObject()), KeyValue::getKey))
-                    .sorted(Ordering.natural().onResultOf(KeyValue::getKey))
-                    .collect(ImmutableList.toImmutableList());
+              List<String> propertyKeys =
+                  properties.stream()
+                      .map(KeyValue::getKey)
+                      .sorted()
+                      .collect(ImmutableList.toImmutableList());
 
-            List<String> propertyKeys =
-                properties.stream()
-                    .map(KeyValue::getKey)
-                    .sorted()
-                    .collect(ImmutableList.toImmutableList());
+              List<String> propertyIdKeys =
+                  propertyIdsModel.getObject().stream()
+                      .map(PropertyId::getKey)
+                      .sorted()
+                      .collect(ImmutableList.toImmutableList());
 
-            List<String> propertyIdKeys =
-                propertyIdsModel.getObject().stream()
-                    .map(PropertyId::getKey)
-                    .sorted()
-                    .collect(ImmutableList.toImmutableList());
+              List<String> propertyKeysExclude =
+                  propertyKeys.stream()
+                      .filter(k -> k.startsWith(ENVIRONEMENT_PREFIX))
+                      .filter(
+                          k ->
+                              propertyKeys.contains(Strings.CS.removeStart(k, ENVIRONEMENT_PREFIX)))
+                      .sorted()
+                      .collect(ImmutableList.toImmutableList());
 
-            List<String> propertyKeysExclude =
-                propertyKeys.stream()
-                    .filter(k -> k.startsWith(ENVIRONEMENT_PREFIX))
-                    .filter(
-                        k -> propertyKeys.contains(Strings.CS.removeStart(k, ENVIRONEMENT_PREFIX)))
-                    .sorted()
-                    .collect(ImmutableList.toImmutableList());
-
-            return properties.stream()
-                .filter(e -> !propertyIdKeys.contains(e.getKey()))
-                .filter(e -> !propertyKeysExclude.contains(e.getKey()))
-                .sorted(Ordering.natural().onResultOf(KeyValue::getKey))
-                .collect(ImmutableList.toImmutableList());
-          }
-        };
+              return properties.stream()
+                  .filter(e -> !propertyIdKeys.contains(e.getKey()))
+                  .filter(e -> !propertyKeysExclude.contains(e.getKey()))
+                  .sorted(Ordering.natural().onResultOf(KeyValue::getKey))
+                  .collect(ImmutableList.toImmutableList());
+            });
 
     ListView<KeyValue<String, Object>> propertiesListView =
-        new ListView<KeyValue<String, Object>>("properties", propertiesModel) {
+        new ListView<>("properties", propertiesModel) {
           private static final long serialVersionUID = 1L;
 
           @Override

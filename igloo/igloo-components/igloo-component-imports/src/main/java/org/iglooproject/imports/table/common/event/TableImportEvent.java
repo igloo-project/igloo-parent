@@ -49,11 +49,10 @@ public class TableImportEvent {
     if (object == this) {
       return true;
     }
-    if (!(object instanceof TableImportEvent)) {
+    if (!(object instanceof TableImportEvent other)) {
       return false;
     }
 
-    TableImportEvent other = (TableImportEvent) object;
     return getClass().equals(other.getClass()) && name.equals(other.name);
   }
 

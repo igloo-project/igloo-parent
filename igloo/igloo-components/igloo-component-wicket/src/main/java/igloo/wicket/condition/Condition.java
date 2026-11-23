@@ -167,7 +167,7 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
     }
 
     public IfElseBuilder<T> elseIf(Condition condition, IModel<? extends T> model) {
-      return new IfElseBuilder<T>(condition, model) {
+      return new IfElseBuilder<>(condition, model) {
         @Override
         public IModel<T> otherwise(IModel<? extends T> modelIfFalse) {
           return IfElseBuilder.this.otherwise(super.otherwise(modelIfFalse));
@@ -187,7 +187,7 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 
     @Override
     public ValueIfElseBuilder<T> elseIf(Condition condition, IModel<? extends T> model) {
-      return new ValueIfElseBuilder<T>(condition, model) {
+      return new ValueIfElseBuilder<>(condition, model) {
         @Override
         public IModel<T> otherwise(IModel<? extends T> modelIfFalse) {
           return ValueIfElseBuilder.this.otherwise(super.otherwise(modelIfFalse));
@@ -416,7 +416,7 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
       T element = elementModel.getObject();
       try {
         return collection != null && collection.contains(element);
-      } catch (NullPointerException e) {
+      } catch (NullPointerException _) {
         // We need to catch the NPE to deal with collections and maps which don't permit null keys.
         return false;
       }

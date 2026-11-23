@@ -19,7 +19,7 @@ public abstract class AbstractOneParameterLinkDescriptorMapper<L, T1>
 
   @Override
   public <U1 extends T1> IOneParameterLinkDescriptorMapper<L, U1> castParameter1() {
-    return new AbstractOneParameterLinkDescriptorMapper<L, U1>() {
+    return new AbstractOneParameterLinkDescriptorMapper<>() {
       private static final long serialVersionUID = 1L;
 
       @Override

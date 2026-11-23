@@ -65,17 +65,14 @@ public class ImageServiceImpl implements IImageService {
       return getImageInformation(is);
     } catch (FileNotFoundException e) {
       LOGGER.error(
-          String.format(
-              "File %1$s not found while trying to get image information",
-              source.getAbsolutePath()),
-          e);
+          "File {} not found while trying to get image information", source.getAbsolutePath(), e);
 
       return new ImageInformation();
     } finally {
       if (is != null) {
         try {
           is.close();
-        } catch (IOException e) {
+        } catch (IOException _) {
         }
       }
     }

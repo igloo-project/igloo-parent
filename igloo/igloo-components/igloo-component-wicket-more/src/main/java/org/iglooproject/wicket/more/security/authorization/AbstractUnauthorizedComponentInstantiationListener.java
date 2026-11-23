@@ -22,8 +22,7 @@ public abstract class AbstractUnauthorizedComponentInstantiationListener
 
   protected String getCurrentPageUrl(Page page) {
     Request request = page.getRequest();
-    if (request instanceof ServletWebRequest) {
-      ServletWebRequest servletWebRequest = (ServletWebRequest) request;
+    if (request instanceof ServletWebRequest servletWebRequest) {
       StringBuffer currentUrl = servletWebRequest.getContainerRequest().getRequestURL();
       String queryString = servletWebRequest.getContainerRequest().getQueryString();
       if (queryString != null) {

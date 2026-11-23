@@ -84,11 +84,11 @@ public class HistoryEntityReferenceSchemaContributor extends BaseSchemaContribut
       }
       if (previousExisting == null) {
         if (LOGGER.isDebugEnabled()) {
-          LOGGER.debug("historylog_reference_type: add {} before {}", entity, values.get(0));
+          LOGGER.debug("historylog_reference_type: add {} before {}", entity, values.getFirst());
         }
         sb.append(
             "ALTER TYPE %s ADD VALUE '%s' BEFORE '%s';%n"
-                .formatted(typeName, entity, values.get(0)));
+                .formatted(typeName, entity, values.getFirst()));
       } else {
         LOGGER.debug("historylog_reference_type: add {} after {}", entity, previousExisting);
         sb.append(
@@ -206,7 +206,8 @@ where
     sourcenamespace.nspname = :type1Schema
     and source.typname = :type1
     and targetnamespace.nspname = :type2Schema
-    and target.typname = :type2""",
+    and target.typname = :type2\
+""",
             Integer.class);
     query.setParameter("type1Schema", type1Schema);
     query.setParameter("type1", type1);

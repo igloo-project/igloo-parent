@@ -14,7 +14,7 @@ public final class ComponentFactories {
 
   public static <C extends Component, P> IOneParameterComponentFactory<C, P> ignoreParameter(
       final IComponentFactory<? extends C> factory) {
-    return new IOneParameterComponentFactory<C, P>() {
+    return new IOneParameterComponentFactory<>() {
       private static final long serialVersionUID = 1L;
 
       @Override
@@ -33,7 +33,7 @@ public final class ComponentFactories {
       IOneParameterComponentFactory<AbstractDynamicBookmarkableLink, IModel<T>>
           fromLinkDescriptorMapper(
               final ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<T>> mapper) {
-    return new IOneParameterComponentFactory<AbstractDynamicBookmarkableLink, IModel<T>>() {
+    return new IOneParameterComponentFactory<>() {
       private static final long serialVersionUID = 1L;
 
       @Override

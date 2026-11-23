@@ -16,7 +16,7 @@ public abstract class StreamModel<T> implements IModel<Iterable<T>> {
 
   public static <T> StreamModel<T> of(final IModel<? extends Iterable<T>> model) {
     Objects.requireNonNull(model);
-    return new StreamModel<T>() {
+    return new StreamModel<>() {
       private static final long serialVersionUID = 1L;
 
       @Override

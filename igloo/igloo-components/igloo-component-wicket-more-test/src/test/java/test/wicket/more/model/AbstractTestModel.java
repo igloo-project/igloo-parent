@@ -9,7 +9,7 @@ import test.wicket.more.AbstractWicketMoreTestCase;
 public class AbstractTestModel<T> extends AbstractWicketMoreTestCase {
 
   protected Matcher<T> isEquivalent(final Equivalence<? super T> equivalence, final T expected) {
-    return new TypeSafeMatcher<T>() {
+    return new TypeSafeMatcher<>() {
       @Override
       public void describeTo(Description description) {
         description.appendValue(expected);

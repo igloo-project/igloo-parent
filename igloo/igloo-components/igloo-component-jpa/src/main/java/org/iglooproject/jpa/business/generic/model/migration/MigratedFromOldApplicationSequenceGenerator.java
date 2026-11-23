@@ -22,9 +22,7 @@ public class MigratedFromOldApplicationSequenceGenerator extends PredefinedIdSeq
 
   @Override
   public Object generate(SharedSessionContractImplementor session, Object obj) {
-    if (obj instanceof IMigratedFromOldApplicationEntity) {
-      IMigratedFromOldApplicationEntity<?> migratedEntity =
-          (IMigratedFromOldApplicationEntity<?>) obj;
+    if (obj instanceof IMigratedFromOldApplicationEntity<?> migratedEntity) {
       Serializable oldApplicationId = migratedEntity.getPredefinedId();
       if (oldApplicationId != null) {
         migratedEntity.setMigrated(true);

@@ -79,7 +79,7 @@ public class FormComponentChangeAjaxEventBehavior extends AjaxEventBehavior
   }
 
   private static final MetaDataKey<Boolean> IS_SUBMITTED_USING_THIS_BEHAVIOR =
-      new MetaDataKey<Boolean>() {
+      new MetaDataKey<>() {
         private static final long serialVersionUID = 1L;
       };
 

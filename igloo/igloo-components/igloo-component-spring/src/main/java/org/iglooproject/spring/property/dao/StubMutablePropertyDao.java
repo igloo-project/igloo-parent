@@ -12,7 +12,7 @@ public class StubMutablePropertyDao implements IMutablePropertyDao {
   @Override
   public void setInTransaction(String key, String value)
       throws ServiceException, SecurityServiceException {
-    LOGGER.warn(String.format("Call set(%1s, %1s) from mutablePropertyDao stub.", key, value));
+    LOGGER.warn("Call set({}, {}) from mutablePropertyDao stub.", key, value);
   }
 
   @Override

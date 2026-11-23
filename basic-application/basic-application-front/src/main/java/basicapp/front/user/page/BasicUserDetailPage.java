@@ -142,28 +142,24 @@ public class BasicUserDetailPage extends UserTemplate {
                     .content(new ResourceModel("common.action.confirm.content"))
                     .confirm()
                     .onClick(
-                        new IAjaxAction() {
-                          private static final long serialVersionUID = 1L;
-
-                          @Override
-                          public void execute(AjaxRequestTarget target) {
-                            try {
-                              securityManagementControllerService.initiatePasswordRecoveryRequest(
-                                  userModel.getObject(),
-                                  UserPasswordRecoveryRequestType.RESET,
-                                  UserPasswordRecoveryRequestInitiator.ADMIN,
-                                  BasicApplicationSession.get().getUser());
-                              Session.get()
-                                  .success(getString("user.password.recovery.reset.success"));
-                              target.add(getPage());
-                            } catch (Exception e) {
-                              LOGGER.error(
-                                  "Error occured while sending a password recovery request", e);
-                              Session.get().error(getString("common.error.unexpected"));
-                            }
-                            FeedbackUtils.refreshFeedback(target, getPage());
-                          }
-                        })
+                        (IAjaxAction)
+                            target -> {
+                              try {
+                                securityManagementControllerService.initiatePasswordRecoveryRequest(
+                                    userModel.getObject(),
+                                    UserPasswordRecoveryRequestType.RESET,
+                                    UserPasswordRecoveryRequestInitiator.ADMIN,
+                                    BasicApplicationSession.get().getUser());
+                                Session.get()
+                                    .success(getString("user.password.recovery.reset.success"));
+                                target.add(getPage());
+                              } catch (Exception e) {
+                                LOGGER.error(
+                                    "Error occured while sending a password recovery request", e);
+                                Session.get().error(getString("common.error.unexpected"));
+                              }
+                              FeedbackUtils.refreshFeedback(target, getPage());
+                            })
                     .create("passwordReset", userModel)
                     .add(Condition.permission(userModel, ADMIN_RECOVERY_PASSWORD).thenShow()),
                 new AjaxLink<>("enable", userModel) {
@@ -187,22 +183,18 @@ public class BasicUserDetailPage extends UserTemplate {
                     .content(new ResourceModel("common.action.confirm.content"))
                     .confirm()
                     .onClick(
-                        new IAjaxAction() {
-                          private static final long serialVersionUID = 1L;
-
-                          @Override
-                          public void execute(AjaxRequestTarget target) {
-                            try {
-                              userControllerService.disable(userModel.getObject());
-                              Session.get().success(getString("common.success"));
-                            } catch (Exception e) {
-                              LOGGER.error("Error occured while disabling user", e);
-                              Session.get().error(getString("common.error.unexpected"));
-                            }
-                            target.add(getPage());
-                            FeedbackUtils.refreshFeedback(target, getPage());
-                          }
-                        })
+                        (IAjaxAction)
+                            target -> {
+                              try {
+                                userControllerService.disable(userModel.getObject());
+                                Session.get().success(getString("common.success"));
+                              } catch (Exception e) {
+                                LOGGER.error("Error occured while disabling user", e);
+                                Session.get().error(getString("common.error.unexpected"));
+                              }
+                              target.add(getPage());
+                              FeedbackUtils.refreshFeedback(target, getPage());
+                            })
                     .create("disable", userModel)
                     .add(Condition.permission(userModel, USER_DISABLE).thenShow())));
 

@@ -47,7 +47,7 @@ public class ConsoleMaintenanceFilePage extends ConsoleMaintenanceTemplate {
               pathModel.setObject(
                   pathGenerator.getFilePath(fileKeyModel.getObject(), extensionModel.getObject()));
               pathModel.detach();
-            } catch (Exception e) {
+            } catch (Exception _) {
               LOGGER.error("Unexpected error while generating file path through hashtable.");
               pathModel.setObject(null);
               Session.get().error(getString("common.error.unexpected"));

@@ -10,7 +10,7 @@ import org.iglooproject.functional.SerializableSupplier2;
 public abstract class AbstractTestMapModel<M extends Map<?, ?>> extends AbstractTestModel<M> {
 
   protected static final Equivalence<Map<?, ?>> UNORDERED_MAP_EQUIVALENCE =
-      new Equivalence<Map<?, ?>>() {
+      new Equivalence<>() {
         @Override
         protected boolean doEquivalent(Map<?, ?> a, Map<?, ?> b) {
           return a.size() == b.size()
@@ -36,7 +36,7 @@ public abstract class AbstractTestMapModel<M extends Map<?, ?>> extends Abstract
   }
 
   protected Matcher<M> isEmpty() {
-    return new TypeSafeMatcher<M>() {
+    return new TypeSafeMatcher<>() {
       @Override
       public void describeTo(Description description) {
         description.appendText("an empty collection");

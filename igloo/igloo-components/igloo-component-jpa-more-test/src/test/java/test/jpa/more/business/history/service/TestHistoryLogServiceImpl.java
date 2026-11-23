@@ -22,7 +22,7 @@ public class TestHistoryLogServiceImpl
     implements ITestHistoryLogService {
 
   private static final Supplier2<TestHistoryDifference> HISTORY_DIFFERENCE_SUPPLIER =
-      () -> new TestHistoryDifference();
+      TestHistoryDifference::new;
 
   @Autowired
   public TestHistoryLogServiceImpl(ITestHistoryLogDao dao) {

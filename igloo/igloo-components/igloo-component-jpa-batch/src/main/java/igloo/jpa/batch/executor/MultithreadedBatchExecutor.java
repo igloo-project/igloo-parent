@@ -17,7 +17,6 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.TransactionDefinition;
-import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
@@ -55,7 +54,7 @@ public class MultithreadedBatchExecutor extends AbstractBatchExecutor<Multithrea
       String context, final List<Long> entityIds, final IBatchRunnable<Long> batchRunnable) {
     Instant startTime = Instant.now();
 
-    LOGGER.info("Beginning batch for %1$s: %2$d objects", context, entityIds.size());
+    LOGGER.info("Beginning batch for {}: {} objects", context, entityIds.size());
 
     TransactionTemplate transactionTemplate =
         newTransactionTemplate(
@@ -66,13 +65,11 @@ public class MultithreadedBatchExecutor extends AbstractBatchExecutor<Multithrea
 
       try {
         transactionTemplate.execute(
-            new TransactionCallback<Void>() {
-              @Override
-              public Void doInTransaction(TransactionStatus status) {
-                batchRunnable.preExecute();
-                return null;
-              }
-            });
+            (TransactionCallback<Void>)
+                status -> {
+                  batchRunnable.preExecute();
+                  return null;
+                });
       } catch (RuntimeException e) {
         throw new ExecutionException("Exception on preExecute()", e);
       }
@@ -84,13 +81,7 @@ public class MultithreadedBatchExecutor extends AbstractBatchExecutor<Multithrea
       List<List<Long>> entityIdsPartitions = Lists.partition(entityIds, batchSize);
       List<Runnable> runnables = Lists.newArrayList();
       for (final List<Long> entityPartition : entityIdsPartitions) {
-        Runnable runnable =
-            new Runnable() {
-              @Override
-              public void run() {
-                batchRunnable.executePartition(entityPartition);
-              }
-            };
+        Runnable runnable = () -> batchRunnable.executePartition(entityPartition);
         runnables.add(runnable);
       }
 
@@ -103,13 +94,11 @@ public class MultithreadedBatchExecutor extends AbstractBatchExecutor<Multithrea
 
       try {
         transactionTemplate.execute(
-            new TransactionCallback<Void>() {
-              @Override
-              public Void doInTransaction(TransactionStatus status) {
-                batchRunnable.postExecute();
-                return null;
-              }
-            });
+            (TransactionCallback<Void>)
+                status -> {
+                  batchRunnable.postExecute();
+                  return null;
+                });
       } catch (RuntimeException e) {
         throw new ExecutionException("Exception on postExecute()", e);
       }

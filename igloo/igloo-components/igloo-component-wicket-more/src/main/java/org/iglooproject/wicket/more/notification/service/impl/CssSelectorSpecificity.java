@@ -53,10 +53,9 @@ public class CssSelectorSpecificity implements Comparable<CssSelectorSpecificity
     if (obj == this) {
       return true;
     }
-    if (!(obj instanceof CssSelectorSpecificity)) {
+    if (!(obj instanceof CssSelectorSpecificity other)) {
       return false;
     }
-    CssSelectorSpecificity other = (CssSelectorSpecificity) obj;
     return compareTo(other) == 0;
   }
 

@@ -45,7 +45,7 @@ public class SpringEntityManagerExtension implements ParameterResolver {
             .getStore(Namespace.GLOBAL)
             .computeIfAbsent(
                 "entityManagerFactoryWrapper",
-                p -> new EntityManagerFactoryWrapper(entityManagerFactory),
+                _ -> new EntityManagerFactoryWrapper(entityManagerFactory),
                 EntityManagerFactoryWrapper.class);
     if (parameterContext.getParameter().getType().equals(EntityManagerFactory.class)) {
       return wrapper.emf;

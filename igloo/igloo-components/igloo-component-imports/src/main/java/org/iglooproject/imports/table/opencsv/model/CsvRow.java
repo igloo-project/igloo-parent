@@ -26,7 +26,7 @@ public class CsvRow implements Serializable, Iterable<CsvCell> {
 
   @Override
   public Iterator<CsvCell> iterator() {
-    return new AbstractSequentialIterator<CsvCell>(getCell(0)) {
+    return new AbstractSequentialIterator<>(getCell(0)) {
       @Override
       protected CsvCell computeNext(CsvCell previous) {
         return getCell(previous.getIndex() + 1);

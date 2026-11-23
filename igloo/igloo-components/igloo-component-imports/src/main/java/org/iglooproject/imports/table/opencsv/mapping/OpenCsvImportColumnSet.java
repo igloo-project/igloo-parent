@@ -25,7 +25,7 @@ public class OpenCsvImportColumnSet
         DateFormat format = DateFormat.getDateTimeInstance();
         try {
           return format.parse(s);
-        } catch (ParseException e) {
+        } catch (ParseException _) {
           return null;
         }
       };

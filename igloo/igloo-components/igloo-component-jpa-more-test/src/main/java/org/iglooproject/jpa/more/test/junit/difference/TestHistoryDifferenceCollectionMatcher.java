@@ -20,11 +20,11 @@ public class TestHistoryDifferenceCollectionMatcher<D extends AbstractHistoryDif
     extends TypeSafeMatcher<Collection<D>> {
 
   private static final Function2<AbstractHistoryDifference<?, ?>, TestHistoryDifferenceKey>
-      HISTORY_DIFFERENCE_TO_DIFFERENCE_KEY = input -> new TestHistoryDifferenceKey(input);
+      HISTORY_DIFFERENCE_TO_DIFFERENCE_KEY = TestHistoryDifferenceKey::new;
 
   private static final Function2<AbstractHistoryDifference<?, ?>, TestHistoryDifferenceDescription>
       HISTORY_DIFFERENCE_TO_DESCRIPTION =
-          new Function2<AbstractHistoryDifference<?, ?>, TestHistoryDifferenceDescription>() {
+          new Function2<>() {
             @Override
             public TestHistoryDifferenceDescription apply(
                 @Nonnull AbstractHistoryDifference<?, ?> input) {

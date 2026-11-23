@@ -113,7 +113,7 @@ public final class Expressions2 {
    * <p>This method returns an expression which Hibernate won't ever hear of.
    */
   public static <T> Expression<T> selectConstant(Class<T> clazz, @Nullable final T value) {
-    return new MappingProjection<T>(clazz, new Expression[] {}) {
+    return new MappingProjection<>(clazz, new Expression[] {}) {
       private static final long serialVersionUID = 1L;
 
       @Override
@@ -128,7 +128,7 @@ public final class Expressions2 {
       Expression<T> inputExpression,
       Class<F> outputClazz,
       final Function2<? super T, ? extends F> function) {
-    return new MappingProjection<F>(outputClazz, inputExpression) {
+    return new MappingProjection<>(outputClazz, inputExpression) {
       private static final long serialVersionUID = 1L;
 
       @Override
@@ -154,28 +154,20 @@ public final class Expressions2 {
     ComparableExpression<T> castedValue = (ComparableExpression<T>) value;
     BooleanExpression expression = null;
     if (range.hasLowerBound()) {
-      switch (range.lowerBoundType()) {
-        case CLOSED:
-          expression = Expressions.allOf(expression, castedValue.goe(range.lowerEndpoint()));
-          break;
-        case OPEN:
-          expression = Expressions.allOf(expression, castedValue.gt(range.lowerEndpoint()));
-          break;
-        default:
-          throw new IllegalStateException("Impossible switch value");
-      }
+      expression =
+          switch (range.lowerBoundType()) {
+            case CLOSED -> Expressions.allOf(expression, castedValue.goe(range.lowerEndpoint()));
+            case OPEN -> Expressions.allOf(expression, castedValue.gt(range.lowerEndpoint()));
+            default -> throw new IllegalStateException("Impossible switch value");
+          };
     }
     if (range.hasUpperBound()) {
-      switch (range.upperBoundType()) {
-        case CLOSED:
-          expression = Expressions.allOf(expression, castedValue.loe(range.upperEndpoint()));
-          break;
-        case OPEN:
-          expression = Expressions.allOf(expression, castedValue.lt(range.upperEndpoint()));
-          break;
-        default:
-          throw new IllegalStateException("Impossible switch value");
-      }
+      expression =
+          switch (range.upperBoundType()) {
+            case CLOSED -> Expressions.allOf(expression, castedValue.loe(range.upperEndpoint()));
+            case OPEN -> Expressions.allOf(expression, castedValue.lt(range.upperEndpoint()));
+            default -> throw new IllegalStateException("Impossible switch value");
+          };
     }
     return expression;
   }

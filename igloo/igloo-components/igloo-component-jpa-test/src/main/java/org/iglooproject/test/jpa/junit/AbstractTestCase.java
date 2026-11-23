@@ -89,7 +89,7 @@ public abstract class AbstractTestCase {
     if (hibernateSearchService != null) {
       try {
         Search.session(getEntityManager()).massIndexer().startAndWait();
-      } catch (InterruptedException e) {
+      } catch (InterruptedException _) {
         Thread.currentThread().interrupt();
         throw new ServiceException("Thread is interrupted.");
       }
@@ -97,7 +97,7 @@ public abstract class AbstractTestCase {
   }
 
   protected final <T extends GenericEntity<?, ?>> Matcher<T> isAttachedToSession() {
-    return new TypeSafeMatcher<T>() {
+    return new TypeSafeMatcher<>() {
       @Override
       public void describeTo(Description description) {
         description.appendText("an entity already in the session");
@@ -152,7 +152,8 @@ public abstract class AbstractTestCase {
       if (entities.size() > 0) {
         fail(
             String.format(
-                "Il reste des objets de type %1$s", entities.get(0).getClass().getSimpleName()));
+                "Il reste des objets de type %1$s",
+                entities.getFirst().getClass().getSimpleName()));
       }
     }
   }
@@ -320,8 +321,7 @@ public abstract class AbstractTestCase {
               + "\" de "
               + pluralAttribute.getElementType().getJavaType().getSimpleName()
               + " refusée");
-    } else if (attribute instanceof MapAttribute) {
-      MapAttribute<?, ?, ?> mapAttribute = (MapAttribute<?, ?, ?>) attribute;
+    } else if (attribute instanceof MapAttribute<?, ?, ?> mapAttribute) {
       if (Enum.class.isAssignableFrom(mapAttribute.getKeyJavaType())
           && (mapKeyEnumerated == null || EnumType.ORDINAL.equals(mapKeyEnumerated.value()))
           && mapKey

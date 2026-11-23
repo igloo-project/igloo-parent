@@ -49,9 +49,9 @@ public class NamedPermissionFactory implements PermissionFactory {
           NamedPermission permission = (NamedPermission) fieldValue;
           registerPermission(permission, permission.getName());
         }
-      } catch (IllegalArgumentException e) {
+      } catch (IllegalArgumentException _) {
 
-      } catch (IllegalAccessException e) {
+      } catch (IllegalAccessException _) {
 
       }
     }

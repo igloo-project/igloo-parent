@@ -10,7 +10,7 @@ public class MutablePropertyValueMap implements IMutablePropertyValueMap {
 
   @Override
   public Iterator<Entry<?>> iterator() {
-    return delegate.entrySet().stream().<Entry<?>>map(input -> new EntryImpl<>(input)).iterator();
+    return delegate.entrySet().stream().<Entry<?>>map(EntryImpl::new).iterator();
   }
 
   @SuppressWarnings("unchecked")

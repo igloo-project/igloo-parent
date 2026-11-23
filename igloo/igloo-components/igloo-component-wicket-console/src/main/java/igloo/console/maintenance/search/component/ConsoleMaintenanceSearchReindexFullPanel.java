@@ -157,7 +157,7 @@ public class ConsoleMaintenanceSearchReindexFullPanel extends Panel {
                 })
             .withClass("cell-w-fit")
             .withFactory(
-                new IDataTableFactory<Class<?>, ISort<?>>() {
+                new IDataTableFactory<>() {
                   private static final long serialVersionUID = 1L;
 
                   @Override
@@ -344,15 +344,11 @@ public class ConsoleMaintenanceSearchReindexFullPanel extends Panel {
               .content(new ResourceModel("common.action.confirm.content"))
               .confirm()
               .onClick(
-                  new IAjaxAction() {
-                    private static final long serialVersionUID = 1L;
-
-                    @Override
-                    public void execute(AjaxRequestTarget target) {
-                      selectionModel.clear();
-                      onSelectionAction(target, choicesModel, choicesChoicesModel);
-                    }
-                  })
+                  (IAjaxAction)
+                      target -> {
+                        selectionModel.clear();
+                        onSelectionAction(target, choicesModel, choicesChoicesModel);
+                      })
               .create("removeAll")
               .add(Condition.isNotEmpty(selectionModel).thenShow()));
     }

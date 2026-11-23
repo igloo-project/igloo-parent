@@ -59,7 +59,7 @@ public abstract class AbstractFileStoreWebResource extends AbstractResource {
         InputStream inputStream = null;
         try {
           inputStream = stream.getInputStream();
-        } catch (ResourceStreamNotFoundException e) {
+        } catch (ResourceStreamNotFoundException _) {
           data.setError(HttpServletResponse.SC_NOT_FOUND);
           close(stream);
         }

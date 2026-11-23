@@ -25,18 +25,13 @@ public class HistoryLogDetailColumnPanel extends GenericPanel<HistoryLog> {
     super(id, model);
 
     IModel<List<HistoryDifference>> historyDifferenceListModel =
-        new IModel<>() {
-          private static final long serialVersionUID = 1L;
-
-          @Override
-          public List<HistoryDifference> getObject() {
-            List<HistoryDifference> original = getModelObject().getDifferences();
-            Objects.requireNonNull(original);
-            if (filter == null) {
-              return original;
-            } else {
-              return original.stream().filter(filter).collect(ImmutableList.toImmutableList());
-            }
+        () -> {
+          List<HistoryDifference> original = getModelObject().getDifferences();
+          Objects.requireNonNull(original);
+          if (filter == null) {
+            return original;
+          } else {
+            return original.stream().filter(filter).collect(ImmutableList.toImmutableList());
           }
         };
 

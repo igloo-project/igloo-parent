@@ -47,45 +47,41 @@ public class CustomizableToolbarElementBuilder<T, S extends ISort<?>>
   @Override
   public Component create(String wicketId, final CoreDataTable<T, S> dataTable) {
     IModel<Integer> computedColspanModel =
-        new LoadableDetachableModel<Integer>() {
-          private static final long serialVersionUID = 1L;
-
-          @Override
-          protected Integer load() {
-            if (colspan == null) {
-              dataTable.configure(); // Update the displayed columns
-              return dataTable.getDisplayedColumns().size() - colspanAccumulation;
-            }
-
-            Map<IColumn<T, S>, Condition> columnToConditionMap =
-                dataTable.getColumnToConditionMap();
-
-            FluentIterable<Entry<IColumn<T, S>, Condition>> columnEntryIterable =
-                FluentIterable.from(columnToConditionMap.entrySet()).skip(colspanAccumulation);
-
-            // Make sure we don't span further than the table width
-            int cappedColspan;
-            int dataTableColumnsSize = columnToConditionMap.size();
-            if (colspanAccumulation + colspan > dataTableColumnsSize) {
-              cappedColspan = dataTableColumnsSize - colspanAccumulation;
-            } else {
-              cappedColspan = colspan;
-            }
-
-            // Make sure we don't span further than the column width
-            columnEntryIterable = columnEntryIterable.limit(cappedColspan);
-
-            int colspanWithoutHiddenColumns = cappedColspan;
-            for (Entry<IColumn<T, S>, Condition> column : columnEntryIterable) {
-              Condition columnCondition = column.getValue();
-              if (columnCondition != null && !columnCondition.applies()) {
-                --colspanWithoutHiddenColumns;
+        LoadableDetachableModel.of(
+            () -> {
+              if (colspan == null) {
+                dataTable.configure(); // Update the displayed columns
+                return dataTable.getDisplayedColumns().size() - colspanAccumulation;
               }
-            }
 
-            return Math.max(colspanWithoutHiddenColumns, 0);
-          }
-        };
+              Map<IColumn<T, S>, Condition> columnToConditionMap =
+                  dataTable.getColumnToConditionMap();
+
+              FluentIterable<Entry<IColumn<T, S>, Condition>> columnEntryIterable =
+                  FluentIterable.from(columnToConditionMap.entrySet()).skip(colspanAccumulation);
+
+              // Make sure we don't span further than the table width
+              int cappedColspan;
+              int dataTableColumnsSize = columnToConditionMap.size();
+              if (colspanAccumulation + colspan > dataTableColumnsSize) {
+                cappedColspan = dataTableColumnsSize - colspanAccumulation;
+              } else {
+                cappedColspan = colspan;
+              }
+
+              // Make sure we don't span further than the column width
+              columnEntryIterable = columnEntryIterable.limit(cappedColspan);
+
+              int colspanWithoutHiddenColumns = cappedColspan;
+              for (Entry<IColumn<T, S>, Condition> column : columnEntryIterable) {
+                Condition columnCondition = column.getValue();
+                if (columnCondition != null && !columnCondition.applies()) {
+                  --colspanWithoutHiddenColumns;
+                }
+              }
+
+              return Math.max(colspanWithoutHiddenColumns, 0);
+            });
 
     return factory
         .create(wicketId, dataTable)

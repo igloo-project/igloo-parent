@@ -25,8 +25,7 @@ public class MultimapEntrySelector<K, V> extends ElementSelector implements IKey
     if (this == o) {
       return true;
     }
-    if (o instanceof MultimapEntrySelector) {
-      MultimapEntrySelector<?, ?> other = (MultimapEntrySelector<?, ?>) o;
+    if (o instanceof MultimapEntrySelector<?, ?> other) {
       return entryEquivalence.equals(other.entryEquivalence)
           && entryEquivalence.equivalent(entry, (Entry<K, V>) other.entry);
     }

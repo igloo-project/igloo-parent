@@ -44,7 +44,7 @@ public class EntityManagerHelper {
   /** Perform a read-only operation. */
   public <T> T doWithReadOnlyTransaction(Function<EntityManager, T> consumer) {
     return readOnlyTransactionTemplate.execute(
-        t -> {
+        _ -> {
           EntityManager entityManager = entityManagerUtils.getCurrentEntityManager();
           return consumer.apply(entityManager);
         });
@@ -53,7 +53,7 @@ public class EntityManagerHelper {
   /** Perform a write operation. */
   public <T> T doWithReadWriteTransaction(Function<EntityManager, T> consumer) {
     return readWriteTransactionTemplate.execute(
-        t -> {
+        _ -> {
           EntityManager entityManager = entityManagerUtils.getCurrentEntityManager();
           return consumer.apply(entityManager);
         });
@@ -62,7 +62,7 @@ public class EntityManagerHelper {
   /** Perform a read-only operation. */
   public <T> T doWithReadOnlyTransaction(IDbAction<T> action) {
     return readOnlyTransactionTemplate.execute(
-        t -> {
+        _ -> {
           EntityManager entityManager = entityManagerUtils.getCurrentEntityManager();
           return action.perform(entityManager, databaseOperations);
         });
@@ -71,7 +71,7 @@ public class EntityManagerHelper {
   /** Perform a read-only operation. */
   public <T> T doWithReadWriteTransaction(IDbAction<T> action) {
     return readWriteTransactionTemplate.execute(
-        t -> {
+        _ -> {
           EntityManager entityManager = entityManagerUtils.getCurrentEntityManager();
           return action.perform(entityManager, databaseOperations);
         });

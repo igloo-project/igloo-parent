@@ -88,25 +88,25 @@ class TestIglooTestExecutionListener {
       @Order(600)
       @Bean
       public IIglooTestListener third(ApplicationContext context) {
-        return IIglooTestListener.beforeAfter((t, c) -> publishEvent(context, "third"));
+        return IIglooTestListener.beforeAfter((_, _) -> publishEvent(context, "third"));
       }
 
       @Order(400)
       @Bean
       public IIglooTestListener first(ApplicationContext context) {
-        return IIglooTestListener.beforeAfter((t, c) -> publishEvent(context, "first"));
+        return IIglooTestListener.beforeAfter((_, _) -> publishEvent(context, "first"));
       }
 
       @Order(500)
       @Bean
       public IIglooTestListener second(ApplicationContext context) {
-        return IIglooTestListener.beforeAfter((t, c) -> publishEvent(context, "second"));
+        return IIglooTestListener.beforeAfter((_, _) -> publishEvent(context, "second"));
       }
 
       @Order(100)
       @Bean
       public IIglooTestListener last(ApplicationContext context) {
-        return IIglooTestListener.afterOnly((t, c) -> checkEvents(context));
+        return IIglooTestListener.afterOnly((_, _) -> checkEvents(context));
       }
 
       static void publishEvent(ApplicationContext context, String eventName) {
@@ -286,7 +286,7 @@ class TestIglooTestExecutionListener {
       @Order(100)
       public IIglooTestListener publishEvents(ApplicationEventPublisher eventPublisher) {
         return IIglooTestListener.beforeAfter(
-            (p, t) -> eventPublisher.publishEvent(new IglooTestListenerEvent(p.name())));
+            (p, _) -> eventPublisher.publishEvent(new IglooTestListenerEvent(p.name())));
       }
 
       /** Check in after class that all expected events are published. */
@@ -294,7 +294,7 @@ class TestIglooTestExecutionListener {
       @Order(0)
       public IIglooTestListener checkMethod() {
         return IIglooTestListener.afterOnly(
-            (p, t) -> {
+            (p, _) -> {
               // only check on class
               if (IglooTestListenerType.CLASS.equals(p)) {
                 Assertions.assertThat(

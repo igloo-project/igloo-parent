@@ -19,15 +19,7 @@ public class CoreNoRecordsToolbar extends AbstractCoreToolbar {
 
     td.add(
         AttributeModifier.replace(
-            "colspan",
-            new IModel<String>() {
-              private static final long serialVersionUID = 1L;
-
-              @Override
-              public String getObject() {
-                return String.valueOf(table.getDisplayedColumns().size());
-              }
-            }));
+            "colspan", () -> String.valueOf(table.getDisplayedColumns().size())));
     td.add(new CoreLabel("msg", messageModel));
   }
 

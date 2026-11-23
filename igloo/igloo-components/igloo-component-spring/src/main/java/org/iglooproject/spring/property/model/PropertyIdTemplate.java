@@ -51,10 +51,9 @@ public abstract class PropertyIdTemplate<T, P extends PropertyId<T>>
     if (obj == this) {
       return true;
     }
-    if (!(obj instanceof PropertyIdTemplate)) {
+    if (!(obj instanceof PropertyIdTemplate<?, ?> other)) {
       return false;
     }
-    PropertyIdTemplate<?, ?> other = (PropertyIdTemplate<?, ?>) obj;
     return new EqualsBuilder().append(format, other.format).isEquals();
   }
 

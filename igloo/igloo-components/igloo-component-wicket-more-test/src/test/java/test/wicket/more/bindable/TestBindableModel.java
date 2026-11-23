@@ -50,8 +50,7 @@ class TestBindableModel extends AbstractTestBindableModel {
     IBindableModel<?> secondCall = bindableModel.bind(rootBinding().simpleProperty());
     assertSame(firstCall, secondCall);
     IBindableModel<?> thirdCall =
-        bindableModel.bindWithCache(
-            rootBinding().simpleProperty(), new StubModel<SimplePropertyValue>());
+        bindableModel.bindWithCache(rootBinding().simpleProperty(), new StubModel<>());
     assertSame(firstCall, thirdCall);
   }
 
@@ -68,7 +67,7 @@ class TestBindableModel extends AbstractTestBindableModel {
     IBindableModel<?> chainedCallWithCache =
         bindableModel
             .bind(rootBinding().compositeProperty())
-            .bindWithCache(rootBinding().simpleProperty(), new StubModel<SimplePropertyValue>());
+            .bindWithCache(rootBinding().simpleProperty(), new StubModel<>());
     assertSame(directCall, chainedCallWithCache);
   }
 
@@ -82,8 +81,7 @@ class TestBindableModel extends AbstractTestBindableModel {
 
     IBindableModel<RootValue> bindableModel = new BindableModel<>(rootModel);
     IBindableModel<SimplePropertyValue> propertyModel =
-        bindableModel.bindWithCache(
-            rootBinding().simpleProperty(), new StubModel<SimplePropertyValue>());
+        bindableModel.bindWithCache(rootBinding().simpleProperty(), new StubModel<>());
 
     assertSame(firstExpectedValue, propertyModel.getObject());
     verify(rootValue).getSimpleProperty(); // Cache was initialized
@@ -121,8 +119,7 @@ class TestBindableModel extends AbstractTestBindableModel {
 
     IBindableModel<RootValue> bindableModel = new BindableModel<>(rootModel);
     IBindableModel<SimplePropertyValue> propertyModel =
-        bindableModel.bindWithCache(
-            rootBinding().simpleProperty(), new StubModel<SimplePropertyValue>());
+        bindableModel.bindWithCache(rootBinding().simpleProperty(), new StubModel<>());
 
     assertSame(firstExpectedValue, propertyModel.getObject());
     verify(rootValue).getSimpleProperty(); // Cache was initialized

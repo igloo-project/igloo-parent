@@ -14,7 +14,7 @@ public class SpecificationBuilder<T> {
   Specification<T> spec;
 
   public SpecificationBuilder() {
-    this.spec = (root, query, builder) -> null;
+    this.spec = (_, _, _) -> null;
   }
 
   public SpecificationBuilder(Specification<T> spec) {

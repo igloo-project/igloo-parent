@@ -41,9 +41,9 @@ public final class IglooDartImporter
         return null;
       }
       // check resource existence
-      try (var is = tried.openStream()) {
+      try (var _ = tried.openStream()) {
         return tried.toString();
-      } catch (IOException e) {
+      } catch (IOException _) {
         // Not existing path must return null
         // Do not let super.canonicalize handle it as it cannot handle version-less webjars urls
         // as once usedPrefixes is populated it will enforce prefix checking and initial prefix

@@ -10,7 +10,7 @@ public final class GenericEntityIdStringRenderer extends Renderer<GenericEntity<
 
   private static final GenericEntityIdStringRenderer INSTANCE = new GenericEntityIdStringRenderer();
 
-  public static final GenericEntityIdStringRenderer get() {
+  public static GenericEntityIdStringRenderer get() {
     return INSTANCE;
   }
 

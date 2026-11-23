@@ -173,7 +173,7 @@ public class WicketBootstrap5Module implements IWicketModule, IBootstrapProvider
   @Override
   public <T> SerializableSupplier2<IBootstrapBadge<T, BootstrapBadge<T>>> badgeSupplier(
       String id, IModel<T> model, final IBootstrapRenderer<? super T> renderer) {
-    return () -> new BootstrapBadge<T>(id, model, renderer);
+    return () -> new BootstrapBadge<>(id, model, renderer);
   }
 
   @Override

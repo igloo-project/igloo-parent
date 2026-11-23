@@ -165,7 +165,7 @@ class TestGenericDao extends AbstractJpaCoreTestCase {
     try {
       personService.refresh(person1);
       fail("Faire un refresh sur un objet avec un identifiant null doit lever une exception");
-    } catch (IllegalArgumentException | InvalidDataAccessApiUsageException e) {
+    } catch (IllegalArgumentException | InvalidDataAccessApiUsageException _) {
     }
 
     personService.create(person1);
@@ -174,7 +174,7 @@ class TestGenericDao extends AbstractJpaCoreTestCase {
     try {
       personService.refresh(person1);
       fail("Faire un refresh sur un objet non persisté doit lever une exception");
-    } catch (IllegalArgumentException | InvalidDataAccessApiUsageException e) {
+    } catch (IllegalArgumentException | InvalidDataAccessApiUsageException _) {
     }
   }
 

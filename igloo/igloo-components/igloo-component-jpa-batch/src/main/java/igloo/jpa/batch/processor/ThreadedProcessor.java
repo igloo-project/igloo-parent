@@ -204,7 +204,7 @@ public class ThreadedProcessor {
 
           futures.add(future);
         }
-      } catch (RejectedExecutionException e) {
+      } catch (RejectedExecutionException _) {
         LOGGER.error(
             "{} - Some tasks could not be submitted to the ThreadPoolExecutor."
                 + " Submitted tasks: {} of {}."
@@ -249,7 +249,7 @@ public class ThreadedProcessor {
             results.add(result);
           } catch (ExecutionException e) {
             executionExceptions.add(e);
-          } catch (CancellationException | TimeoutException timeoutException) {
+          } catch (CancellationException | TimeoutException _) {
             // already notified by a warn
             future.cancel(true);
             interrupted = true;
@@ -280,7 +280,7 @@ public class ThreadedProcessor {
         loggingThread.interrupt();
         try {
           loggingThread.join();
-        } catch (InterruptedException e) {
+        } catch (InterruptedException _) {
           Thread.currentThread().interrupt();
           LOGGER.warn(
               "{} - Thread interrupted while waiting for the end of the logging thread execution.",
@@ -314,7 +314,7 @@ public class ThreadedProcessor {
         try {
           Thread.sleep(loggingCheckIntervalTimeUnit.toMillis(loggingCheckIntervalTime));
           log(false);
-        } catch (InterruptedException e) {
+        } catch (InterruptedException _) {
           Thread.currentThread().interrupt();
           log(true);
           LOGGER.info("Logging thread interrupted.");
@@ -413,8 +413,7 @@ public class ThreadedProcessor {
 
       // Cancel these tasks (if relevant)
       for (Runnable nonExecutedTask : nonExecutedTasks) {
-        if (nonExecutedTask instanceof Future<?>) {
-          Future<?> future = (Future<?>) nonExecutedTask;
+        if (nonExecutedTask instanceof Future<?> future) {
           future.cancel(false);
         }
       }

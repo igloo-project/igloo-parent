@@ -21,7 +21,7 @@ public class GenericSelect2AjaxDropDownMultipleChoice<T> extends Select2MultiCho
       ChoiceProvider<T> choiceProvider) {
     super(
         id,
-        new ConcreteCollectionToCollectionWrapperModel<T, C>(model, collectionSupplier),
+        new ConcreteCollectionToCollectionWrapperModel<>(model, collectionSupplier),
         choiceProvider);
 
     fillSelect2Settings(getSettings());

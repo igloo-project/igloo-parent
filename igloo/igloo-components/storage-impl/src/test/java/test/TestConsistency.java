@@ -497,7 +497,7 @@ class TestConsistency extends AbstractTest {
     StorageUnit unit3 = new StorageUnit();
     Supplier<List<StorageUnit>> units = () -> List.of(unit1, unit2, unit3);
     Function<StorageUnit, StorageUnitCheckType> policySupplier =
-        (unit) -> StorageUnitCheckType.LISTING_SIZE;
+        (_) -> StorageUnitCheckType.LISTING_SIZE;
     @SuppressWarnings("unchecked")
     BiConsumer<StorageUnit, Boolean> checker =
         ((BiConsumer<StorageUnit, Boolean>) mock(BiConsumer.class));

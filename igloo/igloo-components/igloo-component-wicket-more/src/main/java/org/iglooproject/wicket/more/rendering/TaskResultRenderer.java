@@ -26,17 +26,12 @@ public class TaskResultRenderer extends BootstrapRenderer<TaskResult> {
     Builder builder =
         BootstrapRendererInformation.builder().label(EnumRenderer.get().render(value, locale));
 
-    switch (value) {
-      case SUCCESS:
-        return builder.color(BootstrapColor.SUCCESS).icon("fa fa-fw fa-check").build();
-      case WARN:
-        return builder.color(BootstrapColor.WARNING).icon("fa fa-fw fa-exclamation").build();
-      case ERROR:
-        return builder.color(BootstrapColor.DANGER).icon("fa fa-fw fa-times").build();
-      case FATAL:
-        return builder.color(BootstrapColor.DANGER).icon("fa fa-fw fa-times-circle").build();
-      default:
-        return null;
-    }
+    return switch (value) {
+      case SUCCESS -> builder.color(BootstrapColor.SUCCESS).icon("fa fa-fw fa-check").build();
+      case WARN -> builder.color(BootstrapColor.WARNING).icon("fa fa-fw fa-exclamation").build();
+      case ERROR -> builder.color(BootstrapColor.DANGER).icon("fa fa-fw fa-times").build();
+      case FATAL -> builder.color(BootstrapColor.DANGER).icon("fa fa-fw fa-times-circle").build();
+      default -> null;
+    };
   }
 }

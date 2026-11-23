@@ -48,8 +48,7 @@ public class NamedPermission implements Permission {
     if (object == this) {
       return true;
     }
-    if (object instanceof NamedPermission) {
-      NamedPermission permission = (NamedPermission) object;
+    if (object instanceof NamedPermission permission) {
       return new EqualsBuilder().append(name, permission.getName()).build();
     }
     return false;

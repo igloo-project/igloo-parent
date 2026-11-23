@@ -656,7 +656,7 @@ public abstract class ActionColumnBuilder<T, I>
       IBootstrapRenderer<? super T> renderer, IOneParameterAjaxAction<? super IModel<T>> action) {
     AbstractActionColumnElementBuilder<T, ?, ?> builder =
         new ActionColumnSimpleElementBuilder<>(
-            renderer, new ActionColumnAjaxActionFactory<T>(action));
+            renderer, new ActionColumnAjaxActionFactory<>(action));
     builders.add(builder);
     return new ActionColumnAddedAjaxActionState(builder);
   }
@@ -670,7 +670,7 @@ public abstract class ActionColumnBuilder<T, I>
   @Override
   public IActionColumnAddedActionState<T, I> addAction(
       IBootstrapRenderer<? super T> renderer, IOneParameterAction<? super IModel<T>> action) {
-    return addAction(renderer, new ActionColumnActionFactory<T>(action));
+    return addAction(renderer, new ActionColumnActionFactory<>(action));
   }
 
   @Override

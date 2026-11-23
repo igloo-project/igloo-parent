@@ -62,7 +62,7 @@ abstract class AbstractTest {
 
   public static <T> T argThat(Consumer<T> assertions) {
     return MockitoHamcrest.argThat(
-        new AssertionMatcher<T>() {
+        new AssertionMatcher<>() {
           @Override
           public void assertion(T actual) throws AssertionError {
             assertions.accept(actual);
@@ -93,7 +93,7 @@ abstract class AbstractTest {
   <T> T doInWriteTransaction(EntityManagerFactory entityManagerFactory, Supplier<T> action) {
     PlatformTransactionManager transactionManager = new JpaTransactionManager(entityManagerFactory);
     transactionTemplate = new TransactionTemplate(transactionManager, writeTransactionAttribute());
-    return transactionTemplate.execute((t) -> action.get());
+    return transactionTemplate.execute(_ -> action.get());
   }
 
   <T> T doInWriteTransactionEntityManager(
@@ -101,7 +101,7 @@ abstract class AbstractTest {
     PlatformTransactionManager transactionManager = new JpaTransactionManager(entityManagerFactory);
     transactionTemplate = new TransactionTemplate(transactionManager, writeTransactionAttribute());
     return transactionTemplate.execute(
-        (t) ->
+        _ ->
             action.apply(
                 EntityManagerFactoryUtils.getTransactionalEntityManager(entityManagerFactory)));
   }
@@ -109,7 +109,7 @@ abstract class AbstractTest {
   <T> T doInReadTransaction(EntityManagerFactory entityManagerFactory, Supplier<T> action) {
     PlatformTransactionManager transactionManager = new JpaTransactionManager(entityManagerFactory);
     transactionTemplate = new TransactionTemplate(transactionManager, readTransactionAttribute());
-    return transactionTemplate.execute((t) -> action.get());
+    return transactionTemplate.execute(_ -> action.get());
   }
 
   <T> T doInReadTransactionEntityManager(
@@ -117,13 +117,13 @@ abstract class AbstractTest {
     PlatformTransactionManager transactionManager = new JpaTransactionManager(entityManagerFactory);
     transactionTemplate = new TransactionTemplate(transactionManager, readTransactionAttribute());
     return transactionTemplate.execute(
-        (t) ->
+        _ ->
             action.apply(
                 EntityManagerFactoryUtils.getTransactionalEntityManager(entityManagerFactory)));
   }
 
   protected Fichier createFichier(String filename, IFichierType fichierType, String fileContent) {
-    return createFichier(filename, fichierType, fileContent, (f) -> {});
+    return createFichier(filename, fichierType, fileContent, _ -> {});
   }
 
   protected Fichier createFichier(
@@ -132,7 +132,7 @@ abstract class AbstractTest {
       String fileContent,
       Consumer<Fichier> postCreationAction) {
     return transactionTemplate.execute(
-        (t) -> {
+        _ -> {
           Fichier fichier = null;
           try (InputStream bais =
               new ByteArrayInputStream(fileContent.getBytes(StandardCharsets.UTF_8))) {

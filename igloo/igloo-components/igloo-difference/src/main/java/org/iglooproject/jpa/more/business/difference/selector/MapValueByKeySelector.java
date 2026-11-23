@@ -19,8 +19,7 @@ public class MapValueByKeySelector<K> extends ElementSelector implements IKeyAwa
     if (this == o) {
       return true;
     }
-    if (o instanceof MapValueByKeySelector) {
-      MapValueByKeySelector<?> other = (MapValueByKeySelector<?>) o;
+    if (o instanceof MapValueByKeySelector<?> other) {
       return Objects.equal(key, (K) other.key);
     }
 

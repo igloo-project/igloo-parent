@@ -63,7 +63,7 @@ public class ConsoleSignInPage extends ConsoleAccessTemplate {
       IModel<String> passwordModel = Model.of();
 
       Form<Void> form =
-          new Form<Void>("form") {
+          new Form<>("form") {
             private static final long serialVersionUID = 1L;
 
             @Override
@@ -72,9 +72,9 @@ public class ConsoleSignInPage extends ConsoleAccessTemplate {
                 AbstractCoreSession.get()
                     .signIn(usernameModel.getObject(), passwordModel.getObject());
                 throw new RestartResponseException(ConsoleLoginSuccessPage.class);
-              } catch (BadCredentialsException e) { // NOSONAR
+              } catch (BadCredentialsException _) { // NOSONAR
                 Session.get().error(getString("console.signIn.error.authentication"));
-              } catch (UsernameNotFoundException | AccountStatusException e) { // NOSONAR
+              } catch (UsernameNotFoundException | AccountStatusException _) { // NOSONAR
                 Session.get().error(getString("console.signIn.error.authentication"));
               } catch (RestartResponseException e) { // NOSONAR
                 throw e;

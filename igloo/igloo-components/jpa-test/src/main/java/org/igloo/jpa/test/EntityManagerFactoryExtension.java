@@ -46,7 +46,7 @@ public class EntityManagerFactoryExtension implements ParameterResolver {
             .getStore(Namespace.GLOBAL)
             .computeIfAbsent(
                 "entityManagerFactoryWrapper",
-                p ->
+                _ ->
                     new EntityManagerFactoryWrapper(
                         EntityManagerFactoryHelper.generateEntityManagerFactory(settings)),
                 EntityManagerFactoryWrapper.class);

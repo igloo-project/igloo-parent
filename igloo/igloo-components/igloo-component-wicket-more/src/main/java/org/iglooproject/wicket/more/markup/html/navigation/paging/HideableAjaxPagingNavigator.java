@@ -61,7 +61,7 @@ public class HideableAjaxPagingNavigator extends HideablePagingNavigator {
 
     // in case the navigator is not contained by the container, we have
     // to add it to the response
-    if (((MarkupContainer) container).contains(this, true) == false) {
+    if (!((MarkupContainer) container).contains(this, true)) {
       target.add(this);
     }
   }

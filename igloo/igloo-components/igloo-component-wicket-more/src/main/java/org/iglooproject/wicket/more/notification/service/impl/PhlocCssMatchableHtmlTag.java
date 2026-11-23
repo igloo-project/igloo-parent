@@ -46,9 +46,8 @@ public class PhlocCssMatchableHtmlTag {
 
   public boolean matches(CSSSelector selector) {
     for (ICSSSelectorMember member : selector.getAllMembers()) {
-      if (member instanceof CSSSelectorSimpleMember
+      if (member instanceof CSSSelectorSimpleMember simpleMember
           && !((CSSSelectorSimpleMember) member).isPseudo()) {
-        CSSSelectorSimpleMember simpleMember = (CSSSelectorSimpleMember) member;
         if (!matches(simpleMember)) {
           return false;
         }

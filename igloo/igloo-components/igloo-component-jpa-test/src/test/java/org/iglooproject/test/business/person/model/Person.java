@@ -60,7 +60,7 @@ public class Person extends GenericEntity<Long, Person> {
   @JoinTable(
       joinColumns = @JoinColumn(name = "persons_id"),
       inverseJoinColumns = @JoinColumn(name = "project_id"))
-  private List<Project> workedProjects = new LinkedList<Project>();
+  private List<Project> workedProjects = new LinkedList<>();
 
   private Instant creationDate;
 

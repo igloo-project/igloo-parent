@@ -26,7 +26,7 @@ public abstract class BootstrapRenderer<T> extends Renderer<T> implements IBoots
       final String tooltipResourceKey,
       final String icon,
       final IBootstrapColor color) {
-    return new BootstrapRenderer<T>() {
+    return new BootstrapRenderer<>() {
       private static final long serialVersionUID = 1L;
 
       @Override
@@ -101,7 +101,7 @@ public abstract class BootstrapRenderer<T> extends Renderer<T> implements IBoots
 
     @Override
     public IModel<String> getIconCssClassModel() {
-      return new LocaleAwareReadOnlyModel<String>() {
+      return new LocaleAwareReadOnlyModel<>() {
         private static final long serialVersionUID = 1L;
 
         @Override
@@ -120,7 +120,7 @@ public abstract class BootstrapRenderer<T> extends Renderer<T> implements IBoots
 
     @Override
     public IModel<IBootstrapColor> getColorModel() {
-      return new LocaleAwareReadOnlyModel<IBootstrapColor>() {
+      return new LocaleAwareReadOnlyModel<>() {
         private static final long serialVersionUID = 1L;
 
         @Override
@@ -139,7 +139,7 @@ public abstract class BootstrapRenderer<T> extends Renderer<T> implements IBoots
 
     @Override
     public IModel<String> getTooltipModel() {
-      return new LocaleAwareReadOnlyModel<String>() {
+      return new LocaleAwareReadOnlyModel<>() {
         private static final long serialVersionUID = 1L;
 
         @Override

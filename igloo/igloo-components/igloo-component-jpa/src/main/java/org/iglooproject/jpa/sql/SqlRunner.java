@@ -151,7 +151,7 @@ public class SqlRunner {
           pw.println("-- /Migration from %s%n".formatted(contributor.getName()));
         }
       }
-    } catch (IOException e) {
+    } catch (IOException _) {
       throw new RuntimeException(String.format("Error writing SQL to %s", output)); // NOSONAR
     }
   }

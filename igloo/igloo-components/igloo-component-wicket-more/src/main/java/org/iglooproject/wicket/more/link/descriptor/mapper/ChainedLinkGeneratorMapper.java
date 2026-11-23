@@ -71,7 +71,7 @@ public class ChainedLinkGeneratorMapper<L extends ILinkGenerator, T>
 
     public <L2 extends L, T2 extends T> Builder<L, T> add(
         ILinkDescriptorMapper<L2, IModel<T2>> delegate, Class<T2> castClass) {
-      chain.add(new SafeCastedMapper<L2, T, T2>(delegate, castClass));
+      chain.add(new SafeCastedMapper<>(delegate, castClass));
       return this;
     }
 

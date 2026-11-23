@@ -36,7 +36,7 @@ public class PropertyIdEditPopup extends AbstractAjaxModalPopupPanel<MutableProp
   private final Form<MutablePropertyId<?>> form;
 
   public PropertyIdEditPopup(String id) {
-    super(id, new Model<MutablePropertyId<?>>());
+    super(id, new Model<>());
 
     this.form = new Form<>("form", getModel());
   }
@@ -75,7 +75,7 @@ public class PropertyIdEditPopup extends AbstractAjaxModalPopupPanel<MutableProp
               Session.get().success(getString("common.propertyId.action.edit.success"));
               closePopup(target);
               target.addChildren(getPage(), PropertyIdListPanel.class);
-            } catch (Exception e) {
+            } catch (Exception _) {
               LOGGER.error("Erreur lors la modification de la valeur d'une propriété.");
               Session.get().error(getString("common.error.unexpected"));
             }

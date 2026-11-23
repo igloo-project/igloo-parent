@@ -92,7 +92,7 @@ public class GenericEntityConverter implements GenericConverter {
       Map<String, Object> itemData = getItemData(sheet, importId);
       if (itemData != null) {
         if (!idsMapping.containsKey(clazz.getName())) {
-          idsMapping.put(clazz.getName(), new HashMap<String, GenericEntity<Long, ?>>());
+          idsMapping.put(clazz.getName(), new HashMap<>());
         }
 
         GenericEntity<Long, ?> item = BeanUtils.instantiateClass(clazz);

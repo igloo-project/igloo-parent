@@ -46,16 +46,11 @@ public class BooleanIcon extends WebMarkupContainer {
     add(new ClassAttributeAppender(BOOLEAN_ICON_BASE_CLASS));
     add(
         new ClassAttributeAppender(
-            new LoadableDetachableModel<String>() {
-              private static final long serialVersionUID = 1L;
-
-              @Override
-              protected String load() {
-                return Boolean.TRUE.equals(getBooleanModelObject())
-                    ? getTrueIconClass()
-                    : getFalseIconClass();
-              }
-            }));
+            LoadableDetachableModel.of(
+                () ->
+                    Boolean.TRUE.equals(getBooleanModelObject())
+                        ? getTrueIconClass()
+                        : getFalseIconClass())));
   }
 
   private Boolean getBooleanModelObject() {

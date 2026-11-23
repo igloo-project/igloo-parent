@@ -138,9 +138,8 @@ public class TransactionSynchronizationTaskManagerServiceImpl
         // We mustn't execute the task again before commit
         iterator.remove();
         // ... but we must execute afterRollback() if possible.
-        if (beforeCommitTask instanceof ITransactionSynchronizationTaskRollbackAware) {
-          ITransactionSynchronizationTaskRollbackAware rollbackAwareTask =
-              (ITransactionSynchronizationTaskRollbackAware) beforeCommitTask;
+        if (beforeCommitTask
+            instanceof ITransactionSynchronizationTaskRollbackAware rollbackAwareTask) {
           tasks.getAlreadyExecutedBeforeClearTasks().add(rollbackAwareTask);
         }
       }

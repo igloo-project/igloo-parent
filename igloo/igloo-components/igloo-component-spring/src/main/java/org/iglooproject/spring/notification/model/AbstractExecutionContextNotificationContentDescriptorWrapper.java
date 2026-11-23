@@ -27,12 +27,10 @@ public abstract class AbstractExecutionContextNotificationContentDescriptorWrapp
 
   @Override
   public boolean equals(Object obj) {
-    if (obj instanceof AbstractExecutionContextNotificationContentDescriptorWrapper) {
+    if (obj instanceof AbstractExecutionContextNotificationContentDescriptorWrapper other) {
       if (obj == this) {
         return true;
       }
-      AbstractExecutionContextNotificationContentDescriptorWrapper other =
-          (AbstractExecutionContextNotificationContentDescriptorWrapper) obj;
       return new EqualsBuilder()
           .append(wrapped, other.wrapped)
           .append(excecutionContext, other.excecutionContext)
@@ -48,14 +46,14 @@ public abstract class AbstractExecutionContextNotificationContentDescriptorWrapp
 
   @Override
   public String renderSubject() throws NotificationContentRenderingException {
-    try (ITearDownHandle handle = excecutionContext.open()) {
+    try (ITearDownHandle _ = excecutionContext.open()) {
       return wrapped.renderSubject();
     }
   }
 
   @Override
   public INotificationContentBody renderBody() throws NotificationContentRenderingException {
-    try (ITearDownHandle handle = excecutionContext.open()) {
+    try (ITearDownHandle _ = excecutionContext.open()) {
       return wrapped.renderBody();
     }
   }

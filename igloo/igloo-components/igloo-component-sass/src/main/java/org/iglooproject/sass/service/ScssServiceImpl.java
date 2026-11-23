@@ -82,7 +82,7 @@ public class ScssServiceImpl implements IScssService, IScopeResolver {
           new ScssStylesheetInformation(scssPath.toString(), new Date().getTime());
       information.setSource(stylesheet);
       return information;
-    } catch (IllegalArgumentException e) {
+    } catch (IllegalArgumentException _) {
       LOGGER.warn(
           "useStatic=true but no static file found for {}:{}. Fallback to runtime processing.",
           scope.getName(),

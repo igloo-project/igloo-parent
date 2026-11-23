@@ -15,7 +15,7 @@ public abstract class AbstractTestLinkDescriptor extends AbstractWicketMoreTestC
   protected static Matcher<String> hasPathAndQuery(String expectedPathRelativeToServlet) {
     final String cleanedExpectedPathRelativeToServlet =
         getPathAndQuery(expectedPathRelativeToServlet);
-    return new TypeSafeMatcher<String>() {
+    return new TypeSafeMatcher<>() {
       @Override
       public void describeTo(Description description) {
         description
@@ -37,7 +37,7 @@ public abstract class AbstractTestLinkDescriptor extends AbstractWicketMoreTestC
       protected boolean matchesSafely(String item) {
         try {
           return Objects.equals(cleanedExpectedPathRelativeToServlet, getPathAndQuery(item));
-        } catch (RuntimeException e) {
+        } catch (RuntimeException _) {
           return false;
         }
       }

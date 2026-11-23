@@ -46,7 +46,7 @@ public class ActionColumnPlaceholderBuilder<T> implements IActionColumnBaseBuild
 
   @Override
   public final MarkupContainer create(String wicketId, IModel<T> rowModel) {
-    return new CoreActionColumnPlaceholderPanel<T>(wicketId, rowModel) {
+    return new CoreActionColumnPlaceholderPanel<>(wicketId, rowModel) {
 
       private static final long serialVersionUID = 1L;
 

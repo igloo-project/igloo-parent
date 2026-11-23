@@ -1,10 +1,7 @@
 package org.iglooproject.wicket.more.markup.repeater.table;
 
-import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.repeater.RepeatingView;
-import org.apache.wicket.util.visit.IVisit;
-import org.apache.wicket.util.visit.IVisitor;
 
 public class CoreToolbarsContainer extends WebMarkupContainer {
 
@@ -30,15 +27,12 @@ public class CoreToolbarsContainer extends WebMarkupContainer {
 
     Boolean visible =
         toolbars.visitChildren(
-            new IVisitor<Component, Boolean>() {
-              @Override
-              public void component(Component object, IVisit<Boolean> visit) {
-                object.configure();
-                if (object.isVisible()) {
-                  visit.stop(Boolean.TRUE);
-                } else {
-                  visit.dontGoDeeper();
-                }
+            (object, visit) -> {
+              object.configure();
+              if (object.isVisible()) {
+                visit.stop(Boolean.TRUE);
+              } else {
+                visit.dontGoDeeper();
               }
             });
     if (visible == null) {

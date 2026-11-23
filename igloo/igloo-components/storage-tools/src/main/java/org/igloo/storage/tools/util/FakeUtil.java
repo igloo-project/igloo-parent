@@ -38,10 +38,10 @@ public class FakeUtil {
 
     try {
       executorService.shutdown();
-      while (executorService.awaitTermination(5, TimeUnit.MINUTES) == false) {
+      while (!executorService.awaitTermination(5, TimeUnit.MINUTES)) {
         LOGGER.info("Processing Fichier...");
       }
-    } catch (InterruptedException e) {
+    } catch (InterruptedException _) {
       LOGGER.error("Processing interrupted. Stopping...");
       executorService.shutdownNow();
       LOGGER.error("Processing interrupted. Stopped.");

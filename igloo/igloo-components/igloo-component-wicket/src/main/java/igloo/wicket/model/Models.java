@@ -98,7 +98,7 @@ public final class Models {
     public void detach() {
       // Does nothing
     }
-  };
+  }
 
   /**
    * A static model of <code>Map<String, Object></code>. Useful as a data model for {@link
@@ -275,11 +275,9 @@ public final class Models {
 
     @Override
     public boolean equals(Object obj) {
-      if (!(obj instanceof MapModelValueModel<?, ?>)) {
+      if (!(obj instanceof MapModelValueModel<?, ?> other)) {
         return false;
       }
-
-      MapModelValueModel<?, ?> other = (MapModelValueModel<?, ?>) obj;
 
       return new EqualsBuilder()
           .append(mapModel, other.mapModel)

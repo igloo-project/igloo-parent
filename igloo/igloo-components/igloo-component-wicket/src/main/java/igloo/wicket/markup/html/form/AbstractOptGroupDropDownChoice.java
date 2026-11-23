@@ -44,7 +44,7 @@ public abstract class AbstractOptGroupDropDownChoice<E> extends DropDownChoice<E
       final Comparator<E> sorter) {
     super(id, model, choicesModel, renderer);
     setChoices(
-        new LoadableDetachableModel<List<? extends E>>() {
+        new LoadableDetachableModel<>() {
           private static final long serialVersionUID = 1L;
 
           @Override
@@ -53,7 +53,6 @@ public abstract class AbstractOptGroupDropDownChoice<E> extends DropDownChoice<E
             Collections.sort(result, sorter);
             return result;
           }
-          ;
 
           @Override
           public void detach() {

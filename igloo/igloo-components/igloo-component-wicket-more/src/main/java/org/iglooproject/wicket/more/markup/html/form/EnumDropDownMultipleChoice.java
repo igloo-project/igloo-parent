@@ -27,7 +27,7 @@ public class EnumDropDownMultipleChoice<E extends Enum<E>>
       IModel<C> collectionModel,
       SerializableSupplier2<? extends C> collectionSupplier,
       IModel<? extends Collection<? extends E>> choicesModel) {
-    this(id, collectionModel, collectionSupplier, choicesModel, new EnumChoiceRenderer<E>());
+    this(id, collectionModel, collectionSupplier, choicesModel, new EnumChoiceRenderer<>());
   }
 
   public <C extends Collection<E>> EnumDropDownMultipleChoice(

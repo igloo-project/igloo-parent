@@ -18,12 +18,12 @@ public class CsvTable implements Serializable, Iterable<CsvRow> {
     super();
     Objects.requireNonNull(rows);
 
-    this.rows = rows.stream().map(input -> Arrays.asList(input)).collect(Collectors.toList());
+    this.rows = rows.stream().map(Arrays::asList).collect(Collectors.toList());
   }
 
   @Override
   public Iterator<CsvRow> iterator() {
-    return new AbstractSequentialIterator<CsvRow>(getRow(0)) {
+    return new AbstractSequentialIterator<>(getRow(0)) {
       @Override
       protected CsvRow computeNext(CsvRow previous) {
         return getRow(previous.getIndex() + 1);

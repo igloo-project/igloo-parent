@@ -31,7 +31,7 @@ public class CascadingConverter<T> implements IConverter<T> {
     for (IConverter<? extends T> preemptiveConverter : preemptiveConverters) {
       try {
         return preemptiveConverter.convertToObject(value, locale);
-      } catch (ConversionException ignored) {
+      } catch (ConversionException _) {
       }
     }
 

@@ -84,7 +84,7 @@ class TestTransactionSynchronization extends AbstractJpaMoreTestCase {
   void testAfterCommitTask() {
     final TestCreateAfterCommitTask createAfterCommitTask = new TestCreateAfterCommitTask();
     readOnlyTransactionTemplate.executeWithoutResult(
-        status -> transactionSynchronizationTaskManagerService.push(createAfterCommitTask));
+        _ -> transactionSynchronizationTaskManagerService.push(createAfterCommitTask));
 
     entityManagerClear();
 
@@ -128,7 +128,7 @@ class TestTransactionSynchronization extends AbstractJpaMoreTestCase {
         status -> {
           // Create a new transaction
           writeRequiresNewTransactionTemplate.executeWithoutResult(
-              status1 -> {
+              _ -> {
                 // Should not be executed since this transaction will execute just fine
                 transactionSynchronizationTaskManagerService.push(
                     new TestDeleteOnRollbackTask(entityNOTExpectedToBeDeletedId));
@@ -157,7 +157,7 @@ class TestTransactionSynchronization extends AbstractJpaMoreTestCase {
     final MutableObject<TestUseEntityBeforeCommitOrClearTask> taskReference = new MutableObject<>();
 
     writeTransactionTemplate.executeWithoutResult(
-        status -> {
+        _ -> {
           TestEntity reloadedEntity = testEntityService.getById(entityId);
 
           // This task will fail if executed when the entity is not in the session anymore
@@ -232,7 +232,7 @@ class TestTransactionSynchronization extends AbstractJpaMoreTestCase {
         .run(
             TestEntity.class,
             List.of(entityId1, entityId2),
-            new ReadWriteBatchRunnable<TestEntity>() {
+            new ReadWriteBatchRunnable<>() {
               @Override
               protected void executeUnit(TestEntity unit) {
                 // This task will fail if executed when the entity is not in the session anymore

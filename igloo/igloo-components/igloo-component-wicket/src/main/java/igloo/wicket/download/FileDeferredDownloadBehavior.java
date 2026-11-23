@@ -21,7 +21,7 @@ public class FileDeferredDownloadBehavior extends AbstractDeferredDownloadBehavi
   public FileDeferredDownloadBehavior(
       final IModel<File> fileModel, final IModel<String> fileNameModel, boolean addAntiCache) {
     this(
-        new IModel<LabelValue<String, File>>() {
+        new IModel<>() {
           private static final long serialVersionUID = 1L;
 
           @Override

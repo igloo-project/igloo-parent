@@ -18,12 +18,8 @@ public class ExportFileUtils {
 
   public static IModel<String> getFileNameExtensionModel(
       final IModel<String> fileNamePrefixModel, final IModel<String> extensionModel) {
-    return new IModel<String>() {
-      private static final long serialVersionUID = 1L;
-
-      @Override
-      public String getObject() {
-        return new StringBuilder(fileNamePrefixModel.getObject())
+    return () ->
+        new StringBuilder(fileNamePrefixModel.getObject())
             .append(
                 DateTimeFormatter.ofPattern(
                         Application.get()
@@ -35,8 +31,6 @@ public class ExportFileUtils {
             .append(".")
             .append(extensionModel.getObject())
             .toString();
-      }
-    };
   }
 
   private ExportFileUtils() {}

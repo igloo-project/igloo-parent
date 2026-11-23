@@ -45,7 +45,7 @@ public class DbCheckOrCreateStorageUnitAction implements IDbAction<StorageUnit> 
       LOGGER.info("StorageUnit created {}", storageUnit);
       return storageUnit;
     } else if (storageUnits.size() == 1) {
-      StorageUnit storageUnit = storageUnits.get(0);
+      StorageUnit storageUnit = storageUnits.getFirst();
       LOGGER.info("Existing StorageUnit {} found", storageUnit);
       if (!type.equals(storageUnit.getType())) {
         LOGGER.warn(

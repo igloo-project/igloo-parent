@@ -3,10 +3,8 @@ package org.iglooproject.jpa.business.generic.service;
 import java.util.concurrent.Callable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
 import org.springframework.transaction.interceptor.TransactionAttribute;
-import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
 public class TransactionScopeIndependantRunnerServiceImpl
@@ -42,18 +40,15 @@ public class TransactionScopeIndependantRunnerServiceImpl
         readOnly ? readOnlyTransactionTemplate : writeTransactionTemplate;
 
     return transactionTemplate.execute(
-        new TransactionCallback<T>() {
-          @Override
-          public T doInTransaction(TransactionStatus transactionStatus) {
-            try {
-              return callable.call();
-            } catch (Exception e) {
-              if (e instanceof InterruptedException) {
-                Thread.currentThread().interrupt();
-              }
-              throw new IllegalStateException(
-                  String.format("Erreur durant l'execution du callable %s", callable), e);
+        _ -> {
+          try {
+            return callable.call();
+          } catch (Exception e) {
+            if (e instanceof InterruptedException) {
+              Thread.currentThread().interrupt();
             }
+            throw new IllegalStateException(
+                String.format("Erreur durant l'execution du callable %s", callable), e);
           }
         });
   }

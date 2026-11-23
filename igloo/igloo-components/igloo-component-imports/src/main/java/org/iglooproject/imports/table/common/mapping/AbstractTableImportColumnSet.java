@@ -213,12 +213,7 @@ public abstract class AbstractTableImportColumnSet<TTable, TRow, TCell, TCellRef
     }
 
     public Iterable<RowContext> nonEmptyRows() {
-      return new Iterable<RowContext>() {
-        @Override
-        public Iterator<RowContext> iterator() {
-          return toRowContexts(navigator.nonEmptyRows(table));
-        }
-      };
+      return () -> toRowContexts(navigator.nonEmptyRows(table));
     }
 
     @SuppressWarnings("unchecked")

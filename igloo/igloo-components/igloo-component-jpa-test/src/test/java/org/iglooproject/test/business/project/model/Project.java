@@ -24,7 +24,7 @@ public class Project extends GenericEntity<Long, Project> {
   @ManyToOne private Company company;
 
   @ManyToMany(mappedBy = "workedProjects")
-  private List<Person> team = new LinkedList<Person>();
+  private List<Person> team = new LinkedList<>();
 
   public Project() {}
 

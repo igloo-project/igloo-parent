@@ -27,7 +27,7 @@ class TestJCacheLookup {
         .thenReturn(new JCacheCacheManager());
     assertThat(
             JCacheLookup.lookup(
-                "classpath://placeholder", s -> Optional.of("file:/"), provider, fallback))
+                "classpath://placeholder", _ -> Optional.of("file:/"), provider, fallback))
         .isNotNull();
     verify(provider).apply(URI.create("classpath://placeholder"));
     verifyNoMoreInteractions(provider);
@@ -49,7 +49,7 @@ class TestJCacheLookup {
     when(provider.apply(URI.create("file:/"))).thenReturn(new JCacheCacheManager());
     assertThat(
             JCacheLookup.lookup(
-                "classpath://placeholder", s -> Optional.of("file:/"), provider, fallback))
+                "classpath://placeholder", _ -> Optional.of("file:/"), provider, fallback))
         .isNotNull();
     verify(provider).apply(URI.create("classpath://placeholder"));
     verify(provider).apply(URI.create("file:/"));
@@ -72,7 +72,7 @@ class TestJCacheLookup {
     when(provider.apply(URI.create("jar:file:/"))).thenReturn(new JCacheCacheManager());
     assertThat(
             JCacheLookup.lookup(
-                "classpath://placeholder", s -> Optional.of("jar:file:/"), provider, fallback))
+                "classpath://placeholder", _ -> Optional.of("jar:file:/"), provider, fallback))
         .isNotNull();
     verify(provider).apply(URI.create("classpath://placeholder"));
     verify(provider).apply(URI.create("jar:file:/"));
@@ -89,7 +89,7 @@ class TestJCacheLookup {
     when(fallback.apply(Mockito.any())).thenReturn(new JCacheCacheManager());
     assertThat(
             JCacheLookup.lookup(
-                "classpath://placeholder", s -> Optional.of("jar:file:/"), provider, fallback))
+                "classpath://placeholder", _ -> Optional.of("jar:file:/"), provider, fallback))
         .isNotNull();
     verify(provider).apply(URI.create("classpath://placeholder"));
     verify(provider).apply(URI.create("jar:file:/"));

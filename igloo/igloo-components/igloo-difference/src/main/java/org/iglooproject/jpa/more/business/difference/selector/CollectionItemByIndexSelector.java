@@ -17,8 +17,7 @@ public class CollectionItemByIndexSelector extends ElementSelector
     if (this == o) {
       return true;
     }
-    if (o instanceof CollectionItemByIndexSelector) {
-      CollectionItemByIndexSelector other = (CollectionItemByIndexSelector) o;
+    if (o instanceof CollectionItemByIndexSelector other) {
       return index == other.index;
     }
 

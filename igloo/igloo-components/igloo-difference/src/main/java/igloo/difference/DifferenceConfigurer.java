@@ -35,7 +35,7 @@ public class DifferenceConfigurer {
   public Map<FieldPath, DifferenceField> getPaths() {
     return fields.getFieldList().stream()
         .filter(f -> !DifferenceMode.IGNORED.equals(f.getMode()))
-        .collect(Collectors.toMap(i -> i.getPath(), Function.identity()));
+        .collect(Collectors.toMap(DifferenceField::getPath, Function.identity()));
   }
 
   public void configureDiffer(final ObjectDifferBuilder builder) {

@@ -11,7 +11,7 @@ public abstract class AbstractTestCollectionModel<C extends Collection<?>>
     extends AbstractTestModel<C> {
 
   protected static final Equivalence<Set<?>> UNORDERED_SET_EQUIVALENCE =
-      new Equivalence<Set<?>>() {
+      new Equivalence<>() {
         @Override
         protected boolean doEquivalent(Set<?> a, Set<?> b) {
           return a.size() == b.size() && b.containsAll(a); // No constraint on Set order
@@ -29,7 +29,7 @@ public abstract class AbstractTestCollectionModel<C extends Collection<?>>
       };
 
   protected Matcher<C> isEmpty() {
-    return new TypeSafeMatcher<C>() {
+    return new TypeSafeMatcher<>() {
       @Override
       public void describeTo(Description description) {
         description.appendText("an empty collection");

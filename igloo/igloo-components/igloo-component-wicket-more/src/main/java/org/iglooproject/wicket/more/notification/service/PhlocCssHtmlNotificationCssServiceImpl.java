@@ -104,8 +104,8 @@ public class PhlocCssHtmlNotificationCssServiceImpl implements IHtmlNotification
       String componentVariation, ICssResourceReference cssResourceReference) {
     if (registrySpecs.containsKey(componentVariation)) {
       LOGGER.warn(
-          "Overrding Html notification style registry for component variation "
-              + componentVariation);
+          "Overrding Html notification style registry for component variation {}",
+          componentVariation);
     }
     registrySpecs.put(componentVariation, cssResourceReference);
     registryCache.remove(cssResourceReference);
@@ -126,7 +126,7 @@ public class PhlocCssHtmlNotificationCssServiceImpl implements IHtmlNotification
       } else {
         return Pair.of(css, new SimplePhlocCssHtmlNotificationCssRegistry(sheet));
       }
-    } catch (IOException e) {
+    } catch (IOException _) {
       throw new ServiceException(String.format("Error extracting css %s", resourceStream));
     }
   }

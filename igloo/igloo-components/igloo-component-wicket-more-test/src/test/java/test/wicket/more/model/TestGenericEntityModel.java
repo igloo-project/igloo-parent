@@ -10,11 +10,11 @@ public class TestGenericEntityModel extends AbstractTestGenericEntityModel {
 
   @Override
   protected IModel<Person> createModel() {
-    return new GenericEntityModel<Long, Person>();
+    return new GenericEntityModel<>();
   }
 
   @Override
   protected IModel<Person> createModel(Person person) {
-    return new GenericEntityModel<Long, Person>(person);
+    return new GenericEntityModel<>(person);
   }
 }

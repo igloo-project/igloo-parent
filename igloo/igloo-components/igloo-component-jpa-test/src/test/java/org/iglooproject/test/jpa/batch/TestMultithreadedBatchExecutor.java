@@ -48,10 +48,10 @@ class TestMultithreadedBatchExecutor extends AbstractTestHibernateBatchExecutor 
     executor.run(
         Person.class.getSimpleName(),
         personIds,
-        new ReadWriteBatchRunnable<Long>() {
+        new ReadWriteBatchRunnable<>() {
           @Override
           public void preExecutePartition(List<Long> partition) {
-            LOGGER.warn("Executing partition: " + Joiners.onComma().join(partition));
+            LOGGER.warn("Executing partition: {}", Joiners.onComma().join(partition));
           }
 
           @Override
@@ -83,10 +83,10 @@ class TestMultithreadedBatchExecutor extends AbstractTestHibernateBatchExecutor 
     executor.run(
         Person.class.getSimpleName(),
         personIds,
-        new ReadOnlyBatchRunnable<Long>() {
+        new ReadOnlyBatchRunnable<>() {
           @Override
           public void preExecutePartition(List<Long> partition) {
-            LOGGER.warn("Executing partition: " + Joiners.onComma().join(partition));
+            LOGGER.warn("Executing partition: {}", Joiners.onComma().join(partition));
           }
 
           @Override
@@ -108,16 +108,16 @@ class TestMultithreadedBatchExecutor extends AbstractTestHibernateBatchExecutor 
   void postExecute() {
     final MutableBoolean postExecuteWasRun = new MutableBoolean(false);
     writeRequiredTransactionTemplate.executeWithoutResult(
-        status -> {
+        _ -> {
           MultithreadedBatchExecutor executor = executorCreator.newMultithreadedBatchExecutor();
           executor.batchSize(10).threads(4);
           executor.run(
               Person.class.getSimpleName(),
               personIds,
-              new ReadWriteBatchRunnable<Long>() {
+              new ReadWriteBatchRunnable<>() {
                 @Override
                 public void preExecutePartition(List<Long> partition) {
-                  LOGGER.warn("Executing partition: " + Joiners.onComma().join(partition));
+                  LOGGER.warn("Executing partition: {}", Joiners.onComma().join(partition));
                 }
 
                 @Override
@@ -126,7 +126,7 @@ class TestMultithreadedBatchExecutor extends AbstractTestHibernateBatchExecutor 
                   person.setLastName(NEW_LASTNAME_VALUE);
                   try {
                     personService.update(person);
-                    LOGGER.info("Updated: " + person);
+                    LOGGER.info("Updated: {}", person);
                   } catch (ServiceException | SecurityServiceException e) {
                     throw new IllegalStateException(e);
                   }
@@ -135,7 +135,7 @@ class TestMultithreadedBatchExecutor extends AbstractTestHibernateBatchExecutor 
                 @Override
                 public void postExecute() {
                   postExecuteWasRun.setTrue();
-                  Person person = personService.getById(personIds.get(0));
+                  Person person = personService.getById(personIds.getFirst());
                   assertEquals(
                       NEW_LASTNAME_VALUE,
                       person.getLastName(),
@@ -198,7 +198,7 @@ class TestMultithreadedBatchExecutor extends AbstractTestHibernateBatchExecutor 
     executor.batchSize(10).threads(4);
 
     Exception runException = null;
-    PreExecuteFailingRunnable<Long> runnable = new PreExecuteFailingRunnable<Long>();
+    PreExecuteFailingRunnable<Long> runnable = new PreExecuteFailingRunnable<>();
     try {
       executor.run("FailingProcess", personIds, runnable);
     } catch (Exception e) {
@@ -219,7 +219,7 @@ class TestMultithreadedBatchExecutor extends AbstractTestHibernateBatchExecutor 
 
     Exception runException = null;
     PreExecuteFailingRunnable<Long> runnable =
-        new PreExecuteFailingRunnable<Long>() {
+        new PreExecuteFailingRunnable<>() {
           @Override
           public void onError(ExecutionException exception) {
             throw new TestBatchException2(exception);
@@ -244,7 +244,7 @@ class TestMultithreadedBatchExecutor extends AbstractTestHibernateBatchExecutor 
 
     Exception runException = null;
     ConcurrentFailingRunnable<Long> runnable =
-        new ConcurrentFailingRunnable<Long>(); // Requires at least 2 threads
+        new ConcurrentFailingRunnable<>(); // Requires at least 2 threads
     try {
       executor.run("FailingProcess", personIds, runnable);
     } catch (Exception e) {
@@ -268,7 +268,7 @@ class TestMultithreadedBatchExecutor extends AbstractTestHibernateBatchExecutor 
 
     Exception runException = null;
     ConcurrentFailingRunnable<Long> runnable =
-        new ConcurrentFailingRunnable<Long>() { // Requires at least 2 threads
+        new ConcurrentFailingRunnable<>() { // Requires at least 2 threads
           @Override
           public void onError(ExecutionException exception) {
             throw new TestBatchException2(exception);
@@ -297,7 +297,7 @@ class TestMultithreadedBatchExecutor extends AbstractTestHibernateBatchExecutor 
 
     Exception runException = null;
     ConcurrentFailingRunnable<Long> runnable =
-        new ConcurrentFailingRunnable<Long>(); // Requires at least 2 threads
+        new ConcurrentFailingRunnable<>(); // Requires at least 2 threads
     try {
       executor.run("FailingProcess", personIds, runnable);
     } catch (Exception e) {

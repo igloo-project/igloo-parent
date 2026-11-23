@@ -22,7 +22,7 @@ public class LocalDateTimeRangePickerVueField
 
   public LocalDateTimeRangePickerVueField(
       String id, IModel<LocalDateTime> dateMinModel, IModel<LocalDateTime> dateMaxModel) {
-    this(id, dateMinModel, dateMaxModel, builder -> {});
+    this(id, dateMinModel, dateMaxModel, _ -> {});
   }
 
   public LocalDateTimeRangePickerVueField(
@@ -80,7 +80,7 @@ public class LocalDateTimeRangePickerVueField
       }
 
       return Pair.fromCollection(dates);
-    } catch (DateTimeException e) {
+    } catch (DateTimeException _) {
       throw new ConversionException("Cannot parse '" + value)
           .setResourceKey("conversion.error.localDateTime.range")
           .setSourceValue(value)

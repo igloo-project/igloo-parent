@@ -49,10 +49,9 @@ public class CssDeclarationPrecedence implements Comparable<CssDeclarationPreced
     if (obj == this) {
       return true;
     }
-    if (!(obj instanceof CssDeclarationPrecedence)) {
+    if (!(obj instanceof CssDeclarationPrecedence other)) {
       return false;
     }
-    CssDeclarationPrecedence other = (CssDeclarationPrecedence) obj;
     return compareTo(other) == 0;
   }
 

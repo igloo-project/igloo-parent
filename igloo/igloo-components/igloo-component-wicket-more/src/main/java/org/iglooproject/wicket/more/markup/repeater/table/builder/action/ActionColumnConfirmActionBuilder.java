@@ -31,7 +31,7 @@ public class ActionColumnConfirmActionBuilder<T, I>
       ActionColumnBuilder<T, I> actionColumnBuilder, IBootstrapRenderer<? super T> renderer) {
     this.actionColumnBuilder = actionColumnBuilder;
     this.renderer = renderer;
-    ajaxConfirmLinkBuilder = new AjaxConfirmLinkBuilder<T>();
+    ajaxConfirmLinkBuilder = new AjaxConfirmLinkBuilder<>();
   }
 
   @Override

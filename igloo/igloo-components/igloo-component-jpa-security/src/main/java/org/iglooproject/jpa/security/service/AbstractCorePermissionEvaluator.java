@@ -149,8 +149,7 @@ public abstract class AbstractCorePermissionEvaluator<U extends GenericEntity<Lo
       return Arrays.asList((Permission) permission);
     } else if (permission instanceof Permission[]) {
       return Arrays.asList((Permission[]) permission);
-    } else if (permission instanceof String) {
-      String permString = (String) permission;
+    } else if (permission instanceof String permString) {
       String[] split = permString.split("\\|");
       List<Permission> result = new ArrayList<>();
       for (String perm : split) {
@@ -168,7 +167,7 @@ public abstract class AbstractCorePermissionEvaluator<U extends GenericEntity<Lo
     Permission p;
     try {
       p = permissionFactory.buildFromName(permission);
-    } catch (IllegalArgumentException notfound) {
+    } catch (IllegalArgumentException _) {
       p = permissionFactory.buildFromName(permission.toUpperCase());
     }
     if (p == null) {

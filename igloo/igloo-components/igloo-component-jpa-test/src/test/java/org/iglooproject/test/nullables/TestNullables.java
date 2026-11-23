@@ -117,7 +117,7 @@ class TestNullables extends AbstractJpaCoreTestCase {
     try {
       entityNullableService.create(entityNullable);
       fail();
-    } catch (PersistenceException | DataIntegrityViolationException e) {
+    } catch (PersistenceException | DataIntegrityViolationException _) {
       // Success if creation fail with a not-null exception
     }
   }

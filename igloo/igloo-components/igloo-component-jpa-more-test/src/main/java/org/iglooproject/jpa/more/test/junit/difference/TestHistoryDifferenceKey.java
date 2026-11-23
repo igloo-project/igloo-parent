@@ -58,8 +58,7 @@ public class TestHistoryDifferenceKey {
 
   @Override
   public boolean equals(Object obj) {
-    if (obj instanceof TestHistoryDifferenceKey) {
-      TestHistoryDifferenceKey other = (TestHistoryDifferenceKey) obj;
+    if (obj instanceof TestHistoryDifferenceKey other) {
       return new EqualsBuilder()
           .append(fieldPath, other.fieldPath)
           .append(keyAsGenericEntityReference, other.keyAsGenericEntityReference)

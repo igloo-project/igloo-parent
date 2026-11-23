@@ -26,21 +26,14 @@ public class TaskStatusRenderer extends BootstrapRenderer<TaskStatus> {
     Builder builder =
         BootstrapRendererInformation.builder().label(EnumRenderer.get().render(value, locale));
 
-    switch (value) {
-      case TO_RUN:
-        return builder.color(BootstrapColor.SECONDARY).icon("fa fa-fw fa-clock").build();
-      case RUNNING:
-        return builder.color(BootstrapColor.PRIMARY).icon("fa fa-fw fa-redo").build();
-      case COMPLETED:
-        return builder.color(BootstrapColor.SUCCESS).icon("fa fa-fw fa-check").build();
-      case FAILED:
-        return builder.color(BootstrapColor.DANGER).icon("fa fa-fw fa-times").build();
-      case INTERRUPTED:
-        return builder.color(BootstrapColor.DANGER).icon("fa fa-fw fa-pause").build();
-      case CANCELLED:
-        return builder.color(BootstrapColor.WARNING).icon("fa fa-fw fa-ban").build();
-      default:
-        return null;
-    }
+    return switch (value) {
+      case TO_RUN -> builder.color(BootstrapColor.SECONDARY).icon("fa fa-fw fa-clock").build();
+      case RUNNING -> builder.color(BootstrapColor.PRIMARY).icon("fa fa-fw fa-redo").build();
+      case COMPLETED -> builder.color(BootstrapColor.SUCCESS).icon("fa fa-fw fa-check").build();
+      case FAILED -> builder.color(BootstrapColor.DANGER).icon("fa fa-fw fa-times").build();
+      case INTERRUPTED -> builder.color(BootstrapColor.DANGER).icon("fa fa-fw fa-pause").build();
+      case CANCELLED -> builder.color(BootstrapColor.WARNING).icon("fa fa-fw fa-ban").build();
+      default -> null;
+    };
   }
 }

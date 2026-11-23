@@ -157,15 +157,14 @@ public final class FormInvalidDecoratorListener {
    */
   private static final IComponentOnBeforeRenderListener PRE_ON_BEFORE_RENDER_LISTENER =
       component -> {
-        if (!(component instanceof RefreshingView<?>)) {
+        if (!(component instanceof RefreshingView<?> refreshingView)) {
           return;
         }
 
-        RefreshingView<?> refreshingView = (RefreshingView<?>) component;
         refreshingView.visitChildren(
             FormComponent.class,
             (IVisitor<FormComponent<?>, Void>)
-                (formComponent, visit) -> {
+                (formComponent, _) -> {
                   if (!formComponent.isValid()) {
                     markIsInvalid(formComponent);
                   }
@@ -182,11 +181,10 @@ public final class FormInvalidDecoratorListener {
    */
   private static final IComponentOnBeforeRenderListener POST_ON_BEFORE_RENDER_LISTENER =
       component -> {
-        if (!(component instanceof FormComponent) || component instanceof IVueComponent) {
+        if (!(component instanceof FormComponent<?> formComponent)
+            || component instanceof IVueComponent) {
           return;
         }
-
-        FormComponent<?> formComponent = (FormComponent<?>) component;
 
         if (!isInvalid(formComponent)) {
           return;
@@ -207,11 +205,9 @@ public final class FormInvalidDecoratorListener {
 
   private static final IComponentOnAfterRenderListener ON_AFTER_RENDER_LISTENER =
       component -> {
-        if (!(component instanceof FormComponent)) {
+        if (!(component instanceof FormComponent<?> formComponent)) {
           return;
         }
-
-        FormComponent<?> formComponent = (FormComponent<?>) component;
 
         unmarkIsInvalid(formComponent);
       };
@@ -225,7 +221,7 @@ public final class FormInvalidDecoratorListener {
               .visitChildren(
                   FormComponent.class,
                   (IVisitor<FormComponent<?>, Void>)
-                      (formComponent, visit) -> {
+                      (formComponent, _) -> {
                         if (formComponent instanceof IVueComponent) {
                           if (isInvalid(formComponent)) {
                             ((IVueComponent) formComponent)
@@ -266,7 +262,7 @@ public final class FormInvalidDecoratorListener {
       FormComponent<?> formComponent, Class<T> clazz) {
     Builder<T> resultBuilder = ImmutableList.builder();
     formComponent.visitChildren(
-        clazz, (IVisitor<T, Void>) (object, visit) -> resultBuilder.add(object));
+        clazz, (IVisitor<T, Void>) (object, _) -> resultBuilder.add(object));
     return resultBuilder.build();
   }
 

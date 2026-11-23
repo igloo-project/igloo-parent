@@ -208,7 +208,7 @@ public final class ConsoleConfiguration {
 
   public Link<Void> getConsoleLink(String wicketId) {
     if (!menuSections.isEmpty()) {
-      return new BookmarkablePageLink<>(wicketId, menuSections.get(0).getPageClass());
+      return new BookmarkablePageLink<>(wicketId, menuSections.getFirst().getPageClass());
     } else {
       return new InvisibleLink<>(wicketId);
     }
@@ -217,7 +217,7 @@ public final class ConsoleConfiguration {
   public void mountPages(WebApplication webApplication) {
     // First section is mounted behind the base url (ie. /console/)
     if (!menuSections.isEmpty()) {
-      webApplication.mountPage(getBaseUrl() + "/", menuSections.get(0).getPageClass());
+      webApplication.mountPage(getBaseUrl() + "/", menuSections.getFirst().getPageClass());
     }
     // Each section is mounted with its items
     for (ConsoleMenuSection menuSection : menuSections) {

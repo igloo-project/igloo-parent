@@ -107,7 +107,7 @@ class TestHibernateLambdaSwitch {
 
     // skip first loops for calculations
     Function<List<Long>, Long> avg =
-        (newTimings) ->
+        newTimings ->
             newTimings.stream().sorted().skip(skippedLongestLoops).reduce(Long::sum).get()
                 / newTimings.size();
     long newImplementationHibernateTiming = avg.apply(newImplementationHibernate);
@@ -124,13 +124,13 @@ class TestHibernateLambdaSwitch {
     // check that timings are either less or within 10% old value
     try {
       assertThat(newImplementationHibernateTiming).isLessThan(oldImplementationHibernateTiming);
-    } catch (AssertionError e) {
+    } catch (AssertionError _) {
       assertThat(newImplementationHibernateTiming)
           .isCloseTo(oldImplementationHibernateTiming, withinPercentage);
     }
     try {
       assertThat(newImplementationSimpleTiming).isLessThan(oldImplementationSimpleTiming);
-    } catch (AssertionError e) {
+    } catch (AssertionError _) {
       assertThat(newImplementationSimpleTiming)
           .isCloseTo(oldImplementationSimpleTiming, withinPercentage);
     }
@@ -159,7 +159,7 @@ class TestHibernateLambdaSwitch {
       // build objects
       IntStream.range(0, nbObjects)
           .forEach(
-              (i) -> {
+              _ -> {
                 try {
                   Object entity;
                   entity = clazz.getConstructor().newInstance();
@@ -174,7 +174,7 @@ class TestHibernateLambdaSwitch {
                 }
               });
 
-      List<Long> results = new ArrayList<Long>(nLoop);
+      List<Long> results = new ArrayList<>(nLoop);
       // compare objects for n loops
       for (int loop = 0; loop < nLoop; loop++) {
         Stopwatch watch = Stopwatch.createStarted();
@@ -205,8 +205,8 @@ class TestHibernateLambdaSwitch {
     if (!includeHibernate) {
       urls =
           Arrays.stream(myClassLoader.getURLs())
-              .filter((i) -> !i.getFile().contains("hibernate"))
-              .<URL>toArray(i -> new URL[i]);
+              .filter(i -> !i.getFile().contains("hibernate"))
+              .<URL>toArray(URL[]::new);
       assumeThat(urls.length).isNotEqualTo(myClassLoader.getURLs().length);
     } else {
       urls = myClassLoader.getURLs();

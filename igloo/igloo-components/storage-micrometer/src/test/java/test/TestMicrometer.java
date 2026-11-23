@@ -184,19 +184,19 @@ class TestMicrometer {
             registry,
             "storage.fileCounts",
             Tags.of("fichierType", FichierType.FTYPE1.name()),
-            (a, b) -> a + b)
+            Long::sum)
         .isEqualTo(22);
     assertThat(
             registry,
             "storage.fileCounts",
             Tags.of("fichierType", FichierType.FTYPE2.name()),
-            (a, b) -> a + b)
+            Long::sum)
         .isEqualTo(22);
     assertThat(
             registry,
             "storage.fileCounts",
             Tags.of("fichierType", FichierType.FTYPE3.name()),
-            (a, b) -> a + b)
+            Long::sum)
         .isEqualTo(2);
     assertThat(
             registry,
@@ -206,52 +206,37 @@ class TestMicrometer {
                 FichierType.FTYPE3.name(),
                 "fichierStatus",
                 FichierStatus.ALIVE.name()),
-            (a, b) -> a + b)
+            Long::sum)
         .isNull();
     assertThat(
             registry,
             "storage.fileCounts",
             Tags.of("fichierType", FichierType.FTYPE2.name(), "storageUnitId", "1"),
-            (a, b) -> a + b)
+            Long::sum)
         .isEqualTo(7);
-    assertThat(registry, "storage.lastCheckAge", Tags.of("storageUnitId", "1"), (a, b) -> a + b)
+    assertThat(registry, "storage.lastCheckAge", Tags.of("storageUnitId", "1"), Long::sum)
         .isEqualTo(1);
-    assertThat(registry, "storage.lastCheckAge", Tags.of("storageUnitId", "2"), (a, b) -> a + b)
+    assertThat(registry, "storage.lastCheckAge", Tags.of("storageUnitId", "2"), Long::sum)
         .isEqualTo(5);
-    assertThat(registry, "storage.lastCheckAge", Tags.of("storageUnitId", "3"), (a, b) -> a + b)
+    assertThat(registry, "storage.lastCheckAge", Tags.of("storageUnitId", "3"), Long::sum)
         .isEqualTo(3);
-    assertThat(registry, "storage.lastChecksumAge", Tags.of("storageUnitId", "1"), (a, b) -> a + b)
+    assertThat(registry, "storage.lastChecksumAge", Tags.of("storageUnitId", "1"), Long::sum)
         .isEqualTo(2);
-    assertThat(registry, "storage.lastChecksumAge", Tags.of("storageUnitId", "2"), (a, b) -> a + b)
+    assertThat(registry, "storage.lastChecksumAge", Tags.of("storageUnitId", "2"), Long::sum)
         .isEqualTo(5);
-    assertThat(registry, "storage.lastChecksumAge", Tags.of("storageUnitId", "3"), (a, b) -> a + b)
+    assertThat(registry, "storage.lastChecksumAge", Tags.of("storageUnitId", "3"), Long::sum)
         .isNull();
-    assertThat(
-            registry, "storage.lastCheckDuration", Tags.of("storageUnitId", "1"), (a, b) -> a + b)
+    assertThat(registry, "storage.lastCheckDuration", Tags.of("storageUnitId", "1"), Long::sum)
         .isEqualTo(15 * 60);
-    assertThat(
-            registry, "storage.lastCheckDuration", Tags.of("storageUnitId", "2"), (a, b) -> a + b)
+    assertThat(registry, "storage.lastCheckDuration", Tags.of("storageUnitId", "2"), Long::sum)
         .isEqualTo(20 * 60);
-    assertThat(
-            registry, "storage.lastCheckDuration", Tags.of("storageUnitId", "3"), (a, b) -> a + b)
+    assertThat(registry, "storage.lastCheckDuration", Tags.of("storageUnitId", "3"), Long::sum)
         .isEqualTo(6 * 60);
-    assertThat(
-            registry,
-            "storage.lastChecksumDuration",
-            Tags.of("storageUnitId", "1"),
-            (a, b) -> a + b)
+    assertThat(registry, "storage.lastChecksumDuration", Tags.of("storageUnitId", "1"), Long::sum)
         .isEqualTo(75 * 60);
-    assertThat(
-            registry,
-            "storage.lastChecksumDuration",
-            Tags.of("storageUnitId", "2"),
-            (a, b) -> a + b)
+    assertThat(registry, "storage.lastChecksumDuration", Tags.of("storageUnitId", "2"), Long::sum)
         .isEqualTo(55 * 60);
-    assertThat(
-            registry,
-            "storage.lastChecksumDuration",
-            Tags.of("storageUnitId", "3"),
-            (a, b) -> a + b)
+    assertThat(registry, "storage.lastChecksumDuration", Tags.of("storageUnitId", "3"), Long::sum)
         .isNull();
     assertThat(
             registry,
@@ -261,7 +246,7 @@ class TestMicrometer {
                 StorageFailureStatus.ALIVE.name(),
                 "fichierStatus",
                 FichierStatus.ALIVE.name()),
-            (a, b) -> a + b)
+            Long::sum)
         .isEqualTo(16);
     assertThat(
             registry,
@@ -273,7 +258,7 @@ class TestMicrometer {
                 StorageFailureStatus.ALIVE.name(),
                 "fichierStatus",
                 FichierStatus.ALIVE.name()),
-            (a, b) -> a + b)
+            Long::sum)
         .isEqualTo(15);
     assertThat(
             registry,
@@ -285,7 +270,7 @@ class TestMicrometer {
                 StorageFailureStatus.ALIVE.name(),
                 "fichierStatus",
                 FichierStatus.ALIVE.name()),
-            (a, b) -> a + b)
+            Long::sum)
         .isEqualTo(1);
     assertThat(
             registry,
@@ -297,16 +282,15 @@ class TestMicrometer {
                 StorageFailureStatus.ALIVE.name(),
                 "fichierStatus",
                 FichierStatus.ALIVE.name()),
-            (a, b) -> a + b)
+            Long::sum)
         .isNull();
     assertThat(
             registry,
             "storage.orphans",
             Tags.of("failureStatus", StorageFailureStatus.ALIVE.name()),
-            (a, b) -> a + b)
+            Long::sum)
         .isEqualTo(14);
-    assertThat(registry, "storage.orphans", Tags.of("storageUnitId", "2"), (a, b) -> a + b)
-        .isEqualTo(3);
+    assertThat(registry, "storage.orphans", Tags.of("storageUnitId", "2"), Long::sum).isEqualTo(3);
   }
 
   private StorageOrphanStatistic storageOrphanStatistic(

@@ -32,7 +32,7 @@ public class CheckGroup<T> extends org.apache.wicket.markup.html.form.CheckGroup
    */
   public <C extends Collection<T>> CheckGroup(
       String id, IModel<C> model, SerializableSupplier<? extends C> collectionSupplier) {
-    super(id, new ConcreteCollectionToCollectionWrapperModel<T, C>(model, collectionSupplier));
+    super(id, new ConcreteCollectionToCollectionWrapperModel<>(model, collectionSupplier));
   }
 
   @Override

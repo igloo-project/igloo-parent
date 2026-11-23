@@ -31,7 +31,7 @@ public class CoreHeadersToolbar<S extends ISort<?>> extends AbstractCoreToolbar 
     this.sortModel = sortModel;
 
     RefreshingView<IColumn<T, S>> headers =
-        new RefreshingView<IColumn<T, S>>("headers") {
+        new RefreshingView<>("headers") {
           private static final long serialVersionUID = 1L;
 
           @Override
@@ -93,9 +93,9 @@ public class CoreHeadersToolbar<S extends ISort<?>> extends AbstractCoreToolbar 
    */
   protected WebMarkupContainer newSortableHeader(String headerId, IColumn<?, S> sortableColumn) {
     if (sortableColumn instanceof ICoreColumn) {
-      return new CoreSortBorder<S>(headerId, table, sortModel, (ICoreColumn<?, S>) sortableColumn);
+      return new CoreSortBorder<>(headerId, table, sortModel, (ICoreColumn<?, S>) sortableColumn);
     } else {
-      return new CoreSortBorder<S>(headerId, table, sortModel, sortableColumn);
+      return new CoreSortBorder<>(headerId, table, sortModel, sortableColumn);
     }
   }
 }

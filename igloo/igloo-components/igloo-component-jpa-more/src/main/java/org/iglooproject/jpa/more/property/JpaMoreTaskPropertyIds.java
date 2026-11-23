@@ -18,7 +18,7 @@ public final class JpaMoreTaskPropertyIds extends AbstractPropertyIds {
   public static final ImmutablePropertyIdTemplate<Integer> QUEUE_NUMBER_OF_THREADS_TEMPLATE =
       immutableTemplate("task.queues.config.%1s.threads");
 
-  public static final ImmutablePropertyId<Integer> queueNumberOfThreads(IQueueId queueId) {
+  public static ImmutablePropertyId<Integer> queueNumberOfThreads(IQueueId queueId) {
     Objects.requireNonNull(queueId);
     return QUEUE_NUMBER_OF_THREADS_TEMPLATE.create(queueId.getUniqueStringId());
   }
@@ -26,7 +26,7 @@ public final class JpaMoreTaskPropertyIds extends AbstractPropertyIds {
   public static final ImmutablePropertyIdTemplate<Long> QUEUE_START_DELAY_TEMPLATE =
       immutableTemplate("task.queues.config.%1s.start.delay");
 
-  public static final ImmutablePropertyId<Long> queueStartDelay(String queueId) {
+  public static ImmutablePropertyId<Long> queueStartDelay(String queueId) {
     Objects.requireNonNull(queueId);
     return QUEUE_START_DELAY_TEMPLATE.create(queueId);
   }
@@ -35,8 +35,7 @@ public final class JpaMoreTaskPropertyIds extends AbstractPropertyIds {
       QUEUE_START_EXECUTION_CONTEXT_WAIT_READY_TEMPLATE =
           immutableTemplate("task.queues.config.%1s.start.executionContext.waitReady");
 
-  public static final ImmutablePropertyId<Boolean> queueStartExecutionContextWaitReady(
-      String queueId) {
+  public static ImmutablePropertyId<Boolean> queueStartExecutionContextWaitReady(String queueId) {
     Objects.requireNonNull(queueId);
     return QUEUE_START_EXECUTION_CONTEXT_WAIT_READY_TEMPLATE.create(queueId);
   }

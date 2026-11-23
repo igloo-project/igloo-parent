@@ -17,7 +17,7 @@ public class HsearchUtil {
     SearchMapping searchMapping = Search.mapping(entityManagerFactory);
     try {
       searchMapping.scope(Object.class).massIndexer().startAndWait();
-    } catch (InterruptedException e) {
+    } catch (InterruptedException _) {
       Thread.currentThread().interrupt();
       throw new IllegalStateException("Mass indexer interrupted during reindexation.");
     }

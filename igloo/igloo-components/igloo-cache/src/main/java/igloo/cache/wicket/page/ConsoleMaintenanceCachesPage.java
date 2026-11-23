@@ -81,7 +81,7 @@ public class ConsoleMaintenanceCachesPage extends ConsoleMaintenanceTemplate {
 
     CacheManagerListModel cacheManagerListModel = new CacheManagerListModel();
     add(
-        new ListView<CacheManagerWrapper>("cacheManagers", cacheManagerListModel) {
+        new ListView<>("cacheManagers", cacheManagerListModel) {
           private static final long serialVersionUID = 1L;
 
           @Override
@@ -125,27 +125,23 @@ public class ConsoleMaintenanceCachesPage extends ConsoleMaintenanceTemplate {
                     .content(new ResourceModel("common.action.confirm.content"))
                     .yesNo()
                     .onClick(
-                        new IAjaxAction() {
-                          private static final long serialVersionUID = 1L;
-
-                          @Override
-                          public void execute(AjaxRequestTarget target) {
-                            try {
-                              item.getModelObject().clearAll();
-                              filterModel.setObject(null);
-                              Session.get().success(getString("common.success"));
-                              target.add(item);
-                            } catch (Exception e) {
-                              LOGGER.error("Erreur lors de la purge du cache manager", e);
-                              Session.get().error(getString("common.error.unexpected"));
-                            }
-                            FeedbackUtils.refreshFeedback(target, getPage());
-                          }
-                        })
+                        (IAjaxAction)
+                            target -> {
+                              try {
+                                item.getModelObject().clearAll();
+                                filterModel.setObject(null);
+                                Session.get().success(getString("common.success"));
+                                target.add(item);
+                              } catch (Exception e) {
+                                LOGGER.error("Erreur lors de la purge du cache manager", e);
+                                Session.get().error(getString("common.error.unexpected"));
+                              }
+                              FeedbackUtils.refreshFeedback(target, getPage());
+                            })
                     .create("purge", item.getModel()),
                 cachesContainer
                     .add(
-                        new ListView<Cache>("caches", cacheListModel) {
+                        new ListView<>("caches", cacheListModel) {
                           private static final long serialVersionUID = 1L;
 
                           @Override
@@ -238,23 +234,19 @@ public class ConsoleMaintenanceCachesPage extends ConsoleMaintenanceTemplate {
                                     .content(new ResourceModel("common.action.confirm.content"))
                                     .yesNo()
                                     .onClick(
-                                        new IAjaxAction() {
-                                          private static final long serialVersionUID = 1L;
-
-                                          @Override
-                                          public void execute(AjaxRequestTarget target) {
-                                            try {
-                                              item.getModelObject().clear();
-                                              Session.get().success(getString("common.success"));
-                                              target.add(item);
-                                            } catch (Exception e) {
-                                              LOGGER.error("Erreur lors du vidage du cache", e);
-                                              Session.get()
-                                                  .error(getString("common.error.unexpected"));
-                                            }
-                                            FeedbackUtils.refreshFeedback(target, getPage());
-                                          }
-                                        })
+                                        (IAjaxAction)
+                                            target -> {
+                                              try {
+                                                item.getModelObject().clear();
+                                                Session.get().success(getString("common.success"));
+                                                target.add(item);
+                                              } catch (Exception e) {
+                                                LOGGER.error("Erreur lors du vidage du cache", e);
+                                                Session.get()
+                                                    .error(getString("common.error.unexpected"));
+                                              }
+                                              FeedbackUtils.refreshFeedback(target, getPage());
+                                            })
                                     .create("clear", item.getModel()));
                           }
                         }.setReuseItems(true),

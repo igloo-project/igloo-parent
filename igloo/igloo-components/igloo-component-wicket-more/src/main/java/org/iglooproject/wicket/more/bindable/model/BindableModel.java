@@ -84,10 +84,9 @@ public class BindableModel<E> implements IBindableModel<E> {
     if (obj == this) {
       return true;
     }
-    if (!(obj instanceof BindableModel)) {
+    if (!(obj instanceof BindableModel<?> other)) {
       return false;
     }
-    BindableModel<?> other = (BindableModel<?>) obj;
     return new EqualsBuilder().append(mainModel, other.mainModel).isEquals();
   }
 
@@ -190,12 +189,12 @@ public class BindableModel<E> implements IBindableModel<E> {
       currentPath = requireParent(currentPath);
     } while (!currentPath.isRoot());
   }
+
   /** Parent of a property path; binding the root path itself is a programming error. */
   private static FieldPath requireParent(FieldPath path) {
     return path.parent()
         .orElseThrow(() -> new IllegalArgumentException("Cannot bind root path: " + path));
   }
-
 
   @Override
   public <T, C extends Collection<T>> IBindableCollectionModel<T, C> bindCollectionWithCache(

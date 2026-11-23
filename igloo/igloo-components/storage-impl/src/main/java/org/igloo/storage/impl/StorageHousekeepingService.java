@@ -131,7 +131,7 @@ public class StorageHousekeepingService implements IStorageHousekeepingService {
             }
           },
           "Housekeeping");
-    } catch (Interruption e) {
+    } catch (Interruption _) {
       LOGGER.warn("Housekeeping job gracefully interrupted.");
     }
   }
@@ -146,7 +146,7 @@ public class StorageHousekeepingService implements IStorageHousekeepingService {
       if (!cleaningInvalidatedDisabled) {
         doExclusiveJob(this::cleanInvalidated, "Cleaning invalidated");
       }
-    } catch (Interruption e) {
+    } catch (Interruption _) {
       LOGGER.warn("Cleaning job gracefully interrupted.");
     }
   }
@@ -162,7 +162,7 @@ public class StorageHousekeepingService implements IStorageHousekeepingService {
             "Job {} skipped as another job is using exclusive lock. Aborted after a 30 minutes wait. Please check job scheduling.",
             jobName);
       }
-    } catch (InterruptedException e) {
+    } catch (InterruptedException _) {
       Thread.currentThread().interrupt();
     } finally {
       if (acquire) {
@@ -172,7 +172,7 @@ public class StorageHousekeepingService implements IStorageHousekeepingService {
   }
 
   public void cleanInvalidated() {
-    clean(() -> readOnlyTransaction.execute(t -> databaseOperations.listInvalidated(cleanLimit)));
+    clean(() -> readOnlyTransaction.execute(_ -> databaseOperations.listInvalidated(cleanLimit)));
   }
 
   public void cleanTransient() {
@@ -180,14 +180,14 @@ public class StorageHousekeepingService implements IStorageHousekeepingService {
     clean(
         () ->
             readOnlyTransaction.execute(
-                t -> databaseOperations.listTransient(cleanLimit, maxCreationDate)));
+                _ -> databaseOperations.listTransient(cleanLimit, maxCreationDate)));
   }
 
   public void clean(Supplier<List<Fichier>> source) throws Interruption {
     List<Fichier> fichiers = source.get();
     for (Fichier fichier : fichiers) {
       try {
-        writeTransaction.executeWithoutResult(t -> storageService.removeFichier(fichier));
+        writeTransaction.executeWithoutResult(_ -> storageService.removeFichier(fichier));
       } catch (RuntimeException e) {
         LOGGER.error("Error removing {}.", fichier, e);
       }
@@ -201,7 +201,7 @@ public class StorageHousekeepingService implements IStorageHousekeepingService {
    */
   public void splitStorageUnits() {
     List<StorageUnit> storageUnits =
-        readOnlyTransaction.execute(t -> databaseOperations.listStorageUnitsToSplit());
+        readOnlyTransaction.execute(_ -> databaseOperations.listStorageUnitsToSplit());
     checkInterruption();
     for (StorageUnit storageUnit : storageUnits) {
       LOGGER.info("Splitting StorageUnit {}", storageUnit);
@@ -219,13 +219,13 @@ public class StorageHousekeepingService implements IStorageHousekeepingService {
         // last check may be null
         () ->
             readOnlyTransaction.execute(
-                t ->
+                _ ->
                     Optional.ofNullable(databaseOperations.getLastCheck(unit))
                         .map(StorageConsistencyCheck::getCheckFinishedOn)
                         .orElse(null)),
         () ->
             readOnlyTransaction.execute(
-                t ->
+                _ ->
                     Optional.ofNullable(databaseOperations.getLastCheckChecksum(unit))
                         .map(StorageConsistencyCheck::getCheckFinishedOn)
                         .orElse(null)),
@@ -250,11 +250,11 @@ public class StorageHousekeepingService implements IStorageHousekeepingService {
   public void checkConsistency(Duration defaultCheckDelay, Duration defaultCheckChecksumDelay) {
     checkConsistency(
         consistencyStorageUnitLimit,
-        () -> readOnlyTransaction.execute(t -> databaseOperations.listStorageUnits()),
+        () -> readOnlyTransaction.execute(_ -> databaseOperations.listStorageUnits()),
         unit -> checkConsistencyType(unit, defaultCheckDelay, defaultCheckChecksumDelay),
         (unit, checksumEnabled) ->
             writeTransaction.executeWithoutResult(
-                t -> storageService.checkConsistency(unit, checksumEnabled)));
+                _ -> storageService.checkConsistency(unit, checksumEnabled)));
   }
 
   /**

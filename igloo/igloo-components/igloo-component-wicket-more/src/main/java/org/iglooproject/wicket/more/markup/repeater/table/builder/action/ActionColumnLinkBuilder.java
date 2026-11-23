@@ -27,7 +27,7 @@ public class ActionColumnLinkBuilder<T>
 
   @Override
   public final MarkupContainer create(String wicketId, IModel<T> rowModel) {
-    return new CoreActionColumnLinkPanel<T>(wicketId, rowModel) {
+    return new CoreActionColumnLinkPanel<>(wicketId, rowModel) {
       private static final long serialVersionUID = 1L;
 
       @Override

@@ -74,7 +74,7 @@ public abstract class ConsoleTemplate extends AbstractWebPageTemplate {
     List<ConsoleMenuSection> menuItems = ConsoleConfiguration.get().getMenuSections();
 
     navbarNavContainer.add(
-        new ListView<ConsoleMenuSection>("navbarNavItems", menuItems) {
+        new ListView<>("navbarNavItems", menuItems) {
           private static final long serialVersionUID = 1L;
 
           @Override
@@ -99,7 +99,7 @@ public abstract class ConsoleTemplate extends AbstractWebPageTemplate {
             item.add(navbarNavSubContainer.anyChildVisible().setOutputMarkupId(true));
 
             navbarNavSubContainer.add(
-                new ListView<ConsoleMenuItem>("navbarNavSubItems", subMenuItems) {
+                new ListView<>("navbarNavSubItems", subMenuItems) {
                   private static final long serialVersionUID = -2257358650754295013L;
 
                   @Override

@@ -14,15 +14,7 @@ public class JoinerModel extends LoadableDetachableModel<String> {
 
   private static final long serialVersionUID = -1202031311993202356L;
 
-  private static final IModel<?> NULL_MODEL =
-      new IModel<Object>() {
-        private static final long serialVersionUID = 1L;
-
-        @Override
-        public Object getObject() {
-          return null;
-        }
-      };
+  private static final IModel<?> NULL_MODEL = () -> null;
 
   private SerializableSupplier2<Joiner> joinerSupplier;
 

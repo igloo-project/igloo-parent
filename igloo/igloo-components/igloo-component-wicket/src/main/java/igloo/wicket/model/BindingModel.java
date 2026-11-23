@@ -47,7 +47,7 @@ public class BindingModel<R, T> extends AbstractPropertyModel<T> {
   public static final <T, U> IDetachableFactory<IModel<T>, BindingModel<T, U>> factory(
       BindingRoot<? super T, ? extends U> binding) {
     final String propertyExpression = binding.getPath();
-    return new IDetachableFactory<IModel<T>, BindingModel<T, U>>() {
+    return new IDetachableFactory<>() {
       private static final long serialVersionUID = 1L;
 
       @Override

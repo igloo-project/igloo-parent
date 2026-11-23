@@ -41,7 +41,7 @@ public class BaseSchemaContributor implements SchemaContributor {
       return false;
     }
     if (obj instanceof BaseSchemaContributor schemaContributor) {
-      return ((BaseSchemaContributor) obj).getName().equals(schemaContributor.getName());
+      return schemaContributor.getName().equals(schemaContributor.getName());
     }
     return false;
   }

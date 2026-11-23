@@ -33,7 +33,6 @@ import org.iglooproject.jpa.more.business.task.model.QueuedTaskHolder;
 import org.iglooproject.jpa.more.business.task.service.impl.TaskConsumer;
 import org.iglooproject.jpa.more.business.task.service.impl.TaskQueue;
 import org.iglooproject.jpa.more.business.task.util.TaskStatus;
-import org.iglooproject.jpa.more.util.transaction.model.ITransactionSynchronizationAfterCommitTask;
 import org.iglooproject.jpa.more.util.transaction.service.ITransactionSynchronizationTaskManagerService;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.spring.util.SpringBeanUtils;
@@ -76,8 +75,7 @@ public class QueuedTaskHolderManagerImpl
   private ScheduledThreadPoolExecutor initQueuesFromDatabaseExecutor;
 
   private final Multimap<TaskQueue, TaskConsumer> consumersByQueue =
-      Multimaps.newListMultimap(
-          new HashMap<TaskQueue, Collection<TaskConsumer>>(), Suppliers2.arrayList());
+      Multimaps.newListMultimap(new HashMap<>(), Suppliers2.arrayList());
 
   private final Map<String, TaskQueue> queuesById = Maps.newHashMap();
 
@@ -222,7 +220,7 @@ public class QueuedTaskHolderManagerImpl
   public int getNumberOfWaitingTasks(String queueId) {
     try {
       return queuesById.get(queueId).size();
-    } catch (NullPointerException e) {
+    } catch (NullPointerException _) {
       return -1;
     }
   }
@@ -286,39 +284,36 @@ public class QueuedTaskHolderManagerImpl
   /** Initialize queues with the tasks to be run from the database */
   private void initQueuesFromDatabase() {
     Runnable runnable =
-        new Runnable() {
-          @Override
-          public void run() {
-            for (TaskQueue queue : queuesById.values()) {
-              try {
-                // Gets the tasks that can be run from DB
-                List<QueuedTaskHolder> tasks =
-                    queuedTaskHolderService.getListConsumable(queue.getId());
+        () -> {
+          for (TaskQueue queue : queuesById.values()) {
+            try {
+              // Gets the tasks that can be run from DB
+              List<QueuedTaskHolder> tasks =
+                  queuedTaskHolderService.getListConsumable(queue.getId());
 
-                if (queue == defaultQueue) {
-                  tasks.addAll(queuedTaskHolderService.getListConsumable(null));
-                }
-
-                if (!tasks.isEmpty()) {
-                  // remove already loaded keys
-                  LOGGER.warn("Reload {} tasks in QueuedTaskHolderManager", tasks.size());
-                  // Gets tasks  Id
-                  List<Long> taskIds =
-                      tasks.stream().map(QueuedTaskHolder::getId).collect(Collectors.toList());
-                  LOGGER.warn("Reloaded tasks: {}", Joiner.on(",").join(taskIds));
-
-                  // Initialize and submit the task to the queue
-                  tasks.forEach(
-                      t -> {
-                        t.setStatus(TaskStatus.TO_RUN);
-                        t.resetExecutionInformation();
-                        queueOffer(queue, t.getId());
-                      });
-                }
-
-              } catch (RuntimeException | ServiceException | SecurityServiceException e) {
-                LOGGER.error("Error while trying to init queue " + queue + " from database", e);
+              if (queue == defaultQueue) {
+                tasks.addAll(queuedTaskHolderService.getListConsumable(null));
               }
+
+              if (!tasks.isEmpty()) {
+                // remove already loaded keys
+                LOGGER.warn("Reload {} tasks in QueuedTaskHolderManager", tasks.size());
+                // Gets tasks  Id
+                List<Long> taskIds =
+                    tasks.stream().map(QueuedTaskHolder::getId).collect(Collectors.toList());
+                LOGGER.warn("Reloaded tasks: {}", Joiner.on(",").join(taskIds));
+
+                // Initialize and submit the task to the queue
+                tasks.forEach(
+                    t -> {
+                      t.setStatus(TaskStatus.TO_RUN);
+                      t.resetExecutionInformation();
+                      queueOffer(queue, t.getId());
+                    });
+              }
+
+            } catch (RuntimeException | ServiceException | SecurityServiceException e) {
+              LOGGER.error("Error while trying to init queue {} from database", queue, e);
             }
           }
         };
@@ -335,7 +330,7 @@ public class QueuedTaskHolderManagerImpl
       selectedQueueId = selectQueue(task);
       serializedTask = queuedTaskHolderObjectMapper.writeValueAsString(task);
       if (LOGGER.isDebugEnabled()) {
-        LOGGER.debug("Serialized task: " + serializedTask);
+        LOGGER.debug("Serialized task: {}", serializedTask);
       }
 
       newQueuedTaskHolder =
@@ -349,13 +344,7 @@ public class QueuedTaskHolderManagerImpl
     }
 
     final Long newQueuedTaskHolderId = newQueuedTaskHolder.getId();
-    synchronizationManager.push(
-        new ITransactionSynchronizationAfterCommitTask() {
-          @Override
-          public void run() throws Exception {
-            doSubmit(selectedQueueId, newQueuedTaskHolderId);
-          }
-        });
+    synchronizationManager.push(() -> doSubmit(selectedQueueId, newQueuedTaskHolderId));
 
     return newQueuedTaskHolder;
   }
@@ -380,13 +369,7 @@ public class QueuedTaskHolderManagerImpl
 
     String queueId = queuedTaskHolder.getQueueId();
 
-    synchronizationManager.push(
-        new ITransactionSynchronizationAfterCommitTask() {
-          @Override
-          public void run() throws Exception {
-            doReload(queueId, queuedTaskHolderId);
-          }
-        });
+    synchronizationManager.push(() -> doReload(queueId, queuedTaskHolderId));
   }
 
   protected void doReload(String queueId, Long queuedTaskHolderId) {
@@ -449,7 +432,7 @@ public class QueuedTaskHolderManagerImpl
                 consumer.joinThread();
                 LOGGER.info("{} stopped", consumer.getName());
                 break;
-              } catch (InterruptedException e) {
+              } catch (InterruptedException _) {
                 LOGGER.warn("Ignored interrupt waiting for {} stop", consumer.getName());
                 Thread.currentThread().interrupt();
               }
@@ -463,7 +446,7 @@ public class QueuedTaskHolderManagerImpl
               initQueuesFromDatabaseExecutor.awaitTermination(1, TimeUnit.HOURS); // forever
               LOGGER.info("{} stopped", INIT_QUEUES_EXECUTOR_NAME);
               break;
-            } catch (InterruptedException e) {
+            } catch (InterruptedException _) {
               LOGGER.warn("Ignored interrupt waiting for {} stop", INIT_QUEUES_EXECUTOR_NAME);
               Thread.currentThread().interrupt();
             }
@@ -512,7 +495,7 @@ public class QueuedTaskHolderManagerImpl
     // else offer in queue
     boolean status = queue.offer(taskId);
     if (!status) {
-      LOGGER.error("Unable to offer the task " + taskId + " to the queue");
+      LOGGER.error("Unable to offer the task {} to the queue", taskId);
     }
     return status;
   }

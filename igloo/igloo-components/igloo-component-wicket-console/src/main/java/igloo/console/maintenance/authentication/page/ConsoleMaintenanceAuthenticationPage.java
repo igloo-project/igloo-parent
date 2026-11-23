@@ -73,7 +73,7 @@ public class ConsoleMaintenanceAuthenticationPage extends ConsoleMaintenanceTemp
                           .getObject());
 
               throw LoginSuccessPage.linkDescriptor().newRestartResponseException();
-            } catch (DisabledException e) {
+            } catch (DisabledException _) {
               AbstractCoreSession.get()
                   .error(
                       getString("console.maintenance.authentication.signInAs.error.userDisabled"));

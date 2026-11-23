@@ -17,7 +17,6 @@ import igloo.wicket.model.BindingModel;
 import org.apache.wicket.Component;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.Session;
-import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.model.IModel;
@@ -83,7 +82,7 @@ public class ConsoleMaintenanceTaskDetailPage extends ConsoleMaintenanceTaskTemp
   @SpringBean private IQueuedTaskHolderService queuedTaskHolderService;
 
   @SpringBean(name = TaskAutoConfiguration.OBJECT_MAPPER_BEAN_NAME)
-  @Qualifier()
+  @Qualifier
   private ObjectMapper queuedTaskHolderObjectMapper;
 
   public ConsoleMaintenanceTaskDetailPage(PageParameters parameters) {
@@ -103,34 +102,27 @@ public class ConsoleMaintenanceTaskDetailPage extends ConsoleMaintenanceTaskTemp
             getString("common.error.unexpected"));
 
     IModel<IBootstrapColor> statusColorModel =
-        new LoadableDetachableModel<IBootstrapColor>() {
-          private static final long serialVersionUID = 1L;
+        LoadableDetachableModel.of(
+            () -> {
+              QueuedTaskHolder queuedTaskHolder = queuedTaskHolderModel.getObject();
 
-          @Override
-          protected IBootstrapColor load() {
-            QueuedTaskHolder queuedTaskHolder = queuedTaskHolderModel.getObject();
+              if (TaskStatus.COMPLETED.equals(queuedTaskHolder.getStatus())) {
+                TaskResult result = queuedTaskHolder.getResult();
 
-            if (TaskStatus.COMPLETED.equals(queuedTaskHolder.getStatus())) {
-              TaskResult result = queuedTaskHolder.getResult();
+                if (result == null) {
+                  return BootstrapColor.INFO;
+                }
 
-              if (result == null) {
-                return BootstrapColor.INFO;
+                return switch (result) {
+                  case SUCCESS -> BootstrapColor.SUCCESS;
+                  case WARN -> BootstrapColor.WARNING;
+                  case ERROR, FATAL -> BootstrapColor.DANGER;
+                };
               }
 
-              switch (result) {
-                case SUCCESS:
-                  return BootstrapColor.SUCCESS;
-                case WARN:
-                  return BootstrapColor.WARNING;
-                case ERROR:
-                case FATAL:
-                  return BootstrapColor.DANGER;
-              }
-            }
-
-            return TaskStatusRenderer.get().renderColor(queuedTaskHolder.getStatus(), getLocale());
-          }
-        };
+              return TaskStatusRenderer.get()
+                  .renderColor(queuedTaskHolder.getStatus(), getLocale());
+            });
 
     add(
         new WebMarkupContainer("statusContainer")
@@ -156,30 +148,26 @@ public class ConsoleMaintenanceTaskDetailPage extends ConsoleMaintenanceTaskTemp
                             .keepMarkup()
                             .yesNo()
                             .onClick(
-                                new IAjaxAction() {
-                                  private static final long serialVersionUID = 1L;
-
-                                  @Override
-                                  public void execute(AjaxRequestTarget target) {
-                                    try {
-                                      queuedTaskHolderManager.reload(
-                                          queuedTaskHolderModel.getObject().getId());
-                                      Session.get()
-                                          .success(
-                                              getString(
-                                                  "console.maintenance.task.detail.mainInformation.reload.success"));
-                                      throw MAPPER
-                                          .map(queuedTaskHolderModel)
-                                          .newRestartResponseException();
-                                    } catch (RestartResponseException e) {
-                                      throw e;
-                                    } catch (Exception e) {
-                                      LOGGER.error("Unexpected error while reloading task", e);
-                                      Session.get().error(getString("common.error.unexpected"));
-                                    }
-                                    FeedbackUtils.refreshFeedback(target, getPage());
-                                  }
-                                })
+                                (IAjaxAction)
+                                    target -> {
+                                      try {
+                                        queuedTaskHolderManager.reload(
+                                            queuedTaskHolderModel.getObject().getId());
+                                        Session.get()
+                                            .success(
+                                                getString(
+                                                    "console.maintenance.task.detail.mainInformation.reload.success"));
+                                        throw MAPPER
+                                            .map(queuedTaskHolderModel)
+                                            .newRestartResponseException();
+                                      } catch (RestartResponseException e) {
+                                        throw e;
+                                      } catch (Exception e) {
+                                        LOGGER.error("Unexpected error while reloading task", e);
+                                        Session.get().error(getString("common.error.unexpected"));
+                                      }
+                                      FeedbackUtils.refreshFeedback(target, getPage());
+                                    })
                             .create("reload", queuedTaskHolderModel)
                             .add(
                                 new Condition() {
@@ -201,30 +189,26 @@ public class ConsoleMaintenanceTaskDetailPage extends ConsoleMaintenanceTaskTemp
                             .keepMarkup()
                             .yesNo()
                             .onClick(
-                                new IAjaxAction() {
-                                  private static final long serialVersionUID = 1L;
-
-                                  @Override
-                                  public void execute(AjaxRequestTarget target) {
-                                    try {
-                                      queuedTaskHolderManager.cancel(
-                                          queuedTaskHolderModel.getObject().getId());
-                                      Session.get()
-                                          .success(
-                                              getString(
-                                                  "console.maintenance.task.detail.mainInformation.cancel.success"));
-                                      throw MAPPER
-                                          .map(queuedTaskHolderModel)
-                                          .newRestartResponseException();
-                                    } catch (RestartResponseException e) {
-                                      throw e;
-                                    } catch (Exception e) {
-                                      LOGGER.error("Unexpected error while cancelling task", e);
-                                      Session.get().error(getString("common.error.unexpected"));
-                                    }
-                                    FeedbackUtils.refreshFeedback(target, getPage());
-                                  }
-                                })
+                                (IAjaxAction)
+                                    target -> {
+                                      try {
+                                        queuedTaskHolderManager.cancel(
+                                            queuedTaskHolderModel.getObject().getId());
+                                        Session.get()
+                                            .success(
+                                                getString(
+                                                    "console.maintenance.task.detail.mainInformation.cancel.success"));
+                                        throw MAPPER
+                                            .map(queuedTaskHolderModel)
+                                            .newRestartResponseException();
+                                      } catch (RestartResponseException e) {
+                                        throw e;
+                                      } catch (Exception e) {
+                                        LOGGER.error("Unexpected error while cancelling task", e);
+                                        Session.get().error(getString("common.error.unexpected"));
+                                      }
+                                      FeedbackUtils.refreshFeedback(target, getPage());
+                                    })
                             .create("cancel", queuedTaskHolderModel)
                             .add(
                                 new Condition() {
@@ -288,23 +272,20 @@ public class ConsoleMaintenanceTaskDetailPage extends ConsoleMaintenanceTaskTemp
     add(
         new CoreLabel(
             "serializedTask",
-            new LoadableDetachableModel<String>() {
-              private static final long serialVersionUID = 1L;
-
-              @Override
-              protected String load() {
-                try {
-                  AbstractTask runnableTask =
-                      OBJECT_MAPPER.readValue(
-                          queuedTaskHolderModel.getObject().getSerializedTask(),
-                          AbstractTask.class);
-                  return OBJECT_MAPPER.writeValueAsString(runnableTask);
-                } catch (Exception e) {
-                  LOGGER.error("Error parsing the task: " + queuedTaskHolderModel.getObject(), e);
-                  return "Error parsing the task";
-                }
-              }
-            }));
+            LoadableDetachableModel.of(
+                () -> {
+                  try {
+                    AbstractTask runnableTask =
+                        OBJECT_MAPPER.readValue(
+                            queuedTaskHolderModel.getObject().getSerializedTask(),
+                            AbstractTask.class);
+                    return OBJECT_MAPPER.writeValueAsString(runnableTask);
+                  } catch (Exception e) {
+                    LOGGER.error(
+                        "Error parsing the task: {}", queuedTaskHolderModel.getObject(), e);
+                    return "Error parsing the task";
+                  }
+                })));
 
     add(
         new CoreLabel(

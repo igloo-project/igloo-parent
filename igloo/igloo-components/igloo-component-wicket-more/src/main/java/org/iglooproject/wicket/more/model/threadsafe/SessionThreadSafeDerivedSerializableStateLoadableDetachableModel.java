@@ -171,11 +171,10 @@ public abstract class SessionThreadSafeDerivedSerializableStateLoadableDetachabl
     if (obj == this) {
       return true;
     }
-    if (!(obj instanceof SessionThreadSafeDerivedSerializableStateLoadableDetachableModel)) {
+    if (!(obj
+        instanceof SessionThreadSafeDerivedSerializableStateLoadableDetachableModel<?, ?> other)) {
       return false;
     }
-    SessionThreadSafeDerivedSerializableStateLoadableDetachableModel<?, ?> other =
-        (SessionThreadSafeDerivedSerializableStateLoadableDetachableModel<?, ?>) obj;
     return new EqualsBuilder()
         .append(sharedSerializableState.get(), other.sharedSerializableState.get())
         .isEquals();

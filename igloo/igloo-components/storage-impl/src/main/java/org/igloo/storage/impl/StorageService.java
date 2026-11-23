@@ -316,7 +316,7 @@ public class StorageService
     // get general data
     fileCount = files.size();
     fichierCount = result.size();
-    fichierSize = result.values().stream().map(Fichier::getSize).reduce((a, b) -> a + b).orElse(0l);
+    fichierSize = result.values().stream().map(Fichier::getSize).reduce(Long::sum).orElse(0l);
 
     // perform two-way comparison
     Set<Path> missingEntities = Sets.difference(files, result.keySet());

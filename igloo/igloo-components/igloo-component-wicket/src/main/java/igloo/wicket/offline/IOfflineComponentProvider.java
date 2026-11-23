@@ -16,7 +16,7 @@ public interface IOfflineComponentProvider<T> {
 
   public static <T> IOfflineComponentProvider<T> fromSupplier(
       final SerializableSupplier2<T> supplier, Class<T> componentClass) {
-    return new IOfflineComponentProvider<T>() {
+    return new IOfflineComponentProvider<>() {
 
       @Override
       public T getComponent() {

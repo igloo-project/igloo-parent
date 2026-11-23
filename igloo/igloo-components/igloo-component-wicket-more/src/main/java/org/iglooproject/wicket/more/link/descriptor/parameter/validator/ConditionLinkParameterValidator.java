@@ -23,7 +23,7 @@ public class ConditionLinkParameterValidator implements ILinkParameterValidator 
   public static <T extends Tuple> ILinkParameterValidatorFactory<T> fromConditionFactory(
       final IDetachableFactory<T, ? extends Condition> conditionFactory) {
     Args.notNull(conditionFactory, "conditionFactory");
-    return new AbstractLinkParameterValidatorFactory<T>() {
+    return new AbstractLinkParameterValidatorFactory<>() {
       private static final long serialVersionUID = 1L;
 
       @Override
@@ -42,7 +42,7 @@ public class ConditionLinkParameterValidator implements ILinkParameterValidator 
   public static <R> ILinkParameterValidatorFactory<Unit<IModel<? extends R>>> predicateFactory(
       final SerializablePredicate2<? super R> predicate) {
     Args.notNull(predicate, "predicate");
-    return new AbstractLinkParameterValidatorFactory<Unit<IModel<? extends R>>>() {
+    return new AbstractLinkParameterValidatorFactory<>() {
       private static final long serialVersionUID = 1L;
 
       @Override
@@ -56,7 +56,7 @@ public class ConditionLinkParameterValidator implements ILinkParameterValidator 
   public static <R> ILinkParameterValidatorFactory<Unit<IModel<? extends R>>> anyPermissionFactory(
       final Collection<String> permissions) {
     Args.notNull(permissions, "permissions");
-    return new AbstractLinkParameterValidatorFactory<Unit<IModel<? extends R>>>() {
+    return new AbstractLinkParameterValidatorFactory<>() {
       private static final long serialVersionUID = 1L;
 
       @Override
@@ -72,7 +72,7 @@ public class ConditionLinkParameterValidator implements ILinkParameterValidator 
           final BindingRoot<R, T> bindingRoot, final Collection<String> permissions) {
     Args.notNull(bindingRoot, "bindingRoot");
     Args.notNull(permissions, "permissions");
-    return new AbstractLinkParameterValidatorFactory<Unit<IModel<? extends R>>>() {
+    return new AbstractLinkParameterValidatorFactory<>() {
       private static final long serialVersionUID = 1L;
 
       @Override

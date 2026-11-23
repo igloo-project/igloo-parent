@@ -23,9 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
-import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
-import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 import tools.jackson.databind.ObjectMapper;
 
@@ -139,31 +137,28 @@ public abstract class AbstractTask implements Runnable, Serializable {
 
       taskExecutionResult =
           taskManagementTransactionTemplate.execute(
-              new TransactionCallback<TaskExecutionResult>() {
-                @Override
-                public TaskExecutionResult doInTransaction(TransactionStatus status) {
-                  try {
-                    QueuedTaskHolder queuedTaskHolder =
-                        queuedTaskHolderService.getById(queuedTaskHolderId);
+              status -> {
+                try {
+                  QueuedTaskHolder queuedTaskHolder =
+                      queuedTaskHolderService.getById(queuedTaskHolderId);
 
-                    if (queuedTaskHolder == null) {
-                      throw new IllegalArgumentException(
-                          "No task found with id " + queuedTaskHolderId);
-                    }
+                  if (queuedTaskHolder == null) {
+                    throw new IllegalArgumentException(
+                        "No task found with id " + queuedTaskHolderId);
+                  }
 
-                    queuedTaskHolder.setStartDate(Instant.now());
-                    queuedTaskHolder.setStatus(TaskStatus.RUNNING);
-                    queuedTaskHolderService.update(queuedTaskHolder);
+                  queuedTaskHolder.setStartDate(Instant.now());
+                  queuedTaskHolder.setStatus(TaskStatus.RUNNING);
+                  queuedTaskHolderService.update(queuedTaskHolder);
 
-                    return null;
-                  } catch (RuntimeException | ServiceException | SecurityServiceException e) {
-                    status.setRollbackOnly();
-                    return TaskExecutionResult.failed(e);
-                  } finally {
-                    if (Thread.currentThread().isInterrupted()) {
-                      // Save the information (seems to be cleared by the transaction template)
-                      interruptedFlag.setTrue();
-                    }
+                  return null;
+                } catch (RuntimeException | ServiceException | SecurityServiceException e) {
+                  status.setRollbackOnly();
+                  return TaskExecutionResult.failed(e);
+                } finally {
+                  if (Thread.currentThread().isInterrupted()) {
+                    // Save the information (seems to be cleared by the transaction template)
+                    interruptedFlag.setTrue();
                   }
                 }
               });
@@ -171,40 +166,37 @@ public abstract class AbstractTask implements Runnable, Serializable {
       if (taskExecutionResult != null && TaskResult.FATAL.equals(taskExecutionResult.getResult())) {
         final TaskStatus status =
             taskManagementTransactionTemplate.execute(
-                new TransactionCallback<TaskStatus>() {
-                  @Override
-                  public TaskStatus doInTransaction(TransactionStatus status) {
-                    try {
-                      QueuedTaskHolder queuedTaskHolder =
-                          queuedTaskHolderService.getById(queuedTaskHolderId);
-                      final TaskStatus taskStatus;
+                _ -> {
+                  try {
+                    QueuedTaskHolder queuedTaskHolder =
+                        queuedTaskHolderService.getById(queuedTaskHolderId);
+                    final TaskStatus taskStatus;
 
-                      if (queuedTaskHolder == null) {
-                        LOGGER.error(
-                            "Task {} could not be found; skipped execution.",
-                            queuedTaskHolderId,
-                            taskExecutionResult);
-                        return null;
-                      }
-
-                      if (interruptedFlag.isTrue()) {
-                        LOGGER.error(
-                            "An interrupt has occured while starting task {}",
-                            queuedTaskHolder,
-                            taskExecutionResult.getThrowable());
-                        taskStatus = onInterruptStatus(taskExecutionResult);
-                      } else {
-                        LOGGER.error(
-                            "An error has occured while starting task {}",
-                            queuedTaskHolder,
-                            taskExecutionResult.getThrowable());
-                        taskStatus = onFailStatus(taskExecutionResult);
-                      }
-                      endTask(queuedTaskHolder, taskStatus);
-                      return taskStatus;
-                    } catch (RuntimeException | ServiceException | SecurityServiceException e) {
-                      throw new RuntimeException(e);
+                    if (queuedTaskHolder == null) {
+                      LOGGER.error(
+                          "Task {} could not be found; skipped execution (result: {}).",
+                          queuedTaskHolderId,
+                          taskExecutionResult);
+                      return null;
                     }
+
+                    if (interruptedFlag.isTrue()) {
+                      LOGGER.error(
+                          "An interrupt has occured while starting task {}",
+                          queuedTaskHolder,
+                          taskExecutionResult.getThrowable());
+                      taskStatus = onInterruptStatus(taskExecutionResult);
+                    } else {
+                      LOGGER.error(
+                          "An error has occured while starting task {}",
+                          queuedTaskHolder,
+                          taskExecutionResult.getThrowable());
+                      taskStatus = onFailStatus(taskExecutionResult);
+                    }
+                    endTask(queuedTaskHolder, taskStatus);
+                    return taskStatus;
+                  } catch (RuntimeException | ServiceException | SecurityServiceException e) {
+                    throw new RuntimeException(e);
                   }
                 });
 
@@ -223,41 +215,38 @@ public abstract class AbstractTask implements Runnable, Serializable {
       try {
         taskExecutionResult =
             taskExecutionTransactionTemplate.execute(
-                new TransactionCallback<TaskExecutionResult>() {
-                  @Override
-                  public TaskExecutionResult doInTransaction(TransactionStatus status) {
-                    try {
-                      /*
-                       * The result may contain a business exception, caught in doTask.
-                       * We don't have to propagate it, the task will be considered in error and onFailStatus()
-                       * will be called.
-                       */
-                      TaskExecutionResult executionResult = doTask();
-                      batchReportBeanAtomicReference.set(executionResult.getReport());
-                      Objects.requireNonNull(executionResult, "executionResult must not be null");
+                status -> {
+                  try {
+                    /*
+                     * The result may contain a business exception, caught in doTask.
+                     * We don't have to propagate it, the task will be considered in error and onFailStatus()
+                     * will be called.
+                     */
+                    TaskExecutionResult executionResult = doTask();
+                    batchReportBeanAtomicReference.set(executionResult.getReport());
+                    Objects.requireNonNull(executionResult, "executionResult must not be null");
 
-                      /*
-                       * If the task execution caught a business exception in doTask without propagating it
-                       * (so as to preserve a batch report), we roll back the transaction.
-                       */
-                      if (TaskResult.FATAL.equals(executionResult.getResult())) {
-                        status.setRollbackOnly();
-                      }
+                    /*
+                     * If the task execution caught a business exception in doTask without propagating it
+                     * (so as to preserve a batch report), we roll back the transaction.
+                     */
+                    if (TaskResult.FATAL.equals(executionResult.getResult())) {
+                      status.setRollbackOnly();
+                    }
 
-                      taskExecutionResultAtomicReference.set(executionResult);
-                      return executionResult;
-                    } catch (InterruptedException e) {
-                      status.setRollbackOnly();
-                      Thread.currentThread().interrupt();
-                      return TaskExecutionResult.failed(e);
-                    } catch (Exception e) {
-                      status.setRollbackOnly();
-                      return TaskExecutionResult.failed(e);
-                    } finally {
-                      if (Thread.currentThread().isInterrupted()) {
-                        // Save the information (seems to be cleared by the transaction template)
-                        interruptedFlag.setTrue();
-                      }
+                    taskExecutionResultAtomicReference.set(executionResult);
+                    return executionResult;
+                  } catch (InterruptedException e) {
+                    status.setRollbackOnly();
+                    Thread.currentThread().interrupt();
+                    return TaskExecutionResult.failed(e);
+                  } catch (Exception e) {
+                    status.setRollbackOnly();
+                    return TaskExecutionResult.failed(e);
+                  } finally {
+                    if (Thread.currentThread().isInterrupted()) {
+                      // Save the information (seems to be cleared by the transaction template)
+                      interruptedFlag.setTrue();
                     }
                   }
                 });
@@ -286,49 +275,43 @@ public abstract class AbstractTask implements Runnable, Serializable {
         // Success case
         status =
             taskManagementTransactionTemplate.execute(
-                new TransactionCallback<TaskStatus>() {
-                  @Override
-                  public TaskStatus doInTransaction(TransactionStatus status) {
-                    try {
-                      QueuedTaskHolder queuedTaskHolder =
-                          queuedTaskHolderService.getById(queuedTaskHolderId);
-                      endTask(queuedTaskHolder, TaskStatus.COMPLETED);
-                      return TaskStatus.COMPLETED;
-                    } catch (RuntimeException | ServiceException | SecurityServiceException e) {
-                      throw new RuntimeException(e);
-                    }
+                _ -> {
+                  try {
+                    QueuedTaskHolder queuedTaskHolder =
+                        queuedTaskHolderService.getById(queuedTaskHolderId);
+                    endTask(queuedTaskHolder, TaskStatus.COMPLETED);
+                    return TaskStatus.COMPLETED;
+                  } catch (RuntimeException | ServiceException | SecurityServiceException e) {
+                    throw new RuntimeException(e);
                   }
                 });
       } else {
         // Error case
         status =
             taskManagementTransactionTemplate.execute(
-                new TransactionCallback<TaskStatus>() {
-                  @Override
-                  public TaskStatus doInTransaction(TransactionStatus status) {
-                    try {
-                      QueuedTaskHolder queuedTaskHolder =
-                          queuedTaskHolderService.getById(queuedTaskHolderId);
-                      final TaskStatus taskStatus;
+                _ -> {
+                  try {
+                    QueuedTaskHolder queuedTaskHolder =
+                        queuedTaskHolderService.getById(queuedTaskHolderId);
+                    final TaskStatus taskStatus;
 
-                      if (interruptedFlag.isTrue()) {
-                        LOGGER.error(
-                            "An interrupt has occured while executing task {}",
-                            queuedTaskHolder,
-                            taskExecutionResult.getThrowable());
-                        taskStatus = onInterruptStatus(taskExecutionResult);
-                      } else {
-                        LOGGER.error(
-                            "An error has occured while executing task {}",
-                            queuedTaskHolder,
-                            taskExecutionResult.getThrowable());
-                        taskStatus = onFailStatus(taskExecutionResult);
-                      }
-                      endTask(queuedTaskHolder, taskStatus);
-                      return taskStatus;
-                    } catch (RuntimeException | ServiceException | SecurityServiceException e) {
-                      throw new RuntimeException(e);
+                    if (interruptedFlag.isTrue()) {
+                      LOGGER.error(
+                          "An interrupt has occured while executing task {}",
+                          queuedTaskHolder,
+                          taskExecutionResult.getThrowable());
+                      taskStatus = onInterruptStatus(taskExecutionResult);
+                    } else {
+                      LOGGER.error(
+                          "An error has occured while executing task {}",
+                          queuedTaskHolder,
+                          taskExecutionResult.getThrowable());
+                      taskStatus = onFailStatus(taskExecutionResult);
                     }
+                    endTask(queuedTaskHolder, taskStatus);
+                    return taskStatus;
+                  } catch (RuntimeException | ServiceException | SecurityServiceException e) {
+                    throw new RuntimeException(e);
                   }
                 });
       }

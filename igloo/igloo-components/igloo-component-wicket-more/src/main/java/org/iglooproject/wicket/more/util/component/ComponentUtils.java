@@ -11,20 +11,20 @@ import org.iglooproject.functional.SerializablePredicate2;
 
 public final class ComponentUtils {
 
-  public static final Stream<Component> parents(Component component) {
+  public static Stream<Component> parents(Component component) {
     return Streams.stream(new ComponentParentIterator(component));
   }
 
-  public static final boolean anyParent(
+  public static boolean anyParent(
       Component component, SerializablePredicate2<? super Component> predicate) {
     return parents(component).anyMatch(predicate);
   }
 
-  public static final boolean anyParentModal(Component component) {
+  public static boolean anyParentModal(Component component) {
     return anyParent(component, Predicates2.instanceOf(IModalPopupPanel.class));
   }
 
-  public static final IModalPopupPanel getParentModal(Component component) {
+  public static IModalPopupPanel getParentModal(Component component) {
     return parents(component)
         .filter(Predicates2.instanceOf(IModalPopupPanel.class))
         .map(c -> (IModalPopupPanel) c)

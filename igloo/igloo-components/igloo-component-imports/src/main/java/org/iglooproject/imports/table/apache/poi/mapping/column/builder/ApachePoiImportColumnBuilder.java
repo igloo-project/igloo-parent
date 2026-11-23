@@ -81,12 +81,10 @@ public class ApachePoiImportColumnBuilder
                   return null;
                 }
 
-                switch (ApachePoiImportUtils.getCellActualValueType(cell)) {
-                  case NUMERIC:
-                    return cell.getNumericCellValue();
-                  default:
-                    return null;
-                }
+                return switch (ApachePoiImportUtils.getCellActualValueType(cell)) {
+                  case NUMERIC -> cell.getNumericCellValue();
+                  default -> null;
+                };
               });
     }
 
@@ -106,14 +104,11 @@ public class ApachePoiImportColumnBuilder
                   return null;
                 }
 
-                switch (ApachePoiImportUtils.getCellActualValueType(cell)) {
-                  case NUMERIC:
-                    return formatIfNumeric.get().format(cell.getNumericCellValue());
-                  case STRING:
-                    return StringUtils.trimToNull(cell.getStringCellValue());
-                  default:
-                    return null;
-                }
+                return switch (ApachePoiImportUtils.getCellActualValueType(cell)) {
+                  case NUMERIC -> formatIfNumeric.get().format(cell.getNumericCellValue());
+                  case STRING -> StringUtils.trimToNull(cell.getStringCellValue());
+                  default -> null;
+                };
               });
     }
 
@@ -126,12 +121,10 @@ public class ApachePoiImportColumnBuilder
                   return null;
                 }
 
-                switch (ApachePoiImportUtils.getCellActualValueType(cell)) {
-                  case STRING:
-                    return null;
-                  default:
-                    return cell.getDateCellValue();
-                }
+                return switch (ApachePoiImportUtils.getCellActualValueType(cell)) {
+                  case STRING -> null;
+                  default -> cell.getDateCellValue();
+                };
               });
     }
 
@@ -144,12 +137,10 @@ public class ApachePoiImportColumnBuilder
                   return null;
                 }
 
-                switch (ApachePoiImportUtils.getCellActualValueType(cell)) {
-                  case STRING:
-                    return null;
-                  default:
-                    return cell.getLocalDateTimeCellValue().toLocalDate();
-                }
+                return switch (ApachePoiImportUtils.getCellActualValueType(cell)) {
+                  case STRING -> null;
+                  default -> cell.getLocalDateTimeCellValue().toLocalDate();
+                };
               });
     }
 
@@ -162,12 +153,10 @@ public class ApachePoiImportColumnBuilder
                   return null;
                 }
 
-                switch (ApachePoiImportUtils.getCellActualValueType(cell)) {
-                  case STRING:
-                    return null;
-                  default:
-                    return cell.getLocalDateTimeCellValue();
-                }
+                return switch (ApachePoiImportUtils.getCellActualValueType(cell)) {
+                  case STRING -> null;
+                  default -> cell.getLocalDateTimeCellValue();
+                };
               });
     }
   }

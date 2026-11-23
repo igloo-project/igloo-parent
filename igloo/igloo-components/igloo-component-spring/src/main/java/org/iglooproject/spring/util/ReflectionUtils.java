@@ -38,8 +38,8 @@ public final class ReflectionUtils {
     for (BeanDefinition beanDefinition : beanDefinitions) {
       try {
         classes.add((Class<? extends T>) Class.forName(beanDefinition.getBeanClassName()));
-      } catch (ClassNotFoundException e) {
-        LOGGER.warn("Class not found: " + beanDefinition.getBeanClassName());
+      } catch (ClassNotFoundException _) {
+        LOGGER.warn("Class not found: {}", beanDefinition.getBeanClassName());
       }
     }
 

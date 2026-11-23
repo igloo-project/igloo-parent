@@ -109,7 +109,7 @@ class ConsumerThread extends Thread {
          */
         timeRemaining -= step;
       }
-    } catch (InterruptedException e) {
+    } catch (InterruptedException _) {
       /*
        * The current thread (the one waiting for the consumer thread) was interrupted
        * Just put back the interrupt marker on the current thread before we interrupt the consumer thread
@@ -183,7 +183,7 @@ class ConsumerThread extends Thread {
           setWorking(false);
         }
       }
-    } catch (InterruptedException interrupted) {
+    } catch (InterruptedException _) {
       Thread.currentThread().interrupt();
     }
   }
@@ -195,9 +195,8 @@ class ConsumerThread extends Thread {
       queuedTaskHolder = queuedTaskHolderService.getById(queuedTaskHolderId);
     } catch (RuntimeException e) {
       LOGGER.error(
-          "Error while trying to fetch a task from database before run (holder: "
-              + queuedTaskHolderId
-              + ").",
+          "Error while trying to fetch a task from database before run (holder: {}).",
+          queuedTaskHolderId,
           e);
       return;
     }
@@ -209,8 +208,7 @@ class ConsumerThread extends Thread {
               queuedTaskHolder.getSerializedTask(), AbstractTask.class);
     } catch (RuntimeException e) {
       LOGGER.error(
-          "Error while trying to deserialize a task before run (holder: " + queuedTaskHolder + ").",
-          e);
+          "Error while trying to deserialize a task before run (holder: {}).", queuedTaskHolder, e);
       return;
     }
 
@@ -219,8 +217,7 @@ class ConsumerThread extends Thread {
       SpringBeanUtils.autowireBean(applicationContext, runnableTask);
     } catch (RuntimeException e) {
       LOGGER.error(
-          "Error while trying to initialize a task before run (holder: " + queuedTaskHolder + ").",
-          e);
+          "Error while trying to initialize a task before run (holder: {}).", queuedTaskHolder, e);
       return;
     }
 
@@ -228,15 +225,14 @@ class ConsumerThread extends Thread {
       runnableTask.run();
     } catch (RuntimeException e) {
       LOGGER.error(
-          "Error while trying to consume a task (holder: "
-              + queuedTaskHolder
-              + "); the task holder was probably left in a stale state.",
+          "Error while trying to consume a task (holder: {}); the task holder was probably left in a stale state.",
+          queuedTaskHolder,
           e);
     }
 
     try {
       queuedTaskHolderManager.onTaskFinish(queuedTaskHolder.getId());
-    } catch (RuntimeException e) {
+    } catch (RuntimeException _) {
       LOGGER.error("Error while signaling task finish for {}", queuedTaskHolderId);
     }
   }

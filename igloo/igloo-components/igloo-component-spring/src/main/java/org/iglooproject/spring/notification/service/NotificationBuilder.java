@@ -812,21 +812,18 @@ public class NotificationBuilder
 
   private String getDefaultSender(String from) {
     MailSenderBehavior behavior = propertyService.get(NOTIFICATION_MAIL_SENDER_BEHAVIOR);
-    switch (behavior) {
+    return switch (behavior) {
       /** Do not override builder value */
-      case EXPLICIT:
-        return null;
+      case EXPLICIT -> null;
       /** Use value from configuration */
-      case FALLBACK_TO_CONFIGURATION:
-        return propertyService.get(NOTIFICATION_MAIL_SENDER);
+      case FALLBACK_TO_CONFIGURATION -> propertyService.get(NOTIFICATION_MAIL_SENDER);
       /** Use value from From: */
-      case FALLBACK_TO_FROM:
-        return from;
-      default:
-        throw new IllegalStateException(
-            String.format(
-                "Unknown value %s for %s", behavior, MailSenderBehavior.class.getSimpleName()));
-    }
+      case FALLBACK_TO_FROM -> from;
+      default ->
+          throw new IllegalStateException(
+              String.format(
+                  "Unknown value %s for %s", behavior, MailSenderBehavior.class.getSimpleName()));
+    };
   }
 
   private Locale getDefaultLocale() {

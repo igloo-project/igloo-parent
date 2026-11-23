@@ -96,7 +96,7 @@ public class DatabaseOperations {
     } else if (fichiers.size() > 1) {
       throw new NonUniqueResultException();
     }
-    return fichiers.get(0);
+    return fichiers.getFirst();
   }
 
   public Fichier getAttachedFichier(Fichier fichier) {
@@ -230,7 +230,7 @@ public class DatabaseOperations {
       }
       failure.setId(storedFailure.getId());
       entityManager().merge(failure);
-    } catch (NoResultException e) {
+    } catch (NoResultException _) {
       entityManager().persist(failure);
     }
   }
@@ -298,7 +298,7 @@ public class DatabaseOperations {
           .setParameter("storageUnit", unit)
           .setMaxResults(1)
           .getSingleResult();
-    } catch (NoResultException e) {
+    } catch (NoResultException _) {
       return null;
     }
   }
@@ -314,7 +314,7 @@ public class DatabaseOperations {
           .setParameter("storageUnit", unit)
           .setMaxResults(1)
           .getSingleResult();
-    } catch (NoResultException e) {
+    } catch (NoResultException _) {
       return null;
     }
   }

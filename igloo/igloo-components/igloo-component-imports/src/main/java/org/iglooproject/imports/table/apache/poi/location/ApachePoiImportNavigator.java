@@ -47,17 +47,15 @@ public class ApachePoiImportNavigator
   }
 
   protected boolean cellHasContent(Cell cell) {
-    switch (ApachePoiImportUtils.getCellActualValueType(cell)) {
-      case BLANK:
-        return false;
-      case STRING:
-        return !StringUtils.isEmpty(cell.getStringCellValue());
-      default:
-        // In other cases we cannot detect whether the cell is actually empty in the
-        // underlying file, or at least not without relying on low-level APIs.
-        // Just give up.
-        return true;
-    }
+    return switch (ApachePoiImportUtils.getCellActualValueType(cell)) {
+      case BLANK -> false;
+      case STRING -> !StringUtils.isEmpty(cell.getStringCellValue());
+      default ->
+          // In other cases we cannot detect whether the cell is actually empty in the
+          // underlying file, or at least not without relying on low-level APIs.
+          // Just give up.
+          true;
+    };
   }
 
   @Override
@@ -67,7 +65,7 @@ public class ApachePoiImportNavigator
 
   @Override
   public Iterator<Row> nonEmptyRows(Sheet sheet) {
-    return Streams.stream(sheet.iterator()).filter(row -> rowHasContent(row)).iterator();
+    return Streams.stream(sheet.iterator()).filter(this::rowHasContent).iterator();
   }
 
   @Override

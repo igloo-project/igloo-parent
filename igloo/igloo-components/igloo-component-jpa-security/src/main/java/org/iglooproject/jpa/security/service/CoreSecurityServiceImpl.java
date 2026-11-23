@@ -189,7 +189,7 @@ public class CoreSecurityServiceImpl implements ISecurityService {
     // build a new authentication
     try {
       return createAuthenticationFromUser(username);
-    } catch (DisabledException e) {
+    } catch (DisabledException _) {
       return null;
     }
   }

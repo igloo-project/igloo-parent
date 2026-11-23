@@ -15,7 +15,7 @@ public interface IHibernateSearchSearchQuery<
   default Function<SearchSortFactory, SortFinalStep> sortContributor(
       Map<S, ISort.SortOrder> sorts) {
     if (sorts == null) {
-      return f -> f.composite();
+      return SearchSortFactory::composite;
     }
 
     return f ->

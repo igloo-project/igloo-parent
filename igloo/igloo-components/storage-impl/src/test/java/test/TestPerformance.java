@@ -107,7 +107,7 @@ class TestPerformance extends AbstractTest {
     Set<Fichier> fichiers =
         doInReadTransaction(
             entityManagerFactory, () -> databaseOperations.listUnitAliveFichiers(unit));
-    Long fichierSize = fichiers.stream().map(Fichier::getSize).reduce((a, b) -> a + b).get();
+    Long fichierSize = fichiers.stream().map(Fichier::getSize).reduce(Long::sum).get();
     LOGGER.info("{} bytes created in {} seconds", fichierSize, creationWatch.elapsed().toSeconds());
     assertThat(fichiers).hasSize(fileCount);
     assertThat(fichiers.stream().map(Fichier::getStorageUnit).distinct()).hasSize(1);
@@ -115,11 +115,11 @@ class TestPerformance extends AbstractTest {
         .hasSize(fileCount);
 
     Consumer<List<StorageConsistencyCheck>> noErrorAssertion =
-        (cs) ->
+        cs ->
             assertThat(cs)
                 .hasSize(1)
                 .satisfies(
-                    (c) -> {
+                    c -> {
                       try (AutoCloseableSoftAssertions softly = new AutoCloseableSoftAssertions()) {
                         softly
                             .assertThat(c.getFsFileCount())
@@ -141,11 +141,11 @@ class TestPerformance extends AbstractTest {
                     },
                     atIndex(0));
     checkConsistency(
-        entityManagerFactory, fileCount, false, noErrorAssertion, (f) -> assertThat(f).isEmpty());
+        entityManagerFactory, fileCount, false, noErrorAssertion, f -> assertThat(f).isEmpty());
     checkConsistency(
-        entityManagerFactory, fileCount, true, noErrorAssertion, (f) -> assertThat(f).isEmpty());
+        entityManagerFactory, fileCount, true, noErrorAssertion, f -> assertThat(f).isEmpty());
 
-    List<Fichier> removed = new ArrayList<Fichier>(fichiers);
+    List<Fichier> removed = new ArrayList<>(fichiers);
     AtomicLong removedEntitiesSize = new AtomicLong();
     AtomicLong removedFilesSize = new AtomicLong();
     AtomicLong alteredSize = new AtomicLong();
@@ -208,11 +208,11 @@ class TestPerformance extends AbstractTest {
         entityManagerFactory,
         fileCount,
         true,
-        (cs) ->
+        cs ->
             assertThat(cs)
                 .hasSize(1)
                 .satisfies(
-                    (c) -> {
+                    c -> {
                       try (AutoCloseableSoftAssertions softly = new AutoCloseableSoftAssertions()) {
                         softly
                             .assertThat(c.getFsFileCount())
@@ -239,27 +239,27 @@ class TestPerformance extends AbstractTest {
                       }
                     },
                     atIndex(0)),
-        (f) ->
+        f ->
             assertThat(f)
                 .hasSize(150)
                 // check we have 50 items for each type
                 .areExactly(
                     50,
-                    new Condition<StorageFailure>(
+                    new Condition<>(
                         fi ->
                             StorageFailureType.MISSING_ENTITY.equals(fi.getType())
                                 && removedEntities.contains(Path.of(fi.getPath())),
                         "Entity from removedEntities must be found missing"))
                 .areExactly(
                     50,
-                    new Condition<StorageFailure>(
+                    new Condition<>(
                         fi ->
                             StorageFailureType.MISSING_FILE.equals(fi.getType())
                                 && removedFiles.contains(fi.getFichier()),
                         "Path from removedFiles must be found missing"))
                 .areExactly(
                     50,
-                    new Condition<StorageFailure>(
+                    new Condition<>(
                         fi ->
                             StorageFailureType.SIZE_MISMATCH.equals(fi.getType())
                                 && contentAltered.contains(fi.getFichier()),

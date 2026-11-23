@@ -22,7 +22,7 @@ public class ActionColumnAjaxActionFactory<T>
   @Override
   public AjaxLink<T> create(String wicketId, final IModel<T> parameter) {
     AjaxLink<T> link =
-        new AjaxLink<T>(wicketId, parameter) {
+        new AjaxLink<>(wicketId, parameter) {
           private static final long serialVersionUID = 1L;
 
           @Override

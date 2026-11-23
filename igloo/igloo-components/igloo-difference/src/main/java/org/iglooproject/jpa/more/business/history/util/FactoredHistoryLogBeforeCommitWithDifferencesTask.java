@@ -56,18 +56,16 @@ public class FactoredHistoryLogBeforeCommitWithDifferencesTask
      */
     transactionScopeIndependantRunnerService.run(
         true,
-        new Callable<Void>() {
-          @Override
-          public Void call() throws Exception {
-            for (HistoryLogRunner<?> runner : runners) {
-              runner.retrieveReference();
-            }
-            for (HistoryLogRunner<?> runner : runners) {
-              runner.initializeReference();
-            }
-            return null;
-          }
-        });
+        (Callable<Void>)
+            () -> {
+              for (HistoryLogRunner<?> runner : runners) {
+                runner.retrieveReference();
+              }
+              for (HistoryLogRunner<?> runner : runners) {
+                runner.initializeReference();
+              }
+              return null;
+            });
 
     for (HistoryLogRunner<?> runner : runners) {
       runner.log();

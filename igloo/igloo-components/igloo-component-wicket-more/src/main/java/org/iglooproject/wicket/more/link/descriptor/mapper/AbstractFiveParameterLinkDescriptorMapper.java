@@ -35,7 +35,7 @@ public abstract class AbstractFiveParameterLinkDescriptorMapper<L, T1, T2, T3, T
   @Override
   public IFourParameterLinkDescriptorMapper<L, T2, T3, T4, T5> setParameter1(
       final IModel<T1> model1) {
-    return new AbstractFourParameterLinkDescriptorMapper<L, T2, T3, T4, T5>() {
+    return new AbstractFourParameterLinkDescriptorMapper<>() {
       private static final long serialVersionUID = 1L;
 
       @Override
@@ -66,7 +66,7 @@ public abstract class AbstractFiveParameterLinkDescriptorMapper<L, T1, T2, T3, T
   @Override
   public AbstractFourParameterLinkDescriptorMapper<L, T1, T3, T4, T5> setParameter2(
       final IModel<T2> model2) {
-    return new AbstractFourParameterLinkDescriptorMapper<L, T1, T3, T4, T5>() {
+    return new AbstractFourParameterLinkDescriptorMapper<>() {
       private static final long serialVersionUID = 1L;
 
       @Override
@@ -97,7 +97,7 @@ public abstract class AbstractFiveParameterLinkDescriptorMapper<L, T1, T2, T3, T
   @Override
   public AbstractFourParameterLinkDescriptorMapper<L, T1, T2, T4, T5> setParameter3(
       final IModel<T3> model3) {
-    return new AbstractFourParameterLinkDescriptorMapper<L, T1, T2, T4, T5>() {
+    return new AbstractFourParameterLinkDescriptorMapper<>() {
       private static final long serialVersionUID = 1L;
 
       @Override
@@ -128,7 +128,7 @@ public abstract class AbstractFiveParameterLinkDescriptorMapper<L, T1, T2, T3, T
   @Override
   public AbstractFourParameterLinkDescriptorMapper<L, T1, T2, T3, T5> setParameter4(
       final IModel<T4> model4) {
-    return new AbstractFourParameterLinkDescriptorMapper<L, T1, T2, T3, T5>() {
+    return new AbstractFourParameterLinkDescriptorMapper<>() {
       private static final long serialVersionUID = 1L;
 
       @Override
@@ -159,7 +159,7 @@ public abstract class AbstractFiveParameterLinkDescriptorMapper<L, T1, T2, T3, T
   @Override
   public AbstractFourParameterLinkDescriptorMapper<L, T1, T2, T3, T4> setParameter5(
       final IModel<T5> model5) {
-    return new AbstractFourParameterLinkDescriptorMapper<L, T1, T2, T3, T4>() {
+    return new AbstractFourParameterLinkDescriptorMapper<>() {
       private static final long serialVersionUID = 1L;
 
       @Override

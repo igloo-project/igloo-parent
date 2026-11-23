@@ -10,7 +10,7 @@ public final class NotificationUtils {
   private NotificationUtils() {}
 
   private static final ThreadLocal<Boolean> NOTIFICATIONS_ENABLED =
-      new ThreadLocal<Boolean>() {
+      new ThreadLocal<>() {
         @Override
         protected Boolean initialValue() {
           return true;

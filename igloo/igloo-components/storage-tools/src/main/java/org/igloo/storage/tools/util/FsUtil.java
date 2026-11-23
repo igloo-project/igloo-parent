@@ -53,7 +53,7 @@ public class FsUtil {
       }
       monitor.moved();
       return MoveResult.MOVED;
-    } catch (IOException | RuntimeException e) {
+    } catch (IOException | RuntimeException _) {
       monitor.moveFailed();
       return MoveResult.MOVE_FAILED;
     }

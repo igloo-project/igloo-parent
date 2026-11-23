@@ -2,8 +2,6 @@ package org.iglooproject.jpa.more.business.difference.factory;
 
 import com.google.common.collect.Lists;
 import de.danielbechler.diff.node.DiffNode;
-import de.danielbechler.diff.node.DiffNode.Visitor;
-import de.danielbechler.diff.node.Visit;
 import java.util.Collection;
 import java.util.List;
 import org.iglooproject.commons.util.fieldpath.FieldPath;
@@ -38,7 +36,6 @@ public final class DefaultHistoryDifferenceFactory<T> extends AbstractHistoryDif
 
   private Predicate2<? super DiffNode> nodeFilter =
       input -> DiffUtils.isItem(input) || !input.hasChildren();
-  ;
 
   public void setFilter(Predicate2<? super DiffNode> filter) {
     this.branchFilter = filter;
@@ -103,33 +100,30 @@ public final class DefaultHistoryDifferenceFactory<T> extends AbstractHistoryDif
       Predicate2<? super DiffNode> dynamicNodeFilter) {
     final List<HD> result = Lists.newLinkedList();
     parentNode.visitChildren(
-        new Visitor() {
-          @Override
-          public void node(DiffNode currentNode, Visit visit) {
-            visit.dontGoDeeper();
-            if (branchFilter.test(currentNode)) {
-              FieldPathComponent component =
-                  DiffUtils.toFieldPathComponent(currentNode.getPath().getLastElementSelector());
-              FieldPath currentNodeRelativePath = parentRelativePath.append(component);
-              if ((dynamicNodeFilter == null || dynamicNodeFilter.test(currentNode))
-                  && nodeFilter.test(currentNode)) {
-                result.add(
-                    create(
-                        historyDifferenceSupplier,
-                        rootDifference,
-                        parentNode,
-                        currentNode,
-                        currentNodeRelativePath,
-                        dynamicNodeFilter));
-              } else {
-                result.addAll(
-                    createChildren(
-                        historyDifferenceSupplier,
-                        rootDifference,
-                        currentNode,
-                        currentNodeRelativePath,
-                        dynamicNodeFilter));
-              }
+        (currentNode, visit) -> {
+          visit.dontGoDeeper();
+          if (branchFilter.test(currentNode)) {
+            FieldPathComponent component =
+                DiffUtils.toFieldPathComponent(currentNode.getPath().getLastElementSelector());
+            FieldPath currentNodeRelativePath = parentRelativePath.append(component);
+            if ((dynamicNodeFilter == null || dynamicNodeFilter.test(currentNode))
+                && nodeFilter.test(currentNode)) {
+              result.add(
+                  create(
+                      historyDifferenceSupplier,
+                      rootDifference,
+                      parentNode,
+                      currentNode,
+                      currentNodeRelativePath,
+                      dynamicNodeFilter));
+            } else {
+              result.addAll(
+                  createChildren(
+                      historyDifferenceSupplier,
+                      rootDifference,
+                      currentNode,
+                      currentNodeRelativePath,
+                      dynamicNodeFilter));
             }
           }
         });

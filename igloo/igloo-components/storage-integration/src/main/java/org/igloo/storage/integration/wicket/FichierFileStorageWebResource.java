@@ -72,7 +72,7 @@ public class FichierFileStorageWebResource extends AbstractFichierFileStorageWeb
       MAPPER_ATTACHMENT = MAPPER_BUILDER.imageResource(REFERENCE_ATTACHMENT);
 
   public FichierFileStorageWebResource() {
-    this(data -> {});
+    this(_ -> {});
   }
 
   public FichierFileStorageWebResource(

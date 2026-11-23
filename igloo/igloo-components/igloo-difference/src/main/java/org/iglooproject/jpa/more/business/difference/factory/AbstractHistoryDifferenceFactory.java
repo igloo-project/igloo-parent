@@ -34,18 +34,13 @@ public abstract class AbstractHistoryDifferenceFactory<T> implements IHistoryDif
   }
 
   protected final HistoryDifferenceEventType toHistoryDifferenceAction(DiffNode node) {
-    switch (node.getState()) {
-      case ADDED:
-        return HistoryDifferenceEventType.ADDED;
-      case CHANGED:
-        return HistoryDifferenceEventType.UPDATED;
-      case REMOVED:
-        return HistoryDifferenceEventType.REMOVED;
-      case UNTOUCHED:
-        return HistoryDifferenceEventType.UNTOUCHED;
-      default:
-        throw new IllegalSwitchValueException(node.getState());
-    }
+    return switch (node.getState()) {
+      case ADDED -> HistoryDifferenceEventType.ADDED;
+      case CHANGED -> HistoryDifferenceEventType.UPDATED;
+      case REMOVED -> HistoryDifferenceEventType.REMOVED;
+      case UNTOUCHED -> HistoryDifferenceEventType.UNTOUCHED;
+      default -> throw new IllegalSwitchValueException(node.getState());
+    };
   }
 
   @SuppressWarnings({

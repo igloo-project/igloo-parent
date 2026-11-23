@@ -74,7 +74,7 @@ public abstract class AbstractCoreSession<U extends GenericEntity<Long, U> & IUs
   private final IModel<U> userModel = new SessionThreadSafeGenericEntityModel<>();
 
   private final IModel<Locale> localeModel =
-      new IModel<Locale>() {
+      new IModel<>() {
         private static final long serialVersionUID = -4356509005738585888L;
 
         @Override

@@ -113,17 +113,7 @@ public class TableSortLink<T extends ISort<?>> extends AjaxLink<Void> {
     add(new ClassAttributeAppender(SORT_BUTTON_CSS_CLASS));
     add(
         new ClassAttributeAppender(
-            new LoadableDetachableModel<String>() {
-              private static final long serialVersionUID = 1L;
-
-              @Override
-              protected String load() {
-                if (TableSortLink.this.isSortActive()) {
-                  return "active";
-                }
-                return null;
-              }
-            }));
+            LoadableDetachableModel.of(() -> TableSortLink.this.isSortActive() ? "active" : null)));
 
     WebMarkupContainer iconAscContainer =
         new WebMarkupContainer("iconAsc") {
@@ -137,16 +127,7 @@ public class TableSortLink<T extends ISort<?>> extends AjaxLink<Void> {
             setVisible(SortOrder.ASC.equals(displayedSort));
           }
         };
-    iconAscContainer.add(
-        new ClassAttributeAppender(
-            new IModel<String>() {
-              private static final long serialVersionUID = 1L;
-
-              @Override
-              public String getObject() {
-                return sortIconCssStyle.getAscIconCssClasses();
-              }
-            }));
+    iconAscContainer.add(new ClassAttributeAppender(() -> sortIconCssStyle.getAscIconCssClasses()));
     add(iconAscContainer);
 
     WebMarkupContainer iconDescContainer =
@@ -162,15 +143,7 @@ public class TableSortLink<T extends ISort<?>> extends AjaxLink<Void> {
           }
         };
     iconDescContainer.add(
-        new ClassAttributeAppender(
-            new IModel<String>() {
-              private static final long serialVersionUID = 1L;
-
-              @Override
-              public String getObject() {
-                return sortIconCssStyle.getDescIconCssClasses();
-              }
-            }));
+        new ClassAttributeAppender(() -> sortIconCssStyle.getDescIconCssClasses()));
     add(iconDescContainer);
   }
 

@@ -32,6 +32,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
+import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;
 import org.hibernate.Session;
 import org.igloo.jpa.test.SpringEntityManagerExtension;
@@ -85,7 +86,7 @@ class TestDatabaseOperations extends AbstractTest {
   void testGetFichierById_NotFound() {
     doInReadTransactionEntityManager(
         entityManagerFactory,
-        em -> {
+        _ -> {
           Fichier fichier = databaseOperations.getFichierById(-1l);
           assertThat(fichier).isNull();
           return null;
@@ -99,11 +100,10 @@ class TestDatabaseOperations extends AbstractTest {
             entityManagerFactory, 1l, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
     Fichier fichierExpected =
         createFichier(entityManagerFactory, storageUnit, 1l, FichierStatus.ALIVE);
-    ;
 
     doInReadTransactionEntityManager(
         entityManagerFactory,
-        em -> {
+        _ -> {
           Fichier fichier = databaseOperations.getFichierById(fichierExpected.getId());
           assertThat(fichier).isNotNull();
           assertThat(fichier).isEqualTo(fichierExpected);
@@ -250,7 +250,7 @@ class TestDatabaseOperations extends AbstractTest {
     entityManager.persist(storageUnit);
     entityManager.persist(fichier1);
     entityManager.persist(fichier2);
-    assertThatThrownBy(() -> entityManager.flush())
+    assertThatThrownBy(entityManager::flush)
         .isInstanceOf(PersistenceException.class)
         .hasMessageContaining("duplicate key value violates");
   }
@@ -296,7 +296,7 @@ class TestDatabaseOperations extends AbstractTest {
                       // wait for id4 generation
                       try {
                         latch1.await();
-                      } catch (InterruptedException e) {
+                      } catch (InterruptedException _) {
                         throw new IllegalStateException();
                       }
                       Long id = databaseOperations.generateStorageUnit();
@@ -316,7 +316,7 @@ class TestDatabaseOperations extends AbstractTest {
                       latch1.countDown();
                       try {
                         latch2.await();
-                      } catch (InterruptedException e) {
+                      } catch (InterruptedException _) {
                         throw new IllegalStateException();
                       }
                       return id;
@@ -352,7 +352,7 @@ class TestDatabaseOperations extends AbstractTest {
                       // wait for id4 generation
                       try {
                         latch1.await();
-                      } catch (InterruptedException e) {
+                      } catch (InterruptedException _) {
                         throw new IllegalStateException();
                       }
                       Long id = databaseOperations.generateFichier();
@@ -372,7 +372,7 @@ class TestDatabaseOperations extends AbstractTest {
                       latch1.countDown();
                       try {
                         latch2.await();
-                      } catch (InterruptedException e) {
+                      } catch (InterruptedException _) {
                         throw new IllegalStateException();
                       }
                       return id;
@@ -402,7 +402,7 @@ class TestDatabaseOperations extends AbstractTest {
       Set<Fichier> fichiers =
           doInReadTransactionEntityManager(
               entityManagerFactory,
-              (em) -> {
+              em -> {
                 StorageUnit unit = em.find(StorageUnit.class, storageUnit1.getId());
                 return databaseOperations.listUnitAliveFichiers(unit);
               });
@@ -415,14 +415,14 @@ class TestDatabaseOperations extends AbstractTest {
       Set<Fichier> fichiersUnit1 =
           doInReadTransactionEntityManager(
               entityManagerFactory,
-              (em) -> {
+              em -> {
                 StorageUnit unit = em.find(StorageUnit.class, storageUnit1.getId());
                 return databaseOperations.listUnitAliveFichiers(unit);
               });
       Set<Fichier> fichiersUnit2 =
           doInReadTransactionEntityManager(
               entityManagerFactory,
-              (em) -> {
+              em -> {
                 StorageUnit unit = em.find(StorageUnit.class, storageUnit2.getId());
                 return databaseOperations.listUnitAliveFichiers(unit);
               });
@@ -445,7 +445,7 @@ class TestDatabaseOperations extends AbstractTest {
       Set<Fichier> fichiers =
           doInReadTransactionEntityManager(
               entityManagerFactory,
-              (em) -> {
+              em -> {
                 StorageUnit unit = em.find(StorageUnit.class, storageUnit1.getId());
                 return databaseOperations.listUnitAliveFichiers(unit);
               });
@@ -545,8 +545,8 @@ class TestDatabaseOperations extends AbstractTest {
             f -> {
               // check failure is here with expected dates (before after)
               assertThat(f)
-                  .id(a -> a.isNotNull())
-                  .fixedOn(a -> a.isNull())
+                  .id(AbstractAssert::isNotNull)
+                  .fixedOn(AbstractAssert::isNull)
                   .type(a -> a.isEqualTo(StorageFailureType.MISSING_FILE))
                   .status(a -> a.isEqualTo(StorageFailureStatus.ALIVE))
                   .consistencyCheck(a -> a.isEqualTo(check))
@@ -554,8 +554,8 @@ class TestDatabaseOperations extends AbstractTest {
                   .path(a -> a.isEqualTo("test"))
                   .creationTime(a -> a.isBefore(afterTrigger))
                   .lastFailureOn(a -> a.isEqualTo(f.getCreationTime()))
-                  .acknowledgedOn(a -> a.isNull())
-                  .fixedOn(a -> a.isNull());
+                  .acknowledgedOn(AbstractAssert::isNull)
+                  .fixedOn(AbstractAssert::isNull);
             },
             Assertions.atIndex(0));
   }
@@ -583,8 +583,8 @@ class TestDatabaseOperations extends AbstractTest {
         .satisfies(
             f -> {
               assertThat(f)
-                  .id(a -> a.isNotNull())
-                  .fixedOn(a -> a.isNull())
+                  .id(AbstractAssert::isNotNull)
+                  .fixedOn(AbstractAssert::isNull)
                   .type(a -> a.isEqualTo(StorageFailureType.MISSING_FILE))
                   .status(a -> a.isEqualTo(StorageFailureStatus.ALIVE))
                   .consistencyCheck(a -> a.isEqualTo(check2))
@@ -592,8 +592,8 @@ class TestDatabaseOperations extends AbstractTest {
                   .path(a -> a.isEqualTo("test"))
                   .creationTime(a -> a.isBefore(afterTrigger))
                   .lastFailureOn(a -> a.isAfter(afterTrigger))
-                  .acknowledgedOn(a -> a.isNull())
-                  .fixedOn(a -> a.isNull());
+                  .acknowledgedOn(AbstractAssert::isNull)
+                  .fixedOn(AbstractAssert::isNull);
             },
             Assertions.atIndex(0));
   }
@@ -627,8 +627,8 @@ class TestDatabaseOperations extends AbstractTest {
             f -> {
               // new failure replaces fixed one
               assertThat(f)
-                  .id(a -> a.isNotNull())
-                  .fixedOn(a -> a.isNull())
+                  .id(AbstractAssert::isNotNull)
+                  .fixedOn(AbstractAssert::isNull)
                   .type(a -> a.isEqualTo(StorageFailureType.MISSING_FILE))
                   .status(a -> a.isEqualTo(StorageFailureStatus.ALIVE))
                   .consistencyCheck(a -> a.isEqualTo(check2))
@@ -636,8 +636,8 @@ class TestDatabaseOperations extends AbstractTest {
                   .path(a -> a.isEqualTo("test"))
                   .creationTime(a -> a.isAfter(afterTrigger))
                   .lastFailureOn(a -> a.isAfter(afterTrigger))
-                  .acknowledgedOn(a -> a.isNull())
-                  .fixedOn(a -> a.isNull());
+                  .acknowledgedOn(AbstractAssert::isNull)
+                  .fixedOn(AbstractAssert::isNull);
             },
             atIndex(0));
   }
@@ -672,8 +672,8 @@ class TestDatabaseOperations extends AbstractTest {
             f -> {
               // check that acknowledged failure is here and new failure is ignored
               assertThat(f)
-                  .id(a -> a.isNotNull())
-                  .fixedOn(a -> a.isNull())
+                  .id(AbstractAssert::isNotNull)
+                  .fixedOn(AbstractAssert::isNull)
                   .type(a -> a.isEqualTo(StorageFailureType.MISSING_FILE))
                   .status(a -> a.isEqualTo(StorageFailureStatus.ACKNOWLEDGED))
                   .consistencyCheck(a -> a.isEqualTo(check1))
@@ -682,7 +682,7 @@ class TestDatabaseOperations extends AbstractTest {
                   .creationTime(a -> a.isBefore(afterAcknowledged))
                   .lastFailureOn(a -> a.isBefore(afterAcknowledged))
                   .acknowledgedOn(a -> a.isBefore(afterAcknowledged))
-                  .fixedOn(a -> a.isNull());
+                  .fixedOn(AbstractAssert::isNull);
             },
             atIndex(0));
   }
@@ -717,17 +717,17 @@ class TestDatabaseOperations extends AbstractTest {
             f -> {
               // new failure completely replaces the acknowledged one as type change
               assertThat(f)
-                  .id(a -> a.isNotNull())
-                  .fixedOn(a -> a.isNull())
+                  .id(AbstractAssert::isNotNull)
+                  .fixedOn(AbstractAssert::isNull)
                   .type(a -> a.isEqualTo(StorageFailureType.MISSING_ENTITY))
                   .status(a -> a.isEqualTo(StorageFailureStatus.ALIVE))
                   .consistencyCheck(a -> a.isEqualTo(check2))
-                  .fichier(a -> a.isNull())
+                  .fichier(AbstractAssert::isNull)
                   .path(a -> a.isEqualTo("test"))
                   .creationTime(a -> a.isAfter(afterFixed))
                   .lastFailureOn(a -> a.isEqualTo(f.getCreationTime()))
-                  .acknowledgedOn(a -> a.isNull())
-                  .fixedOn(a -> a.isNull());
+                  .acknowledgedOn(AbstractAssert::isNull)
+                  .fixedOn(AbstractAssert::isNull);
             },
             atIndex(0));
   }
@@ -953,7 +953,7 @@ class TestDatabaseOperations extends AbstractTest {
         createStorageUnit(entityManagerFactory, 1, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
     doInReadTransactionEntityManager(
         entityManagerFactory,
-        em -> {
+        _ -> {
           assertThat(databaseOperations.getStorageUnit(storageUnit.getId())).isNotNull();
           return null;
         });
@@ -963,7 +963,7 @@ class TestDatabaseOperations extends AbstractTest {
   void testGetStorageUnitEmpty() {
     doInReadTransactionEntityManager(
         entityManagerFactory,
-        em -> {
+        _ -> {
           assertThat(databaseOperations.getStorageUnit(1l)).isNull();
           return null;
         });
@@ -977,7 +977,7 @@ class TestDatabaseOperations extends AbstractTest {
         createStorageUnit(entityManagerFactory, 1, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
     doInReadTransactionEntityManager(
         entityManagerFactory,
-        em -> {
+        _ -> {
           // ordered by id
           assertThat(databaseOperations.listStorageUnits()).contains(storageUnit2, storageUnit1);
           return null;
@@ -991,7 +991,7 @@ class TestDatabaseOperations extends AbstractTest {
             entityManagerFactory, 1l, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
     doInReadTransactionEntityManager(
         entityManagerFactory,
-        em -> {
+        _ -> {
           assertThat(databaseOperations.getLastCheck(unit1)).isNull();
           return null;
         });
@@ -1021,7 +1021,7 @@ class TestDatabaseOperations extends AbstractTest {
 
     doInReadTransactionEntityManager(
         entityManagerFactory,
-        em -> {
+        _ -> {
           assertThat(databaseOperations.getLastCheck(unit1)).isEqualTo(check1);
           return null;
         });
@@ -1048,7 +1048,7 @@ class TestDatabaseOperations extends AbstractTest {
 
     doInReadTransactionEntityManager(
         entityManagerFactory,
-        em -> {
+        _ -> {
           assertThat(databaseOperations.getLastCheck(unit1)).isEqualTo(check1);
           return null;
         });
@@ -1075,7 +1075,7 @@ class TestDatabaseOperations extends AbstractTest {
 
     doInReadTransactionEntityManager(
         entityManagerFactory,
-        em -> {
+        _ -> {
           assertThat(databaseOperations.getLastCheck(unit1)).isEqualTo(check2);
           return null;
         });
@@ -1088,7 +1088,7 @@ class TestDatabaseOperations extends AbstractTest {
             entityManagerFactory, 1l, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
     doInReadTransactionEntityManager(
         entityManagerFactory,
-        em -> {
+        _ -> {
           assertThat(databaseOperations.getLastCheck(unit1)).isNull();
           return null;
         });
@@ -1118,7 +1118,7 @@ class TestDatabaseOperations extends AbstractTest {
 
     doInReadTransactionEntityManager(
         entityManagerFactory,
-        em -> {
+        _ -> {
           assertThat(databaseOperations.getLastCheckChecksum(unit1)).isEqualTo(check1);
           return null;
         });
@@ -1145,7 +1145,7 @@ class TestDatabaseOperations extends AbstractTest {
 
     doInReadTransactionEntityManager(
         entityManagerFactory,
-        em -> {
+        _ -> {
           assertThat(databaseOperations.getLastCheckChecksum(unit1)).isEqualTo(check1);
           return null;
         });
@@ -1173,7 +1173,7 @@ class TestDatabaseOperations extends AbstractTest {
 
     doInReadTransactionEntityManager(
         entityManagerFactory,
-        em -> {
+        _ -> {
           assertThat(databaseOperations.getLastCheckChecksum(unit1)).isEqualTo(check1);
           return null;
         });
@@ -1228,7 +1228,7 @@ class TestDatabaseOperations extends AbstractTest {
 
     List<StorageStatistic> statistics =
         doInReadTransactionEntityManager(
-            entityManagerFactory, em -> databaseOperations.getStorageStatistics());
+            entityManagerFactory, _ -> databaseOperations.getStorageStatistics());
     assertThat(statistics)
         .satisfies(
             i -> {
@@ -1334,7 +1334,7 @@ class TestDatabaseOperations extends AbstractTest {
 
     List<StorageFailureStatistic> statistics =
         doInReadTransactionEntityManager(
-            entityManagerFactory, em -> databaseOperations.getStorageFailureStatistics());
+            entityManagerFactory, _ -> databaseOperations.getStorageFailureStatistics());
     assertThat(statistics)
         .satisfies(
             i -> {
@@ -1476,7 +1476,7 @@ class TestDatabaseOperations extends AbstractTest {
 
     List<StorageOrphanStatistic> statistics =
         doInReadTransactionEntityManager(
-            entityManagerFactory, em -> databaseOperations.getStorageOrphanStatistics());
+            entityManagerFactory, _ -> databaseOperations.getStorageOrphanStatistics());
 
     assertThat(statistics)
         .satisfies(
@@ -1733,11 +1733,11 @@ class TestDatabaseOperations extends AbstractTest {
               em.createNativeQuery("SELECT createdby_type, createdby_id FROM Fichier;", Tuple.class)
                   .getResultList();
           assertThat(result).hasSize(1);
-          assertThat(result.get(0).get("createdby_type"))
+          assertThat(result.getFirst().get("createdby_type"))
               .isEqualTo(GenericEntity.class.getName())
               .isEqualTo(fichier.getCreatedBy().getType().getName());
           // java long is stored as sql biginteger
-          assertThat(result.get(0).get("createdby_id"))
+          assertThat(result.getFirst().get("createdby_id"))
               .isEqualTo(1l)
               .isEqualTo(fichier.getCreatedBy().getId());
           return null;
@@ -1809,7 +1809,7 @@ class TestDatabaseOperations extends AbstractTest {
         });
     doInReadTransactionEntityManager(
         entityManagerFactory,
-        (em) -> {
+        em -> {
           assertThat(em.createQuery("SELECT f FROM Fichier f", Fichier.class).getResultList())
               .hasSize(1)
               .containsExactly(fichier2);
@@ -2082,7 +2082,7 @@ class TestDatabaseOperations extends AbstractTest {
       EntityManagerFactory entityManagerFactory, Consumer<StorageFailure> updater) {
     doInWriteTransactionEntityManager(
         entityManagerFactory,
-        (em) -> {
+        em -> {
           StorageFailure f =
               em.createQuery(SELECT_STORAGE_FAILURE_ID_ASC, StorageFailure.class).getSingleResult();
           updater.accept(f);
@@ -2096,7 +2096,7 @@ class TestDatabaseOperations extends AbstractTest {
       Consumer<StorageFailure> updater) {
     doInWriteTransactionEntityManager(
         entityManagerFactory,
-        (em) -> {
+        em -> {
           StorageFailure f =
               em.createQuery(SELECT_STORAGE_FAILURE_ID_ASC, StorageFailure.class)
                   .getResultStream()
@@ -2141,7 +2141,7 @@ class TestDatabaseOperations extends AbstractTest {
       StorageConsistencyCheckResult result) {
     return doInWriteTransactionEntityManager(
         entityManagerFactory,
-        (em) -> {
+        em -> {
           StorageConsistencyCheck check = new StorageConsistencyCheck();
           check.setCheckStartedOn(startCheckDate);
           check.setCheckFinishedOn(endCheckDate);
@@ -2233,7 +2233,7 @@ class TestDatabaseOperations extends AbstractTest {
       long fileSize) {
     return doInWriteTransactionEntityManager(
         entityManagerFactory,
-        (em) -> {
+        em -> {
           Fichier fichier = new Fichier();
           fichier.setId(id);
           fichier.setUuid(UUID.randomUUID());
@@ -2296,7 +2296,7 @@ class TestDatabaseOperations extends AbstractTest {
       StorageUnitCheckType checkType) {
     return doInWriteTransactionEntityManager(
         entityManagerFactory,
-        (em) -> {
+        em -> {
           StorageUnit storageUnit;
           storageUnit = new StorageUnit();
           storageUnit.setId(id);

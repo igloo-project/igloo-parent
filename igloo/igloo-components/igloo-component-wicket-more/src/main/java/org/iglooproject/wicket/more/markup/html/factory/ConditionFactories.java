@@ -13,8 +13,8 @@ public final class ConditionFactories {
 
   private ConditionFactories() {}
 
-  public static final <T> IDetachableFactory<T, Condition> constant(final Condition condition) {
-    return new IDetachableFactory<T, Condition>() {
+  public static <T> IDetachableFactory<T, Condition> constant(final Condition condition) {
+    return new IDetachableFactory<>() {
       private static final long serialVersionUID = 1L;
 
       @Override
@@ -30,9 +30,9 @@ public final class ConditionFactories {
     };
   }
 
-  public static final <T> IDetachableFactory<T, Condition> negate(
+  public static <T> IDetachableFactory<T, Condition> negate(
       final IDetachableFactory<T, Condition> factory) {
-    return new IDetachableFactory<T, Condition>() {
+    return new IDetachableFactory<>() {
       private static final long serialVersionUID = 1L;
 
       @Override
@@ -49,11 +49,11 @@ public final class ConditionFactories {
   }
 
   @SafeVarargs
-  public static final <T> IDetachableFactory<T, Condition> compose(
+  public static <T> IDetachableFactory<T, Condition> compose(
       final BooleanOperator operator,
       final IDetachableFactory<T, Condition> firstFactory,
       final IDetachableFactory<T, Condition>... otherFactories) {
-    return new IDetachableFactory<T, Condition>() {
+    return new IDetachableFactory<>() {
       private static final long serialVersionUID = 1L;
 
       @Override
@@ -74,22 +74,22 @@ public final class ConditionFactories {
   }
 
   @SafeVarargs
-  public static final <T> IDetachableFactory<T, Condition> or(
+  public static <T> IDetachableFactory<T, Condition> or(
       final IDetachableFactory<T, Condition> firstFactory,
       final IDetachableFactory<T, Condition>... otherFactories) {
     return compose(BooleanOperator.OR, firstFactory, otherFactories);
   }
 
   @SafeVarargs
-  public static final <T> IDetachableFactory<T, Condition> and(
+  public static <T> IDetachableFactory<T, Condition> and(
       final IDetachableFactory<T, Condition> firstFactory,
       final IDetachableFactory<T, Condition>... otherFactories) {
     return compose(BooleanOperator.AND, firstFactory, otherFactories);
   }
 
-  public static final <T> IDetachableFactory<IModel<? extends T>, Condition> predicate(
+  public static <T> IDetachableFactory<IModel<? extends T>, Condition> predicate(
       final SerializablePredicate2<? super T> predicate) {
-    return new IDetachableFactory<IModel<? extends T>, Condition>() {
+    return new IDetachableFactory<>() {
       private static final long serialVersionUID = 1L;
 
       @Override
@@ -99,9 +99,9 @@ public final class ConditionFactories {
     };
   }
 
-  public static final <T> IDetachableFactory<IModel<? extends T>, Condition> permission(
+  public static <T> IDetachableFactory<IModel<? extends T>, Condition> permission(
       final String permission) {
-    return new IDetachableFactory<IModel<? extends T>, Condition>() {
+    return new IDetachableFactory<>() {
       private static final long serialVersionUID = 1L;
 
       @Override
@@ -111,9 +111,9 @@ public final class ConditionFactories {
     };
   }
 
-  public static final <T> IDetachableFactory<IModel<? extends T>, Condition> permission(
+  public static <T> IDetachableFactory<IModel<? extends T>, Condition> permission(
       final Permission permission) {
-    return new IDetachableFactory<IModel<? extends T>, Condition>() {
+    return new IDetachableFactory<>() {
       private static final long serialVersionUID = 1L;
 
       @Override

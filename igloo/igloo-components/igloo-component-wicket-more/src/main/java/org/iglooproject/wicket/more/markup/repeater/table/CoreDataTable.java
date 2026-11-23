@@ -264,16 +264,7 @@ public class CoreDataTable<T, S extends ISort<?>> extends Panel implements IPage
       Item item = CoreDataTable.this.newCellItem(id, index, model);
       final ICellPopulator<T> column = internalGetPopulators().get(index);
       if (column instanceof IStyledColumn) {
-        item.add(
-            new ClassAttributeAppender(
-                new IModel<String>() {
-                  private static final long serialVersionUID = 1L;
-
-                  @Override
-                  public String getObject() {
-                    return ((IStyledColumn<T, S>) column).getCssClass();
-                  }
-                }));
+        item.add(new ClassAttributeAppender(() -> ((IStyledColumn<T, S>) column).getCssClass()));
       }
       return item;
     }

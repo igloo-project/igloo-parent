@@ -17,7 +17,6 @@ import basicapp.front.common.component.AnnouncementMessagePanel;
 import basicapp.front.common.renderer.ActionRenderers;
 import igloo.bootstrap.modal.AjaxModalOpenBehavior;
 import igloo.bootstrap.modal.OneParameterModalOpenAjaxAction;
-import igloo.wicket.action.IOneParameterAjaxAction;
 import igloo.wicket.component.EnclosureContainer;
 import igloo.wicket.condition.Condition;
 import igloo.wicket.feedback.FeedbackUtils;
@@ -144,22 +143,17 @@ public class AnnouncementListPage extends AnnouncementTemplate {
             .content(new ResourceModel("common.action.confirm.content"))
             .confirm()
             .onClick(
-                new IOneParameterAjaxAction<>() {
-                  private static final long serialVersionUID = 1L;
-
-                  @Override
-                  public void execute(AjaxRequestTarget target, IModel<Announcement> parameter) {
-                    try {
-                      announcementControllerService.deleteAnnouncement(parameter.getObject());
-                      Session.get().success(getString("common.success"));
-                      throw new RestartResponseException(getPage());
-                    } catch (RestartResponseException e) {
-                      throw e;
-                    } catch (Exception e) {
-                      LOGGER.error("Error when deleting an announcement.", e);
-                      Session.get().error(getString("common.error.unexpected"));
-                      FeedbackUtils.refreshFeedback(target, getPage());
-                    }
+                (target, parameter) -> {
+                  try {
+                    announcementControllerService.deleteAnnouncement(parameter.getObject());
+                    Session.get().success(getString("common.success"));
+                    throw new RestartResponseException(getPage());
+                  } catch (RestartResponseException e) {
+                    throw e;
+                  } catch (Exception e) {
+                    LOGGER.error("Error when deleting an announcement.", e);
+                    Session.get().error(getString("common.error.unexpected"));
+                    FeedbackUtils.refreshFeedback(target, getPage());
                   }
                 })
             .withClassOnElements(BTN_TABLE_ROW_ACTION)
