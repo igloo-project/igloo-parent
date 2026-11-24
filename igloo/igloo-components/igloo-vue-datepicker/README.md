@@ -111,6 +111,12 @@ Option values are JavaScript code, written in the page as is. Build them with `J
 Common shortcuts are available on the fields: `minDate(IModel<LocalDate>)`, `maxDate(...)` and
 `labelPlaceholder()`, which uses the field label as placeholder.
 
+The input is parsed with the `format` option, the pattern the datepicker displays the value with:
+set it with `JsHelpers.of(String)` or `JsHelpers.ofString(IModel<String>)`, and use letters that
+mean the same for [date-fns](https://date-fns.org/docs/format) and `DateTimeFormatter`, e.g. `dd`,
+`MM`, `yyyy`, `HH`, `mm`. A format given as a JavaScript function cannot parse: override
+`getFormat()` in the field.
+
 The classes of the input, option `ui`, accept the forms of a Vue class binding: a string, an array,
 or an object whose keys are the classes, enabled by a true value, e.g. `{ input: { 'form-control': true } }`.
 
@@ -213,6 +219,7 @@ The Java side lives in `VueDatePickerBehavior`, which renders the script, and
 | JavaScript functions of `vueInit` other than the ones listed above | Removed |
 | `VueJavaScriptResourceReference` loaded the full Vue build | It loads the runtime build, without the template compiler. Vue templates written in HTML no longer compile with it |
 | A model holding a value, or a typed model such as `BindingModel`, made Wicket parse the input with its own converter | The input is always parsed with the field format |
+| A `format` option other than a string failed with an unclear error on submission | Override `getFormat()`, see [Options](#options) |
 
 ## Development
 

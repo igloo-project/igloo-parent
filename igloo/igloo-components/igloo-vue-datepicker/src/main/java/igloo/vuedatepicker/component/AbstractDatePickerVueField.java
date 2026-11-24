@@ -1,6 +1,7 @@
 package igloo.vuedatepicker.component;
 
 import com.google.common.collect.Iterables;
+import igloo.bootstrap.js.statement.IJsString;
 import igloo.bootstrap.js.statement.IJsStatement;
 import igloo.bootstrap.jsmodel.JsHelpers;
 import igloo.vuedatepicker.behavior.IJsVueDatePicker;
@@ -9,6 +10,7 @@ import igloo.vuedatepicker.behavior.VueDatePickerBehavior;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
+import java.util.function.Function;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.ComponentTag;
@@ -68,13 +70,12 @@ public abstract class AbstractDatePickerVueField<T> extends AbstractTextComponen
     }
   }
 
+  /**
+   * Format the input is parsed with: the {@code format} option, the one the datepicker displays the
+   * value with. Override it if this option is not a pattern, e.g. a JS function.
+   */
   protected DateTimeFormatter getFormat() {
-    return DateTimeFormatter.ofPattern(
-        Optional.ofNullable(getVueDatePickerBehavior().getJsVueDatePicker())
-            .map(IJsVueDatePicker::format)
-            .map(IJsStatement::render)
-            .map(s -> StringUtils.unwrap(s, "\""))
-            .orElseThrow());
+    return DateTimeFormatter.ofPattern(getStringOption(IJsVueDatePicker::format, "format"));
   }
 
   protected ConversionException newConversionException(String input, String resourceKey) {
@@ -85,12 +86,24 @@ public abstract class AbstractDatePickerVueField<T> extends AbstractTextComponen
   }
 
   protected IModel<String> getFormatPlaceholderModel() {
-    return () ->
-        Optional.ofNullable(getVueDatePickerBehavior().getJsVueDatePicker())
-            .map(IJsVueDatePicker::formatPlaceholder)
-            .map(IJsStatement::render)
-            .map(s -> StringUtils.unwrap(s, "\""))
-            .orElseThrow();
+    return () -> getStringOption(IJsVueDatePicker::formatPlaceholder, "formatPlaceholder");
+  }
+
+  /**
+   * Value of a string option, as given to the builder: read from the rendered JS, it would be
+   * escaped.
+   */
+  private String getStringOption(Function<IJsVueDatePicker, IJsStatement> option, String name) {
+    IJsVueDatePicker jsVueDatePicker = getVueDatePickerBehavior().getJsVueDatePicker();
+    if (jsVueDatePicker == null) {
+      throw new IllegalStateException("Options of %s not built yet".formatted(getPageRelativePath()));
+    }
+    if (option.apply(jsVueDatePicker) instanceof IJsString string && string.value() != null) {
+      return string.value();
+    }
+    throw new IllegalStateException(
+        "Option %s of %s must be a string, set with JsHelpers.of(String) or JsHelpers.ofString(IModel)"
+            .formatted(name, getPageRelativePath()));
   }
 
   protected SerializableConsumer<Builder> initDefaultJsVueDatePickerBuilder() {
