@@ -9,7 +9,7 @@
     "target": "ESNext",
     "types": [],
     
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     
     // Other Outputs
     "sourceMap": true,

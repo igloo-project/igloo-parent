@@ -5,13 +5,11 @@
   "scripts": {
     "start": "npm-run-all --parallel watch docs-serve",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "js": "npm-run-all js-compile",
-    "js-compile": "npm-run-all js-compile-*",
-    "js-compile-bootstrap": "rollup --environment SYMBOL:bootstrap --environment FILE:bootstrap --config ./rollup-bootstrap.config.mjs --sourcemap",
+    "js": "rollup --environment SYMBOL:bootstrap --environment FILE:bootstrap --config ./rollup-bootstrap.config.mjs --sourcemap 2>&1",
     "docs-serve": "hugo server --port 9001 --disableFastRender",
     "hugo-build": "hugo --logLevel debug build --cleanDestinationDir",
     "watch": "npm-run-all --parallel watch-*",
-    "watch-js-main": "nodemon --watch src/main/js --ext js --exec \"npm-run-all js-compile\""
+    "watch-js-main": "nodemon --watch src/main/js --ext js --exec \"npm run js\""
   },
   "author": "",
   "license": "ISC",
@@ -33,7 +31,7 @@
     "select2": "4.1.0",
     "select2-theme-bootstrap5": "0.2.0",
     "jquery": "3.7.1",
-    "npm-run-all": "4.1.5",
+    "npm-run-all2": "9.1.0",
     "nodemon": "3.1.14"
   },
   "hugo-bin": {

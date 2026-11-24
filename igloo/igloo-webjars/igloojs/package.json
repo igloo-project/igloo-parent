@@ -4,8 +4,7 @@
   "description": "",
   "scripts": {
     "test": "vitest run",
-    "js": "npm-run-all js-compile",
-    "js-compile": "npm-run-all js-compile-*",
+    "js": "npm run js-compile-focus && npm run js-compile-show-password",
     "js-compile-focus": "rollup --environment SYMBOL:focus --environment FILE:focus --config rollup.config.mjs --sourcemap 2>&1",
     "js-compile-show-password": "rollup --environment SYMBOL:showPassword --environment FILE:show-password --config rollup.config.mjs --sourcemap 2>&1"
   },
@@ -23,7 +22,6 @@
     "@babel/preset-env": "7.29.7",
     "@babel/core": "7.29.7",
     "rollup": "4.64.5",
-    "npm-run-all": "4.1.5",
     "nodemon": "3.1.14",
     "vitest": "5.1.1",
     "jsdom": "31.0.1"

@@ -234,8 +234,9 @@ The JavaScript is built by Maven, through `frontend-maven-plugin`, into
 
 ```shell
 npm ci       # installs the versions locked in package-lock.json
-npm run js   # builds vueInit.js and vueInit.css
-npm test     # JavaScript tests, Vitest
+npm run js   # builds vueInit.js and vueInit.css, as Maven does
+npm run dev  # same, with the development build of the libraries
+npm test     # type-checks the sources and the tests, then runs the JavaScript tests, Vitest
 ```
 
 npm dependencies are locked in `package-lock.json`, versioned so that every build bundles the same

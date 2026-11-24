@@ -1,0 +1,9 @@
+{
+  // type-checks the tests and their configuration, run by `npm test`: Vitest runs the tests without
+  // checking their types. tsconfig.json only includes the sources bundled by rollup.
+  "extends": "./tsconfig.json",
+  "include": ["src/main/js", "src/test/js", "vitest.config.mts"],
+  "compilerOptions": {
+    "noEmit": true
+  }
+}
