@@ -3,13 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "vitest run",
     "js": "npm-run-all js-compile",
     "js-compile": "npm-run-all js-compile-*",
-    "js-compile-focus": "rollup --environment SYMBOL:focus --environment FILE:focus --config rollup.config.mjs --sourcemap",
-    "js-compile-show-password": "rollup --environment SYMBOL:showPassword --environment FILE:show-password --config rollup.config.mjs --sourcemap",
-    "js-test": "npm-run-all js-test-*",
-    "js-test-karma": "karma start src/test/js/karma.conf.js"
+    "js-compile-focus": "rollup --environment SYMBOL:focus --environment FILE:focus --config rollup.config.mjs --sourcemap 2>&1",
+    "js-compile-show-password": "rollup --environment SYMBOL:showPassword --environment FILE:show-password --config rollup.config.mjs --sourcemap 2>&1"
   },
   "author": "",
   "license": "ISC",
@@ -27,16 +25,8 @@
     "rollup": "4.64.5",
     "npm-run-all": "4.1.5",
     "nodemon": "3.1.14",
-    "karma": "6.4.4",
-    "karma-browserstack-launcher": "1.6.0",
-    "karma-chrome-launcher": "3.2.0",
-    "karma-coverage-istanbul-reporter": "3.0.3",
-    "karma-detect-browsers": "2.3.3",
-    "karma-firefox-launcher": "2.1.3",
-    "karma-jasmine": "5.1.0",
-    "karma-jasmine-html-reporter": "2.2.0",
-    "karma-rollup-preprocessor": "7.0.8",
-    "rollup-plugin-istanbul": "5.0.0"
+    "vitest": "5.1.1",
+    "jsdom": "31.0.1"
   },
   "hugo-bin": {
     "buildTags": "extended"
