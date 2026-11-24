@@ -13,10 +13,14 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.form.AbstractTextComponent;
+import org.apache.wicket.markup.parser.XmlTag.TagType;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.util.convert.ConversionException;
+import org.apache.wicket.util.string.Strings;
 import org.danekja.java.util.function.serializable.SerializableConsumer;
 import org.iglooproject.wicket.more.markup.html.form.IVueComponent;
 
+/** Form field edited with a VueDatePicker, attached to a {@code <vue-date-picker>} tag. */
 public abstract class AbstractDatePickerVueField<T> extends AbstractTextComponent<T>
     implements IVueComponent {
 
@@ -35,8 +39,33 @@ public abstract class AbstractDatePickerVueField<T> extends AbstractTextComponen
     // Must be attached to a vue-date-picker tag
     checkComponentTag(tag, "vue-date-picker");
 
+    // Browsers do not close <vue-date-picker />: the following elements would end up inside
+    if (tag.isOpenClose()) {
+      tag.setType(TagType.OPEN);
+    }
+
     // Default handling for component tag
     super.onComponentTag(tag);
+  }
+
+  /**
+   * Converts the input with the datepicker format, see {@link #convertValue(String[])}, like {@link
+   * AbstractTextComponent#convertInput()} does for an untyped field. Wicket would otherwise use the
+   * converter of the session locale as soon as the model gives the value type.
+   */
+  @Override
+  public void convertInput() {
+    String[] value = getInputAsArray();
+    if (getConvertEmptyInputStringToNull()
+        && Strings.isEmpty(value != null && value.length > 0 ? value[0] : null)) {
+      setConvertedInput(null);
+      return;
+    }
+    try {
+      setConvertedInput(convertValue(value));
+    } catch (ConversionException e) {
+      error(newValidationError(e));
+    }
   }
 
   protected DateTimeFormatter getFormat() {
@@ -46,6 +75,13 @@ public abstract class AbstractDatePickerVueField<T> extends AbstractTextComponen
             .map(IJsStatement::render)
             .map(s -> StringUtils.unwrap(s, "\""))
             .orElseThrow());
+  }
+
+  protected ConversionException newConversionException(String input, String resourceKey) {
+    return new ConversionException("Cannot parse '%s'".formatted(input))
+        .setResourceKey(resourceKey)
+        .setSourceValue(input)
+        .setLocale(getLocale());
   }
 
   protected IModel<String> getFormatPlaceholderModel() {
@@ -77,16 +113,12 @@ public abstract class AbstractDatePickerVueField<T> extends AbstractTextComponen
     return Iterables.getOnlyElement(getBehaviors(VueDatePickerBehavior.class));
   }
 
-  public String getVModelVarName() {
-    return getVueDatePickerBehavior().getVmodelVarName(this);
+  public String getJsModelValue() {
+    return "vueInit.getModelValue(%s)".formatted(JsHelpers.of(getMarkupId()).render());
   }
 
-  public String getVModel() {
-    return "vueInit.vModels.get('%s')".formatted(getVueDatePickerBehavior().getVmodelVarName(this));
-  }
-
-  public String getVueOnChangeVarName() {
-    return getVueDatePickerBehavior().getVueOnChangeVarName(this);
+  public String getJsSetModelValue(String jsValue) {
+    return "vueInit.setModelValue(%s, %s)".formatted(JsHelpers.of(getMarkupId()).render(), jsValue);
   }
 
   public AbstractDatePickerVueField<T> addToBuilder(SerializableConsumer<Builder> consumer) {
@@ -99,8 +131,9 @@ public abstract class AbstractDatePickerVueField<T> extends AbstractTextComponen
     return this;
   }
 
+  /** The min date follows the value of {@code datePicker}, client-side. */
   public AbstractDatePickerVueField<T> minDate(AbstractDatePickerVueField<T> datePicker) {
-    addToBuilder(builder -> builder.minDate(JsHelpers.ofJsVariable(datePicker.getVModelVarName())));
+    addToBuilder(builder -> builder.minDate(JsHelpers.ofLiteral(datePicker.getJsModelValue())));
     return this;
   }
 
@@ -109,8 +142,9 @@ public abstract class AbstractDatePickerVueField<T> extends AbstractTextComponen
     return this;
   }
 
+  /** The max date follows the value of {@code datePicker}, client-side. */
   public AbstractDatePickerVueField<T> maxDate(AbstractDatePickerVueField<T> datePicker) {
-    addToBuilder(builder -> builder.maxDate(JsHelpers.ofJsVariable(datePicker.getVModelVarName())));
+    addToBuilder(builder -> builder.maxDate(JsHelpers.ofLiteral(datePicker.getJsModelValue())));
     return this;
   }
 
@@ -120,33 +154,22 @@ public abstract class AbstractDatePickerVueField<T> extends AbstractTextComponen
   }
 
   /**
-   * append a css class to the datepicker input component (not available in html file, generate via
-   * vueJs)
-   *
-   * <p>Check if vueInit JS variable is declared in header and exists in window scope
-   *
-   * <p>Wicket form validator reloads all forms on the page even if the form isn't displayed.
+   * Adds a CSS class to the datepicker input, rendered by Vue. {@code vueInit} may be absent:
+   * Wicket calls this method for every Vue component of the page, even outside the refreshed form.
    */
   @Override
   public void appendCssClass(AjaxRequestTarget target, String cssClass) {
     target.appendJavaScript(
-        "typeof vueInit !==  'undefined' ? vueInit.appendInputCssClass('%s', '%s') : undefined"
-            .formatted(getMarkupId(), cssClass));
+        "typeof vueInit !== 'undefined' && vueInit.appendInputCssClass(%s, %s);"
+            .formatted(JsHelpers.of(getMarkupId()).render(), JsHelpers.of(cssClass).render()));
   }
 
-  /**
-   * remove a css class to the datepicker input component (not available in html file, generate via
-   * vueJs)
-   *
-   * <p>Check if vueInit JS variable is declared in header and exists in window scope
-   *
-   * <p>Wicket form validator reloads all forms on the page even if the form isn't displayed.
-   */
+  /** Removes a CSS class from the datepicker input, see {@link #appendCssClass}. */
   @Override
   public void removeCssClass(AjaxRequestTarget target, String cssClass) {
     target.appendJavaScript(
-        "typeof vueInit !==  'undefined' ? vueInit.removeInputCssClass('%s', '%s') : undefined"
-            .formatted(getMarkupId(), cssClass));
+        "typeof vueInit !== 'undefined' && vueInit.removeInputCssClass(%s, %s);"
+            .formatted(JsHelpers.of(getMarkupId()).render(), JsHelpers.of(cssClass).render()));
   }
 
   protected IJsStatement getAriaLabels() {
@@ -161,30 +184,9 @@ public abstract class AbstractDatePickerVueField<T> extends AbstractTextComponen
             "openTimePicker", JsHelpers.of(getString(("datepicker.aria.label.openTimePicker"))))
         .putValues(
             "closeTimePicker", JsHelpers.of(getString(("datepicker.aria.label.closeTimePicker"))))
-        .putValues(
-            "incrementValue",
-            JsHelpers.ofLiteral(
-                "type => typeof vueInit !==  'undefined' ? vueInit.getAriaLabelType(type, '%s', '%s', '%s'): undefined"
-                    .formatted(
-                        getString("datepicker.aria.label.incrementValue.hours"),
-                        getString("datepicker.aria.label.incrementValue.minutes"),
-                        getString("datepicker.aria.label.incrementValue.seconds"))))
-        .putValues(
-            "decrementValue",
-            JsHelpers.ofLiteral(
-                "type => typeof vueInit !==  'undefined' ? vueInit.getAriaLabelType(type, '%s', '%s', '%s') : undefined"
-                    .formatted(
-                        getString("datepicker.aria.label.decrementValue.hours"),
-                        getString("datepicker.aria.label.decrementValue.minutes"),
-                        getString("datepicker.aria.label.decrementValue.seconds"))))
-        .putValues(
-            "openTpOverlay",
-            JsHelpers.ofLiteral(
-                "type => typeof vueInit !==  'undefined' ? vueInit.getAriaLabelType(type, '%s', '%s', '%s') : undefined"
-                    .formatted(
-                        getString("datepicker.aria.label.openTpOverlay.hours"),
-                        getString("datepicker.aria.label.openTpOverlay.minutes"),
-                        getString("datepicker.aria.label.openTpOverlay.seconds"))))
+        .putValues("incrementValue", byTimeUnit("datepicker.aria.label.incrementValue"))
+        .putValues("decrementValue", byTimeUnit("datepicker.aria.label.decrementValue"))
+        .putValues("openTpOverlay", byTimeUnit("datepicker.aria.label.openTpOverlay"))
         .putValues("amPmButton", JsHelpers.of(getString(("datepicker.aria.label.amPmButton"))))
         .putValues(
             "openYearsOverlay", JsHelpers.of(getString(("datepicker.aria.label.openYearsOverlay"))))
@@ -198,28 +200,27 @@ public abstract class AbstractDatePickerVueField<T> extends AbstractTextComponen
         .putValues("clearInput", JsHelpers.of(getString(("datepicker.aria.label.clearInput"))))
         .putValues("calendarIcon", JsHelpers.of(getString(("datepicker.aria.label.calendarIcon"))))
         .putValues("timePicker", JsHelpers.of(getString(("datepicker.aria.label.timePicker"))))
-        .putValues(
-            "monthPicker",
-            JsHelpers.ofLiteral(
-                "overlay => typeof vueInit !==  'undefined' ? vueInit.getAriaLabelOverlay(overlay, '%s', '%s') : undefined"
-                    .formatted(
-                        getString("datepicker.aria.label.monthPicker.overlay"),
-                        getString("datepicker.aria.label.monthPicker"))))
-        .putValues(
-            "yearPicker",
-            JsHelpers.ofLiteral(
-                "overlay => typeof vueInit !==  'undefined' ? vueInit.getAriaLabelOverlay(overlay, '%s', '%s') : undefined"
-                    .formatted(
-                        getString("datepicker.aria.label.yearPicker.overlay"),
-                        getString("datepicker.aria.label.yearPicker"))))
-        .putValues(
-            "timeOverlay",
-            JsHelpers.ofLiteral(
-                "type => typeof vueInit !==  'undefined' ? vueInit.getAriaLabelType(type, '%s', '%s', '%s') : undefined"
-                    .formatted(
-                        getString("datepicker.aria.label.timeOverlay.hours"),
-                        getString("datepicker.aria.label.timeOverlay.minutes"),
-                        getString("datepicker.aria.label.timeOverlay.seconds"))))
+        .putValues("monthPicker", byOverlay("datepicker.aria.label.monthPicker"))
+        .putValues("yearPicker", byOverlay("datepicker.aria.label.yearPicker"))
+        .putValues("timeOverlay", byTimeUnit("datepicker.aria.label.timeOverlay"))
         .build();
+  }
+
+  private IJsStatement byTimeUnit(String keyPrefix) {
+    IJsStatement labels =
+        JsHelpers.mapping()
+            .putValues("hours", JsHelpers.of(getString(keyPrefix + ".hours")))
+            .putValues("minutes", JsHelpers.of(getString(keyPrefix + ".minutes")))
+            .putValues("seconds", JsHelpers.of(getString(keyPrefix + ".seconds")))
+            .build();
+    return JsHelpers.ofLiteral("type => (%s)[type]".formatted(labels.render()));
+  }
+
+  private IJsStatement byOverlay(String key) {
+    return JsHelpers.ofLiteral(
+        "overlay => overlay ? %s : %s"
+            .formatted(
+                JsHelpers.of(getString(key + ".overlay")).render(),
+                JsHelpers.of(getString(key)).render()));
   }
 }

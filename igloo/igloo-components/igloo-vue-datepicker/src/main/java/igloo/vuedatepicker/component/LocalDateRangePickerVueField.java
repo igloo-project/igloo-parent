@@ -80,29 +80,25 @@ public class LocalDateRangePickerVueField
 
       return Pair.fromCollection(dates);
     } catch (DateTimeException _) {
-      throw new ConversionException("Cannot parse '" + value)
-          .setResourceKey("conversion.error.localDate.range")
-          .setSourceValue(value)
-          .setLocale(getLocale());
+      throw newConversionException(value[0], "conversion.error.localDate.range");
     }
   }
 
   @Override
   protected SerializableConsumer<Builder> initDefaultJsVueDatePickerBuilder() {
     return super.initDefaultJsVueDatePickerBuilder()
-        .andThen(
-            builder ->
-                builder
-                    .model(JsHelpers.ofLocalDatePair(getModel()))
-                    // Modes
-                    .range(JsHelpers.ofLiteral("{ partialRange: false }"))
-                    // General configuration
-                    .placeholder(JsHelpers.of(getString("datetime.pattern.date.range.placeholder")))
-                    // Time picker configuration
-                    .enableTimePicker(JsHelpers.of(false))
-                    // Formatting
-                    .format(JsHelpers.of(getString("datetime.pattern.date")))
-                    .formatPlaceholder(
-                        JsHelpers.of(getString("datetime.pattern.date.range.placeholder"))));
+        .andThen(builder ->
+            builder
+                .model(JsHelpers.ofLocalDatePair(getModel()))
+                // Modes
+                .range(JsHelpers.ofLiteral("{ partialRange: false }"))
+                // General configuration
+                .placeholder(JsHelpers.of(getString("datetime.pattern.date.range.placeholder")))
+                // Time picker configuration
+                .enableTimePicker(JsHelpers.of(false))
+                // Formatting
+                .format(JsHelpers.of(getString("datetime.pattern.date")))
+                .formatPlaceholder(
+                    JsHelpers.of(getString("datetime.pattern.date.range.placeholder"))));
   }
 }

@@ -1,4 +1,7 @@
 {
+  // tests compiled by Vitest only, keep them out of the rollup build
+  "include": ["src/main/js"],
+
   "compilerOptions": {
 
     // Environment Settings

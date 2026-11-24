@@ -29,10 +29,7 @@ public class YearPickerVueField extends AbstractDatePickerVueField<Year> {
       }
       return Year.parse(trim(value[0]), getFormat());
     } catch (DateTimeException _) {
-      throw new ConversionException("Cannot parse '" + value)
-          .setResourceKey("conversion.error.year")
-          .setSourceValue(value)
-          .setLocale(getLocale());
+      throw newConversionException(value[0], "conversion.error.year");
     }
   }
 

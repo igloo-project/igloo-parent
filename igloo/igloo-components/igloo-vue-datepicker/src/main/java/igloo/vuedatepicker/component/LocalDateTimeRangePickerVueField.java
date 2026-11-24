@@ -81,10 +81,7 @@ public class LocalDateTimeRangePickerVueField
 
       return Pair.fromCollection(dates);
     } catch (DateTimeException _) {
-      throw new ConversionException("Cannot parse '" + value)
-          .setResourceKey("conversion.error.localDateTime.range")
-          .setSourceValue(value)
-          .setLocale(getLocale());
+      throw newConversionException(value[0], "conversion.error.localDateTime.range");
     }
   }
 

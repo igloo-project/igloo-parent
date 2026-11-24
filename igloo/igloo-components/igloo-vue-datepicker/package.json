@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "vitest run",
     "dev": "npm-run-all js-compile",
     "js": "NODE_ENV=production npm-run-all js-compile",
     "js-compile": "npm-run-all js-compile-*",
-    "js-compile-vueDatePicker": " rollup --environment SYMBOL:vueInit --environment FILE:vueInit --config rollup.config.mjs --sourcemap"
+    "js-compile-vueDatePicker": " rollup --environment SYMBOL:vueInit --environment FILE:vueInit --config rollup.config.mjs --sourcemap 2>&1"
   },
   "author": "",
   "license": "ISC",
@@ -26,6 +26,9 @@
     "tslib": "2.8.1",
     "date-fns": "4.4.0",
     "@vuepic/vue-datepicker": "14.0.0",
-    "typescript": "6.0.3"
+    "typescript": "6.0.3",
+    "vitest": "5.1.1",
+    "jsdom": "31.0.1",
+    "vue": "3.5.43"
   }
 }

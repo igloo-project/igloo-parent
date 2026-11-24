@@ -1,6 +1,11 @@
 $dp-active-color: $component-active-color !default;
 $dp-active-bg:    $component-active-bg !default;
 
+// Tag rendered by Wicket, the datepicker is rendered inside
+vue-date-picker {
+	display: block;
+}
+
 .dp--theme-light {
 	--dp-background-color: #{$input-bg};
 	--dp-text-color: #{$input-color};

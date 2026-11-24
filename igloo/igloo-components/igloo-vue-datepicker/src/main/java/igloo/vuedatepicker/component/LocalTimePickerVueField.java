@@ -29,10 +29,7 @@ public class LocalTimePickerVueField extends AbstractDatePickerVueField<LocalTim
       }
       return LocalTime.parse(trim(value[0]), getFormat());
     } catch (DateTimeException _) {
-      throw new ConversionException("Cannot parse '" + value)
-          .setResourceKey("conversion.error.localTime")
-          .setSourceValue(value)
-          .setLocale(getLocale());
+      throw newConversionException(value[0], "conversion.error.localTime");
     }
   }
 

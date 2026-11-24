@@ -3,8 +3,8 @@ package igloo.vuedatepicker.reference;
 import de.agilecoders.wicket.webjars.request.resource.WebjarsJavaScriptResourceReference;
 
 /**
- * Use only on development env. If not, please use {@link VueJavaScriptResourceReference} for
- * smaller files and better performance
+ * Vue runtime build with development warnings. Use only in development: {@link
+ * VueJavaScriptResourceReference} is smaller and faster.
  */
 public class VueJavaScriptDevResourceReference extends WebjarsJavaScriptResourceReference {
 
@@ -18,6 +18,6 @@ public class VueJavaScriptDevResourceReference extends WebjarsJavaScriptResource
   }
 
   public VueJavaScriptDevResourceReference() {
-    super("vue/current/dist/vue.global.js");
+    super("vue/current/dist/vue.runtime.global.js");
   }
 }
