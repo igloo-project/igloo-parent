@@ -32,6 +32,12 @@ class TestJsStructures {
 
     assertThat(of("simpleValue").render()).isEqualTo("\"simpleValue\"");
     assertThat(of("escaped\"String").render()).isEqualTo("\"escaped\\\"String\"");
+    assertThat(of("back\\slash").render()).isEqualTo("\"back\\\\slash\"");
+    assertThat(of("line\nbreak\r\ttab").render()).isEqualTo("\"line\\nbreak\\r\\ttab\"");
+    assertThat(of("</script><!-- ]]>").render())
+        .isEqualTo("\"\\u003C/script\\u003E\\u003C!-- ]]\\u003E\"");
+    assertThat(of("\u0000\u2028\u2029").render()).isEqualTo("\"\\u0000\\u2028\\u2029\"");
+    assertThat(of("àé€😀").render()).isEqualTo("\"àé€😀\"");
     assertThat(of((String) null).render()).isEqualTo("null");
 
     assertThat(ofFunction("myFunction").render()).isEqualTo("myFunction()");
@@ -79,7 +85,7 @@ class TestJsStructures {
                 + "offset: [100, 200], "
                 + "placement: \"top\", "
                 + "selector: \"[data-bs-toggle=\\\"popover\\\"]\", "
-                + "template: \"<dummy template>\", "
+                + "template: \"\\u003Cdummy template\\u003E\", "
                 + "title: \"This is my title\"}");
   }
 }

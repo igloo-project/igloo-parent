@@ -130,4 +130,19 @@ class VueDatePickerBehaviorTest extends AbstractVueDatePickerTestCase {
     // the label contains an apostrophe
     assertThat(tester.getLastResponseAsString()).contains("hours: \"Increment l'heure\"");
   }
+
+  /** A label may come from the user: it must not be able to close the script and inject another. */
+  @Test
+  void escapesUserDataInTheScript() {
+    render(
+        id ->
+            new LocalDatePickerVueField(id, Model.of())
+                .labelPlaceholder()
+                .setLabel(Model.of("\"</script><script>alert(1)</script>\\")));
+
+    assertThat(tester.getLastResponseAsString())
+        .contains(
+            "placeholder: \"\\\"\\u003C/script\\u003E\\u003Cscript\\u003Ealert(1)\\u003C/script\\u003E\\\\\"")
+        .doesNotContain("<script>alert(1)");
+  }
 }

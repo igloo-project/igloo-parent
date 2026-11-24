@@ -16,7 +16,33 @@ class Util {
     }
   }
 
+  /**
+   * Renders {@code value} as a JS string literal, safe inside an inline HTML script: the value may
+   * come from the user. Besides quotes, backslashes and line terminators, {@code <} and {@code >}
+   * are escaped, so that the value can neither close the script ({@code </script>}) nor change how
+   * the browser parses it ({@code <!--}, {@code ]]>}).
+   */
   public static String escape(String value) {
-    return "\"" + value.replace("\"", "\\\"") + "\"";
+    StringBuilder result = new StringBuilder(value.length() + 2).append('"');
+    value
+        .chars()
+        .forEach(c -> {
+          switch (c) {
+            case '"' -> result.append("\\\"");
+            case '\\' -> result.append("\\\\");
+            case '\n' -> result.append("\\n");
+            case '\r' -> result.append("\\r");
+            case '\t' -> result.append("\\t");
+            case '<', '>', '\u2028', '\u2029' -> result.append("\\u%04X".formatted(c));
+            default -> {
+              if (c < 0x20) {
+                result.append("\\u%04X".formatted(c));
+              } else {
+                result.append((char) c);
+              }
+            }
+          }
+        });
+    return result.append('"').toString();
   }
 }
