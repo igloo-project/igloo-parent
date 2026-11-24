@@ -1,13 +1,10 @@
 package igloo.bootstrap.js.statement;
 
-import com.github.openjson.JSONArray;
 import igloo.bootstrap.js.util.ImmutableStyle;
 import jakarta.annotation.Nullable;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.Objects;
-import java.util.stream.Stream;
+import java.util.Optional;
 import org.apache.wicket.model.IModel;
 import org.immutables.value.Value;
 import org.javatuples.Pair;
@@ -20,18 +17,18 @@ public interface IJsLocalDatePairModel extends IJsStatement, Serializable {
   @Nullable
   IModel<Pair<LocalDate, LocalDate>> values();
 
+  /**
+   * Both dates in an array, or an empty array if one is missing: the datepicker cannot display a
+   * range with a single date, it would take an end date for a start date.
+   */
   @Override
   default String render() {
-    Pair<LocalDate, LocalDate> values = values() != null ? values().getObject() : null;
-    return values != null
-        ? new JSONArray(
-                Stream.of(values.getValue0(), values.getValue1())
-                    .filter(Objects::nonNull)
-                    .map(
-                        date ->
-                            date.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli())
-                    .toList())
-            .toString()
-        : "[]";
+    return Optional.ofNullable(values())
+        .map(IModel::getObject)
+        .filter(range -> range.getValue0() != null && range.getValue1() != null)
+        .map(range ->
+            "[%d,%d]"
+                .formatted(Util.epochMilli(range.getValue0()), Util.epochMilli(range.getValue1())))
+        .orElse("[]");
   }
 }

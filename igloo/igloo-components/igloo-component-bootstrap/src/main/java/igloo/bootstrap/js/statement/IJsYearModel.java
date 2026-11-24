@@ -20,8 +20,7 @@ public interface IJsYearModel extends IJsStatement, Serializable {
   default String render() {
     Year value = value() != null ? value().getObject() : null;
     return value != null
-        ? String.valueOf(
-            value.atDay(1).atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli())
+        ? String.valueOf(Util.epochMilli(value.atDay(1)))
         : "null";
   }
 }

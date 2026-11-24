@@ -20,7 +20,7 @@ public interface IJsLocalDateModel extends IJsStatement, Serializable {
   default String render() {
     LocalDate value = value() != null ? value().getObject() : null;
     return value != null
-        ? String.valueOf(value.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli())
+        ? String.valueOf(Util.epochMilli(value))
         : "null";
   }
 }

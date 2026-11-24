@@ -73,6 +73,10 @@ form.add(
 | `LocalDateRangePickerVueField` | two `IModel<LocalDate>`, start and end | a date range |
 | `LocalDateTimeRangePickerVueField` | two `IModel<LocalDateTime>`, start and end | a date and time range |
 
+A range field shows a range only when both models hold a date. A range with a single date, start or
+end, is shown empty: submitted as is, both models are set to `null`, what is saved is what the user
+saw. Emptied by the user, a range field sets both models to `null` too.
+
 The fields are regular `FormComponent`s: validators, `setRequired`, labels with `wicket:for`, Ajax
 behaviors and form submission work as usual. The input is parsed with the `datetime.pattern.*`
 format of the field, whatever the session locale.
@@ -219,6 +223,8 @@ The Java side lives in `VueDatePickerBehavior`, which renders the script, and
 | JavaScript functions of `vueInit` other than the ones listed above | Removed |
 | `VueJavaScriptResourceReference` loaded the full Vue build | It loads the runtime build, without the template compiler. Vue templates written in HTML no longer compile with it |
 | A model holding a value, or a typed model such as `BindingModel`, made Wicket parse the input with its own converter | The input is always parsed with the field format |
+| An emptied range field left its models unchanged | Both models are set to `null` |
+| A range with a single date was shown empty, and kept when submitted empty | It is shown empty and set to `null`, both dates, when submitted empty |
 | A `format` option other than a string failed with an unclear error on submission | Override `getFormat()`, see [Options](#options) |
 
 ## Development

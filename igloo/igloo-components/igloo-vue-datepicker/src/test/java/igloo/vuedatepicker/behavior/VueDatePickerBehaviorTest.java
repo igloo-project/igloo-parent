@@ -5,6 +5,7 @@ import static org.mockito.Mockito.when;
 
 import igloo.bootstrap.jsmodel.JsHelpers;
 import igloo.vuedatepicker.component.LocalDatePickerVueField;
+import igloo.vuedatepicker.component.LocalDateRangePickerVueField;
 import igloo.vuedatepicker.test.AbstractVueDatePickerTestCase;
 import igloo.vuedatepicker.test.DatePickerTestPage;
 import java.time.LocalDate;
@@ -91,6 +92,31 @@ class VueDatePickerBehaviorTest extends AbstractVueDatePickerTestCase {
                 builder -> builder.onUpdateModel(JsHelpers.ofLiteral("value => alert(value)"))));
 
     assertThat(tester.getLastResponseAsString()).contains("onUpdateModel: value => alert(value)");
+  }
+
+  @Test
+  void mountsACompleteRange() {
+    LocalDate start = LocalDate.of(2026, 1, 15);
+    LocalDate end = LocalDate.of(2026, 1, 20);
+
+    render(id -> new LocalDateRangePickerVueField(id, Model.of(start), Model.of(end)));
+
+    assertThat(tester.getLastResponseAsString())
+        .contains(
+            "initialValue: [%d,%d],"
+                .formatted(
+                    start.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli(),
+                    end.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()));
+  }
+
+  /** VueDatePicker would display the end date alone as a start date: a partial range is empty. */
+  @Test
+  void mountsAPartialRangeEmpty() {
+    render(
+        id ->
+            new LocalDateRangePickerVueField(id, Model.of(), Model.of(LocalDate.of(2026, 1, 20))));
+
+    assertThat(tester.getLastResponseAsString()).contains("initialValue: [],");
   }
 
   @Test

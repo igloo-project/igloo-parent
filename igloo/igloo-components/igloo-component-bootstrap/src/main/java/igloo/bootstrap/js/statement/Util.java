@@ -1,5 +1,8 @@
 package igloo.bootstrap.js.statement;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.regex.Pattern;
 
 class Util {
@@ -14,6 +17,14 @@ class Util {
     } else {
       return identifier;
     }
+  }
+
+  public static long epochMilli(LocalDate date) {
+    return date.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli();
+  }
+
+  public static long epochMilli(LocalDateTime dateTime) {
+    return dateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
   }
 
   /**

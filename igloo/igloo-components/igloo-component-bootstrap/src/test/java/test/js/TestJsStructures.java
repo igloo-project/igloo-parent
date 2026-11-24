@@ -12,6 +12,11 @@ import igloo.bootstrap.js.type.JsNumberType;
 import igloo.bootstrap.js.type.JsStringType;
 import igloo.bootstrap.jsmodel.JsHelpers;
 import igloo.bootstrap.popover.JsPopover;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import org.apache.wicket.model.Model;
+import org.javatuples.Pair;
 import org.junit.jupiter.api.Test;
 
 class TestJsStructures {
@@ -39,6 +44,19 @@ class TestJsStructures {
     assertThat(of("\u0000\u2028\u2029").render()).isEqualTo("\"\\u0000\\u2028\\u2029\"");
     assertThat(of("àé€😀").render()).isEqualTo("\"àé€😀\"");
     assertThat(of((String) null).render()).isEqualTo("null");
+
+    LocalDate start = LocalDate.of(2026, 1, 15);
+    LocalDate end = LocalDate.of(2026, 1, 20);
+    assertThat(JsHelpers.ofLocalDatePair(Model.of(Pair.with(start, end))).render())
+        .isEqualTo("[%d,%d]".formatted(epochMilli(start), epochMilli(end)));
+    assertThat(JsHelpers.ofLocalDatePair(Model.of(Pair.<LocalDate, LocalDate>with(start, null))).render()).isEqualTo("[]");
+    assertThat(JsHelpers.ofLocalDatePair(Model.of(Pair.<LocalDate, LocalDate>with(null, end))).render()).isEqualTo("[]");
+    assertThat(JsHelpers.ofLocalDatePair(Model.of()).render()).isEqualTo("[]");
+    assertThat(
+            JsHelpers.ofLocalDateTimePair(
+                    Model.of(Pair.<LocalDateTime, LocalDateTime>with(null, end.atStartOfDay())))
+                .render())
+        .isEqualTo("[]");
 
     assertThat(ofFunction("myFunction").render()).isEqualTo("myFunction()");
     assertThat(function().functionName("myFunction").build().render()).isEqualTo("myFunction()");
@@ -87,5 +105,9 @@ class TestJsStructures {
                 + "selector: \"[data-bs-toggle=\\\"popover\\\"]\", "
                 + "template: \"\\u003Cdummy template\\u003E\", "
                 + "title: \"This is my title\"}");
+  }
+
+  private static long epochMilli(LocalDate date) {
+    return date.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli();
   }
 }

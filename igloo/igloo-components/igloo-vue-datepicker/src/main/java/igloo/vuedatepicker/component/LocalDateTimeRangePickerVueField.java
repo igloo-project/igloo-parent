@@ -32,31 +32,7 @@ public class LocalDateTimeRangePickerVueField
       SerializableConsumer<Builder> jsVueDatePickerConsumer) {
     super(
         id,
-        new Model<>() {
-          private static final long serialVersionUID = 1L;
-
-          @Override
-          public Pair<LocalDateTime, LocalDateTime> getObject() {
-            LocalDateTime dateMin = dateMinModel.getObject();
-            LocalDateTime dateMax = dateMaxModel.getObject();
-            return (dateMin != null && dateMax != null) ? Pair.with(dateMin, dateMax) : null;
-          }
-
-          @Override
-          public void setObject(Pair<LocalDateTime, LocalDateTime> object) {
-            if (object == null) {
-              return;
-            }
-            dateMinModel.setObject(object.getValue0());
-            dateMaxModel.setObject(object.getValue1());
-          }
-
-          @Override
-          public void detach() {
-            super.detach();
-            Detachables.detach(dateMinModel, dateMaxModel);
-          }
-        },
+        new RangeModel<>(dateMinModel, dateMaxModel),
         jsVueDatePickerConsumer);
   }
 

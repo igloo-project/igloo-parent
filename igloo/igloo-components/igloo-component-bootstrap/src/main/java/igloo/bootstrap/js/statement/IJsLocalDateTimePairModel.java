@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Stream;
 import org.apache.wicket.model.IModel;
 import org.immutables.value.Value;
@@ -20,16 +21,20 @@ public interface IJsLocalDateTimePairModel extends IJsStatement, Serializable {
   @Nullable
   IModel<Pair<LocalDateTime, LocalDateTime>> values();
 
+  /**
+   * Both dates in an array, or an empty array if one is missing: the datepicker cannot display a
+   * range with a single date, it would take an end date for a start date.
+   */
   @Override
   default String render() {
-    Pair<LocalDateTime, LocalDateTime> values = values() != null ? values().getObject() : null;
-    return values != null
-        ? new JSONArray(
-                Stream.of(values.getValue0(), values.getValue1())
-                    .filter(Objects::nonNull)
-                    .map(date -> date.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
-                    .toList())
-            .toString()
-        : "[]";
+    return Optional.ofNullable(values())
+        .map(IModel::getObject)
+        .filter(range -> range.getValue0() != null && range.getValue1() != null)
+        .map(
+            range ->
+                "[%d,%d]"
+                    .formatted(
+                        Util.epochMilli(range.getValue0()), Util.epochMilli(range.getValue1())))
+        .orElse("[]");
   }
 }
