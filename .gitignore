@@ -18,7 +18,6 @@ bin/
 # npm
 node_modules/
 .hugo_build.lock
-package-lock.json
 generated-js/
 coverage/
 
