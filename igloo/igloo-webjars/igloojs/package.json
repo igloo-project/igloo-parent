@@ -21,12 +21,8 @@
     "@rollup/plugin-commonjs": "29.0.3",
     "@babel/preset-env": "7.29.7",
     "@babel/core": "7.29.7",
-    "rollup": "4.64.5",
-    "nodemon": "3.1.14",
-    "vitest": "5.1.1",
+    "rollup": "4.68.8",
+    "vitest": "5.1.2",
     "jsdom": "31.0.1"
-  },
-  "hugo-bin": {
-    "buildTags": "extended"
   }
 }

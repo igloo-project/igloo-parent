@@ -26,13 +26,23 @@
     "@rollup/plugin-commonjs": "29.0.3",
     "@babel/preset-env": "7.29.7",
     "@babel/core": "7.29.7",
-    "hugo-bin": "0.161.0",
-    "rollup": "4.64.5",
+    "hugo-bin": "0.167.0",
+    "rollup": "4.68.8",
     "select2": "4.1.0",
     "select2-theme-bootstrap5": "0.2.0",
     "jquery": "3.7.1",
     "npm-run-all2": "9.1.0",
     "nodemon": "3.1.14"
+  },
+  "//overrides": "minimatch 10 is vulnerable (GHSA-g3hv-75wg-m249) and nodemon 3.1.14 still asks for it; nodemon only calls minimatch(file, rule, options), unchanged in minimatch 11",
+  "overrides": {
+    "nodemon": {
+      "minimatch": "11.0.9"
+    }
+  },
+  "//allowScripts": "the hugo-bin postinstall downloads the Hugo binary, used by docs-serve and hugo-build; allowed for every version so that upgrading hugo-bin needs no new approval",
+  "allowScripts": {
+    "hugo-bin": true
   },
   "hugo-bin": {
     "buildTags": "extended"

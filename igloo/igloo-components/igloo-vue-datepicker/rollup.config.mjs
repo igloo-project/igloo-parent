@@ -1,6 +1,9 @@
 'use strict';
 
-import babel from '@rollup/plugin-babel';
+// No Babel, unlike igloojs and bootstrap5-override: the datepicker needs Vue 3, which needs a modern
+// browser (no Internet Explorer, Proxy required), so transpiling the bundle for older browsers
+// would not make it run on them. The bundle keeps the ESNext syntax of tsconfig.json.
+
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import replace from '@rollup/plugin-replace';
@@ -30,10 +33,6 @@ export default {
     resolve(),
     typescript({
       tsconfig: './tsconfig.json',      // Use this tsconfig file to configure TypeScript compilation
-    }),
-    babel({
-      exclude: 'node_modules/**',
-      babelHelpers: 'bundled',
     }),
     css({ output: `${file}.css` }), // Extract CSS from datepicker
     terser(),

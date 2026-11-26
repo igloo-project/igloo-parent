@@ -10,22 +10,23 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@babel/core": "7.29.7",
-    "@babel/preset-env": "7.29.7",
-    "@rollup/plugin-babel": "7.1.0",
     "@rollup/plugin-node-resolve": "16.0.3",
     "@rollup/plugin-commonjs": "29.0.3",
-    "@rollup/plugin-typescript": "12.3.0",
+    "@rollup/plugin-typescript": "12.3.1",
     "@rollup/plugin-replace": "6.0.3",
-    "@rollup/plugin-terser": "1.0.0",
-    "rollup": "4.64.5",
+    "@rollup/plugin-terser": "1.0.2",
+    "rollup": "4.68.8",
     "rollup-plugin-css-only": "4.5.5",
-    "tslib": "2.8.1",
+    "tslib": "2.9.1",
     "date-fns": "4.4.0",
-    "@vuepic/vue-datepicker": "14.0.0",
+    "@vuepic/vue-datepicker": "14.1.0",
     "typescript": "6.0.3",
-    "vitest": "5.1.1",
+    "vitest": "5.1.2",
     "jsdom": "31.0.1",
-    "vue": "3.5.43"
+    "vue": "3.5.46"
+  },
+  "//": "allowScripts: the vue-demi postinstall only picks its Vue 2 or Vue 3 files, and the published files already target Vue 3",
+  "allowScripts": {
+    "vue-demi": false
   }
 }
