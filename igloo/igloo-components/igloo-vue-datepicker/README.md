@@ -199,6 +199,35 @@ first.addToBuilder(
 A value set this way is not sent to the server immediately, but with the form. `getJsModelValue`
 reads the value of a datepicker, for your own options.
 
+**Options changed by your scripts.** An option is JavaScript code written in the page. A value,
+e.g. `JsHelpers.ofLocalDateModel(...)`, is written as a constant: only an Ajax refresh of the field
+changes it. To let your scripts change an option without any request, make the option read a Vue
+reactive state of your project. Example: checking an "Urgent" box limits the due date to the next 7
+days.
+
+```js
+// script of your project, loaded before the datepickers (see below)
+window.dueDate = Vue.reactive({ maxDate: null });
+```
+
+```java
+// the option reads the state, instead of holding a value
+dueDateField.addToBuilder(builder -> builder.maxDate(JsHelpers.ofLiteral("dueDate.maxDate")));
+```
+
+```js
+// later, from any script: the datepicker follows
+urgent.addEventListener('change', () => {
+  dueDate.maxDate = urgent.checked ? new Date(Date.now() + 7 * 24 * 3600 * 1000) : null;
+});
+```
+
+The state must be created with `Vue.reactive`: Vue does not see the changes of a plain JavaScript
+variable, and the datepicker would not follow them. It must also exist when the datepickers mount:
+load the script with a resource reference depending on the datepicker one, as for
+[locales](#locales). `minDate(otherField)` works the same way: the option reads the value of the
+other datepicker, which is reactive.
+
 ## Validation feedback
 
 The fields implement `IVueComponent`: `FormInvalidDecoratorListener` adds and removes the `is-invalid`
