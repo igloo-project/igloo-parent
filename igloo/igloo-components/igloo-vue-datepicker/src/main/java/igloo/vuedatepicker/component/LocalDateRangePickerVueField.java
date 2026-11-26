@@ -2,14 +2,12 @@ package igloo.vuedatepicker.component;
 
 import igloo.bootstrap.jsmodel.JsHelpers;
 import igloo.vuedatepicker.behavior.JsVueDatePicker.Builder;
-import igloo.wicket.model.Detachables;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Stream;
 import org.apache.commons.lang3.function.Failable;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.util.convert.ConversionException;
 import org.danekja.java.util.function.serializable.SerializableConsumer;
 import org.iglooproject.spring.util.StringUtils;
@@ -30,10 +28,7 @@ public class LocalDateRangePickerVueField
       IModel<LocalDate> dateMinModel,
       IModel<LocalDate> dateMaxModel,
       SerializableConsumer<Builder> jsVueDatePickerConsumer) {
-    super(
-        id,
-        new RangeModel<>(dateMinModel, dateMaxModel),
-        jsVueDatePickerConsumer);
+    super(id, new RangeModel<>(dateMinModel, dateMaxModel), jsVueDatePickerConsumer);
   }
 
   @Override
@@ -63,18 +58,19 @@ public class LocalDateRangePickerVueField
   @Override
   protected SerializableConsumer<Builder> initDefaultJsVueDatePickerBuilder() {
     return super.initDefaultJsVueDatePickerBuilder()
-        .andThen(builder ->
-            builder
-                .model(JsHelpers.ofLocalDatePair(getModel()))
-                // Modes
-                .range(JsHelpers.ofLiteral("{ partialRange: false }"))
-                // General configuration
-                .placeholder(JsHelpers.of(getString("datetime.pattern.date.range.placeholder")))
-                // Time picker configuration
-                .enableTimePicker(JsHelpers.of(false))
-                // Formatting
-                .format(JsHelpers.of(getString("datetime.pattern.date")))
-                .formatPlaceholder(
-                    JsHelpers.of(getString("datetime.pattern.date.range.placeholder"))));
+        .andThen(
+            builder ->
+                builder
+                    .model(JsHelpers.ofLocalDatePair(getModel()))
+                    // Modes
+                    .range(JsHelpers.ofLiteral("{ partialRange: false }"))
+                    // General configuration
+                    .placeholder(JsHelpers.of(getString("datetime.pattern.date.range.placeholder")))
+                    // Time picker configuration
+                    .enableTimePicker(JsHelpers.of(false))
+                    // Formatting
+                    .format(JsHelpers.of(getString("datetime.pattern.date")))
+                    .formatPlaceholder(
+                        JsHelpers.of(getString("datetime.pattern.date.range.placeholder"))));
   }
 }

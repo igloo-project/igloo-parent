@@ -24,7 +24,8 @@ class DatePickerConversionTest extends AbstractVueDatePickerTestCase {
 
   @Test
   void localDate() {
-    FormComponent<?> field = submit(id -> new LocalDatePickerVueField(id, Model.of()), "15/01/2026");
+    FormComponent<?> field =
+        submit(id -> new LocalDatePickerVueField(id, Model.of()), "15/01/2026");
 
     tester.assertNoErrorMessage();
     assertThat(field.getModelObject()).isEqualTo(LocalDate.of(2026, 1, 15));
@@ -80,7 +81,9 @@ class DatePickerConversionTest extends AbstractVueDatePickerTestCase {
     tester.getSession().setLocale(Locale.US);
 
     FormComponent<?> field =
-        submit(id -> new LocalDatePickerVueField(id, Model.of(LocalDate.of(2026, 1, 1))), "15/01/2026");
+        submit(
+            id -> new LocalDatePickerVueField(id, Model.of(LocalDate.of(2026, 1, 1))),
+            "15/01/2026");
 
     tester.assertNoErrorMessage();
     assertThat(field.getModelObject()).isEqualTo(LocalDate.of(2026, 1, 15));
@@ -92,8 +95,7 @@ class DatePickerConversionTest extends AbstractVueDatePickerTestCase {
     IModel<LocalDate> end = Model.of();
 
     FormComponent<?> field =
-        submit(
-            id -> new LocalDateRangePickerVueField(id, start, end), "15/01/2026 - 20/01/2026");
+        submit(id -> new LocalDateRangePickerVueField(id, start, end), "15/01/2026 - 20/01/2026");
 
     tester.assertNoErrorMessage();
     assertThat(field.getModelObject())
@@ -103,8 +105,7 @@ class DatePickerConversionTest extends AbstractVueDatePickerTestCase {
   @Test
   void localDateRange_singleDate() {
     FormComponent<?> field =
-        submit(
-            id -> new LocalDateRangePickerVueField(id, Model.of(), Model.of()), "15/01/2026");
+        submit(id -> new LocalDateRangePickerVueField(id, Model.of(), Model.of()), "15/01/2026");
 
     tester.assertErrorMessages("invalid localDate range");
     assertThat(field.getModelObject()).isNull();
@@ -116,8 +117,7 @@ class DatePickerConversionTest extends AbstractVueDatePickerTestCase {
     IModel<LocalDate> end = Model.of(LocalDate.of(2026, 1, 2));
 
     FormComponent<?> field =
-        submit(
-            id -> new LocalDateRangePickerVueField(id, start, end), "15/01/2026 - 20/01/2026");
+        submit(id -> new LocalDateRangePickerVueField(id, start, end), "15/01/2026 - 20/01/2026");
 
     tester.assertNoErrorMessage();
     assertThat(field.getModelObject())
@@ -137,8 +137,8 @@ class DatePickerConversionTest extends AbstractVueDatePickerTestCase {
   }
 
   /**
-   * A range with a single date is displayed empty: submitted empty, both models are emptied, what is
-   * saved is what the user saw.
+   * A range with a single date is displayed empty: submitted empty, both models are emptied, what
+   * is saved is what the user saw.
    */
   @Test
   void localDateRange_emptyInputClearsStartOnlyRange() {
@@ -262,7 +262,8 @@ class DatePickerConversionTest extends AbstractVueDatePickerTestCase {
                     id,
                     Model.of(),
                     builder ->
-                        builder.format(JsHelpers.ofLiteral("date => date.toISOString().slice(0, 10)"))) {
+                        builder.format(
+                            JsHelpers.ofLiteral("date => date.toISOString().slice(0, 10)"))) {
                   private static final long serialVersionUID = 1L;
 
                   @Override

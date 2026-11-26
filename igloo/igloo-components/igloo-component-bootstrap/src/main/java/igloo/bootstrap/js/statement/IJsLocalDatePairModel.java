@@ -26,9 +26,11 @@ public interface IJsLocalDatePairModel extends IJsStatement, Serializable {
     return Optional.ofNullable(values())
         .map(IModel::getObject)
         .filter(range -> range.getValue0() != null && range.getValue1() != null)
-        .map(range ->
-            "[%d,%d]"
-                .formatted(Util.epochMilli(range.getValue0()), Util.epochMilli(range.getValue1())))
+        .map(
+            range ->
+                "[%d,%d]"
+                    .formatted(
+                        Util.epochMilli(range.getValue0()), Util.epochMilli(range.getValue1())))
         .orElse("[]");
   }
 }

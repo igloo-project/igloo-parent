@@ -98,11 +98,12 @@ class DatePickerConfigurationTest extends AbstractVueDatePickerTestCase {
   void constructorBuilderOverridesDefaults() {
     IJsVueDatePicker options =
         options(
-            render(id ->
-                new LocalDatePickerVueField(
-                    id,
-                    Model.of(),
-                    builder -> builder.autoApply(JsHelpers.of(false)).textInput(null))));
+            render(
+                id ->
+                    new LocalDatePickerVueField(
+                        id,
+                        Model.of(),
+                        builder -> builder.autoApply(JsHelpers.of(false)).textInput(null))));
 
     assertThat(rendered(options, IJsVueDatePicker::autoApply)).isEqualTo("false");
     assertThat(options.textInput()).isNull();
@@ -112,10 +113,12 @@ class DatePickerConfigurationTest extends AbstractVueDatePickerTestCase {
   void addToBuilderOverridesDefaults() {
     IJsVueDatePicker options =
         options(
-            render(id ->
-                new LocalDatePickerVueField(id, Model.of())
-                    .addToBuilder(
-                        builder -> builder.filters(JsHelpers.ofLiteral("{ weekDays: [6,0] }")))));
+            render(
+                id ->
+                    new LocalDatePickerVueField(id, Model.of())
+                        .addToBuilder(
+                            builder ->
+                                builder.filters(JsHelpers.ofLiteral("{ weekDays: [6,0] }")))));
 
     assertThat(rendered(options, IJsVueDatePicker::filters)).isEqualTo("{ weekDays: [6,0] }");
   }
@@ -124,10 +127,11 @@ class DatePickerConfigurationTest extends AbstractVueDatePickerTestCase {
   void labelPlaceholder() {
     IJsVueDatePicker options =
         options(
-            render(id ->
-                new LocalDatePickerVueField(id, Model.of())
-                    .labelPlaceholder()
-                    .setLabel(Model.of("Birth date"))));
+            render(
+                id ->
+                    new LocalDatePickerVueField(id, Model.of())
+                        .labelPlaceholder()
+                        .setLabel(Model.of("Birth date"))));
 
     assertThat(rendered(options, IJsVueDatePicker::placeholder)).isEqualTo("\"Birth date\"");
   }
@@ -139,10 +143,11 @@ class DatePickerConfigurationTest extends AbstractVueDatePickerTestCase {
 
     IJsVueDatePicker options =
         options(
-            render(id ->
-                new LocalDatePickerVueField(id, Model.of())
-                    .minDate(Model.of(min))
-                    .maxDate(Model.of(max))));
+            render(
+                id ->
+                    new LocalDatePickerVueField(id, Model.of())
+                        .minDate(Model.of(min))
+                        .maxDate(Model.of(max))));
 
     assertThat(rendered(options, IJsVueDatePicker::minDate)).isEqualTo(epochMillis(min));
     assertThat(rendered(options, IJsVueDatePicker::maxDate)).isEqualTo(epochMillis(max));
@@ -152,13 +157,14 @@ class DatePickerConfigurationTest extends AbstractVueDatePickerTestCase {
   void minAndMaxDateFromOtherDatepickers() {
     IJsVueDatePicker options =
         options(
-            render(id -> {
-              LocalDatePickerVueField start = new LocalDatePickerVueField("start", Model.of());
-              LocalDatePickerVueField end = new LocalDatePickerVueField("end", Model.of());
-              start.setMarkupId("start");
-              end.setMarkupId("end");
-              return new LocalDatePickerVueField(id, Model.of()).minDate(start).maxDate(end);
-            }));
+            render(
+                id -> {
+                  LocalDatePickerVueField start = new LocalDatePickerVueField("start", Model.of());
+                  LocalDatePickerVueField end = new LocalDatePickerVueField("end", Model.of());
+                  start.setMarkupId("start");
+                  end.setMarkupId("end");
+                  return new LocalDatePickerVueField(id, Model.of()).minDate(start).maxDate(end);
+                }));
 
     assertThat(rendered(options, IJsVueDatePicker::minDate))
         .isEqualTo("vueInit.getModelValue(\"start\")");
@@ -169,11 +175,12 @@ class DatePickerConfigurationTest extends AbstractVueDatePickerTestCase {
   @Test
   void jsExpressions() {
     FormComponent<?> field =
-        render(id -> {
-          LocalDatePickerVueField birthDate = new LocalDatePickerVueField(id, Model.of());
-          birthDate.setMarkupId("birthDate");
-          return birthDate;
-        });
+        render(
+            id -> {
+              LocalDatePickerVueField birthDate = new LocalDatePickerVueField(id, Model.of());
+              birthDate.setMarkupId("birthDate");
+              return birthDate;
+            });
 
     assertThat(((AbstractDatePickerVueField<?>) field).getJsModelValue())
         .isEqualTo("vueInit.getModelValue(\"birthDate\")");
@@ -194,13 +201,14 @@ class DatePickerConfigurationTest extends AbstractVueDatePickerTestCase {
   void unsupportedPropsAreRenderedWithTheProps() {
     IJsVueDatePicker options =
         options(
-            render(id ->
-                new LocalDatePickerVueField(
-                    id,
-                    Model.of(),
-                    builder ->
-                        builder.putUnsupportedProps(
-                            "weekNumbers", JsHelpers.ofLiteral("{ type: 'iso' }")))));
+            render(
+                id ->
+                    new LocalDatePickerVueField(
+                        id,
+                        Model.of(),
+                        builder ->
+                            builder.putUnsupportedProps(
+                                "weekNumbers", JsHelpers.ofLiteral("{ type: 'iso' }")))));
 
     assertThat(options.values()).containsKey("textInput");
     assertThat(options.values().get("weekNumbers").render()).isEqualTo("{ type: 'iso' }");

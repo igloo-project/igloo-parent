@@ -1,17 +1,15 @@
 package igloo.vuedatepicker.component;
 
 import com.google.common.collect.Iterables;
-import igloo.bootstrap.js.statement.IJsString;
 import igloo.bootstrap.js.statement.IJsStatement;
+import igloo.bootstrap.js.statement.IJsString;
 import igloo.bootstrap.jsmodel.JsHelpers;
 import igloo.vuedatepicker.behavior.IJsVueDatePicker;
 import igloo.vuedatepicker.behavior.JsVueDatePicker.Builder;
 import igloo.vuedatepicker.behavior.VueDatePickerBehavior;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Optional;
 import java.util.function.Function;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.form.AbstractTextComponent;
@@ -96,7 +94,8 @@ public abstract class AbstractDatePickerVueField<T> extends AbstractTextComponen
   private String getStringOption(Function<IJsVueDatePicker, IJsStatement> option, String name) {
     IJsVueDatePicker jsVueDatePicker = getVueDatePickerBehavior().getJsVueDatePicker();
     if (jsVueDatePicker == null) {
-      throw new IllegalStateException("Options of %s not built yet".formatted(getPageRelativePath()));
+      throw new IllegalStateException(
+          "Options of %s not built yet".formatted(getPageRelativePath()));
     }
     if (option.apply(jsVueDatePicker) instanceof IJsString string && string.value() != null) {
       return string.value();

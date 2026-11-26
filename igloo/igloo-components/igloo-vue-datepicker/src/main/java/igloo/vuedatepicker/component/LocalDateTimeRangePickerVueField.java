@@ -2,14 +2,12 @@ package igloo.vuedatepicker.component;
 
 import igloo.bootstrap.jsmodel.JsHelpers;
 import igloo.vuedatepicker.behavior.JsVueDatePicker.Builder;
-import igloo.wicket.model.Detachables;
 import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Stream;
 import org.apache.commons.lang3.function.Failable;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.util.convert.ConversionException;
 import org.danekja.java.util.function.serializable.SerializableConsumer;
 import org.iglooproject.spring.util.StringUtils;
@@ -30,10 +28,7 @@ public class LocalDateTimeRangePickerVueField
       IModel<LocalDateTime> dateMinModel,
       IModel<LocalDateTime> dateMaxModel,
       SerializableConsumer<Builder> jsVueDatePickerConsumer) {
-    super(
-        id,
-        new RangeModel<>(dateMinModel, dateMaxModel),
-        jsVueDatePickerConsumer);
+    super(id, new RangeModel<>(dateMinModel, dateMaxModel), jsVueDatePickerConsumer);
   }
 
   @Override

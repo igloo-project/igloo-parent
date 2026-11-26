@@ -49,8 +49,14 @@ class TestJsStructures {
     LocalDate end = LocalDate.of(2026, 1, 20);
     assertThat(JsHelpers.ofLocalDatePair(Model.of(Pair.with(start, end))).render())
         .isEqualTo("[%d,%d]".formatted(epochMilli(start), epochMilli(end)));
-    assertThat(JsHelpers.ofLocalDatePair(Model.of(Pair.<LocalDate, LocalDate>with(start, null))).render()).isEqualTo("[]");
-    assertThat(JsHelpers.ofLocalDatePair(Model.of(Pair.<LocalDate, LocalDate>with(null, end))).render()).isEqualTo("[]");
+    assertThat(
+            JsHelpers.ofLocalDatePair(Model.of(Pair.<LocalDate, LocalDate>with(start, null)))
+                .render())
+        .isEqualTo("[]");
+    assertThat(
+            JsHelpers.ofLocalDatePair(Model.of(Pair.<LocalDate, LocalDate>with(null, end)))
+                .render())
+        .isEqualTo("[]");
     assertThat(JsHelpers.ofLocalDatePair(Model.of()).render()).isEqualTo("[]");
     assertThat(
             JsHelpers.ofLocalDateTimePair(

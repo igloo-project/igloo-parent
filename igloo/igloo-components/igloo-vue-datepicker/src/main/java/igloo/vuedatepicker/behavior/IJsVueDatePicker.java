@@ -229,18 +229,19 @@ public interface IJsVueDatePicker extends IJsObject, Serializable {
     Set<String> supported = Set.copyOf(supportedProps().stream().map(Map.Entry::getKey).toList());
     unsupportedProps()
         .keySet()
-        .forEach(name -> {
-          if (supported.contains(name)) {
-            throw new IllegalStateException(
-                "Prop %s has an option: use builder.%s(...) instead of putUnsupportedProps"
-                    .formatted(name, name));
-          }
-          if (Set.of("modelValue", "onUpdate:modelValue").contains(name)) {
-            throw new IllegalStateException(
-                "Prop %s is set by the datepicker, from the field model: use model() and onUpdateModel()"
-                    .formatted(name));
-          }
-        });
+        .forEach(
+            name -> {
+              if (supported.contains(name)) {
+                throw new IllegalStateException(
+                    "Prop %s has an option: use builder.%s(...) instead of putUnsupportedProps"
+                        .formatted(name, name));
+              }
+              if (Set.of("modelValue", "onUpdate:modelValue").contains(name)) {
+                throw new IllegalStateException(
+                    "Prop %s is set by the datepicker, from the field model: use model() and onUpdateModel()"
+                        .formatted(name));
+              }
+            });
   }
 
   /**

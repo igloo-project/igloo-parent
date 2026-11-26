@@ -4,7 +4,6 @@ import igloo.bootstrap.js.util.ImmutableStyle;
 import jakarta.annotation.Nullable;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import org.apache.wicket.model.IModel;
 import org.immutables.value.Value;
 
@@ -19,8 +18,6 @@ public interface IJsLocalDateTimeModel extends IJsStatement, Serializable {
   @Override
   default String render() {
     LocalDateTime value = value() != null ? value().getObject() : null;
-    return value != null
-        ? String.valueOf(Util.epochMilli(value))
-        : "null";
+    return value != null ? String.valueOf(Util.epochMilli(value)) : "null";
   }
 }

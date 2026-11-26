@@ -37,23 +37,24 @@ class Util {
     StringBuilder result = new StringBuilder(value.length() + 2).append('"');
     value
         .chars()
-        .forEach(c -> {
-          switch (c) {
-            case '"' -> result.append("\\\"");
-            case '\\' -> result.append("\\\\");
-            case '\n' -> result.append("\\n");
-            case '\r' -> result.append("\\r");
-            case '\t' -> result.append("\\t");
-            case '<', '>', '\u2028', '\u2029' -> result.append("\\u%04X".formatted(c));
-            default -> {
-              if (c < 0x20) {
-                result.append("\\u%04X".formatted(c));
-              } else {
-                result.append((char) c);
+        .forEach(
+            c -> {
+              switch (c) {
+                case '"' -> result.append("\\\"");
+                case '\\' -> result.append("\\\\");
+                case '\n' -> result.append("\\n");
+                case '\r' -> result.append("\\r");
+                case '\t' -> result.append("\\t");
+                case '<', '>', '\u2028', '\u2029' -> result.append("\\u%04X".formatted(c));
+                default -> {
+                  if (c < 0x20) {
+                    result.append("\\u%04X".formatted(c));
+                  } else {
+                    result.append((char) c);
+                  }
+                }
               }
-            }
-          }
-        });
+            });
     return result.append('"').toString();
   }
 }
