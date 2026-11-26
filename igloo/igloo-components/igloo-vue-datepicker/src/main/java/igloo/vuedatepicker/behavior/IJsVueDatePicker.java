@@ -5,8 +5,10 @@ import igloo.bootstrap.js.statement.IJsStatement;
 import jakarta.annotation.Nullable;
 import java.io.Serializable;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 import org.apache.commons.lang3.tuple.Pair;
@@ -196,16 +198,71 @@ public interface IJsVueDatePicker extends IJsObject, Serializable {
   @Nullable
   IJsStatement onTextSubmit();
 
+  //
+  // Slots
+  //
+
   /**
-   * VueDatePicker props, by prop name: the non null options, except {@link #model()} and {@link
-   * #onUpdateModel()} which the datepicker handles itself.
+   * VueDatePicker slots, to replace parts of its rendering: a JS object whose keys are slot names
+   * and values functions rendering the slot with the global {@code Vue.h}, e.g. {@code { marker: ()
+   * => Vue.h('span', { class: 'custom-marker' }) }}.
+   *
+   * @see <a href="https://vue3datepicker.com/slots/content/">VueDatePicker slots</a>
+   */
+  @Nullable
+  IJsStatement slots();
+
+  //
+  // Other props
+  //
+
+  /**
+   * VueDatePicker props the options above do not support yet, by prop name, e.g. {@code
+   * putUnsupportedProps("weekNumbers", JsHelpers.ofLiteral("{ type: 'iso' }"))}. A way out, harder
+   * to maintain: prefer asking for an option in igloo. A prop an option supports is refused, as
+   * well as the props the datepicker sets itself.
+   */
+  Map<String, IJsStatement> unsupportedProps();
+
+  @Value.Check
+  default void checkUnsupportedProps() {
+    Set<String> supported = Set.copyOf(supportedProps().stream().map(Map.Entry::getKey).toList());
+    unsupportedProps()
+        .keySet()
+        .forEach(name -> {
+          if (supported.contains(name)) {
+            throw new IllegalStateException(
+                "Prop %s has an option: use builder.%s(...) instead of putUnsupportedProps"
+                    .formatted(name, name));
+          }
+          if (Set.of("modelValue", "onUpdate:modelValue").contains(name)) {
+            throw new IllegalStateException(
+                "Prop %s is set by the datepicker, from the field model: use model() and onUpdateModel()"
+                    .formatted(name));
+          }
+        });
+  }
+
+  /**
+   * Map of VueDatePicker props: contains all non-null options (excluding {@link #slots()}, {@link
+   * #model()} and {@link #onUpdateModel()} which are managed internally), merged with {@link
+   * #unsupportedProps()}.
    */
   @Override
   @Value.Derived
   default Map<String, IJsStatement> values() {
     Map<String, IJsStatement> result = new LinkedHashMap<>();
+    supportedProps().stream()
+        .map(e -> Pair.of(e.getKey(), e.getValue().get()))
+        .filter(e -> e.getRight() != null)
+        .forEachOrdered(e -> result.put(e.getLeft(), e.getRight()));
+    result.putAll(unsupportedProps());
+    return result;
+  }
 
-    Stream.<Map.Entry<String, Supplier<IJsStatement>>>of(
+  /** The props the options support, by prop name. */
+  private List<Map.Entry<String, Supplier<IJsStatement>>> supportedProps() {
+    return Stream.<Map.Entry<String, Supplier<IJsStatement>>>of(
             // Modes
             Map.entry("range", this::range),
             Map.entry("multiCalendars", this::multiCalendars),
@@ -249,10 +306,7 @@ public interface IJsVueDatePicker extends IJsObject, Serializable {
             Map.entry("ui", this::ui),
             // Events: Vue takes listeners as props named on + event name
             Map.entry("onTextSubmit", this::onTextSubmit))
-        .map(e -> Pair.of(e.getKey(), e.getValue().get()))
-        .filter(e -> e.getRight() != null)
-        .forEachOrdered(e -> result.put(e.getLeft(), e.getRight()));
-    return result;
+        .toList();
   }
 
   /**

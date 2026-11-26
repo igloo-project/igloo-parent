@@ -124,6 +124,47 @@ mean the same for [date-fns](https://date-fns.org/docs/format) and `DateTimeForm
 The classes of the input, option `ui`, accept the forms of a Vue class binding: a string, an array,
 or an object whose keys are the classes, enabled by a true value, e.g. `{ input: { 'form-control': true } }`.
 
+**A prop without option.** The builder covers the common VueDatePicker props. For another one, use
+`putUnsupportedProps` with the prop name:
+
+```java
+builder.putUnsupportedProps("weekNumbers", JsHelpers.ofLiteral("{ type: 'iso' }"))
+```
+
+This is a way out, harder to maintain: nothing checks the prop name or its value, and they may
+change with VueDatePicker versions. Prefer asking for an option in igloo. A prop that has an
+option is refused, use the option; so are `modelValue` and `onUpdate:modelValue`, set by the
+datepicker from the field model.
+
+## Customizing the rendering: slots
+
+[Slots](https://vue3datepicker.com/slots/content/) replace parts of the datepicker rendering: the
+markers, the days, the icons, the action row... Give them with the `slots` option: a JavaScript
+object whose keys are slot names, and values functions rendering the slot with the global
+`Vue.h`. They receive the slot props, e.g. the marker for the `marker` slot.
+
+```java
+builder.slots(JsHelpers.ofLiteral("{ marker: () => Vue.h('span', { class: 'custom-marker' }) }"))
+```
+
+For more than a line of JavaScript, write the slots in a script of your project, loaded after the
+datepicker one (see [Locales](#locales)), and reference them:
+
+```js
+window.appDatePickerSlots = {
+  appointments: {
+    marker: ({ marker }) => Vue.h('span', { class: ['custom-marker', marker.type] }),
+  },
+};
+```
+
+```java
+builder.slots(JsHelpers.ofLiteral("appDatePickerSlots.appointments"))
+```
+
+Vue templates written in the HTML of the page, e.g. `<template #marker>` inside the
+`vue-date-picker` tag, are not supported: the content of the tag is replaced by the datepicker.
+
 ## Linking two datepickers
 
 The min or max date of a datepicker can follow the value of another one, in the browser, without
@@ -222,6 +263,7 @@ The Java side lives in `VueDatePickerBehavior`, which renders the script, and
 | `IJsVueDatePicker.values()` keys such as `:min-date` | VueDatePicker prop names, such as `minDate` |
 | JavaScript functions of `vueInit` other than the ones listed above | Removed |
 | `VueJavaScriptResourceReference` loaded the full Vue build | It loads the runtime build, without the template compiler. Vue templates written in HTML no longer compile with it |
+| Slots written in the HTML of the tag, e.g. `<template #marker>` | Builder option `slots`, see [Customizing the rendering: slots](#customizing-the-rendering-slots) |
 | A model holding a value, or a typed model such as `BindingModel`, made Wicket parse the input with its own converter | The input is always parsed with the field format |
 | An emptied range field left its models unchanged | Both models are set to `null` |
 | A range with a single date was shown empty, and kept when submitted empty | It is shown empty and set to `null`, both dates, when submitted empty |

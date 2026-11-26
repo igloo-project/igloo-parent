@@ -20,7 +20,8 @@ import {
   nextTick,
   type PropType,
   render,
-  shallowReactive
+  shallowReactive,
+  type VNodeChild
 } from 'vue';
 
 /** What Wicket renders for a datepicker, see VueDatePickerBehavior#renderHead. */
@@ -31,7 +32,11 @@ export interface DatePickerConfig {
   props: () => Record<string, unknown>;
   onUpdateModel?: (value: unknown) => void;
   disabled?: boolean;
+  slots?: DatePickerSlots;
 }
+
+/** VueDatePicker slots, by name: functions rendering them with `Vue.h`, given the slot props. */
+export type DatePickerSlots = Record<string, (slotProps: any) => VNodeChild>;
 
 interface InputClassChanges {
   added: string[];
@@ -162,7 +167,7 @@ const WicketDatePicker = defineComponent({
         inputAttrs: { ...inputAttrs, name: props.config.inputName, id: `dp-input-${props.id}` },
         modelValue: values.get(props.id),
         'onUpdate:modelValue': onUpdateModelValue,
-      });
+      }, props.config.slots);
     };
   },
 });

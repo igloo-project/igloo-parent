@@ -94,6 +94,21 @@ class VueDatePickerBehaviorTest extends AbstractVueDatePickerTestCase {
     assertThat(tester.getLastResponseAsString()).contains("onUpdateModel: value => alert(value)");
   }
 
+  /** Slots are given to VueDatePicker as its slots, after the props function, not as a prop. */
+  @Test
+  void passesTheSlots() {
+    String slots = "{ marker: () => Vue.h('span', { class: 'custom-marker' }) }";
+
+    render(
+        id ->
+            new LocalDatePickerVueField(
+                id, Model.of(), builder -> builder.slots(JsHelpers.ofLiteral(slots))));
+
+    String response = tester.getLastResponseAsString();
+    assertThat(response).contains("}), slots: " + slots);
+    assertThat(response.split("slots:", -1)).hasSize(2);
+  }
+
   @Test
   void mountsACompleteRange() {
     LocalDate start = LocalDate.of(2026, 1, 15);

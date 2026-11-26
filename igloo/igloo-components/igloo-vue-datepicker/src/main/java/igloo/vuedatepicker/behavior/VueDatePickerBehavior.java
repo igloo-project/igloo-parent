@@ -92,6 +92,9 @@ public class VueDatePickerBehavior extends Behavior {
     if (jsVueDatePicker.onUpdateModel() != null) {
       config.putValues("onUpdateModel", jsVueDatePicker.onUpdateModel());
     }
+    if (jsVueDatePicker.slots() != null) {
+      config.putValues("slots", jsVueDatePicker.slots());
+    }
     // Wicket ignores the input of a disabled field: the datepicker must not be editable either
     if (!component.isEnabledInHierarchy()) {
       config.putValues("disabled", JsHelpers.of(true));

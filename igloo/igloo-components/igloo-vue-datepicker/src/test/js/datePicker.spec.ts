@@ -16,6 +16,7 @@ import {
   type PickerOptions
 } from './support/datePickerTester';
 import {installWicketStub, type WicketEventStub, wicketReplace} from './support/wicket';
+import {h} from 'vue';
 
 /**
  * Behaviour of the datepicker in a Wicket page, observed through the DOM only. The vueInit API is
@@ -113,6 +114,14 @@ describe('vue datepicker', () => {
       const input = datePickerInput('start')!;
       expect(input.id).not.toBe('');
       expect(document.querySelector('label')?.htmlFor).toBe(input.id);
+    });
+
+    it('renders the slots given by the options', async () => {
+      // projects render their slots with the global Vue.h, the same function
+      renderPage({ start: { slots: { 'input-icon': () => h('span', { class: 'project-icon' }) } } });
+      await flush();
+
+      expect(document.querySelector('#start .project-icon')).not.toBeNull();
     });
 
     it('points a label refreshed alone by Wicket to the rendered input again', async () => {

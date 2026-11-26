@@ -8,6 +8,7 @@ import type {Locale} from 'date-fns/locale';
  */
 
 type VueInit = typeof import('../../../main/js/vueInit');
+type DatePickerSlots = import('../../../main/js/vueInit').DatePickerSlots;
 
 export interface PickerOptions {
   value?: number | null;
@@ -16,6 +17,7 @@ export interface PickerOptions {
   onUpdateModel?: (value: unknown) => void;
   disabled?: boolean;
   inputClass?: unknown;
+  slots?: DatePickerSlots;
 }
 
 export const DATE_FORMAT = 'dd/MM/yyyy';
@@ -57,6 +59,7 @@ export function createDatePickerTester(vueInit: VueInit): DatePickerTester {
         }),
         ...(options.disabled ? { disabled: true } : {}),
         ...(options.onUpdateModel ? { onUpdateModel: options.onUpdateModel } : {}),
+        ...(options.slots ? { slots: options.slots } : {}),
       });
     },
 
