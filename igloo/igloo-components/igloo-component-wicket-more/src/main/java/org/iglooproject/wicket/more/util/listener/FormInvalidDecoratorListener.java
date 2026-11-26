@@ -225,11 +225,11 @@ public final class FormInvalidDecoratorListener {
                         if (formComponent instanceof IVueComponent) {
                           if (isInvalid(formComponent)) {
                             ((IVueComponent) formComponent)
-                                .appendCssClass(target, IS_INVALID_CSS_CLASS);
+                                .jsAppendCssClass(target, IS_INVALID_CSS_CLASS);
 
                           } else {
                             ((IVueComponent) formComponent)
-                                .removeCssClass(target, IS_INVALID_CSS_CLASS);
+                                .jsRemoveCssClass(target, IS_INVALID_CSS_CLASS);
                           }
                           return;
                         }

@@ -182,9 +182,9 @@ class DatePickerConfigurationTest extends AbstractVueDatePickerTestCase {
               return birthDate;
             });
 
-    assertThat(((AbstractDatePickerVueField<?>) field).getJsModelValue())
+    assertThat(((AbstractDatePickerVueField<?>) field).jsGetModelValue())
         .isEqualTo("vueInit.getModelValue(\"birthDate\")");
-    assertThat(((AbstractDatePickerVueField<?>) field).getJsSetModelValue("value"))
+    assertThat(((AbstractDatePickerVueField<?>) field).jsSetModelValue("value"))
         .isEqualTo("vueInit.setModelValue(\"birthDate\", value)");
   }
 

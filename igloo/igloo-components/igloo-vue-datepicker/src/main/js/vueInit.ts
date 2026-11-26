@@ -189,7 +189,11 @@ function observePage(): void {
   }
   pageObserver = new MutationObserver(records => {
     if (records.some(record => record.removedNodes.length > 0)) {
-      [...hosts].filter(([, host]) => !host.isConnected).forEach(([id]) => unmount(id));
+      hosts.forEach((host, id) => {
+        if (!host.isConnected) {
+          unmount(id);
+        }
+      });
     }
     // the datepickers re-render often: only look for labels when some were added
     if (

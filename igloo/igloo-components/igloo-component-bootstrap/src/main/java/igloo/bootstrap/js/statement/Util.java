@@ -46,13 +46,7 @@ class Util {
                 case '\r' -> result.append("\\r");
                 case '\t' -> result.append("\\t");
                 case '<', '>', '\u2028', '\u2029' -> result.append("\\u%04X".formatted(c));
-                default -> {
-                  if (c < 0x20) {
-                    result.append("\\u%04X".formatted(c));
-                  } else {
-                    result.append((char) c);
-                  }
-                }
+                default -> result.append(c < 0x20 ? "\\u%04X".formatted(c) : (char) c);
               }
             });
     return result.append('"').toString();

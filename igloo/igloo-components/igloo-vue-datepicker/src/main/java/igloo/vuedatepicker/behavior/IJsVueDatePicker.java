@@ -8,7 +8,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 import org.apache.commons.lang3.tuple.Pair;
@@ -226,21 +225,24 @@ public interface IJsVueDatePicker extends IJsObject, Serializable {
 
   @Value.Check
   default void checkUnsupportedProps() {
-    Set<String> supported = Set.copyOf(supportedProps().stream().map(Map.Entry::getKey).toList());
-    unsupportedProps()
-        .keySet()
-        .forEach(
+    supportedProps().stream()
+        .map(Map.Entry::getKey)
+        .filter(unsupportedProps()::containsKey)
+        .findFirst()
+        .ifPresent(
             name -> {
-              if (supported.contains(name)) {
-                throw new IllegalStateException(
-                    "Prop %s has an option: use builder.%s(...) instead of putUnsupportedProps"
-                        .formatted(name, name));
-              }
-              if (Set.of("modelValue", "onUpdate:modelValue").contains(name)) {
-                throw new IllegalStateException(
-                    "Prop %s is set by the datepicker, from the field model: use model() and onUpdateModel()"
-                        .formatted(name));
-              }
+              throw new IllegalStateException(
+                  "Prop %s has an option: use builder.%s(...) instead of putUnsupportedProps"
+                      .formatted(name, name));
+            });
+    Stream.of("modelValue", "onUpdate:modelValue")
+        .filter(unsupportedProps()::containsKey)
+        .findFirst()
+        .ifPresent(
+            name -> {
+              throw new IllegalStateException(
+                  "Prop %s is set by the datepicker, from the field model: use model() and onUpdateModel()"
+                      .formatted(name));
             });
   }
 

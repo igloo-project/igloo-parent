@@ -125,11 +125,11 @@ public abstract class AbstractDatePickerVueField<T> extends AbstractTextComponen
     return Iterables.getOnlyElement(getBehaviors(VueDatePickerBehavior.class));
   }
 
-  public String getJsModelValue() {
+  public String jsGetModelValue() {
     return "vueInit.getModelValue(%s)".formatted(JsHelpers.of(getMarkupId()).render());
   }
 
-  public String getJsSetModelValue(String jsValue) {
+  public String jsSetModelValue(String jsValue) {
     return "vueInit.setModelValue(%s, %s)".formatted(JsHelpers.of(getMarkupId()).render(), jsValue);
   }
 
@@ -145,7 +145,7 @@ public abstract class AbstractDatePickerVueField<T> extends AbstractTextComponen
 
   /** The min date follows the value of {@code datePicker}, client-side. */
   public AbstractDatePickerVueField<T> minDate(AbstractDatePickerVueField<T> datePicker) {
-    addToBuilder(builder -> builder.minDate(JsHelpers.ofLiteral(datePicker.getJsModelValue())));
+    addToBuilder(builder -> builder.minDate(JsHelpers.ofLiteral(datePicker.jsGetModelValue())));
     return this;
   }
 
@@ -156,7 +156,7 @@ public abstract class AbstractDatePickerVueField<T> extends AbstractTextComponen
 
   /** The max date follows the value of {@code datePicker}, client-side. */
   public AbstractDatePickerVueField<T> maxDate(AbstractDatePickerVueField<T> datePicker) {
-    addToBuilder(builder -> builder.maxDate(JsHelpers.ofLiteral(datePicker.getJsModelValue())));
+    addToBuilder(builder -> builder.maxDate(JsHelpers.ofLiteral(datePicker.jsGetModelValue())));
     return this;
   }
 
@@ -170,15 +170,15 @@ public abstract class AbstractDatePickerVueField<T> extends AbstractTextComponen
    * Wicket calls this method for every Vue component of the page, even outside the refreshed form.
    */
   @Override
-  public void appendCssClass(AjaxRequestTarget target, String cssClass) {
+  public void jsAppendCssClass(AjaxRequestTarget target, String cssClass) {
     target.appendJavaScript(
         "typeof vueInit !== 'undefined' && vueInit.appendInputCssClass(%s, %s);"
             .formatted(JsHelpers.of(getMarkupId()).render(), JsHelpers.of(cssClass).render()));
   }
 
-  /** Removes a CSS class from the datepicker input, see {@link #appendCssClass}. */
+  /** Removes a CSS class from the datepicker input, see {@link #jsAppendCssClass}. */
   @Override
-  public void removeCssClass(AjaxRequestTarget target, String cssClass) {
+  public void jsRemoveCssClass(AjaxRequestTarget target, String cssClass) {
     target.appendJavaScript(
         "typeof vueInit !== 'undefined' && vueInit.removeInputCssClass(%s, %s);"
             .formatted(JsHelpers.of(getMarkupId()).render(), JsHelpers.of(cssClass).render()));

@@ -8,12 +8,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import igloo.bootstrap.js.statement.JsLiteral;
 import igloo.bootstrap.js.statement.JsNumber;
 import igloo.bootstrap.js.statement.JsString;
-import igloo.bootstrap.js.type.JsNumberType;
-import igloo.bootstrap.js.type.JsStringType;
 import igloo.bootstrap.jsmodel.JsHelpers;
 import igloo.bootstrap.popover.JsPopover;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import org.apache.wicket.model.Model;
 import org.javatuples.Pair;
@@ -29,9 +26,9 @@ class TestJsStructures {
 
     assertThat(of(10).render()).isEqualTo("10");
     assertThat(of(10.0).render()).isEqualTo("10.0");
-    assertThat(of(10l).render()).isEqualTo("10");
+    assertThat(of(10L).render()).isEqualTo("10");
     assertThat(of(-10).render()).isEqualTo("-10");
-    assertThat(of(-10l).render()).isEqualTo("-10");
+    assertThat(of(-10L).render()).isEqualTo("-10");
     assertThat(of(-10.0).render()).isEqualTo("-10.0");
     assertThat(of((Number) null).render()).isEqualTo("null");
 
@@ -49,19 +46,12 @@ class TestJsStructures {
     LocalDate end = LocalDate.of(2026, 1, 20);
     assertThat(JsHelpers.ofLocalDatePair(Model.of(Pair.with(start, end))).render())
         .isEqualTo("[%d,%d]".formatted(epochMilli(start), epochMilli(end)));
-    assertThat(
-            JsHelpers.ofLocalDatePair(Model.of(Pair.<LocalDate, LocalDate>with(start, null)))
-                .render())
+    assertThat(JsHelpers.ofLocalDatePair(Model.of(Pair.with(start, null))).render())
         .isEqualTo("[]");
-    assertThat(
-            JsHelpers.ofLocalDatePair(Model.of(Pair.<LocalDate, LocalDate>with(null, end)))
-                .render())
-        .isEqualTo("[]");
+    assertThat(JsHelpers.ofLocalDatePair(Model.of(Pair.with(null, end))).render()).isEqualTo("[]");
     assertThat(JsHelpers.ofLocalDatePair(Model.of()).render()).isEqualTo("[]");
     assertThat(
-            JsHelpers.ofLocalDateTimePair(
-                    Model.of(Pair.<LocalDateTime, LocalDateTime>with(null, end.atStartOfDay())))
-                .render())
+            JsHelpers.ofLocalDateTimePair(Model.of(Pair.with(null, end.atStartOfDay()))).render())
         .isEqualTo("[]");
 
     assertThat(ofFunction("myFunction").render()).isEqualTo("myFunction()");
@@ -88,9 +78,9 @@ class TestJsStructures {
                 .customClass(of("class1 class2"))
                 .delay(of(10))
                 .fallbackPlacements(
-                    JsHelpers.<JsStringType>sequence().addValues(of("bottom"), of("right")).build())
+                    JsHelpers.sequence().addValues(of("bottom"), of("right")).build())
                 .html(of(false))
-                .offset(JsHelpers.<JsNumberType>sequence().addValues(of(100), of(200)).build())
+                .offset(JsHelpers.sequence().addValues(of(100), of(200)).build())
                 .placement(of("top"))
                 .selector(of("[data-bs-toggle=\"popover\"]"))
                 .template(of("<dummy template>"))

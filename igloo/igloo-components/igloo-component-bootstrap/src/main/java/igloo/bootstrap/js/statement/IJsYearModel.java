@@ -4,6 +4,7 @@ import igloo.bootstrap.js.util.ImmutableStyle;
 import jakarta.annotation.Nullable;
 import java.io.Serializable;
 import java.time.Year;
+import java.util.Optional;
 import org.apache.wicket.model.IModel;
 import org.immutables.value.Value;
 
@@ -17,7 +18,9 @@ public interface IJsYearModel extends IJsStatement, Serializable {
 
   @Override
   default String render() {
-    Year value = value() != null ? value().getObject() : null;
-    return value != null ? String.valueOf(Util.epochMilli(value.atDay(1))) : "null";
+    return Optional.ofNullable(value())
+        .map(IModel::getObject)
+        .map(value -> String.valueOf(Util.epochMilli(value.atDay(1))))
+        .orElse("null");
   }
 }
